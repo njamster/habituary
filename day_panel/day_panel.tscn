@@ -1,0 +1,89 @@
+[gd_scene load_steps=4 format=3 uid="uid://cmdy32v105kli"]
+
+[ext_resource type="Script" path="res://day_panel/day_panel.gd" id="1_s0rnw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xewrq"]
+bg_color = Color(0.4, 0.4, 0.4, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_axcjp"]
+bg_color = Color(0.533333, 0.533333, 0.533333, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="DayPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_s0rnw")
+
+[node name="OuterMargin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Panel" type="Panel" parent="OuterMargin"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_xewrq")
+
+[node name="InnerMargin" type="MarginContainer" parent="OuterMargin"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBox" type="VBoxContainer" parent="OuterMargin/InnerMargin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Date" type="Label" parent="OuterMargin/InnerMargin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+
+[node name="Scrollable" type="ScrollContainer" parent="OuterMargin/InnerMargin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="Panel" type="Panel" parent="OuterMargin/InnerMargin/VBox/Scrollable"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_axcjp")
+
+[node name="InnerMargin" type="MarginContainer" parent="OuterMargin/InnerMargin/VBox/Scrollable/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Items" type="VBoxContainer" parent="OuterMargin/InnerMargin/VBox/Scrollable/Panel/InnerMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
