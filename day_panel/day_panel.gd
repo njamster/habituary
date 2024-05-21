@@ -7,10 +7,10 @@ const TODO_ITEM := preload("res://day_panel/todo_item/todo_item.tscn")
 
 
 func _ready() -> void:
-	var date_dict := Time.get_date_dict_from_system()
-	DATE.text = Settings.format_date(date_dict, Settings.date_format_show)
+	var today = DateTime.new(Time.get_date_dict_from_system())
+	DATE.text = today.format(Settings.date_format_show)
 
-	var file_name := Settings.format_date(date_dict, Settings.date_format_save) + ".txt"
+	var file_name := today.format(Settings.date_format_save) + ".txt"
 	var file := FileAccess.open(Settings.store_path + "/" + file_name, FileAccess.READ)
 	if file:
 		while file.get_position() < file.get_length():
