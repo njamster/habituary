@@ -7,7 +7,7 @@ const TODO_ITEM := preload("res://day_panel/todo_item/todo_item.tscn")
 
 
 func _ready() -> void:
-	var today = DateTime.new(Time.get_date_dict_from_system())
+	var today = Date.new(Time.get_date_dict_from_system())
 	DATE.text = today.format(Settings.date_format_show)
 
 	var file_name := today.format(Settings.date_format_save) + ".txt"
