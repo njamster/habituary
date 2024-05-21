@@ -63,6 +63,10 @@ func _on_edit_text_submitted(new_text: String) -> void:
 func _on_edit_focus_exited() -> void:
 	if text:
 		_on_edit_text_submitted(text)
+	elif previous_focus != null and previous_focus != self:
+		previous_focus.grab_focus()
+		previous_focus = null
+		queue_free()
 	else:
 		queue_free()
 
