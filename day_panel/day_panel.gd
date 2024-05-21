@@ -2,15 +2,25 @@ extends Control
 
 const TODO_ITEM := preload("res://day_panel/todo_item/todo_item.tscn")
 
+var current_day : Date:
+	set(value):
+		current_day = value
+		if is_inside_tree():
+			DATE.text = current_day.format(Settings.date_format_show)
+			for child in ITEMS.get_children():
+				child.queue_free()
+			load_day(current_day)
+
 @onready var DATE := %Date
 @onready var ITEMS := %Items
 
 
 func _ready() -> void:
-	var today = Date.new(Time.get_date_dict_from_system())
-	DATE.text = today.format(Settings.date_format_show)
+	current_day =  Date.new(Time.get_date_dict_from_system())
 
-	var file_name := today.format(Settings.date_format_save) + ".txt"
+
+func load_day(day: Date) -> void:
+	var file_name := day.format(Settings.date_format_save) + ".txt"
 	var file := FileAccess.open(Settings.store_path + "/" + file_name, FileAccess.READ)
 	if file:
 		while file.get_position() < file.get_length():
@@ -58,6 +68,10 @@ func _unhandled_input(event: InputEvent) -> void:
 			var next_item := focused_item.find_valid_focus_neighbor(SIDE_BOTTOM)
 			if next_item:
 				next_item.grab_focus()
+	elif event.is_action_pressed("previous_day", false, true):
+		_on_prev_day_pressed()
+	elif event.is_action_pressed("next_day", false, true):
+		_on_next_day_pressed()
 	elif event.is_action_pressed("edit_replace_item", false, true):
 		if focused_item:
 			focused_item.edit(true)
@@ -73,3 +87,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		else:
 			ITEMS.get_child(focused_item.get_index() - 1).grab_focus()
 		focused_item.queue_free()
+
+
+func _on_prev_day_pressed() -> void:
+	current_day = current_day.add_days(-1)
+
+
+func _on_next_day_pressed() -> void:
+	current_day = current_day.add_days(1)

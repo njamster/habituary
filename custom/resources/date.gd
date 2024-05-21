@@ -74,27 +74,59 @@ func _init(dict: Dictionary) -> void:
 
 	_tokens = {
 		# Year:
-		"YY":    str(year).right(2),
-		"YYYY": "%04d" % year,
+		"YY":    func(): return str(year).right(2),
+		"YYYY":  func(): return "%04d" % year,
 		# Month:
-		"M":     str(month),
-		"Mo":    Date._to_ordinal(month),
-		"MM":    "%02d" % month,
-		"MMM":   _MONTH_NAMES[month - 1].left(3),
-		"MMMM":  _MONTH_NAMES[month - 1],
+		"M":     func(): return str(month),
+		"Mo":    func(): return Date._to_ordinal(month),
+		"MM":    func(): return "%02d" % month,
+		"MMM":   func(): return _MONTH_NAMES[month - 1].left(3),
+		"MMMM":  func(): return _MONTH_NAMES[month - 1],
 		# Day of Month:
-		"D":     str(day),
-		"Do":    Date._to_ordinal(day),
-		"DD":    "%02d" % day,
+		"D":     func(): return str(day),
+		"Do":    func(): return Date._to_ordinal(day),
+		"DD":    func(): return "%02d" % day,
 		# Day of Week:
-		"d":     weekday,
-		"do":    Date._to_ordinal(weekday),
-		"dd":    _DAY_NAMES[weekday - 1].left(2),
-		"ddd":   _DAY_NAMES[weekday - 1].left(3),
-		"dddd":  _DAY_NAMES[weekday - 1],
+		"d":     func(): return weekday,
+		"do":    func(): return Date._to_ordinal(weekday),
+		"dd":    func(): return _DAY_NAMES[weekday - 1].left(2),
+		"ddd":   func(): return _DAY_NAMES[weekday - 1].left(3),
+		"dddd":  func(): return _DAY_NAMES[weekday - 1],
 	}
 
 	_regex.compile("(\\[[^\\[]*\\])|(\\\\)?(Mo|MM?M?M?|Do|DD|ddd?d?|do?|YYYY|YY|.)")
+
+
+func add_days(shift: int) -> Date:
+	assert(shift != 0)
+
+	var new_day = day + shift
+	var new_month = month
+	var new_year = year
+
+	var days_in_current_month = Date._days_in_month(new_month, new_year)
+	while not new_day in range(1, days_in_current_month + 1):
+		if shift > 0:
+			new_month += 1
+			if new_month > 12:
+				new_month = 1
+				new_year += 1
+			new_day -= days_in_current_month
+			days_in_current_month = Date._days_in_month(new_month, new_year)
+		else:
+			new_month -= 1
+			if new_month < 1:
+				new_month = 12
+				new_year -= 1
+			days_in_current_month = Date._days_in_month(new_month, new_year)
+			new_day += days_in_current_month
+
+	day = new_day
+	month = new_month
+	year = new_year
+	weekday = wrapi(weekday + shift, 1, 8)
+
+	return self
 
 
 func format(format_string: String) -> String:
@@ -103,7 +135,7 @@ func format(format_string: String) -> String:
 	for unit in _regex.search_all(format_string):
 		var string := unit.get_string()
 		if string in _tokens:
-			output += _tokens[string]
+			output += _tokens[string].call()
 		else:
 			output += string
 
