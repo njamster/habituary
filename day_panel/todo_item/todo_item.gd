@@ -2,15 +2,21 @@ extends HBoxContainer
 
 @export var text := "":
 	set(value):
+		var old_value = text
 		text = value
 		if is_inside_tree():
 			%ToDo.text = text
+			if old_value != value:
+				SaveTimer.start()
 
 @export var done := false:
 	set(value):
+		var old_value = done
 		done = value
 		if is_inside_tree():
 			$CheckBox.button_pressed = done
+			if old_value != value:
+				SaveTimer.start()
 
 var previous_focus
 
@@ -33,7 +39,7 @@ func _on_focus_exited() -> void:
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("toggle_item", false, true):
-		$CheckBox.button_pressed = not $CheckBox.button_pressed
+		self.done = not self.done
 
 
 func edit(side := 0) -> void:
@@ -51,24 +57,27 @@ func edit(side := 0) -> void:
 
 
 func _on_edit_text_submitted(new_text: String) -> void:
+	self.text = new_text
+
 	if new_text:
-		text = new_text
-		%Edit.hide()
-		%ToDo.show()
-		grab_focus()
-	elif previous_focus != null and previous_focus != self:
-		previous_focus.grab_focus()
 		previous_focus = null
-		queue_free()
+		grab_focus()
+	else:
+		%Edit.release_focus()
 
 
 func _on_edit_focus_exited() -> void:
-	if text:
-		_on_edit_text_submitted(text)
-	elif previous_focus != null and previous_focus != self:
+	%Edit.hide()
+
+	if previous_focus:
 		previous_focus.grab_focus()
 		previous_focus = null
-		queue_free()
+
+	if self.text:
+		%ToDo.show()
 	else:
 		queue_free()
 
+
+func _on_edit_text_changed(_new_text: String) -> void:
+	SaveTimer.start()

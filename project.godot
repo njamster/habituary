@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 Settings="*res://autoloads/settings.gd"
+SaveTimer="*res://autoloads/save_timer.gd"
 
 [filesystem]
 

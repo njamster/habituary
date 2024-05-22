@@ -8,7 +8,7 @@ var current_day : Date:
 		if is_inside_tree():
 			DATE.text = current_day.format(Settings.date_format_show)
 			for child in ITEMS.get_children():
-				child.queue_free()
+				child.free()
 			load_day(current_day)
 
 @onready var DATE := %Date
@@ -16,7 +16,30 @@ var current_day : Date:
 
 
 func _ready() -> void:
-	current_day =  Date.new(Time.get_date_dict_from_system())
+	current_day = Date.new(Time.get_date_dict_from_system())
+	SaveTimer.timeout.connect(save_current_day)
+
+
+func _notification(what):
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		if not SaveTimer.is_stopped():
+			SaveTimer.stop()
+			save_current_day()
+		get_tree().quit()
+
+
+func save_current_day() -> void:
+	var todo_list = ""
+	for todo_item in ITEMS.get_children():
+		if todo_item.done:
+			todo_list += "- [x] "
+		else:
+			todo_list += "- [ ] "
+		todo_list += todo_item.text + "\n"
+
+	var file_name := current_day.format(Settings.date_format_save) + ".txt"
+	var file := FileAccess.open(Settings.store_path + "/" + file_name, FileAccess.WRITE)
+	file.store_string(todo_list)
 
 
 func load_day(day: Date) -> void:
@@ -61,9 +84,11 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("shift_item_up", false, true):
 		if focused_item:
 			ITEMS.move_child(focused_item, clamp(focused_item.get_index() - 1, 0, ITEMS.get_child_count()))
+		SaveTimer.start()
 	elif event.is_action_pressed("shift_item_down", false, true):
 		if focused_item:
 			ITEMS.move_child(focused_item, clamp(focused_item.get_index() + 1, 0, ITEMS.get_child_count()))
+		SaveTimer.start()
 	elif event.is_action_pressed("move_up", false, true):
 		if focused_item:
 			var previous_item := focused_item.find_valid_focus_neighbor(SIDE_TOP)
@@ -81,8 +106,14 @@ func _unhandled_input(event: InputEvent) -> void:
 		if ITEMS.get_child_count():
 			ITEMS.get_child(-1).grab_focus()
 	elif event.is_action_pressed("previous_day", false, true):
+		if not SaveTimer.is_stopped():
+			SaveTimer.stop()
+			save_current_day()
 		_on_prev_day_pressed()
 	elif event.is_action_pressed("next_day", false, true):
+		if not SaveTimer.is_stopped():
+			SaveTimer.stop()
+			save_current_day()
 		_on_next_day_pressed()
 	elif event.is_action_pressed("replace_item_text", false, true):
 		if focused_item:
@@ -102,6 +133,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		else:
 			ITEMS.get_child(focused_item.get_index() - 1).grab_focus()
 		focused_item.queue_free()
+		SaveTimer.start()
 
 
 func _on_prev_day_pressed() -> void:
