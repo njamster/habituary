@@ -58,6 +58,12 @@ func _unhandled_input(event: InputEvent) -> void:
 			if event.is_action_pressed("add_item_above", false, true):
 				ITEMS.move_child(todo_item, max(focused_item.get_index(), 0))
 		todo_item.edit()
+	elif event.is_action_pressed("shift_item_up", false, true):
+		if focused_item:
+			ITEMS.move_child(focused_item, clamp(focused_item.get_index() - 1, 0, ITEMS.get_child_count()))
+	elif event.is_action_pressed("shift_item_down", false, true):
+		if focused_item:
+			ITEMS.move_child(focused_item, clamp(focused_item.get_index() + 1, 0, ITEMS.get_child_count()))
 	elif event.is_action_pressed("move_up", false, true):
 		if focused_item:
 			var previous_item := focused_item.find_valid_focus_neighbor(SIDE_TOP)
@@ -68,16 +74,25 @@ func _unhandled_input(event: InputEvent) -> void:
 			var next_item := focused_item.find_valid_focus_neighbor(SIDE_BOTTOM)
 			if next_item:
 				next_item.grab_focus()
+	elif event.is_action_pressed("select_first_item", false, true):
+		if ITEMS.get_child_count():
+			ITEMS.get_child(0).grab_focus()
+	elif event.is_action_pressed("select_last_item", false, true):
+		if ITEMS.get_child_count():
+			ITEMS.get_child(-1).grab_focus()
 	elif event.is_action_pressed("previous_day", false, true):
 		_on_prev_day_pressed()
 	elif event.is_action_pressed("next_day", false, true):
 		_on_next_day_pressed()
-	elif event.is_action_pressed("edit_replace_item", false, true):
-		if focused_item:
-			focused_item.edit(true)
-	elif event.is_action_pressed("edit_append_item", false, true):
+	elif event.is_action_pressed("replace_item_text", false, true):
 		if focused_item:
 			focused_item.edit()
+	elif event.is_action_pressed("prepend_item_text", false, true):
+		if focused_item:
+			focused_item.edit(-1)
+	elif event.is_action_pressed("append_item_text", false, true):
+		if focused_item:
+			focused_item.edit(+1)
 	elif event.is_action_pressed("delete_item", false, true):
 		if not focused_item:
 			return

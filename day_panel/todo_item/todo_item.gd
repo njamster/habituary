@@ -36,13 +36,15 @@ func _on_gui_input(event: InputEvent) -> void:
 		$CheckBox.button_pressed = not $CheckBox.button_pressed
 
 
-func edit(select_all := false) -> void:
+func edit(side := 0) -> void:
 	%ToDo.hide()
 	%Edit.text = %ToDo.text
-	if select_all:
-		%Edit.select()
-	else:
+	if side < 0:
+		%Edit.caret_column = 0
+	elif side > 0:
 		%Edit.caret_column = %Edit.text.length()
+	else:
+		%Edit.select()
 	%Edit.show()
 	previous_focus = get_viewport().gui_get_focus_owner()
 	%Edit.grab_focus()
