@@ -106,14 +106,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		if ITEMS.get_child_count():
 			ITEMS.get_child(-1).grab_focus()
 	elif event.is_action_pressed("previous_day", false, true):
-		if not SaveTimer.is_stopped():
-			SaveTimer.stop()
-			save_current_day()
 		_on_prev_day_pressed()
 	elif event.is_action_pressed("next_day", false, true):
-		if not SaveTimer.is_stopped():
-			SaveTimer.stop()
-			save_current_day()
 		_on_next_day_pressed()
 	elif event.is_action_pressed("replace_item_text", false, true):
 		if focused_item:
@@ -137,8 +131,14 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_prev_day_pressed() -> void:
+	if not SaveTimer.is_stopped():
+		SaveTimer.stop()
+		save_current_day()
 	current_day = current_day.add_days(-1)
 
 
 func _on_next_day_pressed() -> void:
+	if not SaveTimer.is_stopped():
+		SaveTimer.stop()
+		save_current_day()
 	current_day = current_day.add_days(1)
