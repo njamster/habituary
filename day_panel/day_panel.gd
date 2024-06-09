@@ -38,8 +38,11 @@ func save_current_day() -> void:
 		todo_list += todo_item.text + "\n"
 
 	var file_name := current_day.format(Settings.date_format_save) + ".txt"
-	var file := FileAccess.open(Settings.store_path + "/" + file_name, FileAccess.WRITE)
-	file.store_string(todo_list)
+	if todo_list:
+		var file := FileAccess.open(Settings.store_path + "/" + file_name, FileAccess.WRITE)
+		file.store_string(todo_list)
+	else:
+		DirAccess.remove_absolute(Settings.store_path + "/" + file_name)
 
 
 func load_day(day: Date) -> void:
