@@ -64,7 +64,7 @@ func _init(dict: Dictionary) -> void:
 	assert(dict.day in range(1, Date._days_in_month(dict.month, dict.year)))
 
 	assert(dict.weekday is int)
-	assert(dict.weekday in range(1, 8))
+	assert(dict.weekday in range(0, 7))
 	#endregion
 
 	year = dict.year
