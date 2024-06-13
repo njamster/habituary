@@ -1,115 +1,59 @@
-[gd_scene load_steps=4 format=3 uid="uid://cmdy32v105kli"]
+[gd_scene load_steps=3 format=3 uid="uid://cmdy32v105kli"]
 
-[ext_resource type="Script" path="res://day_panel/day_panel.gd" id="1_s0rnw"]
+[ext_resource type="Script" path="res://day_panel/day_panel.gd" id="1_bfa8x"]
+[ext_resource type="Texture2D" uid="uid://mvrb0206nsy5" path="res://day_panel/images/line.png" id="1_guso1"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xewrq"]
-bg_color = Color(0.4, 0.4, 0.4, 1)
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_axcjp"]
-bg_color = Color(0.533333, 0.533333, 0.533333, 1)
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
-
-[node name="DayPanel" type="Control"]
-layout_mode = 3
+[node name="DayPanel" type="VBoxContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_s0rnw")
-
-[node name="OuterMargin" type="MarginContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
-
-[node name="Panel" type="Panel" parent="OuterMargin"]
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_xewrq")
-
-[node name="InnerMargin" type="MarginContainer" parent="OuterMargin"]
-layout_mode = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
-
-[node name="VBox" type="VBoxContainer" parent="OuterMargin/InnerMargin"]
-layout_mode = 2
-theme_override_constants/separation = 16
-
-[node name="HBox" type="HBoxContainer" parent="OuterMargin/InnerMargin/VBox"]
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_constants/separation = 16
-
-[node name="PrevDay" type="Button" parent="OuterMargin/InnerMargin/VBox/HBox"]
-custom_minimum_size = Vector2(48, 48)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-focus_mode = 0
-text = "<"
-
-[node name="Date" type="Label" parent="OuterMargin/InnerMargin/VBox/HBox"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(600, 0)
-layout_mode = 2
-theme_override_font_sizes/font_size = 32
-text = "Sat, 20th May 2024"
-horizontal_alignment = 1
-
-[node name="NextDay" type="Button" parent="OuterMargin/InnerMargin/VBox/HBox"]
-custom_minimum_size = Vector2(48, 48)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-focus_mode = 0
-text = ">"
-
-[node name="Scrollable" type="ScrollContainer" parent="OuterMargin/InnerMargin/VBox"]
-layout_mode = 2
-size_flags_vertical = 3
-follow_focus = true
-horizontal_scroll_mode = 0
-
-[node name="Panel" type="Panel" parent="OuterMargin/InnerMargin/VBox/Scrollable"]
-layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_axcjp")
+theme_override_constants/separation = 16
+script = ExtResource("1_bfa8x")
 
-[node name="InnerMargin" type="MarginContainer" parent="OuterMargin/InnerMargin/VBox/Scrollable/Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
+[node name="Heading" type="VBoxContainer" parent="."]
+layout_mode = 2
 
-[node name="Items" type="VBoxContainer" parent="OuterMargin/InnerMargin/VBox/Scrollable/Panel/InnerMargin"]
+[node name="Date" type="Label" parent="Heading"]
 unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.847059, 0.870588, 0.913725, 1)
+theme_override_font_sizes/font_size = 12
+text = "13 Jun 2024
+"
+uppercase = true
+
+[node name="Day" type="Label" parent="Heading"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.898039, 0.913725, 0.941176, 1)
+theme_override_font_sizes/font_size = 24
+text = "Thursday"
+uppercase = true
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="InnerMargin" type="MarginContainer" parent="ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[connection signal="pressed" from="OuterMargin/InnerMargin/VBox/HBox/PrevDay" to="." method="_on_prev_day_pressed"]
-[connection signal="pressed" from="OuterMargin/InnerMargin/VBox/HBox/NextDay" to="." method="_on_next_day_pressed"]
+[node name="Lines" type="TextureRect" parent="ScrollContainer/InnerMargin"]
+self_modulate = Color(0.298039, 0.337255, 0.415686, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("1_guso1")
+stretch_mode = 1
+
+[node name="Items" type="VBoxContainer" parent="ScrollContainer/InnerMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 0

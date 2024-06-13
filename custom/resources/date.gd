@@ -98,7 +98,8 @@ func _init(dict: Dictionary) -> void:
 
 
 func add_days(shift: int) -> Date:
-	assert(shift != 0)
+	if shift == 0:
+		return self
 
 	var new_day = day + shift
 	var new_month = month
@@ -121,12 +122,12 @@ func add_days(shift: int) -> Date:
 			days_in_current_month = Date._days_in_month(new_month, new_year)
 			new_day += days_in_current_month
 
-	day = new_day
-	month = new_month
-	year = new_year
-	weekday = wrapi(weekday + shift, 1, 8)
-
-	return self
+	return Date.new({
+		"year": new_year,
+		"month": new_month,
+		"day": new_day,
+		"weekday": wrapi(weekday + shift, 0, 7)
+	})
 
 
 func format(format_string: String) -> String:
@@ -140,6 +141,20 @@ func format(format_string: String) -> String:
 			output += string
 
 	return output
+
+
+func is_today() -> bool:
+	var date_dict := Time.get_date_dict_from_system()
+	return date_dict.year == self.year and \
+		date_dict.month == self.month and \
+		date_dict.day == self.day
+
+
+func is_past() -> bool:
+	var date_dict := Time.get_date_dict_from_system()
+	return date_dict.year > self.year or \
+		date_dict.year == self.year and date_dict.month > self.month or \
+		date_dict.year == self.year and date_dict.month == self.month and date_dict.day > self.day
 
 
 static func _to_ordinal(n: int) -> String:
