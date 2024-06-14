@@ -15,8 +15,7 @@ var day : Date:
 func _ready() -> void:
 	day = day
 
-#const TODO_ITEM := preload("res://day_panel/todo_item/todo_item.tscn")
-#
+
 #var current_day : Date:
 	#set(value):
 		#current_day = value
