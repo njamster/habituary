@@ -18,3 +18,13 @@ var store_path:
 			return path
 
 var save_delay := 6.0 # seconds
+
+var view_mode := 7:
+	set(value):
+		view_mode = value
+		EventBus.view_mode_changed.emit(view_mode)
+
+var current_day := Date.new(Time.get_date_dict_from_system()):
+	set(value):
+		current_day = value
+		EventBus.current_day_changed.emit(current_day)

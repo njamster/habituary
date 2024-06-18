@@ -1,0 +1,64 @@
+[gd_scene load_steps=6 format=3 uid="uid://dqwr8vm1ub4sx"]
+
+[ext_resource type="Script" path="res://main_window/navigation_bar/navigation_bar.gd" id="1_anev8"]
+[ext_resource type="Texture2D" uid="uid://xq8m4hv7ik13" path="res://main_window/navigation_bar/images/double_arrow_left.svg" id="2_mx3lh"]
+[ext_resource type="Texture2D" uid="uid://dvepcwo8suqqo" path="res://main_window/navigation_bar/images/arrow_left.svg" id="3_vifhk"]
+[ext_resource type="Texture2D" uid="uid://chktoo07i7nmo" path="res://main_window/navigation_bar/images/arrow_right.svg" id="4_861ef"]
+[ext_resource type="Texture2D" uid="uid://dvcq5xi5c2om1" path="res://main_window/navigation_bar/images/double_arrow_right.svg" id="5_bvc8f"]
+
+[node name="NavigationBar" type="HBoxContainer"]
+size_flags_horizontal = 10
+theme_override_constants/separation = 6
+alignment = 1
+script = ExtResource("1_anev8")
+
+[node name="PreviousWeek" type="Button" parent="."]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 12
+icon = ExtResource("2_mx3lh")
+icon_alignment = 1
+
+[node name="PreviousDay" type="Button" parent="."]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 12
+icon = ExtResource("3_vifhk")
+icon_alignment = 1
+
+[node name="Today" type="Button" parent="."]
+custom_minimum_size = Vector2(64, 32)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 12
+text = "Today"
+icon_alignment = 1
+
+[node name="NextDay" type="Button" parent="."]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 12
+icon = ExtResource("4_861ef")
+icon_alignment = 1
+
+[node name="NextWeek" type="Button" parent="."]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 12
+icon = ExtResource("5_bvc8f")
+icon_alignment = 1
+
+[connection signal="pressed" from="PreviousWeek" to="." method="_on_previous_week_pressed"]
+[connection signal="pressed" from="PreviousDay" to="." method="_on_previous_day_pressed"]
+[connection signal="pressed" from="Today" to="." method="_on_today_pressed"]
+[connection signal="pressed" from="NextDay" to="." method="_on_next_day_pressed"]
+[connection signal="pressed" from="NextWeek" to="." method="_on_next_week_pressed"]

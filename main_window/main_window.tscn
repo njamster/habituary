@@ -1,10 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://bdu13hjjrxtck"]
+[gd_scene load_steps=4 format=3 uid="uid://bdu13hjjrxtck"]
 
-[ext_resource type="Texture2D" uid="uid://chktoo07i7nmo" path="res://main_window/images/arrow_right.svg" id="1_d23nu"]
-[ext_resource type="Script" path="res://main_window/main_window.gd" id="1_rgdse"]
-[ext_resource type="Texture2D" uid="uid://xq8m4hv7ik13" path="res://main_window/images/double_arrow_left.svg" id="1_wnesc"]
-[ext_resource type="Texture2D" uid="uid://dvcq5xi5c2om1" path="res://main_window/images/double_arrow_right.svg" id="2_h3dt3"]
-[ext_resource type="Texture2D" uid="uid://dvepcwo8suqqo" path="res://main_window/images/arrow_left.svg" id="2_uemba"]
+[ext_resource type="PackedScene" uid="uid://dqwr8vm1ub4sx" path="res://main_window/navigation_bar/navigation_bar.tscn" id="2_7x52i"]
+[ext_resource type="PackedScene" uid="uid://dgxug4yl0qg3x" path="res://main_window/view_mode_widget/view_mode_widget.tscn" id="2_qblvu"]
+[ext_resource type="PackedScene" uid="uid://esddcur57ihc" path="res://main_window/list_view/list_view.tscn" id="7_ajas6"]
 
 [node name="MainWindow" type="ColorRect"]
 anchors_preset = 15
@@ -13,7 +11,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.180392, 0.203922, 0.25098, 1)
-script = ExtResource("1_rgdse")
 
 [node name="OuterMargin" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -31,118 +28,14 @@ theme_override_constants/margin_bottom = 16
 layout_mode = 2
 theme_override_constants/separation = 24
 
-[node name="HBox" type="HBoxContainer" parent="OuterMargin/VBox"]
+[node name="TopBar" type="HBoxContainer" parent="OuterMargin/VBox"]
 layout_mode = 2
 
-[node name="Days" type="HBoxContainer" parent="OuterMargin/VBox/HBox"]
+[node name="ViewModeWidget" parent="OuterMargin/VBox/TopBar" instance=ExtResource("2_qblvu")]
 layout_mode = 2
-theme_override_constants/separation = 8
-alignment = 1
 
-[node name="Label" type="Label" parent="OuterMargin/VBox/HBox/Days"]
+[node name="NavigationBar" parent="OuterMargin/VBox/TopBar" instance=ExtResource("2_7x52i")]
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
-text = "Days:"
 
-[node name="Buttons" type="HBoxContainer" parent="OuterMargin/VBox/HBox/Days"]
-unique_name_in_owner = true
+[node name="ListView" parent="OuterMargin/VBox" instance=ExtResource("7_ajas6")]
 layout_mode = 2
-theme_override_constants/separation = 4
-
-[node name="1" type="Button" parent="OuterMargin/VBox/HBox/Days/Buttons"]
-custom_minimum_size = Vector2(32, 32)
-layout_mode = 2
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 12
-text = "1"
-flat = true
-
-[node name="3" type="Button" parent="OuterMargin/VBox/HBox/Days/Buttons"]
-custom_minimum_size = Vector2(32, 32)
-layout_mode = 2
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 12
-text = "3"
-flat = true
-
-[node name="5" type="Button" parent="OuterMargin/VBox/HBox/Days/Buttons"]
-custom_minimum_size = Vector2(32, 32)
-layout_mode = 2
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 12
-text = "5"
-flat = true
-
-[node name="7" type="Button" parent="OuterMargin/VBox/HBox/Days/Buttons"]
-custom_minimum_size = Vector2(32, 32)
-layout_mode = 2
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 12
-text = "7"
-
-[node name="Navigation" type="HBoxContainer" parent="OuterMargin/VBox/HBox"]
-layout_mode = 2
-size_flags_horizontal = 10
-theme_override_constants/separation = 6
-alignment = 1
-
-[node name="PrevWeek" type="Button" parent="OuterMargin/VBox/HBox/Navigation"]
-custom_minimum_size = Vector2(32, 32)
-layout_mode = 2
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 12
-icon = ExtResource("1_wnesc")
-icon_alignment = 1
-
-[node name="PrevDay" type="Button" parent="OuterMargin/VBox/HBox/Navigation"]
-custom_minimum_size = Vector2(32, 32)
-layout_mode = 2
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 12
-icon = ExtResource("2_uemba")
-icon_alignment = 1
-
-[node name="Today" type="Button" parent="OuterMargin/VBox/HBox/Navigation"]
-custom_minimum_size = Vector2(64, 32)
-layout_mode = 2
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 12
-text = "Today"
-icon_alignment = 1
-
-[node name="NextDay" type="Button" parent="OuterMargin/VBox/HBox/Navigation"]
-custom_minimum_size = Vector2(32, 32)
-layout_mode = 2
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 12
-icon = ExtResource("1_d23nu")
-icon_alignment = 1
-
-[node name="NextWeek" type="Button" parent="OuterMargin/VBox/HBox/Navigation"]
-custom_minimum_size = Vector2(32, 32)
-layout_mode = 2
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 12
-icon = ExtResource("2_h3dt3")
-icon_alignment = 1
-
-[node name="Lists" type="HBoxContainer" parent="OuterMargin/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/separation = 32
-
-[connection signal="pressed" from="OuterMargin/VBox/HBox/Navigation/PrevWeek" to="." method="_on_prev_week_pressed"]
-[connection signal="pressed" from="OuterMargin/VBox/HBox/Navigation/PrevDay" to="." method="_on_prev_day_pressed"]
-[connection signal="pressed" from="OuterMargin/VBox/HBox/Navigation/Today" to="." method="_on_today_pressed"]
-[connection signal="pressed" from="OuterMargin/VBox/HBox/Navigation/NextDay" to="." method="_on_next_day_pressed"]
-[connection signal="pressed" from="OuterMargin/VBox/HBox/Navigation/NextWeek" to="." method="_on_next_week_pressed"]

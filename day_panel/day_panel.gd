@@ -1,19 +1,19 @@
 extends Control
 
-var day : Date:
+var date : Date:
 	set(value):
-		day = value
+		date = value
 		if is_inside_tree():
-			%Date.text = day.format("DD MMM YYYY")
-			%Day.text = day.format("dddd")
-			if day.is_past():
+			%Date.text = date.format("DD MMM YYYY")
+			%Day.text = date.format("dddd")
+			if date.is_past():
 				modulate.a = 0.4
-			elif day.is_today():
+			elif date.is_today():
 				%Day.add_theme_color_override("font_color", Color("88c0d0"))
 
 
 func _ready() -> void:
-	day = day
+	date = date
 
 
 #var current_day : Date:

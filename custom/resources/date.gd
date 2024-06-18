@@ -61,7 +61,7 @@ func _init(dict: Dictionary) -> void:
 	assert(dict.month in range(1, 13))
 
 	assert(dict.day is int)
-	assert(dict.day in range(1, Date._days_in_month(dict.month, dict.year)))
+	assert(dict.day in range(1, Date._days_in_month(dict.month, dict.year) + 1))
 
 	assert(dict.weekday is int)
 	assert(dict.weekday in range(0, 7))
@@ -128,6 +128,21 @@ func add_days(shift: int) -> Date:
 		"day": new_day,
 		"weekday": wrapi(weekday + shift, 0, 7)
 	})
+
+
+func as_dict() -> Dictionary:
+	return {
+		"year": year,
+		"month": month,
+		"day": day,
+		"weekday": weekday
+	}
+
+
+func day_difference(to : Date) -> int:
+	var t1 := Time.get_unix_time_from_datetime_dict(self.as_dict())
+	var t2 := Time.get_unix_time_from_datetime_dict(to.as_dict())
+	return (t1-t2) / 60.0 / 60.0 / 24.0
 
 
 func format(format_string: String) -> String:

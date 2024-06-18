@@ -1,0 +1,50 @@
+[gd_scene load_steps=2 format=3 uid="uid://dgxug4yl0qg3x"]
+
+[ext_resource type="Script" path="res://main_window/view_mode_widget/view_mode_widget.gd" id="1_1o2da"]
+
+[node name="ViewModeWidget" type="HBoxContainer"]
+offset_right = 180.0
+offset_bottom = 32.0
+theme_override_constants/separation = 8
+script = ExtResource("1_1o2da")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Days:"
+
+[node name="Modes" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="SingleDay" type="Button" parent="Modes"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 12
+text = "1"
+
+[node name="ThreeDays" type="Button" parent="Modes"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 12
+text = "3"
+
+[node name="FiveDays" type="Button" parent="Modes"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 12
+text = "5"
+
+[node name="SevenDays" type="Button" parent="Modes"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 12
+text = "7"
