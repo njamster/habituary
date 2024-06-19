@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://v8u8oswwmlf3"]
 
-[ext_resource type="Script" path="res://day_panel/todo_item/panel.gd" id="1_cc8dt"]
-[ext_resource type="Script" path="res://day_panel/todo_item/todo_item.gd" id="1_k5aju"]
+[ext_resource type="Script" path="res://main_window/list_view/day_panel/todo_item/panel.gd" id="1_cc8dt"]
+[ext_resource type="Script" path="res://main_window/list_view/day_panel/todo_item/todo_item.gd" id="1_k5aju"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_omxiy"]
 content_margin_left = 8.0
@@ -25,7 +25,7 @@ custom_minimum_size = Vector2(0, 40)
 offset_top = 3.0
 offset_right = 1920.0
 offset_bottom = 1077.0
-mouse_filter = 0
+mouse_filter = 2
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_bottom = 7
 script = ExtResource("1_k5aju")

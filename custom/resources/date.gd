@@ -1,3 +1,4 @@
+@tool
 extends Resource
 class_name Date
 
@@ -42,16 +43,30 @@ const _DAYS_IN_MONTH : Array[int] = [
 	31   # December
 ]
 
-var year : int
-var month : int
-var day : int
-var weekday : int
+@export var year : int = 1970:
+	set(value):
+		year = value
+		day = day # re-trigger day-setter
+@export var month : int = 1:
+	set(value):
+		month = clamp(value, 1, 12)
+		day = day # re-trigger day-setter
+@export var day : int = 1:
+	set(value):
+		day = clamp(value, 1, Date._days_in_month(month, year))
+		weekday = weekday # re-trigger weekday-setter
+		emit_changed()
+
+var weekday : int = 3:
+	set(value):
+		var unix_time = Time.get_unix_time_from_datetime_dict(self.as_dict())
+		weekday = Time.get_date_dict_from_unix_time(unix_time).weekday
 
 var _tokens := {}
 var _regex := RegEx.new()
 
 
-func _init(dict: Dictionary) -> void:
+func _init(dict := Time.get_date_dict_from_system()) -> void:
 	#region ensure dict is a valid date dict
 	assert(dict.keys() == ["year", "month", "day", "weekday"])
 
@@ -139,10 +154,10 @@ func as_dict() -> Dictionary:
 	}
 
 
-func day_difference(to : Date) -> int:
+func day_difference_to(date : Date) -> int:
 	var t1 := Time.get_unix_time_from_datetime_dict(self.as_dict())
-	var t2 := Time.get_unix_time_from_datetime_dict(to.as_dict())
-	return (t1-t2) / 60.0 / 60.0 / 24.0
+	var t2 := Time.get_unix_time_from_datetime_dict(date.as_dict())
+	return floor(t1-t2) / 60 / 60 / 24
 
 
 func format(format_string: String) -> String:
@@ -156,20 +171,6 @@ func format(format_string: String) -> String:
 			output += string
 
 	return output
-
-
-func is_today() -> bool:
-	var date_dict := Time.get_date_dict_from_system()
-	return date_dict.year == self.year and \
-		date_dict.month == self.month and \
-		date_dict.day == self.day
-
-
-func is_past() -> bool:
-	var date_dict := Time.get_date_dict_from_system()
-	return date_dict.year > self.year or \
-		date_dict.year == self.year and date_dict.month > self.month or \
-		date_dict.year == self.year and date_dict.month == self.month and date_dict.day > self.day
 
 
 static func _to_ordinal(n: int) -> String:

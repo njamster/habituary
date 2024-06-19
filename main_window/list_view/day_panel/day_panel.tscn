@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://cmdy32v105kli"]
 
-[ext_resource type="Script" path="res://day_panel/day_panel.gd" id="1_bfa8x"]
-[ext_resource type="Texture2D" uid="uid://mvrb0206nsy5" path="res://day_panel/images/line.png" id="1_guso1"]
-[ext_resource type="Script" path="res://day_panel/items.gd" id="3_mdu44"]
+[ext_resource type="Script" path="res://main_window/list_view/day_panel/day_panel.gd" id="1_a2phy"]
+[ext_resource type="Texture2D" uid="uid://mvrb0206nsy5" path="res://main_window/list_view/day_panel/images/line.png" id="2_ms5su"]
+[ext_resource type="Script" path="res://main_window/list_view/day_panel/todo_list.gd" id="3_3veug"]
 
 [node name="DayPanel" type="VBoxContainer"]
 anchors_preset = 15
@@ -13,26 +13,24 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 16
-script = ExtResource("1_bfa8x")
+script = ExtResource("1_a2phy")
 
-[node name="Heading" type="VBoxContainer" parent="."]
+[node name="Header" type="VBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="Date" type="Label" parent="Heading"]
+[node name="Date" type="Label" parent="Header"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.847059, 0.870588, 0.913725, 1)
 theme_override_font_sizes/font_size = 12
-text = "13 Jun 2024
-"
+text = "DD MMM YYYY"
 uppercase = true
 
-[node name="Day" type="Label" parent="Heading"]
+[node name="Weekday" type="Label" parent="Header"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.898039, 0.913725, 0.941176, 1)
 theme_override_font_sizes/font_size = 24
-text = "Thursday"
+text = "WEEKDAY"
 uppercase = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
@@ -43,23 +41,21 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-mouse_default_cursor_shape = 1
 
 [node name="Lines" type="TextureRect" parent="ScrollContainer/List"]
 self_modulate = Color(0.298039, 0.337255, 0.415686, 1)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("1_guso1")
+texture = ExtResource("2_ms5su")
 stretch_mode = 1
 
-[node name="Items" type="VBoxContainer" parent="ScrollContainer/List"]
-unique_name_in_owner = true
+[node name="TodoList" type="VBoxContainer" parent="ScrollContainer/List"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_default_cursor_shape = 3
 theme_override_constants/separation = 0
-script = ExtResource("3_mdu44")
+script = ExtResource("3_3veug")
 
-[connection signal="gui_input" from="ScrollContainer/List/Items" to="ScrollContainer/List/Items" method="_on_gui_input"]
+[connection signal="gui_input" from="ScrollContainer/List/TodoList" to="ScrollContainer/List/TodoList" method="_on_gui_input"]

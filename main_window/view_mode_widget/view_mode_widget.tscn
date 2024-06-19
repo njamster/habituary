@@ -1,6 +1,34 @@
-[gd_scene load_steps=2 format=3 uid="uid://dgxug4yl0qg3x"]
+[gd_scene load_steps=10 format=3 uid="uid://dgxug4yl0qg3x"]
 
 [ext_resource type="Script" path="res://main_window/view_mode_widget/view_mode_widget.gd" id="1_1o2da"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_dvngi"]
+action = &"view_mode_1"
+pressed = true
+
+[sub_resource type="Shortcut" id="Shortcut_v5qej"]
+events = [SubResource("InputEventAction_dvngi")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_jopkq"]
+action = &"view_mode_2"
+pressed = true
+
+[sub_resource type="Shortcut" id="Shortcut_1x0d2"]
+events = [SubResource("InputEventAction_jopkq")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_6fgru"]
+action = &"view_mode_3"
+pressed = true
+
+[sub_resource type="Shortcut" id="Shortcut_gxdox"]
+events = [SubResource("InputEventAction_6fgru")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_uckjy"]
+action = &"view_mode_4"
+pressed = true
+
+[sub_resource type="Shortcut" id="Shortcut_8cdb0"]
+events = [SubResource("InputEventAction_uckjy")]
 
 [node name="ViewModeWidget" type="HBoxContainer"]
 offset_right = 180.0
@@ -23,6 +51,8 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
+shortcut = SubResource("Shortcut_v5qej")
+shortcut_in_tooltip = false
 text = "1"
 
 [node name="ThreeDays" type="Button" parent="Modes"]
@@ -31,6 +61,8 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
+shortcut = SubResource("Shortcut_1x0d2")
+shortcut_in_tooltip = false
 text = "3"
 
 [node name="FiveDays" type="Button" parent="Modes"]
@@ -39,6 +71,8 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
+shortcut = SubResource("Shortcut_gxdox")
+shortcut_in_tooltip = false
 text = "5"
 
 [node name="SevenDays" type="Button" parent="Modes"]
@@ -47,4 +81,6 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
+shortcut = SubResource("Shortcut_8cdb0")
+shortcut_in_tooltip = false
 text = "7"

@@ -10,7 +10,7 @@ func _on_previous_day_pressed() -> void:
 
 
 func _on_today_pressed() -> void:
-	Settings.current_day = Date.new(Time.get_date_dict_from_system())
+	Settings.current_day = DayTimer.today
 
 
 func _on_next_day_pressed() -> void:

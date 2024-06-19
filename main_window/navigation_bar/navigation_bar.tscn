@@ -1,10 +1,45 @@
-[gd_scene load_steps=6 format=3 uid="uid://dqwr8vm1ub4sx"]
+[gd_scene load_steps=16 format=3 uid="uid://dqwr8vm1ub4sx"]
 
 [ext_resource type="Script" path="res://main_window/navigation_bar/navigation_bar.gd" id="1_anev8"]
 [ext_resource type="Texture2D" uid="uid://xq8m4hv7ik13" path="res://main_window/navigation_bar/images/double_arrow_left.svg" id="2_mx3lh"]
 [ext_resource type="Texture2D" uid="uid://dvepcwo8suqqo" path="res://main_window/navigation_bar/images/arrow_left.svg" id="3_vifhk"]
 [ext_resource type="Texture2D" uid="uid://chktoo07i7nmo" path="res://main_window/navigation_bar/images/arrow_right.svg" id="4_861ef"]
 [ext_resource type="Texture2D" uid="uid://dvcq5xi5c2om1" path="res://main_window/navigation_bar/images/double_arrow_right.svg" id="5_bvc8f"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_iu054"]
+action = &"previous_week"
+pressed = true
+
+[sub_resource type="Shortcut" id="Shortcut_dnw27"]
+events = [SubResource("InputEventAction_iu054")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_s5m28"]
+action = &"previous_day"
+pressed = true
+
+[sub_resource type="Shortcut" id="Shortcut_riety"]
+events = [SubResource("InputEventAction_s5m28")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_sws3i"]
+action = &"today"
+pressed = true
+
+[sub_resource type="Shortcut" id="Shortcut_xkvaw"]
+events = [SubResource("InputEventAction_sws3i")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_45ilj"]
+action = &"next_day"
+pressed = true
+
+[sub_resource type="Shortcut" id="Shortcut_mppl7"]
+events = [SubResource("InputEventAction_45ilj")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_fy7jw"]
+action = &"next_week"
+pressed = true
+
+[sub_resource type="Shortcut" id="Shortcut_nmci6"]
+events = [SubResource("InputEventAction_fy7jw")]
 
 [node name="NavigationBar" type="HBoxContainer"]
 size_flags_horizontal = 10
@@ -18,6 +53,8 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
+shortcut = SubResource("Shortcut_dnw27")
+shortcut_in_tooltip = false
 icon = ExtResource("2_mx3lh")
 icon_alignment = 1
 
@@ -27,6 +64,8 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
+shortcut = SubResource("Shortcut_riety")
+shortcut_in_tooltip = false
 icon = ExtResource("3_vifhk")
 icon_alignment = 1
 
@@ -36,6 +75,8 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
+shortcut = SubResource("Shortcut_xkvaw")
+shortcut_in_tooltip = false
 text = "Today"
 icon_alignment = 1
 
@@ -45,6 +86,8 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
+shortcut = SubResource("Shortcut_mppl7")
+shortcut_in_tooltip = false
 icon = ExtResource("4_861ef")
 icon_alignment = 1
 
@@ -54,6 +97,7 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
+shortcut = SubResource("Shortcut_nmci6")
 icon = ExtResource("5_bvc8f")
 icon_alignment = 1
 
