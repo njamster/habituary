@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://dw8mvf72vw7qk"]
+
+[ext_resource type="Script" path="res://main_window/list_view/day_panel/todo_list/todo_list.gd" id="1_06eaj"]
+[ext_resource type="Texture2D" uid="uid://mvrb0206nsy5" path="res://main_window/list_view/day_panel/images/line.png" id="1_cxvr8"]
+
+[node name="TodoList" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_default_cursor_shape = 3
+script = ExtResource("1_06eaj")
+
+[node name="Lines" type="TextureRect" parent="."]
+self_modulate = Color(0.298039, 0.337255, 0.415686, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("1_cxvr8")
+stretch_mode = 1
+
+[node name="VerticalPadding" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_bottom = 7
+
+[node name="Items" type="VBoxContainer" parent="VerticalPadding"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 13

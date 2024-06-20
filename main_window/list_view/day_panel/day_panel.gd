@@ -57,3 +57,24 @@ func _get_configuration_warnings() -> PackedStringArray:
 	if not date:
 		warnings.append("You must provide a date in order for this node to work!")
 	return warnings
+
+
+func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
+	return data.is_in_group("todo_item")
+
+
+func _drop_data(at_position: Vector2, data: Variant) -> void:
+	%TodoList._drop_data(at_position - $ScrollContainer.position, data)
+
+
+func _on_header_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_MASK_LEFT:
+		if event.pressed:
+			Settings.current_day = date
+			get_viewport().set_input_as_handled()
+
+
+func _on_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_MASK_LEFT:
+		if event.pressed:
+			%TodoList.add_todo(event.global_position)

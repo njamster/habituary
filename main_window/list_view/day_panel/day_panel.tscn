@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://cmdy32v105kli"]
+[gd_scene load_steps=3 format=3 uid="uid://cmdy32v105kli"]
 
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/day_panel.gd" id="1_a2phy"]
-[ext_resource type="Texture2D" uid="uid://mvrb0206nsy5" path="res://main_window/list_view/day_panel/images/line.png" id="2_ms5su"]
-[ext_resource type="Script" path="res://main_window/list_view/day_panel/todo_list.gd" id="3_3veug"]
+[ext_resource type="PackedScene" uid="uid://dw8mvf72vw7qk" path="res://main_window/list_view/day_panel/todo_list/todo_list.tscn" id="2_66ttt"]
 
 [node name="DayPanel" type="VBoxContainer"]
 anchors_preset = 15
@@ -12,11 +11,14 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_default_cursor_shape = 3
 theme_override_constants/separation = 16
 script = ExtResource("1_a2phy")
 
 [node name="Header" type="VBoxContainer" parent="."]
 layout_mode = 2
+size_flags_horizontal = 0
+mouse_default_cursor_shape = 2
 
 [node name="Date" type="Label" parent="Header"]
 unique_name_in_owner = true
@@ -36,26 +38,11 @@ uppercase = true
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 3
+follow_focus = true
 
-[node name="List" type="MarginContainer" parent="ScrollContainer"]
+[node name="TodoList" parent="ScrollContainer" instance=ExtResource("2_66ttt")]
+unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
 
-[node name="Lines" type="TextureRect" parent="ScrollContainer/List"]
-self_modulate = Color(0.298039, 0.337255, 0.415686, 1)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource("2_ms5su")
-stretch_mode = 1
-
-[node name="TodoList" type="VBoxContainer" parent="ScrollContainer/List"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-mouse_default_cursor_shape = 3
-theme_override_constants/separation = 0
-script = ExtResource("3_3veug")
-
-[connection signal="gui_input" from="ScrollContainer/List/TodoList" to="ScrollContainer/List/TodoList" method="_on_gui_input"]
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="gui_input" from="Header" to="." method="_on_header_gui_input"]

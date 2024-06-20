@@ -1,0 +1,47 @@
+[gd_scene load_steps=6 format=3 uid="uid://v8u8oswwmlf3"]
+
+[ext_resource type="Script" path="res://main_window/list_view/day_panel/todo_list/todo_item/todo_item.gd" id="2_6v2l5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_omxiy"]
+content_margin_left = 8.0
+content_margin_top = 2.0
+content_margin_right = 8.0
+content_margin_bottom = 2.0
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3h3so"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0pwns"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4lcjl"]
+
+[node name="ToDoItem" type="PanelContainer" groups=["todo_item"]]
+custom_minimum_size = Vector2(0, 27)
+offset_top = 6.0
+offset_right = 1920.0
+offset_bottom = 1067.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_omxiy")
+script = ExtResource("2_6v2l5")
+
+[node name="Label" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+text_overrun_behavior = 3
+
+[node name="Edit" type="LineEdit" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_3h3so")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_0pwns")
+theme_override_styles/read_only = SubResource("StyleBoxEmpty_4lcjl")
+context_menu_enabled = false
+caret_blink = true
+caret_blink_interval = 0.45
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="focus_exited" from="Edit" to="." method="_on_edit_focus_exited"]
+[connection signal="text_submitted" from="Edit" to="." method="_on_edit_text_submitted"]
