@@ -70,8 +70,8 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 func _on_header_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_MASK_LEFT:
 		if event.pressed:
-			Settings.current_day = date
 			get_viewport().set_input_as_handled()
+			Settings.current_day = date
 
 
 func _on_gui_input(event: InputEvent) -> void:
