@@ -2,16 +2,22 @@ extends PanelContainer
 
 
 func _init() -> void:
-	self_modulate = Color(randf(), randf(), randf())
+	self_modulate = Color(
+		randf_range(0.3, 0.7),
+		randf_range(0.3, 0.7),
+		randf_range(0.3, 0.7)
+	)
 
 
 func _ready() -> void:
 	%Edit.hide()
+	%CheckBox.hide()
 	%Label.show()
 
 
 func edit() -> void:
 	%Label.hide()
+	%CheckBox.hide()
 	%Edit.show()
 	%Edit.grab_focus()
 
@@ -57,3 +63,42 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 func _drop_data(at_position: Vector2, data: Variant) -> void:
 	# FIXME: avoid asumptions about the parent's of this node
 	get_node("../../..")._drop_data(position - Vector2.ONE, data)
+
+
+func _on_draw() -> void:
+	# reposition the checkbox
+	%CheckBox.global_position = global_position + Vector2(
+		-1 * (%CheckBox.size.x + 8),
+		0.5 * (size.y - %CheckBox.size.y)
+	)
+
+
+func _on_mouse_entered() -> void:
+	$FocusTimer.stop()
+	if not %Edit.visible:
+		%CheckBox.show()
+
+
+func _on_mouse_exited() -> void:
+	$FocusTimer.start()
+
+
+func _on_check_box_mouse_entered() -> void:
+	$FocusTimer.stop()
+
+
+func _on_check_box_mouse_exited() -> void:
+	$FocusTimer.start()
+
+
+func _on_focus_timer_timeout() -> void:
+	%CheckBox.hide()
+
+
+func _on_check_box_toggled(toggled_on: bool) -> void:
+	if toggled_on:
+		%Label.text = "[s]" + %Label.text + "[/s]"
+		$Label.self_modulate.a = 0.5
+	else:
+		$Label.text = $Label.text.replace("[s]", "").replace("[/s]", "")
+		$Label.self_modulate.a = 1.0
