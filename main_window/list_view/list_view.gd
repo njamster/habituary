@@ -39,7 +39,7 @@ func _shift_list_view(current_day : Date) -> void:
 			add_day_panel(abs(offset) - 1 - i, true)
 		elif offset > 0:
 			# add additional panel on the right
-			add_day_panel(Settings.view_mode - 1 - i)
+			add_day_panel(Settings.view_mode - offset + i)
 
 
 func add_day_panel(offset_from_current_day : int, push_front := false) -> void:
