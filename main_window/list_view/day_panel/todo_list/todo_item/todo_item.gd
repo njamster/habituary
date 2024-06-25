@@ -1,5 +1,14 @@
 extends PanelContainer
 
+@export var done := false:
+	set(value):
+		done = value
+		if is_inside_tree():
+			if done:
+				modulate.a = 0.3
+			else:
+				modulate.a = 1.0
+
 
 func _init() -> void:
 	self_modulate = Color(
@@ -11,13 +20,11 @@ func _init() -> void:
 
 func _ready() -> void:
 	%Edit.hide()
-	%CheckBox.hide()
 	%Label.show()
 
 
 func edit() -> void:
 	%Label.hide()
-	%CheckBox.hide()
 	%Edit.show()
 	%Edit.grab_focus()
 
@@ -36,12 +43,20 @@ func _on_edit_focus_exited() -> void:
 
 
 func _on_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_MASK_LEFT:
-		if event.pressed and event.double_click:
-			edit()
+	if event is InputEventMouseButton:
+		match event.button_index:
+			MOUSE_BUTTON_MASK_LEFT:
+				if event.pressed and event.double_click:
+					edit()
+			MOUSE_BUTTON_MASK_RIGHT:
+				if event.pressed and not %Edit.visible:
+					done = not done
 
 
 func _get_drag_data(at_position: Vector2) -> Variant:
+	if done:
+		return
+
 	var pivot = Control.new()
 
 	var preview = self.duplicate()
@@ -63,42 +78,3 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 func _drop_data(at_position: Vector2, data: Variant) -> void:
 	# FIXME: avoid asumptions about the parent's of this node
 	get_node("../../..")._drop_data(position - Vector2.ONE, data)
-
-
-func _on_draw() -> void:
-	# reposition the checkbox
-	%CheckBox.global_position = global_position + Vector2(
-		-1 * (%CheckBox.size.x + 8),
-		0.5 * (size.y - %CheckBox.size.y)
-	)
-
-
-func _on_mouse_entered() -> void:
-	$FocusTimer.stop()
-	if not %Edit.visible:
-		%CheckBox.show()
-
-
-func _on_mouse_exited() -> void:
-	$FocusTimer.start()
-
-
-func _on_check_box_mouse_entered() -> void:
-	$FocusTimer.stop()
-
-
-func _on_check_box_mouse_exited() -> void:
-	$FocusTimer.start()
-
-
-func _on_focus_timer_timeout() -> void:
-	%CheckBox.hide()
-
-
-func _on_check_box_toggled(toggled_on: bool) -> void:
-	if toggled_on:
-		%Label.text = "[s]" + %Label.text + "[/s]"
-		$Label.self_modulate.a = 0.5
-	else:
-		$Label.text = $Label.text.replace("[s]", "").replace("[/s]", "")
-		$Label.self_modulate.a = 1.0
