@@ -1,8 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://v8u8oswwmlf3"]
 
+[ext_resource type="StyleBox" uid="uid://bh1xl8tihqqa1" path="res://main_window/list_view/day_panel/todo_list/todo_item/resources/default.tres" id="1_86v70"]
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/todo_list/todo_item/todo_item.gd" id="2_6v2l5"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nks16"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3h3so"]
 
@@ -14,7 +13,7 @@
 custom_minimum_size = Vector2(0, 27)
 offset_right = 1920.0
 offset_bottom = 1061.0
-theme_override_styles/panel = SubResource("StyleBoxEmpty_nks16")
+theme_override_styles/panel = ExtResource("1_86v70")
 script = ExtResource("2_6v2l5")
 
 [node name="Label" type="Label" parent="."]
@@ -22,12 +21,14 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
+theme_override_font_sizes/font_size = 14
 text_overrun_behavior = 3
 
 [node name="Edit" type="LineEdit" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
+theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleBoxEmpty_3h3so")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_0pwns")
 theme_override_styles/read_only = SubResource("StyleBoxEmpty_4lcjl")
@@ -37,4 +38,5 @@ caret_blink_interval = 0.45
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="focus_exited" from="Edit" to="." method="_on_edit_focus_exited"]
+[connection signal="text_changed" from="Edit" to="." method="_on_edit_text_changed"]
 [connection signal="text_submitted" from="Edit" to="." method="_on_edit_text_submitted"]

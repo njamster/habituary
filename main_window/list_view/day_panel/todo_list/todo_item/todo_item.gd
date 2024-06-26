@@ -1,5 +1,8 @@
 extends PanelContainer
 
+const DEFAULT := preload("resources/default.tres")
+const HEADLINE := preload("resources/headline.tres")
+
 @export var done := false:
 	set(value):
 		done = value
@@ -8,14 +11,6 @@ extends PanelContainer
 				modulate.a = 0.3
 			else:
 				modulate.a = 1.0
-
-
-func _init() -> void:
-	self_modulate = Color(
-		randf_range(0.3, 0.7),
-		randf_range(0.3, 0.7),
-		randf_range(0.3, 0.7)
-	)
 
 
 func _ready() -> void:
@@ -29,7 +24,22 @@ func edit() -> void:
 	%Edit.grab_focus()
 
 
+func _on_edit_text_changed(new_text: String) -> void:
+	if new_text.begins_with("# "):
+		add_theme_stylebox_override("panel", HEADLINE)
+		$Label.add_theme_color_override("font_color", "#2E3440")
+		$Edit.add_theme_color_override("font_color", "#2E3440")
+		$Label.uppercase = true
+	else:
+		add_theme_stylebox_override("panel", DEFAULT)
+		$Label.remove_theme_color_override("font_color")
+		$Edit.remove_theme_color_override("font_color")
+		$Label.uppercase = false
+
+
 func _on_edit_text_submitted(new_text: String) -> void:
+	if new_text.begins_with("# "):
+		new_text = new_text.right(-2)
 	%Label.text = new_text
 	%Edit.hide()
 	%Label.show()
