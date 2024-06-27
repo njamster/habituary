@@ -3,6 +3,18 @@ extends MarginContainer
 const TODO_ITEM := preload("todo_item/todo_item.tscn")
 
 
+func _ready() -> void:
+	if OS.is_debug_build():
+		for i in range(4):
+			var debug_item := TODO_ITEM.instantiate()
+			debug_item.text = "Debug_%d" % i
+			%Items.add_child(debug_item)
+			if i == 0:
+				debug_item.done = true
+			elif i == 1:
+				debug_item.is_heading = true
+
+
 func add_todo(at_position : Vector2) -> void:
 	var new_item := TODO_ITEM.instantiate()
 	%Items.add_child(new_item)

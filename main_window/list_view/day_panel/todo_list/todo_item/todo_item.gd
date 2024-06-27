@@ -5,6 +5,12 @@ signal create_follow_up
 const DEFAULT := preload("resources/default.tres")
 const HEADLINE := preload("resources/headline.tres")
 
+@export var text := "":
+	set(value):
+		text = value
+		if is_inside_tree():
+			%Label.text = text
+
 @export var done := false:
 	set(value):
 		done = value
@@ -31,6 +37,8 @@ const HEADLINE := preload("resources/headline.tres")
 
 
 func _ready() -> void:
+	text = text # manually trigger setter
+
 	%Edit.hide()
 	%Label.show()
 
@@ -52,7 +60,7 @@ func _on_edit_text_submitted(new_text: String) -> void:
 	else:
 		if new_text.begins_with("# "):
 			new_text = new_text.right(-2)
-		%Label.text = new_text
+		text = new_text
 		%Edit.hide()
 		%Label.show()
 		if Input.is_key_pressed(KEY_SHIFT):
