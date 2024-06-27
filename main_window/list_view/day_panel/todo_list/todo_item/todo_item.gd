@@ -1,5 +1,7 @@
 extends PanelContainer
 
+signal create_follow_up
+
 const DEFAULT := preload("resources/default.tres")
 const HEADLINE := preload("resources/headline.tres")
 
@@ -44,11 +46,17 @@ func _on_edit_text_changed(new_text: String) -> void:
 
 
 func _on_edit_text_submitted(new_text: String) -> void:
-	if new_text.begins_with("# "):
-		new_text = new_text.right(-2)
-	%Label.text = new_text
-	%Edit.hide()
-	%Label.show()
+	if not new_text:
+		%Edit.hide()
+		%Label.show()
+	else:
+		if new_text.begins_with("# "):
+			new_text = new_text.right(-2)
+		%Label.text = new_text
+		%Edit.hide()
+		%Label.show()
+		if Input.is_key_pressed(KEY_SHIFT):
+			create_follow_up.emit()
 
 
 func _on_edit_focus_exited() -> void:
