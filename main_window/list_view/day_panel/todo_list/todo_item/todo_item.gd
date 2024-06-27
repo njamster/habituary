@@ -12,6 +12,21 @@ const HEADLINE := preload("resources/headline.tres")
 			else:
 				modulate.a = 1.0
 
+@export var is_heading := false:
+	set(value):
+		is_heading = value
+		if is_inside_tree():
+			if is_heading:
+				add_theme_stylebox_override("panel", HEADLINE)
+				$Label.add_theme_color_override("font_color", "#2E3440")
+				$Edit.add_theme_color_override("font_color", "#2E3440")
+				$Label.uppercase = true
+			else:
+				add_theme_stylebox_override("panel", DEFAULT)
+				$Label.remove_theme_color_override("font_color")
+				$Edit.remove_theme_color_override("font_color")
+				$Label.uppercase = false
+
 
 func _ready() -> void:
 	%Edit.hide()
@@ -25,16 +40,7 @@ func edit() -> void:
 
 
 func _on_edit_text_changed(new_text: String) -> void:
-	if new_text.begins_with("# "):
-		add_theme_stylebox_override("panel", HEADLINE)
-		$Label.add_theme_color_override("font_color", "#2E3440")
-		$Edit.add_theme_color_override("font_color", "#2E3440")
-		$Label.uppercase = true
-	else:
-		add_theme_stylebox_override("panel", DEFAULT)
-		$Label.remove_theme_color_override("font_color")
-		$Edit.remove_theme_color_override("font_color")
-		$Label.uppercase = false
+	is_heading = new_text.begins_with("# ")
 
 
 func _on_edit_text_submitted(new_text: String) -> void:
@@ -59,7 +65,7 @@ func _on_gui_input(event: InputEvent) -> void:
 				if event.pressed and event.double_click:
 					edit()
 			MOUSE_BUTTON_MASK_RIGHT:
-				if event.pressed and not %Edit.visible:
+				if event.pressed and not %Edit.visible and not is_heading:
 					done = not done
 
 
