@@ -10,6 +10,10 @@ const HEADLINE := preload("resources/headline.tres")
 		text = value
 		if is_inside_tree():
 			%Label.text = text
+			if self.is_heading:
+				%Edit.text = "# " + text
+			else:
+				%Edit.text = text
 
 @export var done := false:
 	set(value):
@@ -46,6 +50,7 @@ func _ready() -> void:
 func edit() -> void:
 	%Label.hide()
 	%Edit.show()
+	%Edit.caret_column = %Edit.text.length()
 	%Edit.grab_focus()
 
 
@@ -60,7 +65,7 @@ func _on_edit_text_submitted(new_text: String) -> void:
 	else:
 		if new_text.begins_with("# "):
 			new_text = new_text.right(-2)
-		text = new_text
+		self.text = new_text
 		%Edit.hide()
 		%Label.show()
 		if Input.is_key_pressed(KEY_SHIFT):
@@ -69,7 +74,10 @@ func _on_edit_text_submitted(new_text: String) -> void:
 
 func _on_edit_focus_exited() -> void:
 	if %Edit.text:
-		_on_edit_text_submitted(%Edit.text)
+		if is_heading and $Edit.text == "# ":
+			queue_free()
+		else:
+			_on_edit_text_submitted(%Edit.text)
 	else:
 		queue_free()
 
