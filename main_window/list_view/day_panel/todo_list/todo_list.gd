@@ -7,6 +7,7 @@ func _ready() -> void:
 	if OS.is_debug_build():
 		for i in range(4):
 			var debug_item := TODO_ITEM.instantiate()
+			debug_item.add_to_group("debug_item")
 			debug_item.text = "Debug_%d" % i
 			%Items.add_child(debug_item)
 			if i == 0:
@@ -42,3 +43,23 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 	if data.get_parent() != %Items:
 		data.reparent(%Items)
 	%Items.move_child(data, find_item_pos(self.global_position + at_position))
+
+
+func has_items() -> bool:
+	for child in %Items.get_children():
+		if not child.is_in_group("debug_item"):
+			return true
+	return false
+
+
+func save_to_disk(file : FileAccess) -> void:
+	for child in %Items.get_children():
+		if not child.is_in_group("debug_item"):
+			child.save_to_disk(file)
+
+
+func load_from_disk(file : FileAccess) -> void:
+	while file.get_position() < file.get_length():
+		var restored_item := TODO_ITEM.instantiate()
+		%Items.add_child(restored_item)
+		restored_item.load_from_disk(file.get_line())

@@ -4,10 +4,16 @@ extends VBoxContainer
 @export var date : Date:
 	set(value):
 		date = value
+		_update_store_path()
 		if is_inside_tree():
 			_update_header()
 			if value:
 				date.changed.connect(_update_header)
+				date.changed.connect(_update_store_path)
+
+var store_path := ""
+
+
 
 
 func _ready() -> void:
@@ -15,6 +21,7 @@ func _ready() -> void:
 		assert(date != null, "You must provide a date in order for this node to work!")
 
 	_update_header()
+	_update_store_path()
 
 	if not Engine.is_editor_hint():
 		EventBus.new_day_started.connect(_apply_date_relative_formating)
@@ -28,6 +35,13 @@ func _update_header() -> void:
 		%Date.text = "DD MMM YYYY"
 		%Weekday.text = "WEEKDAY"
 	_apply_date_relative_formating()
+
+
+func _update_store_path() -> void:
+	store_path = "%s/%s.txt" % [
+		Settings.store_path,
+		self.date.format(Settings.date_format_save)
+]
 
 
 func _apply_date_relative_formating() -> void:
@@ -78,3 +92,16 @@ func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_MASK_LEFT:
 		if event.pressed:
 			%TodoList.add_todo(event.global_position)
+
+
+func save_to_disk() -> void:
+	if %TodoList.has_items():
+		var file := FileAccess.open(store_path, FileAccess.WRITE)
+		%TodoList.save_to_disk(file)
+	elif FileAccess.file_exists(store_path):
+		DirAccess.remove_absolute(store_path)
+
+
+func load_from_disk() -> void:
+	if FileAccess.file_exists(store_path):
+		%TodoList.load_from_disk(FileAccess.open(store_path, FileAccess.READ))

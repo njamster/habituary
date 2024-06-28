@@ -110,3 +110,26 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 func _drop_data(at_position: Vector2, data: Variant) -> void:
 	# FIXME: avoid asumptions about the parent's of this node
 	get_node("../../..")._drop_data(position - Vector2.ONE, data)
+
+
+func save_to_disk(file : FileAccess) -> void:
+	var string := ""
+
+	if is_heading:
+		string += "# "
+	elif done:
+		string += "[x] "
+	else:
+		string += "[ ] "
+	string += text
+
+	file.store_line(string)
+
+
+func load_from_disk(line : String) -> void:
+	if line.begins_with("# "):
+		self.is_heading = true
+		line = line.right(-2)
+	elif line.begins_with("[x] "):
+		self.done = true
+	self.text = line.right(-4)

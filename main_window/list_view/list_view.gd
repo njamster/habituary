@@ -45,14 +45,14 @@ func _shift_list_view(current_day : Date) -> void:
 func add_day_panel(offset_from_current_day : int, push_front := false) -> void:
 	var day_panel := DAY_PANEL.instantiate()
 	day_panel.date = Settings.current_day.add_days(offset_from_current_day)
-	# TODO: load panel content from disk
 	add_child(day_panel)
 	if push_front:
 		move_child(day_panel, 0)
+	day_panel.load_from_disk()
 
 
 func remove_day_panel(index : int) -> void:
 	var day_panel = get_child(index)
 	remove_child(day_panel)
-	# TODO: save panel content to disk
+	day_panel.save_to_disk()
 	day_panel.queue_free()
