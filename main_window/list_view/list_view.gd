@@ -48,11 +48,9 @@ func add_day_panel(offset_from_current_day : int, push_front := false) -> void:
 	add_child(day_panel)
 	if push_front:
 		move_child(day_panel, 0)
-	day_panel.load_from_disk()
 
 
 func remove_day_panel(index : int) -> void:
 	var day_panel = get_child(index)
 	remove_child(day_panel)
-	day_panel.save_to_disk()
 	day_panel.queue_free()

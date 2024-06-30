@@ -14,8 +14,6 @@ extends VBoxContainer
 var store_path := ""
 
 
-
-
 func _ready() -> void:
 	if not Engine.is_editor_hint():
 		assert(date != null, "You must provide a date in order for this node to work!")
@@ -24,6 +22,8 @@ func _ready() -> void:
 
 	if not Engine.is_editor_hint():
 		_update_store_path()
+		load_from_disk()
+		self.tree_exited.connect(save_to_disk)
 		EventBus.new_day_started.connect(_apply_date_relative_formating)
 
 
