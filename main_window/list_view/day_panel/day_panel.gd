@@ -21,9 +21,9 @@ func _ready() -> void:
 		assert(date != null, "You must provide a date in order for this node to work!")
 
 	_update_header()
-	_update_store_path()
 
 	if not Engine.is_editor_hint():
+		_update_store_path()
 		EventBus.new_day_started.connect(_apply_date_relative_formating)
 
 
