@@ -55,7 +55,7 @@ func _apply_date_relative_formating() -> void:
 		elif day_difference == 0:
 			# date is today
 			modulate.a = 1.0
-			%Weekday.add_theme_color_override("font_color", Color("88c0d0"))
+			%Weekday.add_theme_color_override("font_color", Color("81a1c1"))
 		else:
 			# date is in the future
 			modulate.a = 1.0

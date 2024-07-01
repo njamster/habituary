@@ -1,6 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://dgxug4yl0qg3x"]
+[gd_scene load_steps=11 format=3 uid="uid://dgxug4yl0qg3x"]
 
 [ext_resource type="Script" path="res://main_window/view_mode_widget/view_mode_widget.gd" id="1_1o2da"]
+[ext_resource type="StyleBox" uid="uid://cy56avae77sx1" path="res://main_window/view_mode_widget/resources/toggled.tres" id="2_2euf7"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_dvngi"]
 action = &"view_mode_1"
@@ -30,33 +31,24 @@ pressed = true
 [sub_resource type="Shortcut" id="Shortcut_8cdb0"]
 events = [SubResource("InputEventAction_uckjy")]
 
-[node name="ViewModeWidget" type="HBoxContainer"]
-offset_right = 180.0
-offset_bottom = 32.0
-theme_override_constants/separation = 8
+[node name="ViewModeWidget" type="VBoxContainer"]
+offset_right = 15.0
+offset_bottom = 122.0
 script = ExtResource("1_1o2da")
 
-[node name="Label" type="Label" parent="."]
-layout_mode = 2
-theme_override_font_sizes/font_size = 12
-text = "Days:"
-
-[node name="Modes" type="HBoxContainer" parent="."]
-layout_mode = 2
-theme_override_constants/separation = 4
-
-[node name="SingleDay" type="Button" parent="Modes"]
-custom_minimum_size = Vector2(32, 32)
+[node name="SingleDay" type="Button" parent="."]
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_2euf7")
 shortcut = SubResource("Shortcut_v5qej")
 shortcut_in_tooltip = false
 text = "1"
 
-[node name="ThreeDays" type="Button" parent="Modes"]
-custom_minimum_size = Vector2(32, 32)
+[node name="ThreeDays" type="Button" parent="."]
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
@@ -65,8 +57,8 @@ shortcut = SubResource("Shortcut_1x0d2")
 shortcut_in_tooltip = false
 text = "3"
 
-[node name="FiveDays" type="Button" parent="Modes"]
-custom_minimum_size = Vector2(32, 32)
+[node name="FiveDays" type="Button" parent="."]
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
@@ -75,8 +67,8 @@ shortcut = SubResource("Shortcut_gxdox")
 shortcut_in_tooltip = false
 text = "5"
 
-[node name="SevenDays" type="Button" parent="Modes"]
-custom_minimum_size = Vector2(32, 32)
+[node name="SevenDays" type="Button" parent="."]
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
