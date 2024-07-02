@@ -137,7 +137,12 @@ func save_to_disk(file : FileAccess) -> void:
 func load_from_disk(line : String) -> void:
 	if line.begins_with("# "):
 		self.is_heading = true
-		line = line.right(-2)
+		self.text = line.right(-2)
+	elif line.begins_with("[ ] "):
+		self.text = line.right(-4)
 	elif line.begins_with("[x] "):
 		self.done = true
-	self.text = line.right(-4)
+		self.text = line.right(-4)
+	else:
+		push_warning("Unknown format for line \"%s\" (will be automatically converted into a todo)" % line)
+		self.text = line
