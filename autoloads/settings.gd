@@ -23,6 +23,7 @@ var view_mode := 7:
 
 var current_day := DayTimer.today:
 	set(value):
-		current_day = value
-		EventBus.current_day_changed.emit(current_day)
+		if current_day.day_difference_to(value) != 0:
+			current_day = value
+			EventBus.current_day_changed.emit(current_day)
 
