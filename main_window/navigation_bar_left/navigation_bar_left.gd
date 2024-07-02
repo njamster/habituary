@@ -20,4 +20,9 @@ func _on_today_pressed() -> void:
 
 
 func _on_current_day_changed(current_day : Date) -> void:
-	$Today.disabled = (current_day.day_difference_to(DayTimer.today) == 0)
+	if current_day.day_difference_to(DayTimer.today) == 0:
+		$Today.disabled = true
+		$Today.mouse_default_cursor_shape = CURSOR_FORBIDDEN
+	else:
+		$Today.disabled = false
+		$Today.mouse_default_cursor_shape = CURSOR_POINTING_HAND
