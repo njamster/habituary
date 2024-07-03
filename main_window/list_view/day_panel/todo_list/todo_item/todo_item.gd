@@ -1,6 +1,7 @@
 extends PanelContainer
 
 signal create_follow_up
+signal editing_finished
 
 const DEFAULT := preload("resources/default.tres")
 const HEADLINE := preload("resources/headline.tres")
@@ -59,28 +60,35 @@ func _on_edit_text_changed(new_text: String) -> void:
 
 
 func _on_edit_text_submitted(new_text: String) -> void:
-	if not new_text:
-		%Edit.hide()
-		%Label.show()
-	else:
-		if new_text.begins_with("# "):
-			new_text = new_text.right(-2)
+	if new_text.begins_with("# "):
+		new_text = new_text.right(-2)
+
+	if new_text:
 		self.text = new_text
 		%Edit.hide()
 		%Label.show()
 		if Input.is_key_pressed(KEY_SHIFT):
 			create_follow_up.emit()
+	else:
+		%Edit.hide()
+		%Label.show()
 
 
 func _on_edit_focus_exited() -> void:
 	if %Edit.text:
 		if is_heading and $Edit.text == "# ":
 			queue_free()
+			if self.text:
+				await tree_exited
+				editing_finished.emit()
 		else:
 			_on_edit_text_submitted(%Edit.text)
+			editing_finished.emit()
 	else:
 		queue_free()
-
+		if self.text:
+			await tree_exited
+			editing_finished.emit()
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:

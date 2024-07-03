@@ -16,14 +16,20 @@ func _ready() -> void:
 				debug_item.is_heading = true
 
 
-func add_todo(at_position : Vector2) -> void:
+func add_todo(at_position := Vector2.ZERO) -> Control:
 	var new_item := TODO_ITEM.instantiate()
 	%Items.add_child(new_item)
-	%Items.move_child(new_item, find_item_pos(at_position))
+	if at_position != Vector2.ZERO:
+		%Items.move_child(new_item, find_item_pos(at_position))
+	new_item.editing_finished.connect(func():
+		get_parent().get_parent().save_to_disk()
+	)
 	new_item.create_follow_up.connect(func():
 		add_todo(self.global_position + new_item.position + Vector2(0, 32))
 	)
-	new_item.edit()
+	if at_position != Vector2.ZERO:
+		new_item.edit()
+	return new_item
 
 
 func find_item_pos(at_position : Vector2) -> int:
@@ -60,6 +66,5 @@ func save_to_disk(file : FileAccess) -> void:
 
 func load_from_disk(file : FileAccess) -> void:
 	while file.get_position() < file.get_length():
-		var restored_item := TODO_ITEM.instantiate()
-		%Items.add_child(restored_item)
+		var restored_item := add_todo()
 		restored_item.load_from_disk(file.get_line())
