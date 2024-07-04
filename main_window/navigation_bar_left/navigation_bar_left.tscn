@@ -1,21 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://bjv3cb21jdiu3"]
+[gd_scene load_steps=7 format=3 uid="uid://bjv3cb21jdiu3"]
 
 [ext_resource type="Script" path="res://main_window/navigation_bar_left/navigation_bar_left.gd" id="1_kn5h0"]
 [ext_resource type="Texture2D" uid="uid://kpsxfahirjkd" path="res://main_window/navigation_bar_left/images/arrow_left.svg" id="1_rckff"]
 [ext_resource type="Texture2D" uid="uid://botihipdanr3y" path="res://main_window/navigation_bar_left/images/arrow_left_double.svg" id="2_s8dw8"]
 [ext_resource type="Texture2D" uid="uid://dg16vv3p66p28" path="res://main_window/navigation_bar_left/images/today.svg" id="3_vrbxd"]
-
-[sub_resource type="InputEventAction" id="InputEventAction_x22my"]
-action = &"previous_day"
-
-[sub_resource type="Shortcut" id="Shortcut_1aadh"]
-events = [SubResource("InputEventAction_x22my")]
-
-[sub_resource type="InputEventAction" id="InputEventAction_2ud3c"]
-action = &"shift_view_backward"
-
-[sub_resource type="Shortcut" id="Shortcut_etccu"]
-events = [SubResource("InputEventAction_2ud3c")]
 
 [sub_resource type="InputEventAction" id="InputEventAction_e5hy0"]
 action = &"jump_to_today"
@@ -30,16 +18,12 @@ script = ExtResource("1_kn5h0")
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
-shortcut = SubResource("Shortcut_1aadh")
-shortcut_in_tooltip = false
 icon = ExtResource("1_rckff")
 
 [node name="ShiftViewBackward" type="Button" parent="."]
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
-shortcut = SubResource("Shortcut_etccu")
-shortcut_in_tooltip = false
 icon = ExtResource("2_s8dw8")
 
 [node name="Spacer" type="Control" parent="."]

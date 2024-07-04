@@ -1,21 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://d0nq3bl1c4e0i"]
+[gd_scene load_steps=5 format=3 uid="uid://d0nq3bl1c4e0i"]
 
 [ext_resource type="Script" path="res://main_window/navigation_bar_right/navigation_bar_right.gd" id="1_i4fec"]
 [ext_resource type="Texture2D" uid="uid://5x5oa7kf2q8s" path="res://main_window/navigation_bar_right/images/arrow_right.svg" id="1_q3y45"]
 [ext_resource type="Texture2D" uid="uid://cjeviihofj70y" path="res://main_window/navigation_bar_right/images/arrow_right_double.svg" id="2_satv2"]
 [ext_resource type="Texture2D" uid="uid://3tmsi2t4t7jd" path="res://main_window/navigation_bar_right/images/calendar.svg" id="3_3qcru"]
-
-[sub_resource type="InputEventAction" id="InputEventAction_7chrg"]
-action = &"next_day"
-
-[sub_resource type="Shortcut" id="Shortcut_um856"]
-events = [SubResource("InputEventAction_7chrg")]
-
-[sub_resource type="InputEventAction" id="InputEventAction_d5t1q"]
-action = &"shift_view_forward"
-
-[sub_resource type="Shortcut" id="Shortcut_wj1ie"]
-events = [SubResource("InputEventAction_d5t1q")]
 
 [node name="NavigationBarRight" type="VBoxContainer"]
 script = ExtResource("1_i4fec")
@@ -24,16 +12,12 @@ script = ExtResource("1_i4fec")
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
-shortcut = SubResource("Shortcut_um856")
-shortcut_in_tooltip = false
 icon = ExtResource("1_q3y45")
 
 [node name="ShiftViewForward" type="Button" parent="."]
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
-shortcut = SubResource("Shortcut_wj1ie")
-shortcut_in_tooltip = false
 icon = ExtResource("2_satv2")
 
 [node name="Spacer" type="Control" parent="."]

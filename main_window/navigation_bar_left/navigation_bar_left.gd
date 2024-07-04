@@ -26,3 +26,12 @@ func _on_current_day_changed(current_day : Date) -> void:
 	else:
 		$Today.disabled = false
 		$Today.mouse_default_cursor_shape = CURSOR_POINTING_HAND
+
+
+func _input(event: InputEvent) -> void:
+	# Necessary workaround since button shortcuts currently don't trigger on mouse events, see:
+	# https://github.com/godotengine/godot/issues/90516
+	if event.is_action_pressed("shift_view_backward"):
+		Utils.press_button_with_visual_feedback($ShiftViewBackward)
+	elif event.is_action_pressed("previous_day"):
+		Utils.press_button_with_visual_feedback($PreviousDay)
