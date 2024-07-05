@@ -12,7 +12,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-mouse_default_cursor_shape = 3
+mouse_default_cursor_shape = 2
 theme_override_constants/separation = 16
 script = ExtResource("1_a2phy")
 
@@ -51,7 +51,14 @@ horizontal_scroll_mode = 3
 unique_name_in_owner = true
 layout_mode = 2
 
+[node name="HoverTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
 [connection signal="gui_input" from="Header" to="." method="_on_header_gui_input"]
 [connection signal="mouse_entered" from="Header" to="." method="_on_header_mouse_entered"]
 [connection signal="mouse_exited" from="Header" to="." method="_on_header_mouse_exited"]
+[connection signal="timeout" from="HoverTimer" to="." method="_on_hover_timer_timeout"]

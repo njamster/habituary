@@ -110,6 +110,19 @@ func load_from_disk() -> void:
 		%TodoList.load_from_disk(FileAccess.open(store_path, FileAccess.READ))
 
 
+func _on_mouse_entered() -> void:
+	$HoverTimer.timeout.connect(%TodoList.show_line_highlight.bind(get_global_mouse_position()))
+	$HoverTimer.start()
+
+
+func _on_mouse_exited() -> void:
+	if $HoverTimer.is_stopped():
+		%TodoList.hide_line_highlight()
+	else:
+		$HoverTimer.stop()
+	$HoverTimer.timeout.disconnect(%TodoList.show_line_highlight)
+
+
 func _on_header_mouse_entered() -> void:
 	$Header.add_theme_stylebox_override("panel", FOCUSED)
 

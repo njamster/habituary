@@ -11,7 +11,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-mouse_default_cursor_shape = 3
+mouse_default_cursor_shape = 2
 script = ExtResource("1_06eaj")
 
 [node name="Lines" type="TextureRect" parent="."]
@@ -21,6 +21,13 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("1_cxvr8")
 stretch_mode = 1
+
+[node name="LineHighlight" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(0, 3)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+color = Color(0.505882, 0.631373, 0.756863, 1)
 
 [node name="VerticalPadding" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -33,3 +40,5 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 13
+
+[connection signal="item_rect_changed" from="LineHighlight" to="." method="_on_line_highlight_item_rect_changed"]

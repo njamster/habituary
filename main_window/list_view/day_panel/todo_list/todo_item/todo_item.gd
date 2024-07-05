@@ -1,6 +1,8 @@
 extends PanelContainer
 
 signal create_follow_up
+
+signal editing_started
 signal editing_finished
 
 const DEFAULT := preload("resources/default.tres")
@@ -48,11 +50,16 @@ func _ready() -> void:
 	%Label.show()
 
 
+func is_in_edit_mode() -> bool:
+	return %Edit.visible
+
+
 func edit() -> void:
 	%Label.hide()
 	%Edit.show()
 	%Edit.caret_column = %Edit.text.length()
 	%Edit.grab_focus()
+	editing_started.emit()
 
 
 func _on_edit_text_changed(new_text: String) -> void:
@@ -90,6 +97,7 @@ func _on_edit_focus_exited() -> void:
 			await tree_exited
 			editing_finished.emit()
 
+
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		match event.button_index:
@@ -97,7 +105,7 @@ func _on_gui_input(event: InputEvent) -> void:
 				if event.pressed and event.double_click:
 					edit()
 			MOUSE_BUTTON_MASK_RIGHT:
-				if event.pressed and not %Edit.visible and not is_heading:
+				if event.pressed and not is_in_edit_mode() and not is_heading:
 					done = not done
 
 

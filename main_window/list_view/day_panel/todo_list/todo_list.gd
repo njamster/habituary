@@ -4,6 +4,8 @@ const TODO_ITEM := preload("todo_item/todo_item.tscn")
 
 
 func _ready() -> void:
+	$LineHighlight.modulate.a = 0.0
+
 	if OS.is_debug_build():
 		for i in range(4):
 			var debug_item := TODO_ITEM.instantiate()
@@ -21,6 +23,7 @@ func add_todo(at_position := Vector2.ZERO) -> Control:
 	%Items.add_child(new_item)
 	if at_position != Vector2.ZERO:
 		%Items.move_child(new_item, find_item_pos(at_position))
+	new_item.editing_started.connect(hide_line_highlight)
 	new_item.editing_finished.connect(func():
 		get_parent().get_parent().save_to_disk()
 	)
@@ -68,3 +71,25 @@ func load_from_disk(file : FileAccess) -> void:
 	while file.get_position() < file.get_length():
 		var restored_item := add_todo()
 		restored_item.load_from_disk(file.get_line())
+
+
+func show_line_highlight(mouse_position : Vector2) -> void:
+	var i := find_item_pos(mouse_position)
+
+	# don't highlight lines directly adjacent to the currently edited todo
+	if (i > 0 and %Items.get_child(i-1).is_in_edit_mode() or \
+		i < %Items.get_child_count() and %Items.get_child(i).is_in_edit_mode()):
+			return
+
+	$LineHighlight.position.y = i * 40
+	if i > 0:
+		$LineHighlight.position.y -= 0.5 * $LineHighlight.custom_minimum_size.y
+	$LineHighlight.modulate.a = 1.0
+
+
+func hide_line_highlight() -> void:
+	$LineHighlight.modulate.a = 0.0
+
+
+func _on_line_highlight_item_rect_changed() -> void:
+	$LineHighlight.modulate.a = 0.0
