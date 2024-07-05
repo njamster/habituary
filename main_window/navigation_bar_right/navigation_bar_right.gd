@@ -9,7 +9,7 @@ func _on_shift_view_forward_pressed() -> void:
 	Settings.current_day = Settings.current_day.add_days(Settings.view_mode)
 
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	# Necessary workaround since button shortcuts currently don't trigger on mouse events, see:
 	# https://github.com/godotengine/godot/issues/90516
 	if event.is_action_pressed("shift_view_forward"):

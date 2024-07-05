@@ -1,6 +1,9 @@
 @tool
 extends VBoxContainer
 
+const DEFAULT := preload("resources/header_default.tres")
+const FOCUSED := preload("resources/header_focused.tres")
+
 @export var date : Date:
 	set(value):
 		date = value
@@ -106,10 +109,6 @@ func load_from_disk() -> void:
 	if FileAccess.file_exists(store_path):
 		%TodoList.load_from_disk(FileAccess.open(store_path, FileAccess.READ))
 
-
-
-const DEFAULT := preload("resources/header_default.tres")
-const FOCUSED := preload("resources/header_focused.tres")
 
 func _on_header_mouse_entered() -> void:
 	$Header.add_theme_stylebox_override("panel", FOCUSED)
