@@ -49,6 +49,7 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
+	data.modulate.a = 1.0
 	if data.get_parent() != %Items:
 		data.reparent(%Items)
 	%Items.move_child(data, find_item_pos(self.global_position + at_position))
@@ -77,9 +78,9 @@ func show_line_highlight(mouse_position : Vector2) -> void:
 	var i := find_item_pos(mouse_position)
 
 	# don't highlight lines directly adjacent to the currently edited todo
-	if (i > 0 and %Items.get_child(i-1).is_in_edit_mode() or \
-		i < %Items.get_child_count() and %Items.get_child(i).is_in_edit_mode()):
-			return
+	#if (i > 0 and %Items.get_child(i-1).is_in_edit_mode() or \
+		#i < %Items.get_child_count() and %Items.get_child(i).is_in_edit_mode()):
+			#return
 
 	$LineHighlight.position.y = i * 40
 	if i > 0:

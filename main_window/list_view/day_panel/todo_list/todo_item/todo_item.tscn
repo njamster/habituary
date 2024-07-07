@@ -1,7 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://v8u8oswwmlf3"]
+[gd_scene load_steps=9 format=3 uid="uid://v8u8oswwmlf3"]
 
-[ext_resource type="StyleBox" uid="uid://bh1xl8tihqqa1" path="res://main_window/list_view/day_panel/todo_list/todo_item/resources/default.tres" id="1_86v70"]
+[ext_resource type="StyleBox" uid="uid://d18r3tewjub1n" path="res://main_window/list_view/day_panel/todo_list/todo_item/resources/default.tres" id="1_86v70"]
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/todo_list/todo_item/todo_item.gd" id="2_6v2l5"]
+[ext_resource type="Texture2D" uid="uid://b80hle2h5sj20" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/drag_indicator.svg" id="3_avsfu"]
+[ext_resource type="Texture2D" uid="uid://4eakbxkw2dmx" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/delete.svg" id="3_nsj7w"]
+[ext_resource type="Script" path="res://main_window/list_view/day_panel/todo_list/todo_item/drag_handle.gd" id="5_mx38m"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3h3so"]
 
@@ -12,22 +15,35 @@
 [node name="ToDoItem" type="PanelContainer" groups=["todo_item"]]
 custom_minimum_size = Vector2(0, 27)
 offset_right = 1920.0
-offset_bottom = 1061.0
+offset_bottom = 27.0
 theme_override_styles/panel = ExtResource("1_86v70")
 script = ExtResource("2_6v2l5")
 
-[node name="Label" type="Label" parent="."]
+[node name="HBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Content" type="MarginContainer" parent="HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 1
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_right = 6
+
+[node name="Label" type="Label" parent="HBox/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
 mouse_default_cursor_shape = 1
 theme_override_font_sizes/font_size = 14
+vertical_alignment = 1
 text_overrun_behavior = 3
 
-[node name="Edit" type="LineEdit" parent="."]
+[node name="Edit" type="LineEdit" parent="HBox/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
+theme_override_constants/caret_width = 2
 theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleBoxEmpty_3h3so")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_0pwns")
@@ -36,7 +52,34 @@ context_menu_enabled = false
 caret_blink = true
 caret_blink_interval = 0.45
 
+[node name="UI" type="HBoxContainer" parent="HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Delete" type="Button" parent="HBox/UI"]
+custom_minimum_size = Vector2(27, 0)
+layout_mode = 2
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+icon = ExtResource("3_nsj7w")
+flat = true
+expand_icon = true
+
+[node name="DragHandle" type="TextureRect" parent="HBox/UI"]
+custom_minimum_size = Vector2(31, 0)
+layout_mode = 2
+mouse_default_cursor_shape = 6
+texture = ExtResource("3_avsfu")
+stretch_mode = 3
+script = ExtResource("5_mx38m")
+
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
-[connection signal="focus_exited" from="Edit" to="." method="_on_edit_focus_exited"]
-[connection signal="text_changed" from="Edit" to="." method="_on_edit_text_changed"]
-[connection signal="text_submitted" from="Edit" to="." method="_on_edit_text_submitted"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="gui_input" from="HBox/Content" to="." method="_on_content_gui_input"]
+[connection signal="focus_exited" from="HBox/Content/Edit" to="." method="_on_edit_focus_exited"]
+[connection signal="text_changed" from="HBox/Content/Edit" to="." method="_on_edit_text_changed"]
+[connection signal="text_submitted" from="HBox/Content/Edit" to="." method="_on_edit_text_submitted"]
+[connection signal="gui_input" from="HBox/UI/Delete" to="." method="_on_delete_gui_input"]
+[connection signal="pressed" from="HBox/UI/Delete" to="." method="_on_delete_pressed"]

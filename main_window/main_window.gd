@@ -33,3 +33,10 @@ func _on_window_size_changed() -> void:
 	var total_vertical_margin = 2 * minimum_vertical_margin + todo_list_height % todo_item_height
 	add_theme_constant_override("margin_top", 0.5 * total_vertical_margin)
 	add_theme_constant_override("margin_bottom", 0.5 * total_vertical_margin)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		var focus_owner = get_viewport().gui_get_focus_owner()
+		if focus_owner:
+			focus_owner.release_focus()
