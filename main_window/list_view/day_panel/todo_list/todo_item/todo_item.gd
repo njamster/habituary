@@ -1,9 +1,8 @@
 extends PanelContainer
 
 signal create_follow_up
-
 signal editing_started
-signal editing_finished
+signal changed
 
 const DEFAULT := preload("resources/default.tres")
 const HEADLINE := preload("resources/headline.tres")
@@ -74,6 +73,13 @@ func edit() -> void:
 	editing_started.emit()
 
 
+func delete() -> void:
+	queue_free()
+	if self.text:
+		await tree_exited
+		changed.emit()
+
+
 func _on_edit_text_changed(new_text: String) -> void:
 	is_heading = new_text.begins_with("# ")
 
@@ -83,7 +89,9 @@ func _on_edit_text_submitted(new_text: String) -> void:
 		new_text = new_text.right(-2)
 
 	if new_text:
-		self.text = new_text
+		if self.text != new_text:
+			self.text = new_text
+			changed.emit()
 		%Edit.hide()
 		%Label.show()
 		if _contains_mouse_cursor:
@@ -91,27 +99,13 @@ func _on_edit_text_submitted(new_text: String) -> void:
 		if Input.is_key_pressed(KEY_SHIFT):
 			create_follow_up.emit()
 	else:
-		%Edit.hide()
-		%Label.show()
-		if _contains_mouse_cursor:
-			%UI.show()
+		delete()
 
 
 func _on_edit_focus_exited() -> void:
-	if %Edit.text:
-		if is_heading and %Edit.text == "# ":
-			queue_free()
-			if self.text:
-				await tree_exited
-				editing_finished.emit()
-		else:
+	if not is_queued_for_deletion():
+		if self.text != %Edit.text:
 			_on_edit_text_submitted(%Edit.text)
-			editing_finished.emit()
-	else:
-		queue_free()
-		if self.text:
-			await tree_exited
-			editing_finished.emit()
 
 
 func _on_content_gui_input(event: InputEvent) -> void:
@@ -181,9 +175,3 @@ func _on_mouse_exited() -> void:
 			%Content.modulate = Color("#2E3440")
 		else:
 			%Content.modulate = Color.WHITE
-
-
-func _on_delete_pressed() -> void:
-	queue_free()
-	await tree_exited
-	editing_finished.emit()

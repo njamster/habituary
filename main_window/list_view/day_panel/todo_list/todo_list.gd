@@ -24,7 +24,7 @@ func add_todo(at_position := Vector2.ZERO) -> Control:
 	if at_position != Vector2.ZERO:
 		%Items.move_child(new_item, find_item_pos(at_position))
 	new_item.editing_started.connect(hide_line_highlight)
-	new_item.editing_finished.connect(func():
+	new_item.changed.connect(func():
 		get_parent().get_parent().save_to_disk()
 	)
 	new_item.create_follow_up.connect(func():

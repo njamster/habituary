@@ -82,4 +82,4 @@ script = ExtResource("5_mx38m")
 [connection signal="text_changed" from="HBox/Content/Edit" to="." method="_on_edit_text_changed"]
 [connection signal="text_submitted" from="HBox/Content/Edit" to="." method="_on_edit_text_submitted"]
 [connection signal="gui_input" from="HBox/UI/Delete" to="." method="_on_delete_gui_input"]
-[connection signal="pressed" from="HBox/UI/Delete" to="." method="_on_delete_pressed"]
+[connection signal="pressed" from="HBox/UI/Delete" to="." method="delete"]
