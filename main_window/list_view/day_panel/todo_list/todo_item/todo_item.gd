@@ -104,8 +104,7 @@ func _on_edit_text_submitted(new_text: String) -> void:
 
 func _on_edit_focus_exited() -> void:
 	if not is_queued_for_deletion():
-		if self.text != %Edit.text:
-			_on_edit_text_submitted(%Edit.text)
+		_on_edit_text_submitted(%Edit.text)
 
 
 func _on_content_gui_input(event: InputEvent) -> void:
