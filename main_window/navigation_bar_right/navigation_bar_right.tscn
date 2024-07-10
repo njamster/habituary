@@ -12,12 +12,14 @@ script = ExtResource("1_i4fec")
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
+theme_type_variation = &"RightSidebarButton"
 icon = ExtResource("1_q3y45")
 
 [node name="ShiftViewForward" type="Button" parent="."]
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
+theme_type_variation = &"RightSidebarButton"
 icon = ExtResource("2_satv2")
 
 [node name="Spacer" type="Control" parent="."]
@@ -28,6 +30,7 @@ layout_mode = 2
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 8
+theme_type_variation = &"RightSidebarButton"
 disabled = true
 icon = ExtResource("3_3qcru")
 

@@ -1,7 +1,5 @@
 extends TextureRect
 
-const DRAGGED := preload("resources/dragged.tres")
-
 @onready var host := get_parent().get_parent().get_parent()
 
 
@@ -13,7 +11,10 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 
 	var preview = host.duplicate()
 	if not preview.is_heading:
-		preview.add_theme_stylebox_override("panel", DRAGGED)
+		var stylebox = preview.get("theme_override_styles/panel").duplicate()
+		stylebox.bg_color = Settings.NORD_01 if Settings.dark_mode else Settings.NORD_05
+		stylebox.draw_center = true
+		preview.set("theme_override_styles/panel", stylebox)
 	preview.self_modulate = host.self_modulate
 	preview.size = host.size
 	preview.position = -get_parent().position - position - 0.5 * size

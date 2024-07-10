@@ -1,9 +1,6 @@
 @tool
 extends VBoxContainer
 
-const DEFAULT := preload("resources/header_default.tres")
-const FOCUSED := preload("resources/header_focused.tres")
-
 @export var date : Date:
 	set(value):
 		date = value
@@ -28,6 +25,8 @@ func _ready() -> void:
 		load_from_disk()
 		self.tree_exited.connect(save_to_disk)
 		EventBus.new_day_started.connect(_apply_date_relative_formating)
+		_on_dark_mode_changed(Settings.dark_mode)
+		EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
 
 
 func _update_header() -> void:
@@ -58,7 +57,7 @@ func _apply_date_relative_formating() -> void:
 		elif day_difference == 0:
 			# date is today
 			modulate.a = 1.0
-			%Weekday.add_theme_color_override("font_color", Color("81a1c1"))
+			%Weekday.add_theme_color_override("font_color", Settings.NORD_09)
 		else:
 			# date is in the future
 			modulate.a = 1.0
@@ -124,8 +123,15 @@ func _on_mouse_exited() -> void:
 
 
 func _on_header_mouse_entered() -> void:
-	$Header.add_theme_stylebox_override("panel", FOCUSED)
+	$Header.get("theme_override_styles/panel").draw_center = true
 
 
 func _on_header_mouse_exited() -> void:
-	$Header.add_theme_stylebox_override("panel", DEFAULT)
+	$Header.get("theme_override_styles/panel").draw_center = false
+
+
+func _on_dark_mode_changed(dark_mode : bool) -> void:
+	if dark_mode:
+		$Header.get("theme_override_styles/panel").bg_color = Settings.NORD_02
+	else:
+		$Header.get("theme_override_styles/panel").bg_color = Settings.NORD_04

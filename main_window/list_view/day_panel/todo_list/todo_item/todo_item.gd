@@ -4,9 +4,6 @@ signal create_follow_up
 signal editing_started
 signal changed
 
-const DEFAULT := preload("resources/default.tres")
-const HEADLINE := preload("resources/headline.tres")
-
 @export var text := "":
 	set(value):
 		text = value
@@ -35,16 +32,10 @@ const HEADLINE := preload("resources/headline.tres")
 		is_heading = value
 		if is_inside_tree():
 			if is_heading:
-				add_theme_stylebox_override("panel", HEADLINE)
-				if not _contains_mouse_cursor:
-					%Content.modulate = Color("#2E3440")
-				%UI.modulate = Color.BLACK
+				get("theme_override_styles/panel").draw_center = true
 				%Label.uppercase = true
 			else:
-				add_theme_stylebox_override("panel", DEFAULT)
-				if not _contains_mouse_cursor:
-					%Content.modulate = Color.WHITE
-				%UI.modulate = Color.WHITE
+				get("theme_override_styles/panel").draw_center = false
 				%Label.uppercase = false
 
 
@@ -52,12 +43,16 @@ var _contains_mouse_cursor := false
 
 
 func _ready() -> void:
-	text = text # manually trigger setter
+	# manually trigger setters
+	text = text
 
 	%Edit.hide()
 	%Label.show()
 
 	%UI.visible = _contains_mouse_cursor
+
+	_on_dark_mode_changed(Settings.dark_mode)
+	EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
 
 
 func is_in_edit_mode() -> bool:
@@ -161,7 +156,7 @@ func load_from_disk(line : String) -> void:
 
 func _on_mouse_entered() -> void:
 	_contains_mouse_cursor = true
-	$HBox/Content.modulate = Color("#81a1c1")
+	%Label.set("theme_override_colors/font_color", Settings.NORD_09)
 	if not is_in_edit_mode() and not done:
 		%UI.show()
 
@@ -170,7 +165,18 @@ func _on_mouse_exited() -> void:
 	_contains_mouse_cursor = false
 	if not is_queued_for_deletion():
 		%UI.hide()
-		if is_heading:
-			%Content.modulate = Color("#2E3440")
+		if Settings.dark_mode:
+			%Label.set("theme_override_colors/font_color", Settings.NORD_06)
 		else:
-			%Content.modulate = Color.WHITE
+			%Label.set("theme_override_colors/font_color", Settings.NORD_00)
+
+
+func _on_dark_mode_changed(dark_mode : bool) -> void:
+	if dark_mode:
+		get("theme_override_styles/panel").bg_color = Settings.NORD_02
+		%Label.set("theme_override_colors/font_color", Settings.NORD_06)
+		%UI.modulate = Settings.NORD_06
+	else:
+		get("theme_override_styles/panel").bg_color = Settings.NORD_04
+		%Label.set("theme_override_colors/font_color", Settings.NORD_00)
+		%UI.modulate = Settings.NORD_00

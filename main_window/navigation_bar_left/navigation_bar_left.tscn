@@ -18,12 +18,14 @@ script = ExtResource("1_kn5h0")
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
+theme_type_variation = &"LeftSidebarButton"
 icon = ExtResource("1_rckff")
 
 [node name="ShiftViewBackward" type="Button" parent="."]
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
+theme_type_variation = &"LeftSidebarButton"
 icon = ExtResource("2_s8dw8")
 
 [node name="Spacer" type="Control" parent="."]
@@ -34,6 +36,7 @@ layout_mode = 2
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
+theme_type_variation = &"LeftSidebarButton"
 shortcut = SubResource("Shortcut_f2sw1")
 shortcut_in_tooltip = false
 icon = ExtResource("3_vrbxd")

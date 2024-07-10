@@ -1,0 +1,134 @@
+[gd_resource type="Theme" load_steps=11 format=3 uid="uid://r4f841iblmo"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k3fw2"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.263, 0.298, 0.369, 0.3)
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n0ilu"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+draw_center = false
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_detail = 5
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ktu4n"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.505882, 0.631373, 0.756863, 1)
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4xkor"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.262745, 0.298039, 0.368627, 1)
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_784qn"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.368627, 0.505882, 0.67451, 1)
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_66bpq"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.263, 0.298, 0.369, 0.3)
+corner_radius_top_left = 4
+corner_radius_bottom_left = 4
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0flkb"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_bottom = 2
+corner_radius_top_left = 4
+corner_radius_bottom_left = 4
+corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vbyk6"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.505882, 0.631373, 0.756863, 1)
+corner_radius_top_left = 4
+corner_radius_bottom_left = 4
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_001vx"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.262745, 0.298039, 0.368627, 1)
+corner_radius_top_left = 4
+corner_radius_bottom_left = 4
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ggb6q"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.368627, 0.505882, 0.67451, 1)
+corner_radius_top_left = 4
+corner_radius_bottom_left = 4
+corner_detail = 5
+
+[resource]
+Label/colors/font_color = Color(0.898039, 0.913725, 0.941176, 1)
+LeftSidebarButton/base_type = &"Button"
+LeftSidebarButton/colors/font_color = Color(0.92549, 0.937255, 0.956863, 1)
+LeftSidebarButton/colors/icon_normal_color = Color(0.92549, 0.937255, 0.956863, 1)
+LeftSidebarButton/styles/disabled = SubResource("StyleBoxFlat_k3fw2")
+LeftSidebarButton/styles/focus = SubResource("StyleBoxFlat_n0ilu")
+LeftSidebarButton/styles/hover = SubResource("StyleBoxFlat_ktu4n")
+LeftSidebarButton/styles/normal = SubResource("StyleBoxFlat_4xkor")
+LeftSidebarButton/styles/pressed = SubResource("StyleBoxFlat_784qn")
+RightSidebarButton/base_type = &"Button"
+RightSidebarButton/colors/font_color = Color(0.92549, 0.937255, 0.956863, 1)
+RightSidebarButton/colors/icon_normal_color = Color(0.92549, 0.937255, 0.956863, 1)
+RightSidebarButton/styles/disabled = SubResource("StyleBoxFlat_66bpq")
+RightSidebarButton/styles/focus = SubResource("StyleBoxFlat_0flkb")
+RightSidebarButton/styles/hover = SubResource("StyleBoxFlat_vbyk6")
+RightSidebarButton/styles/normal = SubResource("StyleBoxFlat_001vx")
+RightSidebarButton/styles/pressed = SubResource("StyleBoxFlat_ggb6q")
+SubtleLabel/base_type = &"Label"
+SubtleLabel/colors/font_color = Color(0.847059, 0.870588, 0.913725, 1)

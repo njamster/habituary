@@ -1,21 +1,34 @@
-[gd_scene load_steps=3 format=3 uid="uid://bmrx40aplh6c1"]
+[gd_scene load_steps=6 format=3 uid="uid://bmrx40aplh6c1"]
 
+[ext_resource type="Script" path="res://main_window/settings_widget/settings_widget.gd" id="1_1d7q7"]
 [ext_resource type="Texture2D" uid="uid://lqaqpht4rju6" path="res://main_window/settings_widget/images/mode_dark.svg" id="1_53725"]
 [ext_resource type="Texture2D" uid="uid://vs7ua0yf1lr" path="res://main_window/settings_widget/images/settings.svg" id="2_fp5hp"]
 
+[sub_resource type="InputEventAction" id="InputEventAction_lv7wu"]
+action = &"toggle_dark_mode"
+
+[sub_resource type="Shortcut" id="Shortcut_qi7jp"]
+events = [SubResource("InputEventAction_lv7wu")]
+
 [node name="SettingsWidget" type="VBoxContainer"]
 size_flags_vertical = 10
+script = ExtResource("1_1d7q7")
 
 [node name="Mode" type="Button" parent="."]
 layout_mode = 2
 focus_mode = 0
-mouse_default_cursor_shape = 8
-disabled = true
+mouse_default_cursor_shape = 2
+theme_type_variation = &"RightSidebarButton"
+shortcut = SubResource("Shortcut_qi7jp")
+shortcut_in_tooltip = false
 icon = ExtResource("1_53725")
 
 [node name="Settings" type="Button" parent="."]
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 8
+theme_type_variation = &"RightSidebarButton"
 disabled = true
 icon = ExtResource("2_fp5hp")
+
+[connection signal="pressed" from="Mode" to="." method="_on_mode_pressed"]

@@ -1,5 +1,24 @@
 extends Node
 
+#region COLOR THEME
+# dark colors
+const NORD_00 = Color("#2E3440")
+const NORD_01 = Color("#3B4252")
+const NORD_02 = Color("#434C5E")
+const NORD_03 = Color("#4C566A")
+
+# light colors
+const NORD_04 = Color("#D8DEE9")
+const NORD_05 = Color("#E5E9F0")
+const NORD_06 = Color("#ECEFF4")
+
+# frost colors
+const NORD_07 = Color("#8FBCBB")
+const NORD_08 = Color("#88C0D0")
+const NORD_09 = Color("#81A1C1")
+const NORD_10 = Color("#5E81AC")
+#endregion
+
 const SETTINGS_PATH := "user://settings.cfg"
 
 var date_format_save := "YYYY-MM-DD"
@@ -29,6 +48,36 @@ var current_day := DayTimer.today:
 			current_day = value
 			EventBus.current_day_changed.emit(current_day)
 
+var dark_mode := true:
+	set(value):
+		dark_mode = value
+		var theme := ThemeDB.get_project_theme()
+		if dark_mode:
+			RenderingServer.set_default_clear_color("#2E3440")
+			theme.set_color("font_color", "Label", NORD_06)
+
+			theme.set_color("font_color", "SubtleLabel", NORD_04)
+
+			for type in ["LeftSidebarButton", "RightSidebarButton"]:
+				theme.set_color("font_color", type, NORD_06)
+				theme.set_color("icon_normal_color", type, NORD_06)
+				var stylebox := theme.get_stylebox("normal", type)
+				stylebox.bg_color = NORD_02
+				theme.set_stylebox("normal", type, stylebox)
+		else:
+			RenderingServer.set_default_clear_color("#ECEFF4")
+			theme.set_color("font_color", "Label", NORD_00)
+
+			theme.set_color("font_color", "SubtleLabel", NORD_02)
+
+			for type in ["LeftSidebarButton", "RightSidebarButton"]:
+				theme.set_color("font_color", type, NORD_00)
+				theme.set_color("icon_normal_color", type, NORD_00)
+				var stylebox := theme.get_stylebox("normal", type)
+				stylebox.bg_color = NORD_04
+				theme.set_stylebox("normal", type, stylebox)
+		EventBus.dark_mode_changed.emit(dark_mode)
+
 
 func _enter_tree() -> void:
 	if OS.is_debug_build():
@@ -38,6 +87,7 @@ func _enter_tree() -> void:
 	var error := config.load(SETTINGS_PATH)
 	if not error:
 		view_mode = config.get_value("AppState", "view_mode", view_mode)
+		dark_mode = config.get_value("AppState", "dark_mode", dark_mode)
 
 
 func _notification(what: int) -> void:
@@ -48,6 +98,7 @@ func _notification(what: int) -> void:
 		var config = ConfigFile.new()
 		config.load(SETTINGS_PATH) # keep existing settings (if there are any)
 		config.set_value("AppState", "view_mode", view_mode)
+		config.set_value("AppState", "dark_mode", dark_mode)
 		config.save(SETTINGS_PATH)
 
 

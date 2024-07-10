@@ -2,7 +2,20 @@
 
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/day_panel.gd" id="1_a2phy"]
 [ext_resource type="PackedScene" uid="uid://dw8mvf72vw7qk" path="res://main_window/list_view/day_panel/todo_list/todo_list.tscn" id="2_66ttt"]
-[ext_resource type="StyleBox" uid="uid://bkwjgsmyyasa4" path="res://main_window/list_view/day_panel/resources/header_default.tres" id="2_nmmfy"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8t3rb"]
+resource_local_to_scene = true
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+bg_color = Color(0.262745, 0.298039, 0.368627, 1)
+draw_center = false
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 5
 
 [node name="DayPanel" type="VBoxContainer"]
 anchors_preset = 15
@@ -19,7 +32,7 @@ script = ExtResource("1_a2phy")
 
 [node name="Header" type="PanelContainer" parent="."]
 layout_mode = 2
-theme_override_styles/panel = ExtResource("2_nmmfy")
+theme_override_styles/panel = SubResource("StyleBoxFlat_8t3rb")
 
 [node name="VBox" type="VBoxContainer" parent="Header"]
 layout_mode = 2
@@ -29,7 +42,7 @@ mouse_default_cursor_shape = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_colors/font_color = Color(0.847059, 0.870588, 0.913725, 1)
+theme_type_variation = &"SubtleLabel"
 theme_override_font_sizes/font_size = 12
 text = "DD MMM YYYY"
 uppercase = true

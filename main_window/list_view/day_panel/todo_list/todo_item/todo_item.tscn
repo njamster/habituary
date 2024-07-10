@@ -1,10 +1,19 @@
 [gd_scene load_steps=9 format=3 uid="uid://v8u8oswwmlf3"]
 
-[ext_resource type="StyleBox" uid="uid://d18r3tewjub1n" path="res://main_window/list_view/day_panel/todo_list/todo_item/resources/default.tres" id="1_86v70"]
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/todo_list/todo_item/todo_item.gd" id="2_6v2l5"]
 [ext_resource type="Texture2D" uid="uid://b80hle2h5sj20" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/drag_indicator.svg" id="3_avsfu"]
 [ext_resource type="Texture2D" uid="uid://4eakbxkw2dmx" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/delete.svg" id="3_nsj7w"]
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/todo_list/todo_item/drag_handle.gd" id="5_mx38m"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fnmjf"]
+resource_local_to_scene = true
+bg_color = Color(0.262745, 0.298039, 0.368627, 1)
+draw_center = false
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 5
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3h3so"]
 
@@ -16,7 +25,7 @@
 custom_minimum_size = Vector2(0, 27)
 offset_right = 1920.0
 offset_bottom = 27.0
-theme_override_styles/panel = ExtResource("1_86v70")
+theme_override_styles/panel = SubResource("StyleBoxFlat_fnmjf")
 script = ExtResource("2_6v2l5")
 
 [node name="HBox" type="HBoxContainer" parent="."]
@@ -60,6 +69,7 @@ theme_override_constants/separation = 0
 [node name="Delete" type="Button" parent="HBox/UI"]
 custom_minimum_size = Vector2(27, 0)
 layout_mode = 2
+focus_mode = 0
 mouse_filter = 1
 mouse_default_cursor_shape = 2
 icon = ExtResource("3_nsj7w")

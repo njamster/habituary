@@ -1,7 +1,8 @@
 [gd_scene load_steps=11 format=3 uid="uid://dgxug4yl0qg3x"]
 
 [ext_resource type="Script" path="res://main_window/view_mode_widget/view_mode_widget.gd" id="1_1o2da"]
-[ext_resource type="StyleBox" uid="uid://cy56avae77sx1" path="res://main_window/view_mode_widget/resources/toggled.tres" id="2_2euf7"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_43ver"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_dvngi"]
 action = &"view_mode_1"
@@ -41,8 +42,10 @@ custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
+theme_type_variation = &"LeftSidebarButton"
 theme_override_font_sizes/font_size = 12
-theme_override_styles/normal = ExtResource("2_2euf7")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_43ver")
 shortcut = SubResource("Shortcut_v5qej")
 shortcut_in_tooltip = false
 text = "1"
@@ -52,7 +55,10 @@ custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
+theme_type_variation = &"LeftSidebarButton"
 theme_override_font_sizes/font_size = 12
+toggle_mode = true
+button_group = SubResource("ButtonGroup_43ver")
 shortcut = SubResource("Shortcut_1x0d2")
 shortcut_in_tooltip = false
 text = "3"
@@ -62,7 +68,10 @@ custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
+theme_type_variation = &"LeftSidebarButton"
 theme_override_font_sizes/font_size = 12
+toggle_mode = true
+button_group = SubResource("ButtonGroup_43ver")
 shortcut = SubResource("Shortcut_gxdox")
 shortcut_in_tooltip = false
 text = "5"
@@ -72,7 +81,10 @@ custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
+theme_type_variation = &"LeftSidebarButton"
 theme_override_font_sizes/font_size = 12
+toggle_mode = true
+button_group = SubResource("ButtonGroup_43ver")
 shortcut = SubResource("Shortcut_8cdb0")
 shortcut_in_tooltip = false
 text = "7"
