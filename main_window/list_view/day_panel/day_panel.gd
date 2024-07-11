@@ -40,10 +40,9 @@ func _update_header() -> void:
 
 
 func _update_store_path() -> void:
-	store_path = "%s/%s.txt" % [
-		Settings.store_path,
+	store_path = Settings.store_path.path_join(
 		self.date.format(Settings.date_format_save)
-]
+	) + ".txt"
 
 
 func _apply_date_relative_formating() -> void:

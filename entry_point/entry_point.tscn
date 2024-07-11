@@ -1,0 +1,99 @@
+[gd_scene load_steps=3 format=3 uid="uid://h7so45kbcg12"]
+
+[ext_resource type="Script" path="res://entry_point/entry_point.gd" id="1_u5cts"]
+[ext_resource type="Texture2D" uid="uid://dvka68ounxvou" path="res://icon.svg" id="2_3fb74"]
+
+[node name="EntryPoint" type="MarginContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -199.0
+offset_top = -167.5
+offset_right = 199.0
+offset_bottom = 167.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 8
+script = ExtResource("1_u5cts")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Block1" type="VBoxContainer" parent="VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Logo" type="TextureRect" parent="VBox/Block1"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_3fb74")
+
+[node name="Welcome" type="Label" parent="VBox/Block1"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_font_sizes/font_size = 24
+text = "Welcome to Habituary!"
+
+[node name="Block2" type="VBoxContainer" parent="VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Instruction" type="Label" parent="VBox/Block2"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Where do you want to store your to-dos?"
+horizontal_alignment = 1
+
+[node name="Form" type="VBoxContainer" parent="VBox/Block2"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Path" type="LineEdit" parent="VBox/Block2/Form"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+text = "/home/ben/habituary/"
+alignment = 1
+editable = false
+context_menu_enabled = false
+select_all_on_focus = true
+
+[node name="Buttons" type="HBoxContainer" parent="VBox/Block2/Form"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BrowseFiles" type="Button" parent="VBox/Block2/Form/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Browse Files..."
+
+[node name="Confirm" type="Button" parent="VBox/Block2/Form/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Confirm"
+
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Open a Directory"
+size = Vector2i(701, 500)
+min_size = Vector2i(701, 190)
+ok_button_text = "Select Current Folder"
+file_mode = 2
+access = 2
+
+[connection signal="text_changed" from="VBox/Block2/Form/Path" to="." method="_on_path_text_changed"]
+[connection signal="pressed" from="VBox/Block2/Form/Buttons/BrowseFiles" to="." method="_on_browse_files_pressed"]
+[connection signal="pressed" from="VBox/Block2/Form/Buttons/Confirm" to="." method="_on_confirm_pressed"]
+[connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]

@@ -23,19 +23,7 @@ const SETTINGS_PATH := "user://settings.cfg"
 
 var date_format_save := "YYYY-MM-DD"
 
-var store_path:
-	get:
-		if OS.is_debug_build():
-			return "user://"
-		else:
-			var path := "/" + str(ProjectSettings.get("application/config/name")).to_snake_case()
-
-			if OS.has_feature("windows"):
-				path = OS.get_environment("USERPROFILE") + path
-			else:
-				path = OS.get_environment("HOME") + path
-
-			return path
+var store_path : String
 
 var view_mode := 3:
 	set(value):
@@ -80,6 +68,14 @@ var dark_mode := true:
 
 
 func _enter_tree() -> void:
+	if OS.is_debug_build():
+		store_path = ProjectSettings.globalize_path("user://")
+	else:
+		if OS.has_feature("windows"):
+			store_path = OS.get_environment("USERPROFILE") + "/habituary/"
+		else:
+			store_path = OS.get_environment("HOME") + "/habituary/"
+
 	if OS.is_debug_build():
 		return
 

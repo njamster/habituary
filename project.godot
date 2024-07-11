@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Habituary"
-run/main_scene="res://main_window/main_window.tscn"
+run/main_scene="res://entry_point/entry_point.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 run/low_processor_mode=true
 config/icon="res://icon.svg"
@@ -27,6 +27,7 @@ Utils="*res://autoloads/utils.gd"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+window/subwindows/embed_subwindows=false
 
 [filesystem]
 
