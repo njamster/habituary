@@ -83,6 +83,9 @@ func _on_edit_text_submitted(new_text: String) -> void:
 	if new_text.begins_with("# "):
 		new_text = new_text.right(-2)
 
+	# trim any leading & trailing whitespace
+	new_text = new_text.strip_edges()
+
 	if new_text:
 		if self.text != new_text:
 			self.text = new_text
