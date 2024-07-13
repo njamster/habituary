@@ -40,3 +40,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		var focus_owner = get_viewport().gui_get_focus_owner()
 		if focus_owner:
 			focus_owner.release_focus()
+	elif event.is_action_pressed("toggle_fullscreen"):
+		print(DisplayServer.window_get_mode())
+		match DisplayServer.window_get_mode():
+			DisplayServer.WINDOW_MODE_WINDOWED:
+				DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+			DisplayServer.WINDOW_MODE_FULLSCREEN:
+				DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
