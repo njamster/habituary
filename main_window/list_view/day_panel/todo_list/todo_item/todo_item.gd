@@ -1,6 +1,8 @@
 extends PanelContainer
 
-signal create_follow_up
+signal predecessor_requested
+signal successor_requested
+
 signal editing_started
 signal changed
 
@@ -79,7 +81,7 @@ func _on_edit_text_changed(new_text: String) -> void:
 	is_heading = new_text.begins_with("# ")
 
 
-func _on_edit_text_submitted(new_text: String) -> void:
+func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 	if new_text.begins_with("# "):
 		new_text = new_text.right(-2)
 
@@ -94,15 +96,19 @@ func _on_edit_text_submitted(new_text: String) -> void:
 		%Label.show()
 		if _contains_mouse_cursor:
 			%UI.show()
-		if Input.is_key_pressed(KEY_SHIFT):
-			create_follow_up.emit()
+
+		if key_input:
+			if Input.is_key_pressed(KEY_SHIFT):
+				predecessor_requested.emit()
+			else:
+				successor_requested.emit()
 	else:
 		delete()
 
 
 func _on_edit_focus_exited() -> void:
-	if not is_queued_for_deletion():
-		_on_edit_text_submitted(%Edit.text)
+	if not is_queued_for_deletion() and %Edit.visible:
+		_on_edit_text_submitted(%Edit.text, false)
 
 
 func _on_content_gui_input(event: InputEvent) -> void:

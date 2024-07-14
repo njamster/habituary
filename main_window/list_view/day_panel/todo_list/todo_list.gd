@@ -7,19 +7,19 @@ func _ready() -> void:
 	$LineHighlight.modulate.a = 0.0
 
 	if OS.is_debug_build():
-		for i in range(4):
-			var debug_item := TODO_ITEM.instantiate()
-			debug_item.add_to_group("debug_item")
+		for i in range(5):
+			var debug_item := add_todo(Vector2.ZERO, true)
 			debug_item.text = "Debug_%d" % i
-			%Items.add_child(debug_item)
 			if i == 0:
 				debug_item.done = true
 			elif i == 1:
 				debug_item.is_heading = true
 
 
-func add_todo(at_position := Vector2.ZERO) -> Control:
+func add_todo(at_position := Vector2.ZERO, is_debug_item := false) -> Control:
 	var new_item := TODO_ITEM.instantiate()
+	if is_debug_item:
+		new_item.add_to_group("debug_item")
 	%Items.add_child(new_item)
 	if at_position != Vector2.ZERO:
 		%Items.move_child(new_item, find_item_pos(at_position))
@@ -27,7 +27,10 @@ func add_todo(at_position := Vector2.ZERO) -> Control:
 	new_item.changed.connect(func():
 		get_parent().get_parent().save_to_disk()
 	)
-	new_item.create_follow_up.connect(func():
+	new_item.predecessor_requested.connect(func():
+		add_todo(self.global_position + new_item.position - Vector2(0, 32))
+	)
+	new_item.successor_requested.connect(func():
 		add_todo(self.global_position + new_item.position + Vector2(0, 32))
 	)
 	if at_position != Vector2.ZERO:

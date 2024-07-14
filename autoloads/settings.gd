@@ -46,6 +46,9 @@ var dark_mode := true:
 
 			theme.set_color("font_color", "SubtleLabel", NORD_04)
 
+			theme.set_color("font_color", "LineEdit", NORD_06)
+			theme.set_color("font_placeholder_color", "LineEdit", Color(NORD_06, 0.6))
+
 			for type in ["LeftSidebarButton", "RightSidebarButton"]:
 				theme.set_color("font_color", type, NORD_06)
 				theme.set_color("icon_normal_color", type, NORD_06)
@@ -57,6 +60,9 @@ var dark_mode := true:
 			theme.set_color("font_color", "Label", NORD_00)
 
 			theme.set_color("font_color", "SubtleLabel", NORD_02)
+
+			theme.set_color("font_color", "LineEdit", NORD_00)
+			theme.set_color("font_placeholder_color", "LineEdit", Color(NORD_00, 0.6))
 
 			for type in ["LeftSidebarButton", "RightSidebarButton"]:
 				theme.set_color("font_color", type, NORD_00)

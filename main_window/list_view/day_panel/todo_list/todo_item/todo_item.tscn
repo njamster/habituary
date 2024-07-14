@@ -57,6 +57,7 @@ theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleBoxEmpty_3h3so")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_0pwns")
 theme_override_styles/read_only = SubResource("StyleBoxEmpty_4lcjl")
+placeholder_text = "Enter to-do..."
 context_menu_enabled = false
 caret_blink = true
 caret_blink_interval = 0.45
