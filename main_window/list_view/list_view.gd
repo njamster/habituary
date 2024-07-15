@@ -15,15 +15,47 @@ func _update_list_view(view_mode : int) -> void:
 
 	# remove superfluous panels (if there are any)
 	for i in range(view_mode, child_count):
-		remove_day_panel(view_mode)
+		match Settings.today_position:
+			Settings.TodayPosition.LEFTMOST:
+				remove_day_panel(view_mode)
+			Settings.TodayPosition.SECOND_PLACE:
+				if i == 1:
+					remove_day_panel(0)
+				else:
+					remove_day_panel(view_mode)
+			Settings.TodayPosition.CENTERED:
+				if i % 2 == 0:
+					remove_day_panel(0)
+				else:
+					remove_day_panel(get_child_count() - 1)
 
 	# add additonal panels (if it's necessary)
 	for i in range(child_count, view_mode):
-		add_day_panel(i)
+		match Settings.today_position:
+			Settings.TodayPosition.LEFTMOST:
+				add_day_panel(i)
+			Settings.TodayPosition.SECOND_PLACE:
+				if child_count == 1 and i == 1:
+					add_day_panel(-1, true)
+				else:
+					add_day_panel(i - 1)
+			Settings.TodayPosition.CENTERED:
+				if i % 2 == 0:
+					add_day_panel(-1 * floor(0.5 * i), true)
+				else:
+					add_day_panel(ceil(0.5 * i))
 
 
 func _shift_list_view(current_day : Date) -> void:
-	var offset = current_day.day_difference_to(get_child(0).date)
+	var today_offset := 0
+	match Settings.today_position:
+		Settings.TodayPosition.SECOND_PLACE:
+			if get_child_count() > 1:
+				today_offset = 1
+		Settings.TodayPosition.CENTERED:
+			today_offset = floor(0.5 * Settings.view_mode)
+
+	var offset = current_day.day_difference_to(get_child(today_offset).date)
 	offset = sign(offset) * min(abs(offset), Settings.view_mode)
 
 	for i in abs(offset):
@@ -36,10 +68,10 @@ func _shift_list_view(current_day : Date) -> void:
 
 		if offset < 0:
 			# add additional panel on the left
-			add_day_panel(abs(offset) - 1 - i, true)
+			add_day_panel(abs(offset) - 1 - i - today_offset, true)
 		elif offset > 0:
 			# add additional panel on the right
-			add_day_panel(Settings.view_mode - offset + i)
+			add_day_panel(Settings.view_mode - offset + i - today_offset)
 
 
 func add_day_panel(offset_from_current_day : int, push_front := false) -> void:
