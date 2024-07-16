@@ -8,8 +8,7 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
-	wait_time = _get_seconds_till_tomorrow()
-	start()
+	self.start(_get_seconds_till_tomorrow())
 
 	timeout.connect(_on_new_day)
 
@@ -26,4 +25,4 @@ func _get_seconds_till_tomorrow() -> int:
 func _on_new_day() -> void:
 	today = today.add_days(1)
 	EventBus.new_day_started.emit()
-	wait_time = _get_seconds_till_tomorrow()
+	self.start(_get_seconds_till_tomorrow())
