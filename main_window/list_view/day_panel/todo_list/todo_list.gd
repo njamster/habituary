@@ -97,3 +97,13 @@ func hide_line_highlight() -> void:
 
 func _on_line_highlight_item_rect_changed() -> void:
 	$LineHighlight.modulate.a = 0.0
+
+
+func _on_item_rect_changed() -> void:
+	# note: this feels like something that should be handled in the theme, but currently cannot...
+	if self.size.y > get_parent().size.y:
+		# vertical scrollbar is visible, add some padding on the right side
+		add_theme_constant_override("margin_right", 8)
+	else:
+		# vertical scrollbar isn't visible (anymore), remove padding (again)
+		add_theme_constant_override("margin_right", 0)
