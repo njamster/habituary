@@ -26,9 +26,9 @@ icon = ExtResource("1_53725")
 [node name="Settings" type="Button" parent="."]
 layout_mode = 2
 focus_mode = 0
-mouse_default_cursor_shape = 8
+mouse_default_cursor_shape = 2
 theme_type_variation = &"RightSidebarButton"
-disabled = true
 icon = ExtResource("2_fp5hp")
 
 [connection signal="pressed" from="Mode" to="." method="_on_mode_pressed"]
+[connection signal="pressed" from="Settings" to="." method="_on_settings_pressed"]

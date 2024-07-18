@@ -31,7 +31,10 @@ var date_format_save := "YYYY-MM-DD"
 
 var store_path : String
 
-var today_position := TodayPosition.CENTERED
+var today_position := TodayPosition.CENTERED:
+	set(value):
+		today_position = value
+		EventBus.current_day_changed.emit(current_day)
 
 var view_mode := 3:
 	set(value):
@@ -60,9 +63,13 @@ var dark_mode := true:
 			for type in ["LeftSidebarButton", "RightSidebarButton"]:
 				theme.set_color("font_color", type, NORD_06)
 				theme.set_color("icon_normal_color", type, NORD_06)
-				var stylebox := theme.get_stylebox("normal", type)
-				stylebox.bg_color = NORD_02
-				theme.set_stylebox("normal", type, stylebox)
+				var button_stylebox := theme.get_stylebox("normal", type)
+				button_stylebox.bg_color = NORD_02
+				theme.set_stylebox("normal", type, button_stylebox)
+
+			var panel_stylebox := theme.get_stylebox("panel", "PanelContainer")
+			panel_stylebox.bg_color = NORD_00
+			theme.set_stylebox("panel", "PanelContainer", panel_stylebox)
 		else:
 			RenderingServer.set_default_clear_color("#ECEFF4")
 			theme.set_color("font_color", "Label", NORD_00)
@@ -75,9 +82,13 @@ var dark_mode := true:
 			for type in ["LeftSidebarButton", "RightSidebarButton"]:
 				theme.set_color("font_color", type, NORD_00)
 				theme.set_color("icon_normal_color", type, NORD_00)
-				var stylebox := theme.get_stylebox("normal", type)
-				stylebox.bg_color = NORD_04
-				theme.set_stylebox("normal", type, stylebox)
+				var button_stylebox := theme.get_stylebox("normal", type)
+				button_stylebox.bg_color = NORD_04
+				theme.set_stylebox("normal", type, button_stylebox)
+
+			var panel_stylebox := theme.get_stylebox("panel", "PanelContainer")
+			panel_stylebox.bg_color = NORD_06
+			theme.set_stylebox("panel", "PanelContainer", panel_stylebox)
 		EventBus.dark_mode_changed.emit(dark_mode)
 
 

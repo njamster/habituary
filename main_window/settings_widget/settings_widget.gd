@@ -13,3 +13,7 @@ func _on_mode_pressed() -> void:
 
 func _on_dark_mode_changed(dark_mode) -> void:
 	$Mode.icon = preload("images/mode_light.svg") if dark_mode else preload("images/mode_dark.svg")
+
+
+func _on_settings_pressed() -> void:
+	EventBus.settings_button_pressed.emit()
