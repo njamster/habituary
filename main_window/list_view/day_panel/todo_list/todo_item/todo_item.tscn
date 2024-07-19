@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://v8u8oswwmlf3"]
+[gd_scene load_steps=10 format=3 uid="uid://v8u8oswwmlf3"]
 
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/todo_list/todo_item/todo_item.gd" id="2_6v2l5"]
 [ext_resource type="Texture2D" uid="uid://b80hle2h5sj20" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/drag_indicator.svg" id="3_avsfu"]
 [ext_resource type="Texture2D" uid="uid://4eakbxkw2dmx" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/delete.svg" id="3_nsj7w"]
+[ext_resource type="Script" path="res://custom/tooltip.gd" id="3_oduck"]
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/todo_list/todo_item/drag_handle.gd" id="5_mx38m"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fnmjf"]
@@ -77,6 +78,11 @@ icon = ExtResource("3_nsj7w")
 flat = true
 expand_icon = true
 
+[node name="Tooltip" type="Node" parent="HBox/UI/Delete"]
+script = ExtResource("3_oduck")
+text = "Delete To-Do"
+popup_position = 1
+
 [node name="DragHandle" type="TextureRect" parent="HBox/UI"]
 custom_minimum_size = Vector2(31, 0)
 layout_mode = 2
@@ -84,6 +90,11 @@ mouse_default_cursor_shape = 6
 texture = ExtResource("3_avsfu")
 stretch_mode = 3
 script = ExtResource("5_mx38m")
+
+[node name="Tooltip" type="Node" parent="HBox/UI/DragHandle"]
+script = ExtResource("3_oduck")
+text = "Move To-Do"
+popup_position = 1
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

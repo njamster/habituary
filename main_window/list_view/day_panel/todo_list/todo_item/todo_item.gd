@@ -166,7 +166,7 @@ func load_from_disk(line : String) -> void:
 func _on_mouse_entered() -> void:
 	_contains_mouse_cursor = true
 	%Label.set("theme_override_colors/font_color", Settings.NORD_09)
-	if not is_in_edit_mode() and not done:
+	if not is_in_edit_mode() and not done and not get_viewport().gui_is_dragging():
 		%UI.show()
 
 

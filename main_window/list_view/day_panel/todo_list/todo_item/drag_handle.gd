@@ -23,6 +23,8 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 
 	preview.get_node("HBox/UI/Delete").hide()
 	preview.get_node("HBox/UI").show()
+
 	host.modulate.a = 0.6
+	get_node("Tooltip").hide_tooltip()
 
 	return host

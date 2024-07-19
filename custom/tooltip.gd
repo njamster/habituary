@@ -12,6 +12,9 @@ class_name Tooltip
 
 @export_range(0.0, 0.0, 0.1, "suffix:seconds", "or_greater") var popup_delay := 0.5
 
+enum PopupPosition {AUTOMATIC, LEFT, RIGHT}
+@export var popup_position := PopupPosition.AUTOMATIC
+
 @export_range(0, 0, 1, "suffix:px", "or_greater") var gap_width := 8
 
 var _tooltip_panel : PanelContainer
@@ -63,12 +66,20 @@ func _spawn_panel() -> void:
 
 	# step 3: position tooltip
 	_tooltip_panel.global_position = get_parent().global_position
-	if get_window().size.x - _tooltip_panel.global_position.x > _tooltip_panel.global_position.x:
-		# shift tooltip to the right
-		_tooltip_panel.global_position.x += get_parent().size.x + gap_width
-	else:
-		# shift tooltip to the left
-		_tooltip_panel.global_position.x -= _tooltip_panel.size.x + gap_width
+	match self.popup_position:
+		PopupPosition.LEFT:
+			# shift tooltip to the left
+			_tooltip_panel.global_position.x -= _tooltip_panel.size.x + gap_width
+		PopupPosition.RIGHT:
+			# shift tooltip to the right
+			_tooltip_panel.global_position.x += get_parent().size.x + gap_width
+		PopupPosition.AUTOMATIC:
+			if get_window().size.x - _tooltip_panel.global_position.x > _tooltip_panel.global_position.x:
+				# shift tooltip to the right
+				_tooltip_panel.global_position.x += get_parent().size.x + gap_width
+			else:
+				# shift tooltip to the left
+				_tooltip_panel.global_position.x -= _tooltip_panel.size.x + gap_width
 	# center tooltip vertically where possible, but make sure it stays fully inside the window
 	_tooltip_panel.global_position.y = clamp(
 		_tooltip_panel.global_position.y + 0.5 * (get_parent().size.y - _tooltip_panel.size.y),
