@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://bmrx40aplh6c1"]
+[gd_scene load_steps=7 format=3 uid="uid://bmrx40aplh6c1"]
 
 [ext_resource type="Script" path="res://main_window/settings_widget/settings_widget.gd" id="1_1d7q7"]
 [ext_resource type="Texture2D" uid="uid://lqaqpht4rju6" path="res://main_window/settings_widget/images/mode_dark.svg" id="1_53725"]
 [ext_resource type="Texture2D" uid="uid://vs7ua0yf1lr" path="res://main_window/settings_widget/images/settings.svg" id="2_fp5hp"]
+[ext_resource type="Script" path="res://custom/tooltip.gd" id="3_diiyk"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_lv7wu"]
 action = &"toggle_dark_mode"
@@ -23,12 +24,20 @@ shortcut = SubResource("Shortcut_qi7jp")
 shortcut_in_tooltip = false
 icon = ExtResource("1_53725")
 
+[node name="Tooltip" type="Node" parent="Mode"]
+script = ExtResource("3_diiyk")
+text = "Switch To Light Mode"
+
 [node name="Settings" type="Button" parent="."]
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"RightSidebarButton"
 icon = ExtResource("2_fp5hp")
+
+[node name="Tooltip" type="Node" parent="Settings"]
+script = ExtResource("3_diiyk")
+text = "Open Settings"
 
 [connection signal="pressed" from="Mode" to="." method="_on_mode_pressed"]
 [connection signal="pressed" from="Settings" to="." method="_on_settings_pressed"]

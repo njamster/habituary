@@ -70,6 +70,10 @@ var dark_mode := true:
 			var panel_stylebox := theme.get_stylebox("panel", "PanelContainer")
 			panel_stylebox.bg_color = NORD_00
 			theme.set_stylebox("panel", "PanelContainer", panel_stylebox)
+
+			var tooltip_stylebox := theme.get_stylebox("panel", "TooltipPanel")
+			tooltip_stylebox.bg_color = NORD_03
+			theme.set_stylebox("panel", "TooltipPanel", tooltip_stylebox)
 		else:
 			RenderingServer.set_default_clear_color("#ECEFF4")
 			theme.set_color("font_color", "Label", NORD_00)
@@ -89,6 +93,10 @@ var dark_mode := true:
 			var panel_stylebox := theme.get_stylebox("panel", "PanelContainer")
 			panel_stylebox.bg_color = NORD_06
 			theme.set_stylebox("panel", "PanelContainer", panel_stylebox)
+
+			var tooltip_stylebox := theme.get_stylebox("panel", "TooltipPanel")
+			tooltip_stylebox.bg_color = NORD_04
+			theme.set_stylebox("panel", "TooltipPanel", tooltip_stylebox)
 		EventBus.dark_mode_changed.emit(dark_mode)
 
 

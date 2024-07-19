@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://dgxug4yl0qg3x"]
+[gd_scene load_steps=12 format=3 uid="uid://dgxug4yl0qg3x"]
 
 [ext_resource type="Script" path="res://main_window/view_mode_widget/view_mode_widget.gd" id="1_1o2da"]
+[ext_resource type="Script" path="res://custom/tooltip.gd" id="2_4x6jm"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_43ver"]
 
@@ -50,6 +51,10 @@ shortcut = SubResource("Shortcut_v5qej")
 shortcut_in_tooltip = false
 text = "1"
 
+[node name="Tooltip" type="Node" parent="SingleDay"]
+script = ExtResource("2_4x6jm")
+text = "Show 1 Day"
+
 [node name="ThreeDays" type="Button" parent="."]
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
@@ -62,6 +67,10 @@ button_group = SubResource("ButtonGroup_43ver")
 shortcut = SubResource("Shortcut_1x0d2")
 shortcut_in_tooltip = false
 text = "3"
+
+[node name="Tooltip" type="Node" parent="ThreeDays"]
+script = ExtResource("2_4x6jm")
+text = "Show 3 Days"
 
 [node name="FiveDays" type="Button" parent="."]
 custom_minimum_size = Vector2(28, 28)
@@ -76,6 +85,10 @@ shortcut = SubResource("Shortcut_gxdox")
 shortcut_in_tooltip = false
 text = "5"
 
+[node name="Tooltip" type="Node" parent="FiveDays"]
+script = ExtResource("2_4x6jm")
+text = "Show 5 Days"
+
 [node name="SevenDays" type="Button" parent="."]
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
@@ -88,3 +101,7 @@ button_group = SubResource("ButtonGroup_43ver")
 shortcut = SubResource("Shortcut_8cdb0")
 shortcut_in_tooltip = false
 text = "7"
+
+[node name="Tooltip" type="Node" parent="SevenDays"]
+script = ExtResource("2_4x6jm")
+text = "Show 7 Days"

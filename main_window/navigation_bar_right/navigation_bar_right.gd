@@ -1,6 +1,10 @@
 extends VBoxContainer
 
 
+func _ready() -> void:
+	EventBus.view_mode_changed.connect(_on_view_mode_changed)
+
+
 func _on_next_day_pressed() -> void:
 	Settings.current_day = Settings.current_day.add_days(1)
 
@@ -16,3 +20,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		Utils.press_button_with_visual_feedback($ShiftViewForward)
 	elif event.is_action_pressed("next_day"):
 		Utils.press_button_with_visual_feedback($NextDay)
+
+
+func _on_view_mode_changed(view_mode : int) -> void:
+	if view_mode == 1:
+		$ShiftViewForward/Tooltip.text = "Move %d Day Forward" % view_mode
+	else:
+		$ShiftViewForward/Tooltip.text = "Move %d Days Forward" % view_mode

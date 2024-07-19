@@ -12,7 +12,12 @@ func _on_mode_pressed() -> void:
 
 
 func _on_dark_mode_changed(dark_mode) -> void:
-	$Mode.icon = preload("images/mode_light.svg") if dark_mode else preload("images/mode_dark.svg")
+	if dark_mode:
+		$Mode.icon = preload("images/mode_light.svg")
+		$Mode/Tooltip.text = "Switch To Light Mode"
+	else:
+		$Mode.icon = preload("images/mode_dark.svg")
+		$Mode/Tooltip.text = "Switch To Dark Mode"
 
 
 func _on_settings_pressed() -> void:
