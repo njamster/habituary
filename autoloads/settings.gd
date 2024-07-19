@@ -116,7 +116,7 @@ func _enter_tree() -> void:
 	var error := config.load(SETTINGS_PATH)
 	if not error:
 		dark_mode = config.get_value("AppState", "dark_mode", dark_mode)
-		view_mode = config.get_value("AppState", "today_position", today_position)
+		today_position = config.get_value("AppState", "today_position", today_position)
 		view_mode = config.get_value("AppState", "view_mode", view_mode)
 
 
