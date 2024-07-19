@@ -33,6 +33,8 @@ func _ready() -> void:
 	get_parent().mouse_entered.connect(show_tooltip)
 	get_parent().mouse_exited.connect(hide_tooltip)
 
+	get_tree().get_root().size_changed.connect(hide_tooltip)
+
 
 func show_tooltip() -> void:
 	if not text:
