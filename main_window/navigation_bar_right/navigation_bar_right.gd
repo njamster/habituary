@@ -27,3 +27,8 @@ func _on_view_mode_changed(view_mode : int) -> void:
 		$ShiftViewForward/Tooltip.text = "Move %d Day Forward" % view_mode
 	else:
 		$ShiftViewForward/Tooltip.text = "Move %d Days Forward" % view_mode
+
+
+func _on_calendar_pressed() -> void:
+	EventBus.calendar_button_pressed.emit()
+	$Calendar/Tooltip.hide_tooltip()

@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://brgpa340xc1dn"]
+
+[ext_resource type="Script" path="res://main_window/overlay/overlay.gd" id="1_ippme"]
+[ext_resource type="PackedScene" uid="uid://l4kyh6xqycoy" path="res://main_window/overlay/calendar_widget/calendar_widget.tscn" id="2_4rb6r"]
+[ext_resource type="PackedScene" uid="uid://dkopw4i7xb1hs" path="res://main_window/overlay/settings_panel/settings_panel.tscn" id="2_qeh0g"]
+
+[node name="Overlay" type="CanvasLayer"]
+script = ExtResource("1_ippme")
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.7)
+
+[node name="CalendarWidget" parent="." instance=ExtResource("2_4rb6r")]
+visible = false
+
+[node name="SettingsPanel" parent="." instance=ExtResource("2_qeh0g")]
+visible = false
+
+[connection signal="gui_input" from="Background" to="." method="_on_dimmed_background_gui_input"]

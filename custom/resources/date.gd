@@ -9,7 +9,7 @@ const _MONTH_NAMES : Array[String] = [
 	"April",
 	"May",
 	"June",
-	"Juli",
+	"July",
 	"August",
 	"September",
 	"October",

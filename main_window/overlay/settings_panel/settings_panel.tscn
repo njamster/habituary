@@ -1,0 +1,83 @@
+[gd_scene load_steps=2 format=3 uid="uid://dkopw4i7xb1hs"]
+
+[ext_resource type="Script" path="res://main_window/overlay/settings_panel/settings_panel.gd" id="1_yrmyc"]
+
+[node name="SettingsPanel" type="PanelContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_yrmyc")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="Heading" type="Label" parent="VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Settings"
+horizontal_alignment = 1
+
+[node name="VBox1" type="VBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="StorePath" type="HBoxContainer" parent="VBox/VBox1"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="VBox/VBox1/StorePath"]
+layout_mode = 2
+text = "Store Path"
+vertical_alignment = 1
+
+[node name="Path" type="LineEdit" parent="VBox/VBox1/StorePath"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+text = "/home/ben/habituary/"
+alignment = 1
+editable = false
+
+[node name="Explanation" type="Label" parent="VBox/VBox1"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "This is the path under which Habituary will store all your to-dos. It is highly recommended that you keep regular backups of this directory to prevent data loss in case of errors or bugs."
+autowrap_mode = 3
+
+[node name="VBox2" type="VBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="TodayPosition" type="HBoxContainer" parent="VBox/VBox2"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBox/VBox2/TodayPosition"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Current Day Position"
+vertical_alignment = 1
+
+[node name="Options" type="OptionButton" parent="VBox/VBox2/TodayPosition"]
+layout_mode = 2
+
+[node name="Explanation" type="Label" parent="VBox/VBox2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+
+[node name="Close" type="Button" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Close"
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="item_selected" from="VBox/VBox2/TodayPosition/Options" to="." method="_on_options_item_selected"]
+[connection signal="pressed" from="VBox/Close" to="." method="_on_close_pressed"]

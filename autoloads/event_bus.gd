@@ -7,3 +7,4 @@ signal view_mode_changed(view_mode)
 signal current_day_changed(current_day)
 
 signal settings_button_pressed
+signal calendar_button_pressed

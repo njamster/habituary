@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dgxug4yl0qg3x" path="res://main_window/view_mode_widget/view_mode_widget.tscn" id="2_qblvu"]
 [ext_resource type="PackedScene" uid="uid://d0nq3bl1c4e0i" path="res://main_window/navigation_bar_right/navigation_bar_right.tscn" id="5_s2ne8"]
 [ext_resource type="PackedScene" uid="uid://bmrx40aplh6c1" path="res://main_window/settings_widget/settings_widget.tscn" id="6_1c6x1"]
-[ext_resource type="PackedScene" uid="uid://brgpa340xc1dn" path="res://main_window/settings_overlay/settings_overlay.tscn" id="7_77111"]
+[ext_resource type="PackedScene" uid="uid://brgpa340xc1dn" path="res://main_window/overlay/overlay.tscn" id="7_77111"]
 [ext_resource type="PackedScene" uid="uid://esddcur57ihc" path="res://main_window/list_view/list_view.tscn" id="7_ajas6"]
 
 [node name="MainWindow" type="MarginContainer"]
@@ -47,4 +47,4 @@ layout_mode = 2
 [node name="SettingsWidget" parent="HBox/ToolbarRight" instance=ExtResource("6_1c6x1")]
 layout_mode = 2
 
-[node name="SettingsOverlay" parent="." instance=ExtResource("7_77111")]
+[node name="Overlay" parent="." instance=ExtResource("7_77111")]

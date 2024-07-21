@@ -38,16 +38,15 @@ layout_mode = 2
 [node name="Calendar" type="Button" parent="."]
 layout_mode = 2
 focus_mode = 0
-mouse_default_cursor_shape = 8
+mouse_default_cursor_shape = 2
 theme_type_variation = &"RightSidebarButton"
-disabled = true
 icon = ExtResource("3_3qcru")
 
 [node name="Tooltip" type="Node" parent="Calendar"]
 script = ExtResource("3_42o0e")
-text = "Calendar
-(Coming Soon)"
+text = "Calendar"
 text_alignment = 1
 
 [connection signal="pressed" from="NextDay" to="." method="_on_next_day_pressed"]
 [connection signal="pressed" from="ShiftViewForward" to="." method="_on_shift_view_forward_pressed"]
+[connection signal="pressed" from="Calendar" to="." method="_on_calendar_pressed"]

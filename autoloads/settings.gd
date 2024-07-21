@@ -74,6 +74,31 @@ var dark_mode := true:
 			var tooltip_stylebox := theme.get_stylebox("panel", "TooltipPanel")
 			tooltip_stylebox.bg_color = NORD_03
 			theme.set_stylebox("panel", "TooltipPanel", tooltip_stylebox)
+
+			var panel_container_popup := theme.get_stylebox("panel", "PanelContainer_Popup")
+			panel_container_popup.bg_color = NORD_01
+			theme.set_stylebox("panel", "PanelContainer_Popup", panel_container_popup)
+
+			var day_button_hover := theme.get_stylebox("hover", "CalendarWidget_DayButton")
+			day_button_hover.bg_color = NORD_02
+			theme.set_stylebox("hover", "CalendarWidget_DayButton", day_button_hover)
+
+			var day_button_selected_hover := theme.get_stylebox("hover", "CalendarWidget_DayButton_Selected")
+			day_button_selected_hover.bg_color = NORD_04
+			theme.set_stylebox("hover", "CalendarWidget_DayButton_Selected", day_button_selected_hover)
+
+			var day_button_today_hover := theme.get_stylebox("hover", "CalendarWidget_DayButton_Today")
+			day_button_today_hover.bg_color = NORD_04
+			theme.set_stylebox("hover", "CalendarWidget_DayButton_Today", day_button_today_hover)
+
+			theme.set_color("font_color", "CalendarWidget_DayButton", NORD_06)
+			theme.set_color("font_hover_color", "CalendarWidget_DayButton", NORD_06)
+
+			theme.set_color("font_color", "CalendarWidget_DayButton_Selected", NORD_06)
+			theme.set_color("font_hover_color", "CalendarWidget_DayButton_Selected", NORD_00)
+
+			theme.set_color("font_color", "CalendarWidget_DayButton_Today", NORD_06)
+			theme.set_color("font_hover_color", "CalendarWidget_DayButton_Today", NORD_00)
 		else:
 			RenderingServer.set_default_clear_color("#ECEFF4")
 			theme.set_color("font_color", "Label", NORD_00)
@@ -97,6 +122,31 @@ var dark_mode := true:
 			var tooltip_stylebox := theme.get_stylebox("panel", "TooltipPanel")
 			tooltip_stylebox.bg_color = NORD_04
 			theme.set_stylebox("panel", "TooltipPanel", tooltip_stylebox)
+
+			var panel_container_popup := theme.get_stylebox("panel", "PanelContainer_Popup")
+			panel_container_popup.bg_color = NORD_05
+			theme.set_stylebox("panel", "PanelContainer_Popup", panel_container_popup)
+
+			var day_button_hover := theme.get_stylebox("hover", "CalendarWidget_DayButton")
+			day_button_hover.bg_color = NORD_04
+			theme.set_stylebox("hover", "CalendarWidget_DayButton", day_button_hover)
+
+			var day_button_selected_hover := theme.get_stylebox("hover", "CalendarWidget_DayButton_Selected")
+			day_button_selected_hover.bg_color = NORD_01
+			theme.set_stylebox("hover", "CalendarWidget_DayButton_Selected", day_button_selected_hover)
+
+			var day_button_today_hover := theme.get_stylebox("hover", "CalendarWidget_DayButton_Today")
+			day_button_today_hover.bg_color = NORD_01
+			theme.set_stylebox("hover", "CalendarWidget_DayButton_Today", day_button_today_hover)
+
+			theme.set_color("font_color", "CalendarWidget_DayButton", NORD_00)
+			theme.set_color("font_hover_color", "CalendarWidget_DayButton", NORD_00)
+
+			theme.set_color("font_color", "CalendarWidget_DayButton_Selected", NORD_00)
+			theme.set_color("font_hover_color", "CalendarWidget_DayButton_Selected", NORD_06)
+
+			theme.set_color("font_color", "CalendarWidget_DayButton_Today", NORD_00)
+			theme.set_color("font_hover_color", "CalendarWidget_DayButton_Today", NORD_06)
 		EventBus.dark_mode_changed.emit(dark_mode)
 
 

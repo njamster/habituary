@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=14 format=3 uid="uid://r4f841iblmo"]
+[gd_resource type="Theme" load_steps=24 format=3 uid="uid://r4f841iblmo"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vf7p3"]
 content_margin_left = 8.0
@@ -11,6 +11,69 @@ corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tcek7"]
+bg_color = Color(0.262745, 0.298039, 0.368627, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uad8x"]
+draw_center = false
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6v1un"]
+bg_color = Color(0.505882, 0.631373, 0.756863, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_heyd5"]
+bg_color = Color(0.847059, 0.870588, 0.913725, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w38fb"]
+bg_color = Color(0.505882, 0.631373, 0.756863, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sroam"]
+bg_color = Color(0.505882, 0.631373, 0.756863, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nb6ut"]
+bg_color = Color(0.847059, 0.870588, 0.913725, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4ers7"]
+bg_color = Color(0.561, 0.737, 0.733, 0.4)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qskao"]
+bg_color = Color(0.505882, 0.631373, 0.756863, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k3fw2"]
 content_margin_left = 4.0
@@ -74,6 +137,18 @@ content_margin_top = 12.0
 content_margin_right = 12.0
 content_margin_bottom = 12.0
 bg_color = Color(0.180392, 0.203922, 0.25098, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w7s1k"]
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+bg_color = Color(0.231373, 0.258824, 0.321569, 1)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
@@ -150,6 +225,23 @@ corner_detail = 5
 
 [resource]
 AcceptDialog/styles/panel = SubResource("StyleBoxFlat_vf7p3")
+CalendarWidget_DayButton/base_type = &"Button"
+CalendarWidget_DayButton/font_sizes/font_size = 14
+CalendarWidget_DayButton/styles/hover = SubResource("StyleBoxFlat_tcek7")
+CalendarWidget_DayButton/styles/normal = SubResource("StyleBoxFlat_uad8x")
+CalendarWidget_DayButton/styles/pressed = SubResource("StyleBoxFlat_6v1un")
+CalendarWidget_DayButton_Selected/base_type = &"Button"
+CalendarWidget_DayButton_Selected/colors/font_hover_color = Color(0.180392, 0.203922, 0.25098, 1)
+CalendarWidget_DayButton_Selected/font_sizes/font_size = 14
+CalendarWidget_DayButton_Selected/styles/hover = SubResource("StyleBoxFlat_heyd5")
+CalendarWidget_DayButton_Selected/styles/normal = SubResource("StyleBoxFlat_w38fb")
+CalendarWidget_DayButton_Selected/styles/pressed = SubResource("StyleBoxFlat_sroam")
+CalendarWidget_DayButton_Today/base_type = &"Button"
+CalendarWidget_DayButton_Today/colors/font_hover_color = Color(0.180392, 0.203922, 0.25098, 1)
+CalendarWidget_DayButton_Today/font_sizes/font_size = 14
+CalendarWidget_DayButton_Today/styles/hover = SubResource("StyleBoxFlat_nb6ut")
+CalendarWidget_DayButton_Today/styles/normal = SubResource("StyleBoxFlat_4ers7")
+CalendarWidget_DayButton_Today/styles/pressed = SubResource("StyleBoxFlat_qskao")
 Label/colors/font_color = Color(0.898039, 0.913725, 0.941176, 1)
 LeftSidebarButton/base_type = &"Button"
 LeftSidebarButton/colors/font_color = Color(0.92549, 0.937255, 0.956863, 1)
@@ -163,6 +255,8 @@ LineEdit/colors/caret_color = Color(0.505882, 0.631373, 0.756863, 1)
 LineEdit/colors/font_color = Color(0.92549, 0.937255, 0.956863, 1)
 LineEdit/colors/font_placeholder_color = Color(0.92549, 0.937255, 0.956863, 0.6)
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_whrbm")
+PanelContainer_Popup/base_type = &"PanelContainer"
+PanelContainer_Popup/styles/panel = SubResource("StyleBoxFlat_w7s1k")
 RightSidebarButton/base_type = &"Button"
 RightSidebarButton/colors/font_color = Color(0.92549, 0.937255, 0.956863, 1)
 RightSidebarButton/colors/icon_normal_color = Color(0.92549, 0.937255, 0.956863, 1)
