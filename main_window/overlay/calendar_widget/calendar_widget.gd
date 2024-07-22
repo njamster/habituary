@@ -48,6 +48,9 @@ func update_month() -> void:
 		$VBox/GridContainer.add_child(button)
 		date = date.add_days(1)
 
+	# disable today button if we're already in the correct month (button wouldn't do anything)
+	$VBox/HBox/Today.disabled = (anchor_date.month == DayTimer.today.month)
+
 
 func _on_previous_month_pressed() -> void:
 	anchor_date.month -= 1
