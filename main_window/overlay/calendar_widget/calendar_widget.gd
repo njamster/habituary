@@ -46,8 +46,14 @@ func update_month() -> void:
 			button.theme_type_variation = "CalendarWidget_DayButton_Selected"
 		elif date.as_dict() == DayTimer.today.as_dict():
 			button.theme_type_variation = "CalendarWidget_DayButton_Today"
-		elif date.weekday == 0 or date.weekday == 6:
-			button.theme_type_variation = "CalendarWidget_DayButton_WeekendDay"
+		else:
+			if date.weekday == 0 or date.weekday == 6:
+				button.theme_type_variation = "CalendarWidget_DayButton_WeekendDay"
+
+			if not FileAccess.file_exists(Settings.store_path.path_join(
+				date.format(Settings.date_format_save)
+			) + ".txt"):
+				button.modulate.a = 0.25
 		button.pressed.connect(get_parent().close_overlay)
 		$VBox/GridContainer.add_child(button)
 		date = date.add_days(1)
