@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=24 format=3 uid="uid://r4f841iblmo"]
+[gd_resource type="Theme" load_steps=27 format=3 uid="uid://r4f841iblmo"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vf7p3"]
 content_margin_left = 8.0
@@ -69,6 +69,27 @@ corner_radius_bottom_right = 45
 corner_radius_bottom_left = 45
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qskao"]
+bg_color = Color(0.505882, 0.631373, 0.756863, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_grogc"]
+bg_color = Color(0.368627, 0.505882, 0.67451, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8cong"]
+draw_center = false
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n8jf7"]
 bg_color = Color(0.505882, 0.631373, 0.756863, 1)
 corner_radius_top_left = 45
 corner_radius_top_right = 45
@@ -242,7 +263,15 @@ CalendarWidget_DayButton_Today/font_sizes/font_size = 14
 CalendarWidget_DayButton_Today/styles/hover = SubResource("StyleBoxFlat_nb6ut")
 CalendarWidget_DayButton_Today/styles/normal = SubResource("StyleBoxFlat_4ers7")
 CalendarWidget_DayButton_Today/styles/pressed = SubResource("StyleBoxFlat_qskao")
+CalendarWidget_DayButton_WeekendDay/base_type = &"Button"
+CalendarWidget_DayButton_WeekendDay/colors/font_color = Color(0.368627, 0.505882, 0.67451, 1)
+CalendarWidget_DayButton_WeekendDay/font_sizes/font_size = 14
+CalendarWidget_DayButton_WeekendDay/styles/hover = SubResource("StyleBoxFlat_grogc")
+CalendarWidget_DayButton_WeekendDay/styles/normal = SubResource("StyleBoxFlat_8cong")
+CalendarWidget_DayButton_WeekendDay/styles/pressed = SubResource("StyleBoxFlat_n8jf7")
 Label/colors/font_color = Color(0.898039, 0.913725, 0.941176, 1)
+Label_WeekendDay/base_type = &"Label"
+Label_WeekendDay/colors/font_color = Color(0.368627, 0.505882, 0.67451, 1)
 LeftSidebarButton/base_type = &"Button"
 LeftSidebarButton/colors/font_color = Color(0.92549, 0.937255, 0.956863, 1)
 LeftSidebarButton/colors/icon_normal_color = Color(0.92549, 0.937255, 0.956863, 1)

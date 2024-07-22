@@ -23,10 +23,12 @@ func update_month() -> void:
 	# add new children
 	for day_name in Date._DAY_NAMES:
 		var label = Label.new()
-		label.modulate.a = 0.6
+		label.modulate.a = 0.65
 		label.text = day_name.left(2)
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		$VBox/GridContainer.add_child(label)
+		if day_name == "Saturday" or day_name == "Sunday":
+			label.theme_type_variation = "Label_WeekendDay"
 
 	var date = Date.new(anchor_date.as_dict())
 	date.day = 1
@@ -44,6 +46,8 @@ func update_month() -> void:
 			button.theme_type_variation = "CalendarWidget_DayButton_Selected"
 		elif date.as_dict() == DayTimer.today.as_dict():
 			button.theme_type_variation = "CalendarWidget_DayButton_Today"
+		elif date.weekday == 0 or date.weekday == 6:
+			button.theme_type_variation = "CalendarWidget_DayButton_WeekendDay"
 		button.pressed.connect(get_parent().close_overlay)
 		$VBox/GridContainer.add_child(button)
 		date = date.add_days(1)
