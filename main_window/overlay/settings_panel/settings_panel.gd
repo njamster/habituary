@@ -1,6 +1,13 @@
 extends PanelContainer
 
 
+func _enter_tree() -> void:
+	# See: https://github.com/godotengine/godot/issues/83546#issuecomment-1856927502
+	# Without this line (or a custom_minimum_size for the label), the autowrapping will blow up the
+	# vertical size of the panel. This can (as of now) only be done via code, not in the editor.
+	$VBox/VBox1/Explanation.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+
+
 func _on_visibility_changed() -> void:
 	if visible:
 		%StorePath/Path.text = Settings.store_path

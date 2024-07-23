@@ -15,6 +15,8 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_yrmyc")
+metadata/x_padding = 64
+metadata/y_padding = 64
 
 [node name="VBox" type="VBoxContainer" parent="."]
 layout_mode = 2

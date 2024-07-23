@@ -17,7 +17,7 @@ func _ready() -> void:
 				change_to_main_scene.call_deferred()
 				return
 
-	DisplayServer.window_set_min_size(size)
+	get_window().min_size = size
 
 	%Path.text = Settings.store_path
 	%BrowseFiles.grab_focus()

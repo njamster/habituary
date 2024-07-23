@@ -10,26 +10,34 @@ func _ready() -> void:
 	EventBus.settings_button_pressed.connect(open_component.bind($SettingsPanel, true))
 
 
-func open_component(component : Node, dimmed_background : bool) -> void:
+func open_component(component : Control, dimmed_background : bool) -> void:
 	$Background.color.a = 0.7 if dimmed_background else 0.0
 
 	self.show()
 	component.show()
 
 	_previous_min_size = DisplayServer.window_get_min_size()
-	DisplayServer.window_set_min_size(Vector2i(
-		max(component.size.x, _previous_min_size.x),
-		max(component.size.y, _previous_min_size.y)
-	))
+
+	component.item_rect_changed.connect(_update_min_size.bind(component))
+	_update_min_size(component)
+
+
+func _update_min_size(component : Control) -> void:
+	get_window().min_size = Vector2i(
+		max(component.size.x + component.get_meta("x_padding", 0), _previous_min_size.x),
+		max(component.size.y + component.get_meta("y_padding", 0), _previous_min_size.y)
+	)
 
 
 func close_overlay() -> void:
 	self.hide()
-	$CalendarWidget.hide()
-	$SettingsPanel.hide()
+	for component in [$CalendarWidget, $SettingsPanel]:
+		component.hide()
+		if component.item_rect_changed.is_connected(_update_min_size):
+			component.item_rect_changed.disconnect(_update_min_size)
 
 	# FIXME: re-triggering the min_size calculation of the MainWindow would probably be cleaner
-	DisplayServer.window_set_min_size(_previous_min_size)
+	get_window().min_size = _previous_min_size
 	_previous_min_size = Vector2i.ZERO
 
 

@@ -66,6 +66,7 @@ text = "Next Month"
 layout_mode = 2
 columns = 7
 
+[connection signal="item_rect_changed" from="." to="." method="_on_item_rect_changed"]
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="pressed" from="VBox/HBox/PreviousMonth" to="." method="_on_previous_month_pressed"]
 [connection signal="pressed" from="VBox/HBox/Today" to="." method="_on_today_pressed"]

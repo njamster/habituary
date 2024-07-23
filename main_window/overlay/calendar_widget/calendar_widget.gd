@@ -18,7 +18,9 @@ func update_month() -> void:
 
 	# remove old children
 	for child in $VBox/GridContainer.get_children():
-		child.queue_free()
+		# This *must* be free, not queue_free! Otherwise, it will blow up the vertical size of the
+		# panel since it's not fast enough and old and new nodes briefly co-exist.
+		child.free()
 
 	# add new children
 	for day_name in Date._DAY_NAMES:
@@ -76,3 +78,8 @@ func _on_today_pressed() -> void:
 func _on_next_month_pressed() -> void:
 	anchor_date = anchor_date.add_months(1)
 	update_month()
+
+
+func _on_item_rect_changed() -> void:
+	set_meta("x_padding", 2 * abs(offset_right))
+	set_meta("y_padding", 18 + offset_top)
