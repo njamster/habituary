@@ -63,7 +63,7 @@ func update_month() -> void:
 
 
 func _on_previous_month_pressed() -> void:
-	anchor_date.month -= 1
+	anchor_date = anchor_date.add_months(-1)
 	update_month()
 
 
@@ -73,5 +73,5 @@ func _on_today_pressed() -> void:
 
 
 func _on_next_month_pressed() -> void:
-	anchor_date.month += 1
+	anchor_date = anchor_date.add_months(1)
 	update_month()

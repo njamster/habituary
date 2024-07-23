@@ -145,6 +145,34 @@ func add_days(shift: int) -> Date:
 	})
 
 
+func add_months(shift: int) -> Date:
+	if shift == 0:
+		return self
+
+	var new_year = year
+	var new_month = month + shift
+
+	while not new_month in range(1, 13):
+		new_year += sign(shift)
+		new_month -= 12 * sign(shift)
+
+	var new_date_dict :={
+		"year": new_year,
+		"month": new_month,
+		"day": min(day, Date._days_in_month(new_month, new_year))
+	}
+
+	var unix_time := Time.get_unix_time_from_datetime_dict(new_date_dict)
+	var new_weekday = Time.get_datetime_dict_from_unix_time(unix_time).weekday
+
+	return Date.new({
+		"year": new_year,
+		"month": new_month,
+		"day": min(day, Date._days_in_month(new_month, new_year)),
+		"weekday": new_weekday
+	})
+
+
 func as_dict() -> Dictionary:
 	return {
 		"year": year,
