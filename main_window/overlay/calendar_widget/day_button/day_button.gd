@@ -11,8 +11,8 @@ func _init(date : Date) -> void:
 	self.focus_mode = Control.FOCUS_NONE
 	self.custom_minimum_size = Vector2(28, 28)
 	self.theme_type_variation = "CalendarWidget_DayButton"
-
-	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	self.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	self.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 
 	var tooltip := Tooltip.new()
 	tooltip.text = "Click to jump to this date"

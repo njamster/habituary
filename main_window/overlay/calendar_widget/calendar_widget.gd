@@ -26,6 +26,7 @@ func update_month() -> void:
 		label.modulate.a = 0.65
 		label.text = day_name.left(2)
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		$VBox/GridContainer.add_child(label)
 		if day_name == "Saturday" or day_name == "Sunday":
 			label.theme_type_variation = "Label_WeekendDay"

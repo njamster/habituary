@@ -27,9 +27,10 @@ layout_mode = 2
 
 [node name="MonthName" type="Label" parent="VBox/HBox"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "JUNE 2024"
+text = "SEPTEMBER 2024"
 
 [node name="PreviousMonth" type="Button" parent="VBox/HBox"]
 layout_mode = 2
