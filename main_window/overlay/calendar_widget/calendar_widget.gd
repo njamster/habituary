@@ -61,7 +61,12 @@ func update_month() -> void:
 		date = date.add_days(1)
 
 	# disable today button if we're already in the correct month (button wouldn't do anything)
-	$VBox/HBox/Today.disabled = (anchor_date.month == DayTimer.today.month)
+	if anchor_date.month == DayTimer.today.month:
+		$VBox/HBox/Today.disabled = true
+		$VBox/HBox/Today.mouse_default_cursor_shape = CURSOR_FORBIDDEN
+	else:
+		$VBox/HBox/Today.disabled = false
+		$VBox/HBox/Today.mouse_default_cursor_shape = CURSOR_POINTING_HAND
 
 
 func _on_previous_month_pressed() -> void:
