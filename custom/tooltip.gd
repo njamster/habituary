@@ -17,6 +17,8 @@ enum PopupPosition {AUTOMATIC, LEFT, RIGHT}
 
 @export_range(0, 0, 1, "suffix:px", "or_greater") var gap_width := 8
 
+@export var show_on_disabled_buttons := false
+
 var _tooltip_panel : PanelContainer
 var _tooltip_label : Label
 var _hover_timer : Timer
@@ -38,6 +40,9 @@ func _ready() -> void:
 
 func show_tooltip() -> void:
 	if not text:
+		return
+
+	if get_parent() is BaseButton and get_parent().disabled and not show_on_disabled_buttons:
 		return
 
 	_hover_timer.start()
