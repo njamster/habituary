@@ -20,6 +20,9 @@ func _on_visibility_changed() -> void:
 				%TodayPosition/Options.select(option_id)
 				_on_options_item_selected(option_id)
 
+		%FirstWeekday/Options.button_pressed = Settings.start_week_on_monday
+		_on_options_toggled(Settings.start_week_on_monday)
+
 		%Close.grab_focus()
 
 
@@ -37,6 +40,14 @@ func _on_options_item_selected(index: int) -> void:
 				"The current day will be displayed at the center position of the list view."
 		_:
 			%TodayPosition.get_node("../Explanation").text = ""
+
+
+func _on_options_toggled(toggled_on: bool) -> void:
+	Settings.start_week_on_monday = toggled_on
+	if toggled_on:
+		%FirstWeekday.get_node("../Explanation").text = "New weeks in the calendar widget will start on Mondays."
+	else:
+		%FirstWeekday.get_node("../Explanation").text = "New weeks in the calendar widget will start on Sundays."
 
 
 func _on_close_pressed() -> void:

@@ -22,7 +22,12 @@ func update_month() -> void:
 		child.queue_free()
 
 	# add new children
-	for day_name in Date._DAY_NAMES:
+	var day_names = Array()
+	day_names.assign(Date._DAY_NAMES)
+	if not Settings.start_week_on_monday:
+		day_names.push_front(day_names.pop_back())
+
+	for day_name in day_names:
 		var label = Label.new()
 		label.modulate.a = 0.65
 		label.text = day_name.left(2)
@@ -35,11 +40,15 @@ func update_month() -> void:
 	var date = Date.new(anchor_date.as_dict())
 	date.day = 1
 
-	if date.weekday == 0:
-		for i in range(6):
-			$VBox/GridContainer.add_child(Control.new())
-	elif date.weekday != 1:
-		for i in range(date.weekday - 1):
+	if Settings.start_week_on_monday:
+		if date.weekday == 0:
+			for i in range(6):
+				$VBox/GridContainer.add_child(Control.new())
+		elif date.weekday != 1:
+			for i in range(date.weekday - 1):
+				$VBox/GridContainer.add_child(Control.new())
+	else:
+		for i in range(date.weekday):
 			$VBox/GridContainer.add_child(Control.new())
 
 	for i in range(Date._days_in_month(anchor_date.month, anchor_date.year)):
@@ -55,7 +64,7 @@ func update_month() -> void:
 			if not FileAccess.file_exists(Settings.store_path.path_join(
 				date.format(Settings.date_format_save)
 			) + ".txt"):
-				button.modulate.a = 0.25
+				button.modulate.a = 0.55
 		button.pressed.connect(get_parent().close_overlay)
 		$VBox/GridContainer.add_child(button)
 		date = date.add_days(1)
