@@ -79,7 +79,10 @@ func update_month() -> void:
 
 
 func _on_previous_month_pressed() -> void:
-	anchor_date = anchor_date.add_months(-1)
+	if Input.is_key_pressed(KEY_SHIFT):
+		anchor_date = anchor_date.add_months(-12)
+	else:
+		anchor_date = anchor_date.add_months(-1)
 	update_month()
 
 
@@ -89,10 +92,24 @@ func _on_today_pressed() -> void:
 
 
 func _on_next_month_pressed() -> void:
-	anchor_date = anchor_date.add_months(1)
+	if Input.is_key_pressed(KEY_SHIFT):
+		anchor_date = anchor_date.add_months(12)
+	else:
+		anchor_date = anchor_date.add_months(1)
 	update_month()
 
 
 func _on_item_rect_changed() -> void:
 	set_meta("x_padding", 2 * abs(offset_right))
 	set_meta("y_padding", 18 + offset_top)
+
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.keycode == KEY_SHIFT:
+		if event.pressed:
+			$VBox/HBox/PreviousMonth/Tooltip.text = "Previous Year"
+			$VBox/HBox/NextMonth/Tooltip.text = "Next Year"
+		else:
+
+			$VBox/HBox/PreviousMonth/Tooltip.text = "Previous Month"
+			$VBox/HBox/NextMonth/Tooltip.text = "Next Month"

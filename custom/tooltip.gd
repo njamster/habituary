@@ -6,7 +6,8 @@ class_name Tooltip
 		text = value
 		if get_child_count():
 			_tooltip_label.text = value
-			_tooltip_panel.size = Vector2.ZERO # shrink
+			_tooltip_panel.size = Vector2.ZERO # shrink to content
+			_position_tooltip()
 
 @export var text_alignment : HorizontalAlignment
 
@@ -72,6 +73,10 @@ func _spawn_panel() -> void:
 	_tooltip_label.horizontal_alignment = self.text_alignment
 
 	# step 3: position tooltip
+	_position_tooltip()
+
+
+func _position_tooltip() -> void:
 	_tooltip_panel.global_position = get_parent().global_position
 	match self.popup_position:
 		PopupPosition.LEFT:
