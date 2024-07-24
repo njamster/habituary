@@ -36,6 +36,7 @@ text = "SEPTEMBER 2024"
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
+theme_type_variation = &"CalendarWidget_Button"
 icon = ExtResource("2_3qe07")
 
 [node name="Tooltip" type="Node" parent="VBox/HBox/PreviousMonth"]
@@ -46,6 +47,7 @@ text = "Previous Month"
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
+theme_type_variation = &"CalendarWidget_Button"
 icon = ExtResource("4_w73ku")
 
 [node name="Tooltip" type="Node" parent="VBox/HBox/Today"]
@@ -56,6 +58,7 @@ text = "Jump To Today"
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
+theme_type_variation = &"CalendarWidget_Button"
 icon = ExtResource("5_kngd2")
 
 [node name="Tooltip" type="Node" parent="VBox/HBox/NextMonth"]

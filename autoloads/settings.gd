@@ -99,6 +99,16 @@ var dark_mode := true:
 
 			theme.set_color("font_color", "CalendarWidget_DayButton_Today", NORD_06)
 			theme.set_color("font_hover_color", "CalendarWidget_DayButton_Today", NORD_00)
+
+			theme.set_color("font_color", "CalendarWidget_Button", NORD_06)
+			theme.set_color("icon_normal_color", "CalendarWidget_Button", NORD_06)
+			theme.set_color("icon_disabled_color", "CalendarWidget_Button", Color(NORD_06, 0.3))
+			var button_stylebox := theme.get_stylebox("normal", "CalendarWidget_Button")
+			button_stylebox.bg_color = NORD_03
+			theme.set_stylebox("normal", "CalendarWidget_Button", button_stylebox)
+			var button_disabled_stylebox := theme.get_stylebox("disabled", "CalendarWidget_Button")
+			button_disabled_stylebox.bg_color = Color(NORD_03, 0.3)
+			theme.set_stylebox("normal", "CalendarWidget_Button", button_disabled_stylebox)
 		else:
 			RenderingServer.set_default_clear_color("#ECEFF4")
 			theme.set_color("font_color", "Label", NORD_00)
@@ -147,6 +157,16 @@ var dark_mode := true:
 
 			theme.set_color("font_color", "CalendarWidget_DayButton_Today", NORD_00)
 			theme.set_color("font_hover_color", "CalendarWidget_DayButton_Today", NORD_06)
+
+			theme.set_color("font_color", "CalendarWidget_Button", NORD_00)
+			theme.set_color("icon_normal_color", "CalendarWidget_Button", NORD_00)
+			theme.set_color("icon_disabled_color", "CalendarWidget_Button", Color(NORD_00, 0.3))
+			var button_stylebox := theme.get_stylebox("normal", "CalendarWidget_Button")
+			button_stylebox.bg_color = NORD_04
+			theme.set_stylebox("normal", "CalendarWidget_Button", button_stylebox)
+			var button_disabled_stylebox := theme.get_stylebox("disabled", "CalendarWidget_Button")
+			button_disabled_stylebox.bg_color = Color(NORD_04, 0.3)
+			theme.set_stylebox("normal", "CalendarWidget_Button", button_disabled_stylebox)
 		EventBus.dark_mode_changed.emit(dark_mode)
 
 

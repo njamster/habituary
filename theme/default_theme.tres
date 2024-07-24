@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=27 format=3 uid="uid://r4f841iblmo"]
+[gd_resource type="Theme" load_steps=31 format=3 uid="uid://r4f841iblmo"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vf7p3"]
 content_margin_left = 8.0
@@ -10,6 +10,54 @@ corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4h52t"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.298, 0.337, 0.416, 0.3)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_65f4v"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.505882, 0.631373, 0.756863, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nutyw"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.298039, 0.337255, 0.415686, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f7swm"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.368627, 0.505882, 0.67451, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 corner_detail = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tcek7"]
@@ -246,6 +294,12 @@ corner_detail = 5
 
 [resource]
 AcceptDialog/styles/panel = SubResource("StyleBoxFlat_vf7p3")
+CalendarWidget_Button/base_type = &"Button"
+CalendarWidget_Button/colors/icon_normal_color = Color(0.92549, 0.937255, 0.956863, 1)
+CalendarWidget_Button/styles/disabled = SubResource("StyleBoxFlat_4h52t")
+CalendarWidget_Button/styles/hover = SubResource("StyleBoxFlat_65f4v")
+CalendarWidget_Button/styles/normal = SubResource("StyleBoxFlat_nutyw")
+CalendarWidget_Button/styles/pressed = SubResource("StyleBoxFlat_f7swm")
 CalendarWidget_DayButton/base_type = &"Button"
 CalendarWidget_DayButton/font_sizes/font_size = 14
 CalendarWidget_DayButton/styles/hover = SubResource("StyleBoxFlat_tcek7")
