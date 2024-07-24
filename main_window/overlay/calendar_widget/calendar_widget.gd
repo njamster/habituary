@@ -18,9 +18,8 @@ func update_month() -> void:
 
 	# remove old children
 	for child in $VBox/GridContainer.get_children():
-		# This *must* be free, not queue_free! Otherwise, it will blow up the vertical size of the
-		# panel since it's not fast enough and old and new nodes briefly co-exist.
-		child.free()
+		$VBox/GridContainer.remove_child(child)
+		child.queue_free()
 
 	# add new children
 	for day_name in Date._DAY_NAMES:
