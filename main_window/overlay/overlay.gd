@@ -30,11 +30,11 @@ func _update_min_size(component : Control) -> void:
 
 
 func close_overlay() -> void:
-	self.hide()
 	for component in [$CalendarWidget, $SettingsPanel]:
 		component.hide()
 		if component.item_rect_changed.is_connected(_update_min_size):
 			component.item_rect_changed.disconnect(_update_min_size)
+	self.hide()
 
 	# FIXME: re-triggering the min_size calculation of the MainWindow would probably be cleaner
 	get_window().min_size = _previous_min_size

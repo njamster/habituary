@@ -8,21 +8,22 @@ func _enter_tree() -> void:
 	$VBox/VBox1/Explanation.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
 
 
+func _ready() -> void:
+	%StorePath/Path.text = Settings.store_path
+
+	for option_name in Settings.TodayPosition:
+		var option_id : int = Settings.TodayPosition[option_name]
+		%TodayPosition/Options.add_item(option_name.capitalize(), option_id)
+		if option_id == Settings.today_position:
+			%TodayPosition/Options.select(option_id)
+			_on_options_item_selected(option_id)
+#
+	%FirstWeekday/Options.button_pressed = Settings.start_week_on_monday
+	_on_options_toggled(Settings.start_week_on_monday)
+
+
 func _on_visibility_changed() -> void:
 	if visible:
-		%StorePath/Path.text = Settings.store_path
-
-		%TodayPosition/Options.clear()
-		for option_name in Settings.TodayPosition:
-			var option_id : int = Settings.TodayPosition[option_name]
-			%TodayPosition/Options.add_item(option_name.capitalize(), option_id)
-			if option_id == Settings.today_position:
-				%TodayPosition/Options.select(option_id)
-				_on_options_item_selected(option_id)
-
-		%FirstWeekday/Options.button_pressed = Settings.start_week_on_monday
-		_on_options_toggled(Settings.start_week_on_monday)
-
 		%Close.grab_focus()
 
 
