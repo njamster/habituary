@@ -20,12 +20,15 @@ signal changed
 	set(value):
 		done = value
 		if is_inside_tree():
+			%CheckBox.button_pressed = done
 			if done:
-				%Label.self_modulate.a = 0.3
+				%CheckBox.modulate.a = 0.5
+				%Content.modulate.a = 0.5
 				for node in [%Content, %Label, %Edit]:
 					node.mouse_default_cursor_shape = CURSOR_ARROW
 			else:
-				%Label.self_modulate.a = 1.0
+				%CheckBox.modulate.a = 1.0
+				%Content.modulate.a = 1.0
 				for node in [%Content, %Label, %Edit]:
 					node.mouse_default_cursor_shape = CURSOR_IBEAM
 
@@ -36,9 +39,11 @@ signal changed
 			if is_heading:
 				get("theme_override_styles/panel").draw_center = true
 				%Label.uppercase = true
+				%CheckBox.hide()
 			else:
 				get("theme_override_styles/panel").draw_center = false
 				%Label.uppercase = false
+				%CheckBox.show()
 
 
 var _contains_mouse_cursor := false
@@ -117,10 +122,6 @@ func _on_content_gui_input(event: InputEvent) -> void:
 			MOUSE_BUTTON_MASK_LEFT:
 				if event.pressed and not done:
 					edit()
-			MOUSE_BUTTON_MASK_RIGHT:
-				if event.pressed and not is_in_edit_mode() and not is_heading:
-					done = not done
-					%UI.visible = not done
 
 
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
@@ -184,8 +185,15 @@ func _on_dark_mode_changed(dark_mode : bool) -> void:
 	if dark_mode:
 		get("theme_override_styles/panel").bg_color = Settings.NORD_02
 		%Label.set("theme_override_colors/font_color", Settings.NORD_06)
+		%CheckBox.self_modulate = Settings.NORD_06
 		%UI.modulate = Settings.NORD_06
 	else:
 		get("theme_override_styles/panel").bg_color = Settings.NORD_04
 		%Label.set("theme_override_colors/font_color", Settings.NORD_00)
+		%CheckBox.self_modulate = Settings.NORD_00
 		%UI.modulate = Settings.NORD_00
+
+
+
+func _on_check_box_toggled(toggled_on: bool) -> void:
+	self.done = toggled_on
