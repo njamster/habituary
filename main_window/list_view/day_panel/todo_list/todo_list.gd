@@ -163,8 +163,11 @@ func load_from_disk(file : FileAccess) -> void:
 
 
 func show_line_highlight(mouse_position : Vector2) -> void:
-	var y_position = %Items.get_children()[-1].global_position.y + \
-		%Items.get_children()[-1].size.y + %Items.get("theme_override_constants/separation")
+	var y_position = %Items.global_position.y
+
+	if %Items.get_child_count() > 0:
+		y_position = %Items.get_children()[-1].global_position.y + \
+			%Items.get_children()[-1].size.y + %Items.get("theme_override_constants/separation")
 
 	for i in %Items.get_child_count():
 		var child := %Items.get_child(i)
