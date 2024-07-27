@@ -1,7 +1,4 @@
-[gd_resource type="Theme" load_steps=39 format=3 uid="uid://r4f841iblmo"]
-
-[ext_resource type="Texture2D" uid="uid://36rqvmf8v7hf" path="res://theme/images/checkbox_checked.svg" id="1_21bym"]
-[ext_resource type="Texture2D" uid="uid://d00v4pleoufwq" path="res://theme/images/checkbox.svg" id="2_0dam5"]
+[gd_resource type="Theme" load_steps=31 format=3 uid="uid://r4f841iblmo"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vf7p3"]
 content_margin_left = 8.0
@@ -283,18 +280,6 @@ corner_radius_top_left = 4
 corner_radius_bottom_left = 4
 corner_detail = 5
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cq1b0"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fmyjj"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bobpa"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_n86q7"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nktio"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tnyii"]
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4010s"]
 content_margin_left = 6.0
 content_margin_top = 2.0
@@ -365,15 +350,6 @@ RightSidebarButton/styles/normal = SubResource("StyleBoxFlat_001vx")
 RightSidebarButton/styles/pressed = SubResource("StyleBoxFlat_ggb6q")
 SubtleLabel/base_type = &"Label"
 SubtleLabel/colors/font_color = Color(0.847059, 0.870588, 0.913725, 1)
-ToDoItem_CheckBox/base_type = &"CheckBox"
-ToDoItem_CheckBox/icons/checked = ExtResource("1_21bym")
-ToDoItem_CheckBox/icons/unchecked = ExtResource("2_0dam5")
-ToDoItem_CheckBox/styles/disabled = SubResource("StyleBoxEmpty_cq1b0")
-ToDoItem_CheckBox/styles/focus = SubResource("StyleBoxEmpty_fmyjj")
-ToDoItem_CheckBox/styles/hover = SubResource("StyleBoxEmpty_bobpa")
-ToDoItem_CheckBox/styles/hover_pressed = SubResource("StyleBoxEmpty_n86q7")
-ToDoItem_CheckBox/styles/normal = SubResource("StyleBoxEmpty_nktio")
-ToDoItem_CheckBox/styles/pressed = SubResource("StyleBoxEmpty_tnyii")
 TooltipLabel/font_sizes/font_size = 13
 TooltipPanel/base_type = &"PanelContainer"
 TooltipPanel/styles/panel = SubResource("StyleBoxFlat_4010s")

@@ -75,7 +75,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-	return data.is_in_group("todo_item")
+	return %TodoList._can_drop_data(_at_position, data)
 
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:

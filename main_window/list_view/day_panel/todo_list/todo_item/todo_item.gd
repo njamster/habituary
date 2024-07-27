@@ -6,6 +6,9 @@ signal successor_requested
 signal editing_started
 signal changed
 
+signal folded
+signal unfolded
+
 @export var text := "":
 	set(value):
 		text = value
@@ -39,14 +42,18 @@ signal changed
 			if is_heading:
 				get("theme_override_styles/panel").draw_center = true
 				%Label.uppercase = true
+				%FoldHeading.show()
 				%CheckBox.hide()
 			else:
 				get("theme_override_styles/panel").draw_center = false
 				%Label.uppercase = false
+				%FoldHeading.hide()
 				%CheckBox.show()
 
 
 var _contains_mouse_cursor := false
+
+var is_folded := false
 
 
 func _ready() -> void:
@@ -67,6 +74,9 @@ func is_in_edit_mode() -> bool:
 
 
 func edit() -> void:
+	for child in $HBox/Toggle.get_children():
+		child.mouse_default_cursor_shape = CURSOR_FORBIDDEN
+		child.disabled = true
 	%Label.hide()
 	%Edit.show()
 	%UI.hide()
@@ -76,6 +86,7 @@ func edit() -> void:
 
 
 func delete() -> void:
+	self.unfolded.emit()
 	queue_free()
 	if self.text:
 		await tree_exited
@@ -93,16 +104,21 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 	# trim any leading & trailing whitespace
 	new_text = new_text.strip_edges()
 
+	var new_item := (self.text == "")
+
 	if new_text:
 		if self.text != new_text:
 			self.text = new_text
 			changed.emit()
 		%Edit.hide()
 		%Label.show()
+		for child in $HBox/Toggle.get_children():
+			child.mouse_default_cursor_shape = CURSOR_POINTING_HAND
+			child.disabled = false
 		if _contains_mouse_cursor:
 			%UI.show()
 
-		if key_input:
+		if new_item and key_input:
 			if Input.is_key_pressed(KEY_SHIFT):
 				predecessor_requested.emit()
 			else:
@@ -125,7 +141,7 @@ func _on_content_gui_input(event: InputEvent) -> void:
 
 
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-	return data.is_in_group("todo_item")
+	return get_node("../../..")._can_drop_data(_at_position, data)
 
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
@@ -167,6 +183,13 @@ func load_from_disk(line : String) -> void:
 func _on_mouse_entered() -> void:
 	_contains_mouse_cursor = true
 	%Label.set("theme_override_colors/font_color", Settings.NORD_09)
+	$HBox/ExtraInfo/Label.set("theme_override_colors/font_color", Settings.NORD_09)
+	%CheckBox.set("theme_override_colors/icon_normal_color", Settings.NORD_09)
+	%CheckBox.set("theme_override_colors/icon_hover_color", Settings.NORD_09)
+	%CheckBox.set("theme_override_colors/icon_pressed_color", Settings.NORD_10)
+	%FoldHeading.set("theme_override_colors/icon_normal_color", Settings.NORD_09)
+	%FoldHeading.set("theme_override_colors/icon_hover_color", Settings.NORD_09)
+	%FoldHeading.set("theme_override_colors/icon_pressed_color", Settings.NORD_10)
 	if not is_in_edit_mode() and not done and not get_viewport().gui_is_dragging():
 		%UI.show()
 
@@ -177,23 +200,52 @@ func _on_mouse_exited() -> void:
 		%UI.hide()
 		if Settings.dark_mode:
 			%Label.set("theme_override_colors/font_color", Settings.NORD_06)
+			$HBox/ExtraInfo/Label.set("theme_override_colors/font_color", Settings.NORD_06)
+			%CheckBox.set("theme_override_colors/icon_normal_color", Settings.NORD_06)
+			%CheckBox.set("theme_override_colors/icon_hover_color", Settings.NORD_06)
+			%CheckBox.set("theme_override_colors/icon_pressed_color", Settings.NORD_06)
+			%FoldHeading.set("theme_override_colors/icon_normal_color", Settings.NORD_06)
+			%FoldHeading.set("theme_override_colors/icon_hover_color", Settings.NORD_06)
+			%FoldHeading.set("theme_override_colors/icon_pressed_color", Settings.NORD_06)
 		else:
 			%Label.set("theme_override_colors/font_color", Settings.NORD_00)
+			$HBox/ExtraInfo/Label.set("theme_override_colors/font_color", Settings.NORD_00)
+			%CheckBox.set("theme_override_colors/icon_normal_color", Settings.NORD_00)
+			%CheckBox.set("theme_override_colors/icon_hover_color", Settings.NORD_00)
+			%CheckBox.set("theme_override_colors/icon_pressed_color", Settings.NORD_00)
+			%FoldHeading.set("theme_override_colors/icon_normal_color", Settings.NORD_00)
+			%FoldHeading.set("theme_override_colors/icon_hover_color", Settings.NORD_00)
+			%FoldHeading.set("theme_override_colors/icon_pressed_color", Settings.NORD_00)
 
 
 func _on_dark_mode_changed(dark_mode : bool) -> void:
 	if dark_mode:
 		get("theme_override_styles/panel").bg_color = Settings.NORD_02
 		%Label.set("theme_override_colors/font_color", Settings.NORD_06)
-		%CheckBox.self_modulate = Settings.NORD_06
+		$HBox/Toggle.modulate = Settings.NORD_06
 		%UI.modulate = Settings.NORD_06
 	else:
 		get("theme_override_styles/panel").bg_color = Settings.NORD_04
 		%Label.set("theme_override_colors/font_color", Settings.NORD_00)
-		%CheckBox.self_modulate = Settings.NORD_00
+		$HBox/Toggle.modulate = Settings.NORD_00
 		%UI.modulate = Settings.NORD_00
 
 
 
 func _on_check_box_toggled(toggled_on: bool) -> void:
 	self.done = toggled_on
+
+
+func _on_fold_heading_toggled(toggled_on: bool) -> void:
+	if toggled_on:
+		is_folded = true
+		self.folded.emit()
+		$HBox/ExtraInfo.show()
+	else:
+		is_folded = false
+		self.unfolded.emit()
+		$HBox/ExtraInfo.hide()
+
+
+func set_extra_info(num_done : int , num_items : int) -> void:
+	$HBox/ExtraInfo/Label.text = "%d/%d" % [num_done, num_items]

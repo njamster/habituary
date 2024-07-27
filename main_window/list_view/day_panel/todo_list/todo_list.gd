@@ -7,12 +7,12 @@ func _ready() -> void:
 	$LineHighlight.modulate.a = 0.0
 
 	if OS.is_debug_build():
-		for i in range(5):
+		for i in range(8):
 			var debug_item := add_todo(Vector2.ZERO, true)
 			debug_item.text = "Debug_%d" % i
 			if i == 0:
 				debug_item.done = true
-			elif i == 1:
+			elif i == 1 or i == 5:
 				debug_item.is_heading = true
 
 
@@ -23,39 +23,124 @@ func add_todo(at_position := Vector2.ZERO, is_debug_item := false) -> Control:
 	%Items.add_child(new_item)
 	if at_position != Vector2.ZERO:
 		%Items.move_child(new_item, find_item_pos(at_position))
-	new_item.editing_started.connect(hide_line_highlight)
-	new_item.changed.connect(func():
-		get_parent().get_parent().save_to_disk()
-	)
-	new_item.predecessor_requested.connect(func():
-		add_todo(self.global_position + new_item.position - Vector2(0, 32))
-	)
-	new_item.successor_requested.connect(func():
-		add_todo(self.global_position + new_item.position + Vector2(0, 32))
-	)
+	connect_todo_signals(new_item)
 	if at_position != Vector2.ZERO:
 		new_item.edit()
 	return new_item
 
 
+func connect_todo_signals(todo_item : Control) -> void:
+	todo_item.editing_started.connect(hide_line_highlight)
+	todo_item.changed.connect(func():
+		get_parent().get_parent().save_to_disk()
+	)
+	todo_item.predecessor_requested.connect(func():
+		add_todo(self.global_position + todo_item.position - Vector2(0, 32))
+	)
+	todo_item.successor_requested.connect(func():
+		add_todo(self.global_position + todo_item.position + Vector2(0, 32))
+	)
+	todo_item.folded.connect(func():
+		fold_heading(todo_item.get_index(), false)
+	)
+	todo_item.unfolded.connect(func():
+		fold_heading(todo_item.get_index(), true)
+	)
+
+
+func disconnect_todo_signals(todo_item : Control) -> void:
+	var signal_names = [
+		"editing_started",
+		"changed",
+		"predecessor_requested",
+		"successor_requested",
+		"folded",
+		"unfolded"
+	]
+	for signal_name in signal_names:
+		for sig in todo_item.get_signal_connection_list(signal_name):
+			for dict2 in sig.signal.get_connections():
+				sig.signal.disconnect(dict2.callable)
+
+
 func find_item_pos(at_position : Vector2) -> int:
+	var last_heading
+	var inside_folded_heading := false
 	for i in %Items.get_child_count():
 		var child := %Items.get_child(i)
+		if child.is_heading:
+			inside_folded_heading = false
 		if child.global_position.y > at_position.y:
-			return i
+			if not inside_folded_heading:
+				if last_heading:
+					last_heading.get_node("%FoldHeading").button_pressed = false
+				return i
+		if child.is_heading:
+			inside_folded_heading = child.is_folded
+			if inside_folded_heading:
+				last_heading = child
+
+	if inside_folded_heading:
+		if last_heading:
+			last_heading.get_node("%FoldHeading").button_pressed = false
 
 	return %Items.get_child_count()
 
 
+func fold_heading(item_index : int, unfold := false) -> void:
+	var heading := %Items.get_child(item_index)
+
+	var num_items := 0
+	var num_done := 0
+
+	for i in range(item_index + 1, %Items.get_child_count()):
+		var child := %Items.get_child(i)
+		if child.is_heading:
+			heading.set_extra_info(num_done, num_items)
+			return
+		else:
+			child.visible = unfold
+			num_items += 1
+			if child.done:
+				num_done += 1
+
+	heading.set_extra_info(num_done, num_items)
+
+
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-	return data.is_in_group("todo_item")
+	if data is Object:
+		if data.has_method("is_in_group"):
+			return data.is_in_group("todo_item")
+	elif data is Array:
+		for entry in data:
+			if entry.has_method("is_in_group"):
+				if not entry.is_in_group("todo_item"):
+					return false
+			else:
+				return false
+		return true
+
+	return false
 
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
-	data.modulate.a = 1.0
-	if data.get_parent() != %Items:
-		data.reparent(%Items)
-	%Items.move_child(data, find_item_pos(self.global_position + at_position))
+	if data is Object:
+		data.modulate.a = 1.0
+		if data.get_parent() != %Items:
+			data.reparent(%Items)
+		%Items.move_child(data, find_item_pos(self.global_position + at_position))
+	elif data is Array:
+		var base_position := find_item_pos(self.global_position + at_position)
+		for i in data.size():
+			var entry = data[i]
+			entry.modulate.a = 1.0
+			if entry.get_parent() != %Items:
+				disconnect_todo_signals(entry)
+				entry.reparent(%Items)
+				connect_todo_signals(entry)
+				%Items.move_child(entry, base_position + i)
+			else:
+				%Items.move_child(entry, min(%Items.get_child_count(), base_position + i))
 
 
 func has_items() -> bool:
@@ -78,15 +163,20 @@ func load_from_disk(file : FileAccess) -> void:
 
 
 func show_line_highlight(mouse_position : Vector2) -> void:
-	var i := find_item_pos(mouse_position)
+	var y_position = %Items.get_children()[-1].global_position.y + \
+		%Items.get_children()[-1].size.y + %Items.get("theme_override_constants/separation")
 
-	# don't highlight lines directly adjacent to the currently edited todo
-	#if (i > 0 and %Items.get_child(i-1).is_in_edit_mode() or \
-		#i < %Items.get_child_count() and %Items.get_child(i).is_in_edit_mode()):
-			#return
+	for i in %Items.get_child_count():
+		var child := %Items.get_child(i)
+		if child.global_position.y > mouse_position.y:
+			y_position = child.global_position.y
+			break
 
-	$LineHighlight.position.y = i * 40
-	if i > 0:
+	$LineHighlight.global_position.y = y_position - \
+		0.5 * %Items.get("theme_override_constants/separation")
+	if y_position == %Items.global_position.y:
+		$LineHighlight.position.y += 0.5 * $LineHighlight.custom_minimum_size.y
+	else:
 		$LineHighlight.position.y -= 0.5 * $LineHighlight.custom_minimum_size.y
 	$LineHighlight.modulate.a = 1.0
 
@@ -107,3 +197,16 @@ func _on_item_rect_changed() -> void:
 	else:
 		# vertical scrollbar isn't visible (anymore), remove padding (again)
 		add_theme_constant_override("margin_right", 0)
+
+
+func get_subordinate_items(item_index : int) -> Array:
+	var subordinate_items := []
+
+	for i in range(item_index + 1, %Items.get_child_count()):
+		var child := %Items.get_child(i)
+		if child.is_heading:
+			return subordinate_items
+		else:
+			subordinate_items.append(child)
+
+	return subordinate_items

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d00v4pleoufwq"
-path="res://.godot/imported/checkbox.svg-d9856bbd2569cf4ac4c98114eb688791.ctex"
+uid="uid://ci7y27fysy52o"
+path="res://.godot/imported/unfolded.svg-5ac236d5a261ea8f2efd0f38b16088d2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://theme/images/checkbox.svg"
-dest_files=["res://.godot/imported/checkbox.svg-d9856bbd2569cf4ac4c98114eb688791.ctex"]
+source_file="res://main_window/list_view/day_panel/todo_list/todo_item/images/unfolded.svg"
+dest_files=["res://.godot/imported/unfolded.svg-5ac236d5a261ea8f2efd0f38b16088d2.ctex"]
 
 [params]
 

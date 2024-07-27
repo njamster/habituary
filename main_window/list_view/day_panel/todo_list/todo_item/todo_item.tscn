@@ -1,9 +1,14 @@
-[gd_scene load_steps=10 format=3 uid="uid://v8u8oswwmlf3"]
+[gd_scene load_steps=25 format=3 uid="uid://v8u8oswwmlf3"]
 
+[ext_resource type="Texture2D" uid="uid://ci7y27fysy52o" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/unfolded.svg" id="2_2nsse"]
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/todo_list/todo_item/todo_item.gd" id="2_6v2l5"]
+[ext_resource type="Script" path="res://custom/toggle_button.gd" id="2_n5f11"]
 [ext_resource type="Texture2D" uid="uid://b80hle2h5sj20" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/drag_indicator.svg" id="3_avsfu"]
+[ext_resource type="Texture2D" uid="uid://36rqvmf8v7hf" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/done.svg" id="3_cwrr6"]
 [ext_resource type="Texture2D" uid="uid://4eakbxkw2dmx" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/delete.svg" id="3_nsj7w"]
 [ext_resource type="Script" path="res://custom/tooltip.gd" id="3_oduck"]
+[ext_resource type="Texture2D" uid="uid://d00v4pleoufwq" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/to_do.svg" id="4_byxfi"]
+[ext_resource type="Texture2D" uid="uid://6im7rq1y7co6" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/folded.svg" id="4_fnk6y"]
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/todo_list/todo_item/drag_handle.gd" id="5_mx38m"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fnmjf"]
@@ -15,6 +20,26 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 corner_detail = 5
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5kfd2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1ifsp"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ojvrp"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j40uj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6e50g"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_civ8j"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7a281"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qr4c3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l2t5o"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v8kvh"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3h3so"]
 
@@ -33,20 +58,60 @@ script = ExtResource("2_6v2l5")
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="CheckBox" type="CheckBox" parent="HBox"]
+[node name="Toggle" type="MarginContainer" parent="HBox"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_right = 6
+
+[node name="CheckBox" type="Button" parent="HBox/Toggle"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 mouse_filter = 1
 mouse_default_cursor_shape = 2
-theme_type_variation = &"ToDoItem_CheckBox"
+theme_override_styles/normal = SubResource("StyleBoxEmpty_5kfd2")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_1ifsp")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ojvrp")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_j40uj")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_6e50g")
+toggle_mode = true
+flat = true
+script = ExtResource("2_n5f11")
+icon_toggled_off = ExtResource("4_byxfi")
+icon_toggled_on = ExtResource("3_cwrr6")
+
+[node name="FoldHeading" type="Button" parent="HBox/Toggle"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+focus_mode = 0
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_civ8j")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_7a281")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_qr4c3")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_l2t5o")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_v8kvh")
+toggle_mode = true
+flat = true
+script = ExtResource("2_n5f11")
+icon_toggled_off = ExtResource("2_2nsse")
+icon_toggled_on = ExtResource("4_fnk6y")
+
+[node name="ExtraInfo" type="MarginContainer" parent="HBox"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_right = 3
+
+[node name="Label" type="Label" parent="HBox/ExtraInfo"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
 
 [node name="Content" type="MarginContainer" parent="HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 1
-theme_override_constants/margin_left = 6
 theme_override_constants/margin_right = 6
 
 [node name="Label" type="Label" parent="HBox/Content"]
@@ -55,7 +120,6 @@ layout_mode = 2
 mouse_filter = 1
 mouse_default_cursor_shape = 1
 theme_override_font_sizes/font_size = 14
-vertical_alignment = 1
 text_overrun_behavior = 3
 
 [node name="Edit" type="LineEdit" parent="HBox/Content"]
@@ -108,7 +172,8 @@ popup_position = 1
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
-[connection signal="toggled" from="HBox/CheckBox" to="." method="_on_check_box_toggled"]
+[connection signal="toggled" from="HBox/Toggle/CheckBox" to="." method="_on_check_box_toggled"]
+[connection signal="toggled" from="HBox/Toggle/FoldHeading" to="." method="_on_fold_heading_toggled"]
 [connection signal="gui_input" from="HBox/Content" to="." method="_on_content_gui_input"]
 [connection signal="focus_exited" from="HBox/Content/Edit" to="." method="_on_edit_focus_exited"]
 [connection signal="text_changed" from="HBox/Content/Edit" to="." method="_on_edit_text_changed"]
