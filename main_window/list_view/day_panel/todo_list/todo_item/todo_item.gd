@@ -201,33 +201,37 @@ func _on_mouse_exited() -> void:
 		if Settings.dark_mode:
 			%Label.set("theme_override_colors/font_color", Settings.NORD_06)
 			$HBox/ExtraInfo/Label.set("theme_override_colors/font_color", Settings.NORD_06)
-			%CheckBox.set("theme_override_colors/icon_normal_color", Settings.NORD_06)
-			%CheckBox.set("theme_override_colors/icon_hover_color", Settings.NORD_06)
-			%CheckBox.set("theme_override_colors/icon_pressed_color", Settings.NORD_06)
-			%FoldHeading.set("theme_override_colors/icon_normal_color", Settings.NORD_06)
-			%FoldHeading.set("theme_override_colors/icon_hover_color", Settings.NORD_06)
-			%FoldHeading.set("theme_override_colors/icon_pressed_color", Settings.NORD_06)
+			for toggle in [%CheckBox, %FoldHeading]:
+				toggle.set("theme_override_colors/icon_normal_color", Settings.NORD_06)
+				toggle.set("theme_override_colors/icon_hover_color", Settings.NORD_06)
+				toggle.set("theme_override_colors/icon_pressed_color", Settings.NORD_06)
 		else:
 			%Label.set("theme_override_colors/font_color", Settings.NORD_00)
 			$HBox/ExtraInfo/Label.set("theme_override_colors/font_color", Settings.NORD_00)
-			%CheckBox.set("theme_override_colors/icon_normal_color", Settings.NORD_00)
-			%CheckBox.set("theme_override_colors/icon_hover_color", Settings.NORD_00)
-			%CheckBox.set("theme_override_colors/icon_pressed_color", Settings.NORD_00)
-			%FoldHeading.set("theme_override_colors/icon_normal_color", Settings.NORD_00)
-			%FoldHeading.set("theme_override_colors/icon_hover_color", Settings.NORD_00)
-			%FoldHeading.set("theme_override_colors/icon_pressed_color", Settings.NORD_00)
+			for toggle in [%CheckBox, %FoldHeading]:
+				toggle.set("theme_override_colors/icon_normal_color", Settings.NORD_00)
+				toggle.set("theme_override_colors/icon_hover_color", Settings.NORD_00)
+				toggle.set("theme_override_colors/icon_pressed_color", Settings.NORD_00)
 
 
 func _on_dark_mode_changed(dark_mode : bool) -> void:
 	if dark_mode:
 		get("theme_override_styles/panel").bg_color = Settings.NORD_02
 		%Label.set("theme_override_colors/font_color", Settings.NORD_06)
-		$HBox/Toggle.modulate = Settings.NORD_06
+		$HBox/ExtraInfo/Label.set("theme_override_colors/font_color", Settings.NORD_06)
+		for toggle in [%CheckBox, %FoldHeading]:
+			toggle.set("theme_override_colors/icon_normal_color", Settings.NORD_06)
+			toggle.set("theme_override_colors/icon_hover_color", Settings.NORD_06)
+			toggle.set("theme_override_colors/icon_pressed_color", Settings.NORD_06)
 		%UI.modulate = Settings.NORD_06
 	else:
 		get("theme_override_styles/panel").bg_color = Settings.NORD_04
 		%Label.set("theme_override_colors/font_color", Settings.NORD_00)
-		$HBox/Toggle.modulate = Settings.NORD_00
+		$HBox/ExtraInfo/Label.set("theme_override_colors/font_color", Settings.NORD_00)
+		for toggle in [%CheckBox, %FoldHeading]:
+			toggle.set("theme_override_colors/icon_normal_color", Settings.NORD_00)
+			toggle.set("theme_override_colors/icon_hover_color", Settings.NORD_00)
+			toggle.set("theme_override_colors/icon_pressed_color", Settings.NORD_00)
 		%UI.modulate = Settings.NORD_00
 
 
