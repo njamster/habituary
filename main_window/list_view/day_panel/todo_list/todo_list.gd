@@ -163,12 +163,18 @@ func load_from_disk(file : FileAccess) -> void:
 
 
 func show_line_highlight(mouse_position : Vector2) -> void:
+	# base assumption: list is empty -> put the line at the top of the list
 	var y_position = %Items.global_position.y
 
-	if %Items.get_child_count() > 0:
-		y_position = %Items.get_children()[-1].global_position.y + \
-			%Items.get_children()[-1].size.y + %Items.get("theme_override_constants/separation")
+	# if the list has any visible items, put the line below the last one of those
+	for i in range(%Items.get_child_count() - 1, -1, -1):
+		var child := %Items.get_child(i)
+		if child.visible:
+			y_position = child.global_position.y + child.size.y + %Items.get("theme_override_constants/separation")
+			break
 
+	# if the mouse cursor is above that last visible item, find the item that is closest to the
+	# current mouse cursor position and put the line there
 	for i in %Items.get_child_count():
 		var child := %Items.get_child(i)
 		if child.global_position.y > mouse_position.y:
