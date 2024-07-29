@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="Habituary"
+config/version="alpha"
 run/main_scene="res://entry_point/entry_point.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 run/low_processor_mode=true
@@ -28,6 +29,10 @@ Utils="*res://autoloads/utils.gd"
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/subwindows/embed_subwindows=false
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/automatic_versioning/plugin.cfg")
 
 [filesystem]
 
