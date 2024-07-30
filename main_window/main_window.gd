@@ -36,7 +36,7 @@ func _on_window_size_changed() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		var focus_owner = get_viewport().gui_get_focus_owner()
 		if focus_owner:
 			focus_owner.release_focus()
