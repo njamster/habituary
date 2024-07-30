@@ -79,6 +79,8 @@ func find_item_pos(at_position : Vector2) -> int:
 			inside_folded_heading = child.is_folded
 			if inside_folded_heading:
 				last_heading = child
+			else:
+				last_heading = null
 
 	if inside_folded_heading:
 		if last_heading:
