@@ -53,7 +53,23 @@ signal unfolded
 
 var _contains_mouse_cursor := false
 
-var is_folded := false
+var is_folded := false:
+	set(value):
+		is_folded = value
+
+		if not is_node_ready():
+			await self.ready
+
+		%FoldHeading.button_pressed = is_folded
+
+		if is_folded:
+			# FIXME: Starting with Godot 4.3, `self.folded.emit.call_deferred()` will work, too!
+			(func(): self.folded.emit()).call_deferred()
+			$HBox/ExtraInfo.show()
+		else:
+			# FIXME: Starting with Godot 4.3, `self.unfolded.emit.call_deferred()` will work, too!
+			(func(): self.unfolded.emit()).call_deferred()
+			$HBox/ExtraInfo.hide()
 
 
 func _ready() -> void:
@@ -156,7 +172,10 @@ func save_to_disk(file : FileAccess) -> void:
 	var string := ""
 
 	if is_heading:
-		string += "# "
+		if is_folded:
+			string += "> "
+		else:
+			string += "v "
 	elif done:
 		string += "[x] "
 	else:
@@ -167,9 +186,14 @@ func save_to_disk(file : FileAccess) -> void:
 
 
 func load_from_disk(line : String) -> void:
-	if line.begins_with("# "):
-		self.is_heading = true
+	if line.begins_with("# ") or line.begins_with("v "):
 		self.text = line.right(-2)
+		self.is_heading = true
+		self.is_folded = false
+	elif line.begins_with("> "):
+		self.text = line.right(-2)
+		self.is_heading = true
+		self.is_folded = true
 	elif line.begins_with("[ ] "):
 		self.text = line.right(-4)
 	elif line.begins_with("[x] "):
@@ -241,14 +265,7 @@ func _on_check_box_toggled(toggled_on: bool) -> void:
 
 
 func _on_fold_heading_toggled(toggled_on: bool) -> void:
-	if toggled_on:
-		is_folded = true
-		self.folded.emit()
-		$HBox/ExtraInfo.show()
-	else:
-		is_folded = false
-		self.unfolded.emit()
-		$HBox/ExtraInfo.hide()
+	self.is_folded = toggled_on
 
 
 func set_extra_info(num_done : int , num_items : int) -> void:
