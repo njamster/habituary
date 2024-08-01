@@ -49,6 +49,8 @@ var current_day := DayTimer.today:
 
 var start_week_on_monday := true
 
+var day_start_hour_offset := 0
+
 var dark_mode := true:
 	set(value):
 		dark_mode = value
@@ -191,7 +193,7 @@ func _enter_tree() -> void:
 		today_position = config.get_value("AppState", "today_position", today_position)
 		view_mode = config.get_value("AppState", "view_mode", view_mode)
 		start_week_on_monday = config.get_value("AppState", "start_week_on_monday", start_week_on_monday)
-
+		day_start_hour_offset = config.get_value("AppState", "day_start_hour_offset", day_start_hour_offset)
 
 
 func _notification(what: int) -> void:
@@ -205,4 +207,5 @@ func _notification(what: int) -> void:
 		config.set_value("AppState", "today_position", today_position)
 		config.set_value("AppState", "view_mode", view_mode)
 		config.set_value("AppState", "start_week_on_monday", start_week_on_monday)
+		config.set_value("AppState", "day_start_hour_offset", day_start_hour_offset)
 		config.save(SETTINGS_PATH)

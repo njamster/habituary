@@ -84,6 +84,7 @@ alignment = 1
 editable = false
 
 [node name="Explanation" type="Label" parent="VBox/VBox1"]
+modulate = Color(1, 1, 1, 0.607843)
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "This is the path under which Habituary will store all your to-dos. It is highly recommended that you keep regular backups of this directory to prevent data loss in case of errors or bugs."
@@ -106,6 +107,7 @@ vertical_alignment = 1
 layout_mode = 2
 
 [node name="Explanation" type="Label" parent="VBox/VBox2"]
+modulate = Color(1, 1, 1, 0.607843)
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 
@@ -126,6 +128,36 @@ vertical_alignment = 1
 layout_mode = 2
 
 [node name="Explanation" type="Label" parent="VBox/VBox3"]
+modulate = Color(1, 1, 1, 0.607843)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+
+[node name="VBox4" type="VBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="DayStartsAt" type="HBoxContainer" parent="VBox/VBox4"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBox/VBox4/DayStartsAt"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "New Days Start At"
+vertical_alignment = 1
+
+[node name="Options" type="SpinBox" parent="VBox/VBox4/DayStartsAt"]
+layout_mode = 2
+max_value = 23.0
+alignment = 1
+
+[node name="Unit" type="Label" parent="VBox/VBox4/DayStartsAt"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "hours past midnight"
+vertical_alignment = 1
+
+[node name="Explanation" type="Label" parent="VBox/VBox4"]
+modulate = Color(1, 1, 1, 0.607843)
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 
@@ -138,4 +170,5 @@ text = "Close"
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="item_selected" from="VBox/VBox2/TodayPosition/Options" to="." method="_on_options_item_selected"]
 [connection signal="toggled" from="VBox/VBox3/FirstWeekday/Options" to="." method="_on_options_toggled"]
+[connection signal="value_changed" from="VBox/VBox4/DayStartsAt/Options" to="." method="_on_options_value_changed"]
 [connection signal="pressed" from="VBox/Close" to="." method="_on_close_pressed"]

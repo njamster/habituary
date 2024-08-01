@@ -27,6 +27,9 @@ func _ready() -> void:
 	%FirstWeekday/Options.button_pressed = Settings.start_week_on_monday
 	_on_options_toggled(Settings.start_week_on_monday)
 
+	%DayStartsAt/Options.value = Settings.day_start_hour_offset
+	_on_options_value_changed(Settings.day_start_hour_offset)
+
 
 func _on_visibility_changed() -> void:
 	if visible:
@@ -55,6 +58,12 @@ func _on_options_toggled(toggled_on: bool) -> void:
 		%FirstWeekday.get_node("../Explanation").text = "New weeks in the calendar widget will start on Mondays."
 	else:
 		%FirstWeekday.get_node("../Explanation").text = "New weeks in the calendar widget will start on Sundays."
+
+
+func _on_options_value_changed(value: int) -> void:
+	Settings.day_start_hour_offset = value
+	%DayStartsAt.get_node("../Explanation").text = \
+		"Today's date will shift one day forward at %02d:00." % value
 
 
 func _on_close_pressed() -> void:
