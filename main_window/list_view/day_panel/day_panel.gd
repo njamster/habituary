@@ -31,10 +31,10 @@ func _ready() -> void:
 
 func _update_header() -> void:
 	if date:
-		%Date.text = date.format("DD MMM YYYY")
+		%Date.text = date.format("MMM DD, YYYY")
 		%Weekday.text = date.format("dddd")
 	else:
-		%Date.text = "DD MMM YYYY"
+		%Date.text = "MMM DD, YYYY"
 		%Weekday.text = "WEEKDAY"
 	_apply_date_relative_formating()
 
