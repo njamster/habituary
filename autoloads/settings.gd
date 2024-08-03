@@ -49,7 +49,13 @@ var current_day := DayTimer.today:
 
 var start_week_on_monday := true
 
-var day_start_hour_offset := 0
+var day_start_hour_offset := 0:
+	set(value):
+		if value != day_start_hour_offset:
+			var old_value := day_start_hour_offset
+			day_start_hour_offset = value
+			var shift := value - old_value
+			EventBus.day_start_hour_offset_changed.emit(shift)
 
 var dark_mode := true:
 	set(value):

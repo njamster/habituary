@@ -24,7 +24,7 @@ func _ready() -> void:
 		_update_store_path()
 		load_from_disk()
 		self.tree_exited.connect(save_to_disk)
-		EventBus.new_day_started.connect(_apply_date_relative_formating)
+		EventBus.today_changed.connect(_apply_date_relative_formating)
 		_on_dark_mode_changed(Settings.dark_mode)
 		EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
 

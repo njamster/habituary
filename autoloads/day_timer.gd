@@ -1,7 +1,12 @@
 @tool
 extends Timer
 
-var today := Date.new()
+var today := Date.new():
+	set(value):
+		if Settings.current_day.as_dict() == today.as_dict():
+			Settings.current_day = value
+		today = value
+		EventBus.today_changed.emit()
 
 
 func _ready() -> void:
@@ -11,6 +16,8 @@ func _ready() -> void:
 	self.start(_get_seconds_till_tomorrow())
 
 	timeout.connect(_on_new_day)
+
+	EventBus.day_start_hour_offset_changed.connect(_on_day_start_hour_offset_changed)
 
 
 func _get_seconds_till_tomorrow() -> int:
@@ -23,8 +30,19 @@ func _get_seconds_till_tomorrow() -> int:
 
 
 func _on_new_day() -> void:
-	if Settings.current_day.as_dict() == today.as_dict():
-		Settings.current_day = Settings.current_day.add_days(1)
 	today = today.add_days(1)
-	EventBus.new_day_started.emit()
+
+	self.start(_get_seconds_till_tomorrow())
+
+
+func _on_day_start_hour_offset_changed(shift : int) -> void:
+	var new_time_till_day_start := self.wait_time + shift * 3600
+
+	if new_time_till_day_start >= 86400:
+		# day start is 24 hours or more away => decrease today by one
+		today = today.add_days(-1)
+	elif new_time_till_day_start < 0:
+		# day start is already in the past => increase today by one
+		today = today.add_days(1)
+
 	self.start(_get_seconds_till_tomorrow())
