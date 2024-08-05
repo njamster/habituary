@@ -10,6 +10,10 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 		return
 
 	var items = VBoxContainer.new()
+	items.add_theme_constant_override(
+		"separation",
+		host.get_parent().get_theme_constant("separation")
+	)
 	items.size.x = host.get_parent().size.x
 
 	nodes_to_move = [host]

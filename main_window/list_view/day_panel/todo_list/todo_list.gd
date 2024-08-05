@@ -126,23 +126,29 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
-	if data is Object:
-		data.modulate.a = 1.0
-		if data.get_parent() != %Items:
-			data.reparent(%Items)
-		%Items.move_child(data, find_item_pos(self.global_position + at_position))
-	elif data is Array:
+	if data is Array:
 		var base_position := find_item_pos(self.global_position + at_position)
 		for i in data.size():
 			var entry = data[i]
 			entry.modulate.a = 1.0
 			if entry.get_parent() != %Items:
+				# item moved from one list to another
 				disconnect_todo_signals(entry)
 				entry.reparent(%Items)
 				connect_todo_signals(entry)
 				%Items.move_child(entry, base_position + i)
 			else:
-				%Items.move_child(entry, min(%Items.get_child_count(), base_position + i))
+				# item changed its position inside the list
+				if base_position >= entry.get_index() - i and \
+					base_position <= entry.get_index() + data.size() - i:
+						# new position _is_ the previous position
+						continue
+				elif entry.get_index() < base_position:
+					# new position is _below_ the previous position
+					%Items.move_child(entry, base_position - 1)
+				else:
+					# new position is _above_ the previous position
+					%Items.move_child(entry, min(%Items.get_child_count(), base_position + i))
 
 
 func has_items() -> bool:
