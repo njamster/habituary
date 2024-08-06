@@ -25,7 +25,8 @@ func add_todo(at_position := Vector2.ZERO, is_debug_item := false) -> Control:
 		%Items.move_child(new_item, find_item_pos(at_position))
 	connect_todo_signals(new_item)
 	if at_position != Vector2.ZERO:
-		new_item.edit()
+		# deferred to wait for the container to update the item's position
+		new_item.edit.call_deferred()
 	return new_item
 
 
