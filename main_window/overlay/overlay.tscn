@@ -25,4 +25,4 @@ offset_top = -150.5
 offset_right = 306.5
 offset_bottom = 150.5
 
-[connection signal="gui_input" from="Background" to="." method="_on_dimmed_background_gui_input"]
+[connection signal="gui_input" from="Background" to="." method="_on_background_gui_input"]

@@ -1,5 +1,8 @@
 extends CanvasLayer
 
+const TRANSPARENT_ALPHA := 0.0
+const DIMMED_ALPHA := 0.7
+
 var _previous_min_size := Vector2i.ZERO
 
 
@@ -11,7 +14,7 @@ func _ready() -> void:
 
 
 func open_component(component : Control, dimmed_background : bool) -> void:
-	$Background.color.a = 0.7 if dimmed_background else 0.0
+	$Background.color.a = DIMMED_ALPHA if dimmed_background else TRANSPARENT_ALPHA
 
 	self.show()
 	component.show()
@@ -41,11 +44,25 @@ func close_overlay() -> void:
 	_previous_min_size = Vector2i.ZERO
 
 
-func _on_dimmed_background_gui_input(event: InputEvent) -> void:
+func _on_background_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		# left-click anywhere on the background to close the currently visible overlay
 		close_overlay()
 
 
-func _unhandled_key_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel"):
-		close_overlay()
+func _shortcut_input(event: InputEvent) -> void:
+	if self.visible:
+		if event.is_action_pressed("ui_cancel"):
+			# press escape to close the currently visible overlay
+			close_overlay()
+		elif $Background.color.a != TRANSPARENT_ALPHA:
+			# consume any InputEventKey or InputEventShortcut event here to stop it from propagating
+			# further up in the tree (i.e. beyond the scope of this overlay)
+			get_viewport().set_input_as_handled()
+
+
+func _unhandled_input(_event: InputEvent) -> void:
+	if self.visible and $Background.color.a != TRANSPARENT_ALPHA:
+		# consume any remaining unhandled input events here to stop it from propagating further up
+		# in the tree (i.e. beyond the scope of this overlay)
+		get_viewport().set_input_as_handled()
