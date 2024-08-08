@@ -147,6 +147,9 @@ layout_mode = 2
 focus_mode = 0
 mouse_filter = 1
 mouse_default_cursor_shape = 2
+theme_override_colors/icon_normal_color = Color(0.92549, 0.937255, 0.956863, 1)
+theme_override_colors/icon_pressed_color = Color(0.815686, 0.529412, 0.439216, 1)
+theme_override_colors/icon_hover_color = Color(0.74902, 0.380392, 0.415686, 1)
 icon = ExtResource("3_nsj7w")
 flat = true
 expand_icon = true
@@ -178,5 +181,4 @@ popup_position = 1
 [connection signal="focus_exited" from="HBox/Content/Edit" to="." method="_on_edit_focus_exited"]
 [connection signal="text_changed" from="HBox/Content/Edit" to="." method="_on_edit_text_changed"]
 [connection signal="text_submitted" from="HBox/Content/Edit" to="." method="_on_edit_text_submitted"]
-[connection signal="gui_input" from="HBox/UI/Delete" to="." method="_on_delete_gui_input"]
 [connection signal="pressed" from="HBox/UI/Delete" to="." method="delete"]

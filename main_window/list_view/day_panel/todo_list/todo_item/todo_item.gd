@@ -221,7 +221,15 @@ func _on_mouse_entered() -> void:
 func _on_mouse_exited() -> void:
 	_contains_mouse_cursor = false
 	if not is_queued_for_deletion():
+		# Temporarily disabling the delete button is necessary here to avoid a rather bizarre bug(?)
+		# when clicking the button, keeping the button pressed and then moving the mouse cursor out
+		# of the top or bottom side of the to-do item. This will result in hiding the UI (including
+		# the delete button) and trigger the button's `pressed` signal (even though the mouse button
+		# is still held down!), thus would delete the to-do item. Disabling the button while hiding
+		# the UI prevents this from happening and cancels the action.
+		%UI/Delete.disabled = true
 		%UI.hide()
+		%UI/Delete.disabled = false
 		if Settings.dark_mode:
 			%Label.set("theme_override_colors/font_color", Settings.NORD_06)
 			$HBox/ExtraInfo/Label.set("theme_override_colors/font_color", Settings.NORD_06)
@@ -247,7 +255,8 @@ func _on_dark_mode_changed(dark_mode : bool) -> void:
 			toggle.set("theme_override_colors/icon_normal_color", Settings.NORD_06)
 			toggle.set("theme_override_colors/icon_hover_color", Settings.NORD_06)
 			toggle.set("theme_override_colors/icon_pressed_color", Settings.NORD_06)
-		%UI.modulate = Settings.NORD_06
+		%UI/Delete.set("theme_override_colors/icon_normal_color", Settings.NORD_06)
+		%UI/DragHandle.modulate = Settings.NORD_06
 	else:
 		get("theme_override_styles/panel").bg_color = Settings.NORD_04
 		%Label.set("theme_override_colors/font_color", Settings.NORD_00)
@@ -256,7 +265,8 @@ func _on_dark_mode_changed(dark_mode : bool) -> void:
 			toggle.set("theme_override_colors/icon_normal_color", Settings.NORD_00)
 			toggle.set("theme_override_colors/icon_hover_color", Settings.NORD_00)
 			toggle.set("theme_override_colors/icon_pressed_color", Settings.NORD_00)
-		%UI.modulate = Settings.NORD_00
+		%UI/Delete.set("theme_override_colors/icon_normal_color", Settings.NORD_00)
+		%UI/DragHandle.modulate = Settings.NORD_00
 
 
 
