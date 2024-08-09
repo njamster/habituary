@@ -1,0 +1,79 @@
+[gd_scene load_steps=9 format=3 uid="uid://cih6c2f3oxfl0"]
+
+[ext_resource type="Script" path="res://main_window/drag_overlay/drag_overlay.gd" id="1_0aom8"]
+[ext_resource type="Script" path="res://main_window/drag_overlay/drag_border.gd" id="2_wtf54"]
+[ext_resource type="Texture2D" uid="uid://bx431ihwuqyf1" path="res://main_window/drag_overlay/images/arrow_left.svg" id="3_ndai4"]
+[ext_resource type="Texture2D" uid="uid://do8ihkyyxxd77" path="res://main_window/drag_overlay/images/arrow_right.svg" id="4_rppmn"]
+
+[sub_resource type="Gradient" id="Gradient_r1vji"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.995968)
+colors = PackedColorArray(0.505882, 0.631373, 0.756863, 1, 0.505882, 0.631373, 0.756863, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_fknvn"]
+gradient = SubResource("Gradient_r1vji")
+width = 50
+
+[sub_resource type="Gradient" id="Gradient_4o26m"]
+interpolation_mode = 2
+colors = PackedColorArray(0.505882, 0.631373, 0.756863, 0.0352941, 0.505882, 0.631373, 0.756863, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6y3cx"]
+gradient = SubResource("Gradient_4o26m")
+width = 50
+
+[node name="DragOverlay" type="CanvasLayer"]
+script = ExtResource("1_0aom8")
+
+[node name="LeftBorder" type="TextureRect" parent="."]
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 20.0
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_fknvn")
+script = ExtResource("2_wtf54")
+day_offset = -1
+
+[node name="Arrow" type="TextureRect" parent="LeftBorder"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_right = 40.0
+offset_bottom = 20.0
+grow_vertical = 2
+texture = ExtResource("3_ndai4")
+stretch_mode = 3
+
+[node name="RightBorder" type="TextureRect" parent="."]
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+grow_horizontal = 0
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_6y3cx")
+script = ExtResource("2_wtf54")
+day_offset = 1
+
+[node name="Arrow" type="TextureRect" parent="RightBorder"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
+texture = ExtResource("4_rppmn")
+stretch_mode = 3
+
+[connection signal="mouse_entered" from="LeftBorder" to="LeftBorder" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="LeftBorder" to="LeftBorder" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="RightBorder" to="RightBorder" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="RightBorder" to="RightBorder" method="_on_mouse_exited"]

@@ -111,10 +111,7 @@ func fold_heading(item_index : int, unfold := false) -> void:
 
 
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-	if data is Object:
-		if data.has_method("is_in_group"):
-			return data.is_in_group("todo_item")
-	elif data is Array:
+	if data is Array:
 		for entry in data:
 			if entry.has_method("is_in_group"):
 				if not entry.is_in_group("todo_item"):
@@ -131,7 +128,6 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 		var base_position := find_item_pos(self.global_position + at_position)
 		for i in data.size():
 			var entry = data[i]
-			entry.modulate.a = 1.0
 			if entry.get_parent() != %Items:
 				# item moved from one list to another
 				disconnect_todo_signals(entry)

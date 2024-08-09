@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bdu13hjjrxtck"]
+[gd_scene load_steps=9 format=3 uid="uid://bdu13hjjrxtck"]
 
 [ext_resource type="Script" path="res://main_window/main_window.gd" id="1_cqr1i"]
 [ext_resource type="PackedScene" uid="uid://bjv3cb21jdiu3" path="res://main_window/navigation_bar_left/navigation_bar_left.tscn" id="2_l73p5"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bmrx40aplh6c1" path="res://main_window/settings_widget/settings_widget.tscn" id="6_1c6x1"]
 [ext_resource type="PackedScene" uid="uid://brgpa340xc1dn" path="res://main_window/overlay/overlay.tscn" id="7_77111"]
 [ext_resource type="PackedScene" uid="uid://esddcur57ihc" path="res://main_window/list_view/list_view.tscn" id="7_ajas6"]
+[ext_resource type="PackedScene" uid="uid://cih6c2f3oxfl0" path="res://main_window/drag_overlay/drag_overlay.tscn" id="7_mttq0"]
 
 [node name="MainWindow" type="MarginContainer"]
 anchors_preset = 15
@@ -46,5 +47,7 @@ layout_mode = 2
 
 [node name="SettingsWidget" parent="HBox/ToolbarRight" instance=ExtResource("6_1c6x1")]
 layout_mode = 2
+
+[node name="DragOverlay" parent="." instance=ExtResource("7_mttq0")]
 
 [node name="Overlay" parent="." instance=ExtResource("7_77111")]

@@ -36,11 +36,13 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 		node.modulate.a = 0.4
 	get_node("Tooltip").hide_tooltip()
 
+	host.get_node("../../../../..").is_dragged = true
+
 	return nodes_to_move
 
 
 func _notification(what: int) -> void:
 	if what == Node.NOTIFICATION_DRAG_END:
-		if not get_viewport().gui_is_drag_successful():
-			for node in nodes_to_move:
-				node.modulate.a = 1.0
+		for node in nodes_to_move:
+			node.modulate.a = 1.0
+		host.get_node("../../../../..").is_dragged = false

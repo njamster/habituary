@@ -2,8 +2,12 @@ extends HBoxContainer
 
 const DAY_PANEL := preload("day_panel/day_panel.tscn")
 
+@onready var drag_cache := Node.new()
+
 
 func _ready() -> void:
+	add_child(drag_cache, false, Node.INTERNAL_MODE_FRONT)
+
 	_update_list_view(Settings.view_mode)
 
 	EventBus.view_mode_changed.connect(_update_list_view)
@@ -75,14 +79,38 @@ func _shift_list_view(current_day : Date) -> void:
 
 
 func add_day_panel(offset_from_current_day : int, push_front := false) -> void:
-	var day_panel := DAY_PANEL.instantiate()
-	day_panel.date = Settings.current_day.add_days(offset_from_current_day)
-	add_child(day_panel)
+	var day_panel_date := Settings.current_day.add_days(offset_from_current_day)
+
+	var day_panel
+
+	if drag_cache.get_children():
+		if drag_cache.get_child(0).date.as_dict() == day_panel_date.as_dict():
+			day_panel = drag_cache.get_child(0)
+			day_panel.reparent(self)
+			day_panel.show()
+
+	if not day_panel:
+		day_panel = DAY_PANEL.instantiate()
+		day_panel.date = day_panel_date
+		add_child(day_panel)
+
 	if push_front:
 		move_child(day_panel, 0)
 
 
 func remove_day_panel(index : int) -> void:
 	var day_panel = get_child(index)
-	remove_child(day_panel)
-	day_panel.queue_free()
+	if day_panel.is_dragged:
+		day_panel.reparent(drag_cache)
+		day_panel.hide()
+	else:
+		remove_child(day_panel)
+		day_panel.queue_free()
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_DRAG_END:
+		if drag_cache.get_children():
+			var day_panel := drag_cache.get_child(0)
+			drag_cache.remove_child(day_panel)
+			day_panel.queue_free()

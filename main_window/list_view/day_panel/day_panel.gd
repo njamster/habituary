@@ -13,6 +13,8 @@ extends VBoxContainer
 
 var store_path := ""
 
+var is_dragged := false
+
 
 func _ready() -> void:
 	if not Engine.is_editor_hint():

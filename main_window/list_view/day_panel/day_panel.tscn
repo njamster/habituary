@@ -44,7 +44,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"SubtleLabel"
 theme_override_font_sizes/font_size = 12
-text = "DD MMM YYYY"
+text = "MMM DD, YYYY"
 uppercase = true
 
 [node name="Weekday" type="Label" parent="Header/VBox"]
