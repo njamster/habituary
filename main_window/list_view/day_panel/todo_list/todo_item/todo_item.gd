@@ -280,3 +280,10 @@ func _on_fold_heading_toggled(toggled_on: bool) -> void:
 
 func set_extra_info(num_done : int , num_items : int) -> void:
 	$HBox/ExtraInfo/Label.text = "%d/%d" % [num_done, num_items]
+
+
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		var focus_owner := get_viewport().gui_get_focus_owner()
+		if focus_owner and not focus_owner.owner == self:
+			focus_owner.release_focus()

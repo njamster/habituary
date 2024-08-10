@@ -172,7 +172,6 @@ script = ExtResource("3_oduck")
 text = "Move To-Do"
 popup_position = 1
 
-[connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
 [connection signal="toggled" from="HBox/Toggle/CheckBox" to="." method="_on_check_box_toggled"]
