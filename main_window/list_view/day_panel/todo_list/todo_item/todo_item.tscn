@@ -1,13 +1,11 @@
-[gd_scene load_steps=25 format=3 uid="uid://v8u8oswwmlf3"]
+[gd_scene load_steps=23 format=3 uid="uid://v8u8oswwmlf3"]
 
 [ext_resource type="Texture2D" uid="uid://ci7y27fysy52o" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/unfolded.svg" id="2_2nsse"]
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/todo_list/todo_item/todo_item.gd" id="2_6v2l5"]
 [ext_resource type="Script" path="res://custom/toggle_button.gd" id="2_n5f11"]
 [ext_resource type="Texture2D" uid="uid://b80hle2h5sj20" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/drag_indicator.svg" id="3_avsfu"]
-[ext_resource type="Texture2D" uid="uid://36rqvmf8v7hf" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/done.svg" id="3_cwrr6"]
 [ext_resource type="Texture2D" uid="uid://4eakbxkw2dmx" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/delete.svg" id="3_nsj7w"]
 [ext_resource type="Script" path="res://custom/tooltip.gd" id="3_oduck"]
-[ext_resource type="Texture2D" uid="uid://d00v4pleoufwq" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/to_do.svg" id="4_byxfi"]
 [ext_resource type="Texture2D" uid="uid://6im7rq1y7co6" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/folded.svg" id="4_fnk6y"]
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/todo_list/todo_item/drag_handle.gd" id="5_mx38m"]
 
@@ -74,11 +72,7 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_1ifsp")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_ojvrp")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_j40uj")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_6e50g")
-toggle_mode = true
 flat = true
-script = ExtResource("2_n5f11")
-icon_toggled_off = ExtResource("4_byxfi")
-icon_toggled_on = ExtResource("3_cwrr6")
 
 [node name="FoldHeading" type="Button" parent="HBox/Toggle"]
 unique_name_in_owner = true
@@ -174,7 +168,7 @@ popup_position = 1
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
-[connection signal="toggled" from="HBox/Toggle/CheckBox" to="." method="_on_check_box_toggled"]
+[connection signal="gui_input" from="HBox/Toggle/CheckBox" to="." method="_on_check_box_gui_input"]
 [connection signal="toggled" from="HBox/Toggle/FoldHeading" to="." method="_on_fold_heading_toggled"]
 [connection signal="gui_input" from="HBox/Content" to="." method="_on_content_gui_input"]
 [connection signal="focus_exited" from="HBox/Content/Edit" to="." method="_on_edit_focus_exited"]

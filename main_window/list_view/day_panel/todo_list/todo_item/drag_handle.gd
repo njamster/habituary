@@ -6,7 +6,7 @@ var nodes_to_move := []
 
 
 func _get_drag_data(_at_position: Vector2) -> Variant:
-	if host.done:
+	if host.state == host.States.DONE:
 		return
 
 	var items = VBoxContainer.new()

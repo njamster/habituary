@@ -19,21 +19,48 @@ signal unfolded
 			else:
 				%Edit.text = text
 
-@export var done := false:
+enum States { TO_DO, DONE, FAILED }
+@export var state := States.TO_DO:
 	set(value):
-		done = value
+		state = value
 		if is_inside_tree():
-			%CheckBox.button_pressed = done
-			if done:
-				%CheckBox.modulate.a = 0.5
-				%Content.modulate.a = 0.5
-				for node in [%Content, %Label, %Edit]:
-					node.mouse_default_cursor_shape = CURSOR_ARROW
-			else:
+			if state == States.TO_DO:
+				%CheckBox.icon = preload(
+					"res://main_window/list_view/day_panel/todo_list/todo_item/images/to_do.svg"
+				)
+			elif state == States.DONE:
+				%CheckBox.icon = preload(
+					"res://main_window/list_view/day_panel/todo_list/todo_item/images/done.svg"
+				)
+			elif state == States.FAILED:
+				%CheckBox.icon = preload(
+					"res://main_window/list_view/day_panel/todo_list/todo_item/images/failed.svg"
+				)
+
+			%CheckBox.button_pressed = (state != States.TO_DO)
+
+			if not _contains_mouse_cursor:
+				var icon_color := Settings.NORD_06 if Settings.dark_mode else Settings.NORD_00
+				if self.state == States.DONE:
+					icon_color = Color("#A3BE8C")
+				elif self.state == States.FAILED:
+					icon_color = Color("#BF616A")
+
+				for toggle in [%CheckBox, %FoldHeading]:
+					toggle.set("theme_override_colors/icon_normal_color", icon_color)
+					toggle.set("theme_override_colors/icon_hover_color", icon_color)
+					toggle.set("theme_override_colors/icon_pressed_color", icon_color)
+
+			if state == States.TO_DO:
 				%CheckBox.modulate.a = 1.0
 				%Content.modulate.a = 1.0
 				for node in [%Content, %Label, %Edit]:
 					node.mouse_default_cursor_shape = CURSOR_IBEAM
+			else:
+				%CheckBox.modulate.a = 0.5
+				%Content.modulate.a = 0.5
+				for node in [%Content, %Label, %Edit]:
+					node.mouse_default_cursor_shape = CURSOR_ARROW
 
 @export var is_heading := false:
 	set(value):
@@ -75,6 +102,7 @@ var is_folded := false:
 func _ready() -> void:
 	# manually trigger setters
 	text = text
+	state = state
 
 	%Edit.hide()
 	%Label.show()
@@ -152,7 +180,7 @@ func _on_content_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		match event.button_index:
 			MOUSE_BUTTON_MASK_LEFT:
-				if event.pressed and not done:
+				if event.pressed and self.state == States.TO_DO:
 					edit()
 
 
@@ -176,8 +204,10 @@ func save_to_disk(file : FileAccess) -> void:
 			string += "> "
 		else:
 			string += "v "
-	elif done:
+	elif self.state == States.DONE:
 		string += "[x] "
+	elif self.state == States.FAILED:
+		string += "[-] "
 	else:
 		string += "[ ] "
 	string += text
@@ -197,7 +227,10 @@ func load_from_disk(line : String) -> void:
 	elif line.begins_with("[ ] "):
 		self.text = line.right(-4)
 	elif line.begins_with("[x] "):
-		self.done = true
+		self.state = States.DONE
+		self.text = line.right(-4)
+	elif line.begins_with("[-] "):
+		self.state = States.FAILED
 		self.text = line.right(-4)
 	else:
 		push_warning("Unknown format for line \"%s\" (will be automatically converted into a todo)" % line)
@@ -214,7 +247,7 @@ func _on_mouse_entered() -> void:
 	%FoldHeading.set("theme_override_colors/icon_normal_color", Settings.NORD_09)
 	%FoldHeading.set("theme_override_colors/icon_hover_color", Settings.NORD_09)
 	%FoldHeading.set("theme_override_colors/icon_pressed_color", Settings.NORD_10)
-	if not is_in_edit_mode() and not done and not get_viewport().gui_is_dragging():
+	if not is_in_edit_mode() and self.state == States.TO_DO and not get_viewport().gui_is_dragging():
 		%UI.show()
 
 
@@ -230,20 +263,27 @@ func _on_mouse_exited() -> void:
 		%UI/Delete.disabled = true
 		%UI.hide()
 		%UI/Delete.disabled = false
+
+		var icon_color := Settings.NORD_06 if Settings.dark_mode else Settings.NORD_00
+		if self.state == States.DONE:
+			icon_color = Color("#A3BE8C")
+		elif self.state == States.FAILED:
+			icon_color = Color("#BF616A")
+
 		if Settings.dark_mode:
 			%Label.set("theme_override_colors/font_color", Settings.NORD_06)
 			$HBox/ExtraInfo/Label.set("theme_override_colors/font_color", Settings.NORD_06)
 			for toggle in [%CheckBox, %FoldHeading]:
-				toggle.set("theme_override_colors/icon_normal_color", Settings.NORD_06)
-				toggle.set("theme_override_colors/icon_hover_color", Settings.NORD_06)
-				toggle.set("theme_override_colors/icon_pressed_color", Settings.NORD_06)
+				toggle.set("theme_override_colors/icon_normal_color", icon_color)
+				toggle.set("theme_override_colors/icon_hover_color", icon_color)
+				toggle.set("theme_override_colors/icon_pressed_color", icon_color)
 		else:
-			%Label.set("theme_override_colors/font_color", Settings.NORD_00)
-			$HBox/ExtraInfo/Label.set("theme_override_colors/font_color", Settings.NORD_00)
+			%Label.set("theme_override_colors/font_color", Settings.NORD_06)
+			$HBox/ExtraInfo/Label.set("theme_override_colors/font_color", Settings.NORD_06)
 			for toggle in [%CheckBox, %FoldHeading]:
-				toggle.set("theme_override_colors/icon_normal_color", Settings.NORD_00)
-				toggle.set("theme_override_colors/icon_hover_color", Settings.NORD_00)
-				toggle.set("theme_override_colors/icon_pressed_color", Settings.NORD_00)
+				toggle.set("theme_override_colors/icon_normal_color", icon_color)
+				toggle.set("theme_override_colors/icon_hover_color", icon_color)
+				toggle.set("theme_override_colors/icon_pressed_color", icon_color)
 
 
 func _on_dark_mode_changed(dark_mode : bool) -> void:
@@ -251,27 +291,14 @@ func _on_dark_mode_changed(dark_mode : bool) -> void:
 		get("theme_override_styles/panel").bg_color = Settings.NORD_02
 		%Label.set("theme_override_colors/font_color", Settings.NORD_06)
 		$HBox/ExtraInfo/Label.set("theme_override_colors/font_color", Settings.NORD_06)
-		for toggle in [%CheckBox, %FoldHeading]:
-			toggle.set("theme_override_colors/icon_normal_color", Settings.NORD_06)
-			toggle.set("theme_override_colors/icon_hover_color", Settings.NORD_06)
-			toggle.set("theme_override_colors/icon_pressed_color", Settings.NORD_06)
 		%UI/Delete.set("theme_override_colors/icon_normal_color", Settings.NORD_06)
 		%UI/DragHandle.modulate = Settings.NORD_06
 	else:
 		get("theme_override_styles/panel").bg_color = Settings.NORD_04
 		%Label.set("theme_override_colors/font_color", Settings.NORD_00)
 		$HBox/ExtraInfo/Label.set("theme_override_colors/font_color", Settings.NORD_00)
-		for toggle in [%CheckBox, %FoldHeading]:
-			toggle.set("theme_override_colors/icon_normal_color", Settings.NORD_00)
-			toggle.set("theme_override_colors/icon_hover_color", Settings.NORD_00)
-			toggle.set("theme_override_colors/icon_pressed_color", Settings.NORD_00)
 		%UI/Delete.set("theme_override_colors/icon_normal_color", Settings.NORD_00)
 		%UI/DragHandle.modulate = Settings.NORD_00
-
-
-
-func _on_check_box_toggled(toggled_on: bool) -> void:
-	self.done = toggled_on
 
 
 func _on_fold_heading_toggled(toggled_on: bool) -> void:
@@ -287,3 +314,12 @@ func _gui_input(event: InputEvent) -> void:
 		var focus_owner := get_viewport().gui_get_focus_owner()
 		if focus_owner and not focus_owner.owner == self:
 			focus_owner.release_focus()
+
+
+func _on_check_box_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.is_released():
+		match event.button_index:
+			MOUSE_BUTTON_LEFT:
+				self.state = States.DONE if self.state != States.DONE else States.TO_DO
+			MOUSE_BUTTON_RIGHT:
+				self.state = States.FAILED if self.state != States.FAILED else States.TO_DO

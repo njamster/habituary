@@ -11,7 +11,7 @@ func _ready() -> void:
 			var debug_item := add_todo(Vector2.ZERO, true)
 			debug_item.text = "Debug_%d" % i
 			if i == 0:
-				debug_item.done = true
+				debug_item.state = debug_item.States.DONE
 			elif i == 1 or i == 5:
 				debug_item.is_heading = true
 
@@ -104,7 +104,7 @@ func fold_heading(item_index : int, unfold := false) -> void:
 		else:
 			child.visible = unfold
 			num_items += 1
-			if child.done:
+			if child.state != child.States.TO_DO:
 				num_done += 1
 
 	heading.set_extra_info(num_done, num_items)
