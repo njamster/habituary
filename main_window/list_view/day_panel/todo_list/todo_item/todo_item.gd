@@ -317,7 +317,7 @@ func _gui_input(event: InputEvent) -> void:
 
 
 func _on_check_box_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.is_released():
+	if not is_in_edit_mode() and event is InputEventMouseButton and event.is_released():
 		match event.button_index:
 			MOUSE_BUTTON_LEFT:
 				self.state = States.DONE if self.state != States.DONE else States.TO_DO
