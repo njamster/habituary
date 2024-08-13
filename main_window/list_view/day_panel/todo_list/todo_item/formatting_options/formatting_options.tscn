@@ -1,0 +1,70 @@
+[gd_scene load_steps=7 format=3 uid="uid://cs8jl1y4sf5ic"]
+
+[ext_resource type="Script" path="res://main_window/list_view/day_panel/todo_list/todo_item/formatting_options/formatting_options.gd" id="1_j8nls"]
+[ext_resource type="Texture2D" uid="uid://gy7qpfsq4aaa" path="res://main_window/list_view/day_panel/todo_list/todo_item/formatting_options/images/heading.svg" id="2_u2isb"]
+[ext_resource type="Texture2D" uid="uid://dr7xg2ji33j32" path="res://main_window/list_view/day_panel/todo_list/todo_item/formatting_options/images/bold.svg" id="3_rcm65"]
+[ext_resource type="Texture2D" uid="uid://b8u24hbkd0vj1" path="res://main_window/list_view/day_panel/todo_list/todo_item/formatting_options/images/italic.svg" id="4_kr0s6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yxgan"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4go4t"]
+
+[node name="FormattingOptions" type="PanelContainer"]
+top_level = true
+offset_right = 96.0
+offset_bottom = 28.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_type_variation = &"TooltipPanel"
+script = ExtResource("1_j8nls")
+
+[node name="HBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Heading" type="Button" parent="HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxEmpty_yxgan")
+toggle_mode = true
+icon = ExtResource("2_u2isb")
+icon_alignment = 1
+
+[node name="Bold" type="Button" parent="HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 8
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxEmpty_yxgan")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_4go4t")
+disabled = true
+toggle_mode = true
+icon = ExtResource("3_rcm65")
+icon_alignment = 1
+
+[node name="Italic" type="Button" parent="HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 8
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxEmpty_yxgan")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_4go4t")
+disabled = true
+toggle_mode = true
+icon = ExtResource("4_kr0s6")
+icon_alignment = 1
+
+[connection signal="toggled" from="HBox/Heading" to="." method="_on_heading_toggled"]
+[connection signal="toggled" from="HBox/Bold" to="." method="_on_bold_toggled"]
+[connection signal="toggled" from="HBox/Italic" to="." method="_on_italic_toggled"]

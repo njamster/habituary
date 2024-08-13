@@ -9,15 +9,14 @@ signal changed
 signal folded
 signal unfolded
 
+const FORMATTING_OPTIONS := preload("formatting_options/formatting_options.tscn")
+
 @export var text := "":
 	set(value):
 		text = value
 		if is_inside_tree():
 			%Label.text = text
-			if self.is_heading:
-				%Edit.text = "# " + text
-			else:
-				%Edit.text = text
+			%Edit.text = text
 
 enum States { TO_DO, DONE, FAILED }
 @export var state := States.TO_DO:
@@ -98,6 +97,8 @@ var is_folded := false:
 			(func(): self.unfolded.emit()).call_deferred()
 			$HBox/ExtraInfo.hide()
 
+var _formatting_options
+
 
 func _ready() -> void:
 	# manually trigger setters
@@ -126,6 +127,9 @@ func edit() -> void:
 	%UI.hide()
 	%Edit.caret_column = %Edit.text.length()
 	%Edit.grab_focus()
+	_formatting_options = FORMATTING_OPTIONS.instantiate()
+	_formatting_options.visible = (text != "")
+	add_child(_formatting_options)
 	editing_started.emit()
 
 
@@ -138,13 +142,11 @@ func delete() -> void:
 
 
 func _on_edit_text_changed(new_text: String) -> void:
-	is_heading = new_text.begins_with("# ")
+	if _formatting_options:
+		_formatting_options.visible = (new_text != "")
 
 
 func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
-	if new_text.begins_with("# "):
-		new_text = new_text.right(-2)
-
 	# trim any leading & trailing whitespace
 	new_text = new_text.strip_edges()
 
@@ -172,6 +174,8 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 
 
 func _on_edit_focus_exited() -> void:
+	if _formatting_options:
+		_formatting_options.queue_free()
 	if not is_queued_for_deletion() and %Edit.visible:
 		_on_edit_text_submitted(%Edit.text, false)
 
@@ -323,3 +327,4 @@ func _on_check_box_gui_input(event: InputEvent) -> void:
 				self.state = States.DONE if self.state != States.DONE else States.TO_DO
 			MOUSE_BUTTON_RIGHT:
 				self.state = States.FAILED if self.state != States.FAILED else States.TO_DO
+
