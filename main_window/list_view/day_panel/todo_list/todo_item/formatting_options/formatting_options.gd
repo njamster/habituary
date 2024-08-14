@@ -18,6 +18,8 @@ func update_position() -> void:
 
 func _ready() -> void:
 	%Heading.button_pressed = get_parent().is_heading
+	%Bold.button_pressed = get_parent().is_bold
+	%Italic.button_pressed = get_parent().is_italic
 
 
 func _on_heading_toggled(toggled_on: bool) -> void:
@@ -25,8 +27,8 @@ func _on_heading_toggled(toggled_on: bool) -> void:
 
 
 func _on_bold_toggled(toggled_on: bool) -> void:
-	pass # TODO
+	get_parent().is_bold = toggled_on
 
 
 func _on_italic_toggled(toggled_on: bool) -> void:
-	pass # TODO
+	get_parent().is_italic = toggled_on

@@ -76,6 +76,18 @@ enum States { TO_DO, DONE, FAILED }
 				%FoldHeading.hide()
 				%CheckBox.show()
 
+@export var is_bold := false:
+	set(value):
+		is_bold = value
+		if is_inside_tree():
+			_apply_formatting()
+
+@export var is_italic := false:
+	set(value):
+		is_italic = value
+		if is_inside_tree():
+			_apply_formatting()
+
 
 var _contains_mouse_cursor := false
 
@@ -104,6 +116,8 @@ func _ready() -> void:
 	# manually trigger setters
 	text = text
 	state = state
+
+	_apply_formatting()
 
 	%Edit.hide()
 	%Label.show()
@@ -214,31 +228,48 @@ func save_to_disk(file : FileAccess) -> void:
 		string += "[-] "
 	else:
 		string += "[ ] "
+
+	if is_italic:
+		string += "*"
+	if is_bold:
+		string += "**"
 	string += text
+	if is_bold:
+		string += "**"
+	if is_italic:
+		string += "*"
 
 	file.store_line(string)
 
 
 func load_from_disk(line : String) -> void:
 	if line.begins_with("# ") or line.begins_with("v "):
-		self.text = line.right(-2)
+		line = line.right(-2)
 		self.is_heading = true
 		self.is_folded = false
 	elif line.begins_with("> "):
-		self.text = line.right(-2)
+		line = line.right(-2)
 		self.is_heading = true
 		self.is_folded = true
 	elif line.begins_with("[ ] "):
-		self.text = line.right(-4)
+		line = line.right(-4)
 	elif line.begins_with("[x] "):
 		self.state = States.DONE
-		self.text = line.right(-4)
+		line = line.right(-4)
 	elif line.begins_with("[-] "):
 		self.state = States.FAILED
-		self.text = line.right(-4)
+		line = line.right(-4)
 	else:
 		push_warning("Unknown format for line \"%s\" (will be automatically converted into a todo)" % line)
-		self.text = line
+
+	if line.begins_with("**") and  line.ends_with("**"):
+		line = line.substr(2, line.length() - 4)
+		is_bold = true
+	if line.begins_with("*") and  line.ends_with("*"):
+		line = line.substr(1, line.length() - 2)
+		is_italic = true
+
+	self.text = line
 
 
 func _on_mouse_entered() -> void:
@@ -328,3 +359,21 @@ func _on_check_box_gui_input(event: InputEvent) -> void:
 			MOUSE_BUTTON_RIGHT:
 				self.state = States.FAILED if self.state != States.FAILED else States.TO_DO
 
+
+func _apply_formatting() -> void:
+	var font : Font
+
+	if is_bold:
+		if is_italic:
+			font = preload("res://theme/fonts/OpenSans-ExtraBoldItalic.ttf")
+		else:
+			font = preload("res://theme/fonts/OpenSans-ExtraBold.ttf")
+	else:
+		if is_italic:
+			font = preload("res://theme/fonts/OpenSans-MediumItalic.ttf")
+		else:
+			font = preload("res://theme/fonts/OpenSans-Medium.ttf")
+
+	%Edit.add_theme_font_override("font", font)
+	$HBox/Content/Label.add_theme_font_override("font", font)
+	$HBox/ExtraInfo/Label.add_theme_font_override("font", font)
