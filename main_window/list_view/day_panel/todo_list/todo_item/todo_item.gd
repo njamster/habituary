@@ -1,4 +1,4 @@
-extends PanelContainer
+extends VBoxContainer
 
 signal predecessor_requested
 signal successor_requested
@@ -8,8 +8,6 @@ signal changed
 
 signal folded
 signal unfolded
-
-const FORMATTING_OPTIONS := preload("formatting_options/formatting_options.tscn")
 
 @export var text := "":
 	set(value):
@@ -66,27 +64,42 @@ enum States { TO_DO, DONE, FAILED }
 		is_heading = value
 		if is_inside_tree():
 			if is_heading:
-				get("theme_override_styles/panel").draw_center = true
+				$MainRow.get("theme_override_styles/panel").draw_center = true
+				%Heading.get_node("Tooltip").text = "Undo Heading"
+				%Delete.text = "Delete Heading"
 				%Label.uppercase = true
 				%FoldHeading.show()
 				%CheckBox.hide()
 			else:
-				get("theme_override_styles/panel").draw_center = false
+				$MainRow.get("theme_override_styles/panel").draw_center = false
+				%Heading.get_node("Tooltip").text = "Make Heading"
+				%Delete.text = "Delete To-Do"
 				%Label.uppercase = false
 				%FoldHeading.hide()
 				%CheckBox.show()
+			%Heading.button_pressed = is_heading
 
 @export var is_bold := false:
 	set(value):
 		is_bold = value
 		if is_inside_tree():
+			if is_bold:
+				%Bold.get_node("Tooltip").text = "Undo Bold"
+			else:
+				%Bold.get_node("Tooltip").text = "Make Bold"
 			_apply_formatting()
+			%Bold.button_pressed = is_bold
 
 @export var is_italic := false:
 	set(value):
 		is_italic = value
 		if is_inside_tree():
+			if is_italic:
+				%Italic.get_node("Tooltip").text = "Undo Italic"
+			else:
+				%Italic.get_node("Tooltip").text = "Make Italic"
 			_apply_formatting()
+			%Italic.button_pressed = is_italic
 
 
 var _contains_mouse_cursor := false
@@ -103,13 +116,11 @@ var is_folded := false:
 		if is_folded:
 			# FIXME: Starting with Godot 4.3, `self.folded.emit.call_deferred()` will work, too!
 			(func(): self.folded.emit()).call_deferred()
-			$HBox/ExtraInfo.show()
+			%ExtraInfo.show()
 		else:
 			# FIXME: Starting with Godot 4.3, `self.unfolded.emit.call_deferred()` will work, too!
 			(func(): self.unfolded.emit()).call_deferred()
-			$HBox/ExtraInfo.hide()
-
-var _formatting_options
+			%ExtraInfo.hide()
 
 
 func _ready() -> void:
@@ -121,8 +132,9 @@ func _ready() -> void:
 
 	%Edit.hide()
 	%Label.show()
-
-	%UI.visible = _contains_mouse_cursor
+	$Triangle.hide()
+	%EditingOptions.hide()
+	%DragHandle.visible = _contains_mouse_cursor
 
 	_on_dark_mode_changed(Settings.dark_mode)
 	EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
@@ -133,17 +145,16 @@ func is_in_edit_mode() -> bool:
 
 
 func edit() -> void:
-	for child in $HBox/Toggle.get_children():
+	for child in %Toggle.get_children():
 		child.mouse_default_cursor_shape = CURSOR_FORBIDDEN
 		child.disabled = true
 	%Label.hide()
 	%Edit.show()
-	%UI.hide()
+	%DragHandle.hide()
 	%Edit.caret_column = %Edit.text.length()
 	%Edit.grab_focus()
-	_formatting_options = FORMATTING_OPTIONS.instantiate()
-	_formatting_options.visible = (text != "")
-	add_child(_formatting_options)
+	$Triangle.show()
+	%EditingOptions.show()
 	editing_started.emit()
 
 
@@ -153,11 +164,6 @@ func delete() -> void:
 	if self.text:
 		await tree_exited
 		changed.emit()
-
-
-func _on_edit_text_changed(new_text: String) -> void:
-	if _formatting_options:
-		_formatting_options.visible = (new_text != "")
 
 
 func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
@@ -172,11 +178,13 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 			changed.emit()
 		%Edit.hide()
 		%Label.show()
-		for child in $HBox/Toggle.get_children():
+		%EditingOptions.hide()
+		$Triangle.hide()
+		for child in %Toggle.get_children():
 			child.mouse_default_cursor_shape = CURSOR_POINTING_HAND
 			child.disabled = false
 		if _contains_mouse_cursor:
-			%UI.show()
+			%DragHandle.show()
 
 		if new_item and key_input:
 			if Input.is_key_pressed(KEY_SHIFT):
@@ -188,8 +196,6 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 
 
 func _on_edit_focus_exited() -> void:
-	if _formatting_options:
-		_formatting_options.queue_free()
 	if not is_queued_for_deletion() and %Edit.visible:
 		_on_edit_text_submitted(%Edit.text, false)
 
@@ -275,29 +281,23 @@ func load_from_disk(line : String) -> void:
 func _on_mouse_entered() -> void:
 	_contains_mouse_cursor = true
 	%Label.set("theme_override_colors/font_color", Settings.NORD_09)
-	$HBox/ExtraInfo/Label.set("theme_override_colors/font_color", Settings.NORD_09)
+	%ExtraInfo.set("theme_override_colors/font_color", Settings.NORD_09)
 	%CheckBox.set("theme_override_colors/icon_normal_color", Settings.NORD_09)
 	%CheckBox.set("theme_override_colors/icon_hover_color", Settings.NORD_09)
 	%CheckBox.set("theme_override_colors/icon_pressed_color", Settings.NORD_10)
+	%CheckBox.set("theme_override_colors/icon_disabled_color", Settings.NORD_10)
 	%FoldHeading.set("theme_override_colors/icon_normal_color", Settings.NORD_09)
 	%FoldHeading.set("theme_override_colors/icon_hover_color", Settings.NORD_09)
 	%FoldHeading.set("theme_override_colors/icon_pressed_color", Settings.NORD_10)
+	%FoldHeading.set("theme_override_colors/icon_disabled_color", Settings.NORD_10)
 	if not is_in_edit_mode() and self.state == States.TO_DO and not get_viewport().gui_is_dragging():
-		%UI.show()
+		%DragHandle.show()
 
 
 func _on_mouse_exited() -> void:
 	_contains_mouse_cursor = false
 	if not is_queued_for_deletion():
-		# Temporarily disabling the delete button is necessary here to avoid a rather bizarre bug(?)
-		# when clicking the button, keeping the button pressed and then moving the mouse cursor out
-		# of the top or bottom side of the to-do item. This will result in hiding the UI (including
-		# the delete button) and trigger the button's `pressed` signal (even though the mouse button
-		# is still held down!), thus would delete the to-do item. Disabling the button while hiding
-		# the UI prevents this from happening and cancels the action.
-		%UI/Delete.disabled = true
-		%UI.hide()
-		%UI/Delete.disabled = false
+		%DragHandle.hide()
 
 		var icon_color := Settings.NORD_06 if Settings.dark_mode else Settings.NORD_00
 		if self.state == States.DONE:
@@ -307,33 +307,49 @@ func _on_mouse_exited() -> void:
 
 		if Settings.dark_mode:
 			%Label.set("theme_override_colors/font_color", Settings.NORD_06)
-			$HBox/ExtraInfo/Label.set("theme_override_colors/font_color", Settings.NORD_06)
+			%ExtraInfo.set("theme_override_colors/font_color", Settings.NORD_06)
 			for toggle in [%CheckBox, %FoldHeading]:
 				toggle.set("theme_override_colors/icon_normal_color", icon_color)
 				toggle.set("theme_override_colors/icon_hover_color", icon_color)
 				toggle.set("theme_override_colors/icon_pressed_color", icon_color)
+				toggle.set("theme_override_colors/icon_disabled_color", icon_color)
 		else:
 			%Label.set("theme_override_colors/font_color", Settings.NORD_06)
-			$HBox/ExtraInfo/Label.set("theme_override_colors/font_color", Settings.NORD_06)
+			%ExtraInfo.set("theme_override_colors/font_color", Settings.NORD_06)
 			for toggle in [%CheckBox, %FoldHeading]:
 				toggle.set("theme_override_colors/icon_normal_color", icon_color)
 				toggle.set("theme_override_colors/icon_hover_color", icon_color)
 				toggle.set("theme_override_colors/icon_pressed_color", icon_color)
+				toggle.set("theme_override_colors/icon_disabled_color", icon_color)
 
 
 func _on_dark_mode_changed(dark_mode : bool) -> void:
+	var icon_color := Settings.NORD_06 if Settings.dark_mode else Settings.NORD_00
+	if self.state == States.DONE:
+		icon_color = Color("#A3BE8C")
+	elif self.state == States.FAILED:
+		icon_color = Color("#BF616A")
+
 	if dark_mode:
-		get("theme_override_styles/panel").bg_color = Settings.NORD_02
+		$MainRow.get("theme_override_styles/panel").bg_color = Settings.NORD_02
 		%Label.set("theme_override_colors/font_color", Settings.NORD_06)
-		$HBox/ExtraInfo/Label.set("theme_override_colors/font_color", Settings.NORD_06)
-		%UI/Delete.set("theme_override_colors/icon_normal_color", Settings.NORD_06)
-		%UI/DragHandle.modulate = Settings.NORD_06
+		%ExtraInfo.set("theme_override_colors/font_color", Settings.NORD_06)
+		for toggle in [%CheckBox, %FoldHeading]:
+			toggle.set("theme_override_colors/icon_normal_color", icon_color)
+			toggle.set("theme_override_colors/icon_hover_color", icon_color)
+			toggle.set("theme_override_colors/icon_pressed_color", icon_color)
+			toggle.set("theme_override_colors/icon_disabled_color", icon_color)
+		%DragHandle.modulate = Settings.NORD_06
 	else:
-		get("theme_override_styles/panel").bg_color = Settings.NORD_04
+		$MainRow.get("theme_override_styles/panel").bg_color = Settings.NORD_04
 		%Label.set("theme_override_colors/font_color", Settings.NORD_00)
-		$HBox/ExtraInfo/Label.set("theme_override_colors/font_color", Settings.NORD_00)
-		%UI/Delete.set("theme_override_colors/icon_normal_color", Settings.NORD_00)
-		%UI/DragHandle.modulate = Settings.NORD_00
+		%ExtraInfo.set("theme_override_colors/font_color", Settings.NORD_00)
+		for toggle in [%CheckBox, %FoldHeading]:
+			toggle.set("theme_override_colors/icon_normal_color", icon_color)
+			toggle.set("theme_override_colors/icon_hover_color", icon_color)
+			toggle.set("theme_override_colors/icon_pressed_color", icon_color)
+			toggle.set("theme_override_colors/icon_disabled_color", icon_color)
+		%DragHandle.modulate = Settings.NORD_00
 
 
 func _on_fold_heading_toggled(toggled_on: bool) -> void:
@@ -341,7 +357,7 @@ func _on_fold_heading_toggled(toggled_on: bool) -> void:
 
 
 func set_extra_info(num_done : int , num_items : int) -> void:
-	$HBox/ExtraInfo/Label.text = "%d/%d" % [num_done, num_items]
+	%ExtraInfo.text = "%d/%d" % [num_done, num_items]
 
 
 func _gui_input(event: InputEvent) -> void:
@@ -375,5 +391,17 @@ func _apply_formatting() -> void:
 			font = preload("res://theme/fonts/OpenSans-Medium.ttf")
 
 	%Edit.add_theme_font_override("font", font)
-	$HBox/Content/Label.add_theme_font_override("font", font)
-	$HBox/ExtraInfo/Label.add_theme_font_override("font", font)
+	%Label.add_theme_font_override("font", font)
+	%ExtraInfo.add_theme_font_override("font", font)
+
+
+func _on_heading_toggled(toggled_on: bool) -> void:
+	is_heading = toggled_on
+
+
+func _on_bold_toggled(toggled_on: bool) -> void:
+	is_bold = toggled_on
+
+
+func _on_italic_toggled(toggled_on: bool) -> void:
+	is_italic = toggled_on

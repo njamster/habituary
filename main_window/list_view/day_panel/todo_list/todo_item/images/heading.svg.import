@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b8u24hbkd0vj1"
-path="res://.godot/imported/italic.svg-b41833ea84e4cd33e9659fb5bff37dce.ctex"
+uid="uid://gy7qpfsq4aaa"
+path="res://.godot/imported/heading.svg-5bf7db2491fabcbc49ca3b9ad20e2af1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://main_window/list_view/day_panel/todo_list/todo_item/formatting_options/images/italic.svg"
-dest_files=["res://.godot/imported/italic.svg-b41833ea84e4cd33e9659fb5bff37dce.ctex"]
+source_file="res://main_window/list_view/day_panel/todo_list/todo_item/images/heading.svg"
+dest_files=["res://.godot/imported/heading.svg-5bf7db2491fabcbc49ca3b9ad20e2af1.ctex"]
 
 [params]
 

@@ -22,9 +22,9 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 
 	for node in nodes_to_move:
 		var preview = node.duplicate()
-		var stylebox = preview.get("theme_override_styles/panel").duplicate()
+		var stylebox = preview.get_node("MainRow").get("theme_override_styles/panel").duplicate()
 		stylebox.draw_center = node.is_heading
-		preview.set("theme_override_styles/panel", stylebox)
+		preview.get_node("MainRow").set("theme_override_styles/panel", stylebox)
 		items.add_child(preview)
 
 	var pivot = Control.new()
