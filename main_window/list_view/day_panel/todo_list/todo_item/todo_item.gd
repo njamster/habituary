@@ -201,11 +201,10 @@ func _on_edit_focus_exited() -> void:
 
 
 func _on_content_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton:
-		match event.button_index:
-			MOUSE_BUTTON_MASK_LEFT:
-				if event.pressed and self.state == States.TO_DO:
-					edit()
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
+		accept_event()
+		if self.state == States.TO_DO and _contains_mouse_cursor:
+			edit()
 
 
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
@@ -361,7 +360,7 @@ func set_extra_info(num_done : int , num_items : int) -> void:
 
 
 func _gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
 		var focus_owner := get_viewport().gui_get_focus_owner()
 		if focus_owner and not focus_owner.owner == self:
 			focus_owner.release_focus()

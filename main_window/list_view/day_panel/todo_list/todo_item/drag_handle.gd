@@ -21,6 +21,8 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 		nodes_to_move += host.get_parent().get_parent().get_parent().get_subordinate_items(host.get_index())
 
 	for node in nodes_to_move:
+		if node.is_in_edit_mode():
+			node._on_edit_focus_exited()
 		var preview = node.duplicate()
 		var stylebox = preview.get_node("MainRow").get("theme_override_styles/panel").duplicate()
 		stylebox.draw_center = node.is_heading
