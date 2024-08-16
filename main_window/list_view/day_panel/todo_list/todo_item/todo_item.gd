@@ -65,18 +65,17 @@ enum States { TO_DO, DONE, FAILED }
 		if is_inside_tree():
 			if is_heading:
 				$MainRow.get("theme_override_styles/panel").draw_center = true
-				%Heading.get_node("Tooltip").text = "Undo Heading"
 				%Delete.text = "Delete Heading"
 				%Label.uppercase = true
 				%FoldHeading.show()
 				%CheckBox.hide()
 			else:
 				$MainRow.get("theme_override_styles/panel").draw_center = false
-				%Heading.get_node("Tooltip").text = "Make Heading"
 				%Delete.text = "Delete To-Do"
 				%Label.uppercase = false
 				%FoldHeading.hide()
 				%CheckBox.show()
+			_on_editing_options_resized()
 			%Heading.button_pressed = is_heading
 
 @export var is_bold := false:
@@ -404,3 +403,20 @@ func _on_bold_toggled(toggled_on: bool) -> void:
 
 func _on_italic_toggled(toggled_on: bool) -> void:
 	is_italic = toggled_on
+
+
+func _on_editing_options_resized() -> void:
+	if %EditingOptions.size.x < 300:
+		%FormatLabel.hide()
+		if is_heading:
+			%Delete.get_node("Tooltip").text = "Delete Heading"
+		else:
+			%Delete.get_node("Tooltip").text = "Delete To-Do"
+		%Delete.text = ""
+	else:
+		%FormatLabel.show()
+		if is_heading:
+			%Delete.text = "Delete Heading"
+		else:
+			%Delete.text = "Delete To-Do"
+		%Delete.get_node("Tooltip").text = ""

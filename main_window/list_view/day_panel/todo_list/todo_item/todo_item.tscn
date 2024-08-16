@@ -213,7 +213,8 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_rn6dn")
 custom_minimum_size = Vector2(0, 27)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="EditingOptions/HBox"]
+[node name="FormatLabel" type="Label" parent="EditingOptions/HBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.92549, 0.937255, 0.956863, 1)
 theme_override_font_sizes/font_size = 12
@@ -237,6 +238,8 @@ icon = ExtResource("8_5475s")
 script = ExtResource("3_oduck")
 text = "Make Heading"
 popup_delay = 1.2
+popup_position = 2
+gap_width = 4
 
 [node name="Bold" type="Button" parent="EditingOptions/HBox"]
 unique_name_in_owner = true
@@ -256,6 +259,8 @@ icon = ExtResource("9_boywj")
 script = ExtResource("3_oduck")
 text = "Make Bold"
 popup_delay = 1.2
+popup_position = 2
+gap_width = 4
 
 [node name="Italic" type="Button" parent="EditingOptions/HBox"]
 unique_name_in_owner = true
@@ -275,6 +280,8 @@ icon = ExtResource("10_2fgom")
 script = ExtResource("3_oduck")
 text = "Make Italic"
 popup_delay = 1.2
+popup_position = 2
+gap_width = 4
 
 [node name="Delete" type="Button" parent="EditingOptions/HBox"]
 unique_name_in_owner = true
@@ -295,6 +302,11 @@ text = "Delete To-Do"
 icon = ExtResource("3_nsj7w")
 flat = true
 
+[node name="Tooltip" type="Node" parent="EditingOptions/HBox/Delete"]
+script = ExtResource("3_oduck")
+popup_position = 1
+gap_width = 0
+
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
 [connection signal="gui_input" from="MainRow/HBox/Toggle/CheckBox" to="." method="_on_check_box_gui_input"]
@@ -303,6 +315,7 @@ flat = true
 [connection signal="focus_exited" from="MainRow/HBox/Content/Edit" to="." method="_on_edit_focus_exited"]
 [connection signal="text_changed" from="MainRow/HBox/Content/Edit" to="." method="_on_edit_text_changed"]
 [connection signal="text_submitted" from="MainRow/HBox/Content/Edit" to="." method="_on_edit_text_submitted"]
+[connection signal="resized" from="EditingOptions" to="." method="_on_editing_options_resized"]
 [connection signal="toggled" from="EditingOptions/HBox/Heading" to="." method="_on_heading_toggled"]
 [connection signal="toggled" from="EditingOptions/HBox/Bold" to="." method="_on_bold_toggled"]
 [connection signal="toggled" from="EditingOptions/HBox/Italic" to="." method="_on_italic_toggled"]
