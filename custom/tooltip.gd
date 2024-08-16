@@ -36,6 +36,12 @@ func _ready() -> void:
 	get_parent().mouse_entered.connect(show_tooltip)
 	get_parent().mouse_exited.connect(hide_tooltip)
 
+	if get_parent() is BaseButton:
+		get_parent().pressed.connect(func():
+			if not get_child_count():
+				_hover_timer.start(popup_delay)
+		)
+
 	get_tree().get_root().size_changed.connect(hide_tooltip)
 
 

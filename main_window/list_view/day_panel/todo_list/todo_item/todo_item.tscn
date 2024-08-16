@@ -236,6 +236,7 @@ icon = ExtResource("8_5475s")
 [node name="Tooltip" type="Node" parent="EditingOptions/HBox/Heading"]
 script = ExtResource("3_oduck")
 text = "Make Heading"
+popup_delay = 1.2
 
 [node name="Bold" type="Button" parent="EditingOptions/HBox"]
 unique_name_in_owner = true
@@ -254,6 +255,7 @@ icon = ExtResource("9_boywj")
 [node name="Tooltip" type="Node" parent="EditingOptions/HBox/Bold"]
 script = ExtResource("3_oduck")
 text = "Make Bold"
+popup_delay = 1.2
 
 [node name="Italic" type="Button" parent="EditingOptions/HBox"]
 unique_name_in_owner = true
@@ -272,6 +274,7 @@ icon = ExtResource("10_2fgom")
 [node name="Tooltip" type="Node" parent="EditingOptions/HBox/Italic"]
 script = ExtResource("3_oduck")
 text = "Make Italic"
+popup_delay = 1.2
 
 [node name="Delete" type="Button" parent="EditingOptions/HBox"]
 unique_name_in_owner = true
