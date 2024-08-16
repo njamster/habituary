@@ -312,8 +312,8 @@ func _on_mouse_exited() -> void:
 				toggle.set("theme_override_colors/icon_pressed_color", icon_color)
 				toggle.set("theme_override_colors/icon_disabled_color", icon_color)
 		else:
-			%Label.set("theme_override_colors/font_color", Settings.NORD_06)
-			%ExtraInfo.set("theme_override_colors/font_color", Settings.NORD_06)
+			%Label.set("theme_override_colors/font_color", Settings.NORD_00)
+			%ExtraInfo.set("theme_override_colors/font_color", Settings.NORD_00)
 			for toggle in [%CheckBox, %FoldHeading]:
 				toggle.set("theme_override_colors/icon_normal_color", icon_color)
 				toggle.set("theme_override_colors/icon_hover_color", icon_color)
