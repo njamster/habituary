@@ -24,6 +24,8 @@ var _tooltip_panel : PanelContainer
 var _tooltip_label : Label
 var _hover_timer : Timer
 
+var _contains_mouse_cursor := false
+
 
 func _ready() -> void:
 	_hover_timer = Timer.new()
@@ -38,7 +40,7 @@ func _ready() -> void:
 
 	if get_parent() is BaseButton:
 		get_parent().pressed.connect(func():
-			if not get_child_count():
+			if _contains_mouse_cursor and not get_child_count():
 				_hover_timer.start(popup_delay)
 		)
 
@@ -46,6 +48,8 @@ func _ready() -> void:
 
 
 func show_tooltip() -> void:
+	_contains_mouse_cursor = true
+
 	if not text:
 		return
 
@@ -56,6 +60,8 @@ func show_tooltip() -> void:
 
 
 func hide_tooltip() -> void:
+	_contains_mouse_cursor = false
+
 	_hover_timer.stop()
 
 	if get_child_count():
