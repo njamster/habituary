@@ -65,7 +65,7 @@ func disconnect_todo_signals(todo_item : Control) -> void:
 
 
 func find_item_pos(at_position : Vector2) -> int:
-	var last_heading
+	var last_heading = null
 	var inside_folded_heading := false
 	for i in %Items.get_child_count():
 		var child := %Items.get_child(i)

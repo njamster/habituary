@@ -113,12 +113,10 @@ var is_folded := false:
 		%FoldHeading.button_pressed = is_folded
 
 		if is_folded:
-			# FIXME: Starting with Godot 4.3, `self.folded.emit.call_deferred()` will work, too!
-			(func(): self.folded.emit()).call_deferred()
+			self.folded.emit.call_deferred()
 			%ExtraInfo.show()
 		else:
-			# FIXME: Starting with Godot 4.3, `self.unfolded.emit.call_deferred()` will work, too!
-			(func(): self.unfolded.emit()).call_deferred()
+			self.unfolded.emit.call_deferred()
 			%ExtraInfo.hide()
 
 
@@ -201,16 +199,17 @@ func _on_edit_focus_exited() -> void:
 
 func _on_content_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
-		accept_event()
-		if self.state == States.TO_DO and _contains_mouse_cursor:
-			edit()
+		if not is_in_edit_mode():
+			accept_event()
+			if self.state == States.TO_DO and _contains_mouse_cursor:
+				edit()
 
 
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 	return get_node("../../..")._can_drop_data(_at_position, data)
 
 
-func _drop_data(at_position: Vector2, data: Variant) -> void:
+func _drop_data(_at_position: Vector2, data: Variant) -> void:
 	# FIXME: avoid asumptions about the parent's of this node
 	get_node("../../..")._drop_data(position - Vector2.ONE, data)
 
