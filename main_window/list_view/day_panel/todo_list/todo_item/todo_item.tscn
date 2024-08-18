@@ -313,6 +313,7 @@ gap_width = 0
 [connection signal="toggled" from="MainRow/HBox/Toggle/FoldHeading" to="." method="_on_fold_heading_toggled"]
 [connection signal="gui_input" from="MainRow/HBox/Content" to="." method="_on_content_gui_input"]
 [connection signal="focus_exited" from="MainRow/HBox/Content/Edit" to="." method="_on_edit_focus_exited"]
+[connection signal="gui_input" from="MainRow/HBox/Content/Edit" to="." method="_on_edit_gui_input"]
 [connection signal="text_changed" from="MainRow/HBox/Content/Edit" to="." method="_on_edit_text_changed"]
 [connection signal="text_submitted" from="MainRow/HBox/Content/Edit" to="." method="_on_edit_text_submitted"]
 [connection signal="resized" from="EditingOptions" to="." method="_on_editing_options_resized"]

@@ -419,3 +419,20 @@ func _on_editing_options_resized() -> void:
 		else:
 			%Delete.text = "Delete To-Do"
 		%Delete.get_node("Tooltip").text = ""
+
+
+func _on_edit_gui_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.ctrl_pressed and event.pressed:
+		match event.key_label:
+			KEY_H:
+				%Heading.button_pressed = not %Heading.button_pressed
+				accept_event()
+			KEY_B:
+				%Bold.button_pressed = not %Bold.button_pressed
+				accept_event()
+			KEY_I:
+				%Italic.button_pressed = not %Italic.button_pressed
+				accept_event()
+			KEY_D:
+				delete()
+				accept_event()
