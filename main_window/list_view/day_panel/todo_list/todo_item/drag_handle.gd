@@ -23,10 +23,9 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 	for node in nodes_to_move:
 		if node.is_in_edit_mode():
 			node._on_edit_focus_exited()
-		var preview = node.duplicate()
-		var stylebox = preview.get_node("MainRow").get("theme_override_styles/panel").duplicate()
-		stylebox.draw_center = node.is_heading
-		preview.get_node("MainRow").set("theme_override_styles/panel", stylebox)
+		# we only need a visually equivalent copy, not a functional one
+		# that's why all DuplicateFlags are unset (== 0) here
+		var preview = node.duplicate(0)
 		items.add_child(preview)
 
 	var pivot = Control.new()
