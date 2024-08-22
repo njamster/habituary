@@ -224,3 +224,10 @@ func get_subordinate_items(item_index : int) -> Array:
 			subordinate_items.append(child)
 
 	return subordinate_items
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
+		if Rect2(global_position, size).has_point(event.global_position):
+			if self.is_ancestor_of(get_viewport().gui_get_hovered_control()):
+				EventBus.todo_list_clicked.emit()

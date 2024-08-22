@@ -1,6 +1,5 @@
 extends CanvasLayer
 
-const TRANSPARENT_ALPHA := 0.0
 const DIMMED_ALPHA := 0.7
 
 var _previous_min_size := Vector2i.ZERO
@@ -12,11 +11,29 @@ func _ready() -> void:
 	EventBus.calendar_button_pressed.connect(open_component.bind($CalendarWidget, false))
 	EventBus.settings_button_pressed.connect(open_component.bind($SettingsPanel, true))
 
+	EventBus.todo_list_clicked.connect(close_overlay)
+
 
 func open_component(component : Control, dimmed_background : bool) -> void:
-	$Background.color.a = DIMMED_ALPHA if dimmed_background else TRANSPARENT_ALPHA
+	if dimmed_background:
+		$Background.mouse_filter = Control.MOUSE_FILTER_STOP
+		$Background.color.a = DIMMED_ALPHA
+	else:
+		$Background.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		$Background.color.a = 0.0
+
+	if component.visible:
+		return
+
+	var focus_owner = get_viewport().gui_get_focus_owner()
+	if focus_owner:
+		focus_owner.release_focus()
 
 	self.show()
+	for c in [$CalendarWidget, $SettingsPanel]:
+		c.hide()
+		if c.item_rect_changed.is_connected(_update_min_size):
+			c.item_rect_changed.disconnect(_update_min_size)
 	component.show()
 
 	_previous_min_size = DisplayServer.window_get_min_size()
@@ -33,6 +50,9 @@ func _update_min_size(component : Control) -> void:
 
 
 func close_overlay() -> void:
+	if not self.visible:
+		return
+
 	for component in [$CalendarWidget, $SettingsPanel]:
 		component.hide()
 		if component.item_rect_changed.is_connected(_update_min_size):
@@ -55,14 +75,14 @@ func _shortcut_input(event: InputEvent) -> void:
 		if event.is_action_pressed("ui_cancel"):
 			# press escape to close the currently visible overlay
 			close_overlay()
-		elif $Background.color.a != TRANSPARENT_ALPHA:
+		elif $Background.color.a != 0.0:
 			# consume any InputEventKey or InputEventShortcut event here to stop it from propagating
 			# further up in the tree (i.e. beyond the scope of this overlay)
 			get_viewport().set_input_as_handled()
 
 
 func _unhandled_input(_event: InputEvent) -> void:
-	if self.visible and $Background.color.a != TRANSPARENT_ALPHA:
+	if self.visible and $Background.color.a != 0.0:
 		# consume any remaining unhandled input events here to stop it from propagating further up
 		# in the tree (i.e. beyond the scope of this overlay)
 		get_viewport().set_input_as_handled()

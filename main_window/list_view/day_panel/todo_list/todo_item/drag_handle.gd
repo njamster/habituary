@@ -37,6 +37,10 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 		node.modulate.a = 0.4
 	get_node("Tooltip").hide_tooltip()
 
+	# Special case! Normally, this would be emitted on mouse button release, which makes sense
+	# everywhere but here, where it should happen as soon as the user is starting to drag.
+	EventBus.todo_list_clicked.emit()
+
 	host.get_node("../../../../..").is_dragged = true
 
 	return nodes_to_move
