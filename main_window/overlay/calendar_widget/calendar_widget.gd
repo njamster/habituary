@@ -6,7 +6,43 @@ var anchor_date : Date
 func _on_visibility_changed() -> void:
 	if visible:
 		anchor_date = Date.new(Settings.current_day.as_dict())
+		EventBus.current_day_changed.connect(_on_current_day_changed)
 		update_month()
+	else:
+		if EventBus.current_day_changed.is_connected(_on_current_day_changed):
+			EventBus.current_day_changed.disconnect(_on_current_day_changed)
+
+
+func _on_current_day_changed(current_day : Date) -> void:
+	if current_day.year != anchor_date.year or current_day.month != anchor_date.month:
+		# jump to the correct year and month in the calendar widget
+		anchor_date.year = current_day.year
+		anchor_date.month = current_day.month
+		update_month()
+	else:
+		update_day()
+
+
+func update_day() -> void:
+	var first_button_id = 0
+	for child in $VBox/GridContainer.get_children():
+		if child is Button:
+			break
+		else:
+			first_button_id += 1
+
+	for i in range(Date._days_in_month(anchor_date.month, anchor_date.year)):
+		var child_id = first_button_id + i
+		var button := $VBox/GridContainer.get_child(child_id)
+		if i+1 == Settings.current_day.day:
+			button.theme_type_variation = "CalendarWidget_DayButton_Selected"
+		elif i+1 == DayTimer.today.day and anchor_date.as_dict() == DayTimer.today.as_dict():
+			button.theme_type_variation = "CalendarWidget_DayButton_Today"
+		elif button.theme_type_variation == "CalendarWidget_DayButton_Selected":
+			if child_id % 7 == 5 or child_id % 7 == 6:
+				button.theme_type_variation = "CalendarWidget_DayButton_WeekendDay"
+			else:
+				button.theme_type_variation = "CalendarWidget_DayButton"
 
 
 func update_month() -> void:

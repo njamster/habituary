@@ -8,7 +8,13 @@ var _previous_min_size := Vector2i.ZERO
 func _ready() -> void:
 	close_overlay()
 
-	EventBus.calendar_button_pressed.connect(open_component.bind($CalendarWidget, false))
+	EventBus.calendar_button_pressed.connect(
+		func():
+			if not $CalendarWidget.visible:
+				open_component($CalendarWidget, false)
+			else:
+				close_overlay()
+	)
 	EventBus.settings_button_pressed.connect(open_component.bind($SettingsPanel, true))
 
 	EventBus.todo_list_clicked.connect(close_overlay)

@@ -1,10 +1,16 @@
-[gd_scene load_steps=6 format=3 uid="uid://d0nq3bl1c4e0i"]
+[gd_scene load_steps=8 format=3 uid="uid://d0nq3bl1c4e0i"]
 
 [ext_resource type="Script" path="res://main_window/navigation_bar_right/navigation_bar_right.gd" id="1_i4fec"]
 [ext_resource type="Texture2D" uid="uid://5x5oa7kf2q8s" path="res://main_window/navigation_bar_right/images/arrow_right.svg" id="1_q3y45"]
 [ext_resource type="Texture2D" uid="uid://cjeviihofj70y" path="res://main_window/navigation_bar_right/images/arrow_right_double.svg" id="2_satv2"]
 [ext_resource type="Texture2D" uid="uid://3tmsi2t4t7jd" path="res://main_window/navigation_bar_right/images/calendar.svg" id="3_3qcru"]
 [ext_resource type="Script" path="res://custom/tooltip.gd" id="3_42o0e"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_28eux"]
+action = &"toggle_calendar_widget"
+
+[sub_resource type="Shortcut" id="Shortcut_ok4mv"]
+events = [SubResource("InputEventAction_28eux")]
 
 [node name="NavigationBarRight" type="VBoxContainer"]
 script = ExtResource("1_i4fec")
@@ -40,6 +46,7 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"RightSidebarButton"
+shortcut = SubResource("Shortcut_ok4mv")
 icon = ExtResource("3_3qcru")
 
 [node name="Tooltip" type="Node" parent="Calendar"]
