@@ -47,6 +47,7 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"RightSidebarButton"
 shortcut = SubResource("Shortcut_ok4mv")
+shortcut_in_tooltip = false
 icon = ExtResource("3_3qcru")
 
 [node name="Tooltip" type="Node" parent="Calendar"]

@@ -36,13 +36,23 @@ func update_day() -> void:
 		var button := $VBox/GridContainer.get_child(child_id)
 		if i+1 == Settings.current_day.day:
 			button.theme_type_variation = "CalendarWidget_DayButton_Selected"
-		elif i+1 == DayTimer.today.day and anchor_date.as_dict() == DayTimer.today.as_dict():
-			button.theme_type_variation = "CalendarWidget_DayButton_Today"
+			button.modulate.a = 1.0
+		elif i+1 == DayTimer.today.day and anchor_date.month == DayTimer.today.month and \
+			anchor_date.year == DayTimer.today.year:
+				button.theme_type_variation = "CalendarWidget_DayButton_Today"
+				button.modulate.a = 1.0
 		elif button.theme_type_variation == "CalendarWidget_DayButton_Selected":
 			if child_id % 7 == 5 or child_id % 7 == 6:
 				button.theme_type_variation = "CalendarWidget_DayButton_WeekendDay"
 			else:
 				button.theme_type_variation = "CalendarWidget_DayButton"
+
+			var date = anchor_date.duplicate()
+			date.day = i+1
+			if not FileAccess.file_exists(Settings.store_path.path_join(
+				date.format(Settings.date_format_save)
+			) + ".txt"):
+				button.modulate.a = 0.65
 
 
 func update_month() -> void:
