@@ -70,6 +70,8 @@ enum States { TO_DO, DONE, FAILED }
 				%FoldHeading.show()
 				%CheckBox.hide()
 			else:
+				if is_folded:
+					is_folded = false
 				$MainRow.get("theme_override_styles/panel").draw_center = false
 				%Delete.text = "Delete To-Do"
 				%Label.uppercase = false
