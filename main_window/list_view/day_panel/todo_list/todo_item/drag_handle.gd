@@ -9,6 +9,8 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 	if host.state == host.States.DONE:
 		return
 
+	get_node("Tooltip").hide_tooltip()
+
 	var items = VBoxContainer.new()
 	items.add_theme_constant_override(
 		"separation",
@@ -35,7 +37,6 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 
 	for node in nodes_to_move:
 		node.modulate.a = 0.4
-	get_node("Tooltip").hide_tooltip()
 
 	# Special case! Normally, this would be emitted on mouse button release, which makes sense
 	# everywhere but here, where it should happen as soon as the user is starting to drag.
