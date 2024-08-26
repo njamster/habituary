@@ -65,6 +65,7 @@ enum States { TO_DO, DONE, FAILED }
 		if is_inside_tree():
 			if is_heading:
 				$MainRow.get("theme_override_styles/panel").draw_center = true
+				%Heading.get_node("Tooltip").text = "Undo Heading"
 				%Delete.text = "Delete Heading"
 				%Label.uppercase = true
 				%FoldHeading.show()
@@ -73,6 +74,7 @@ enum States { TO_DO, DONE, FAILED }
 				if is_folded:
 					is_folded = false
 				$MainRow.get("theme_override_styles/panel").draw_center = false
+				%Heading.get_node("Tooltip").text = "Make Heading"
 				%Delete.text = "Delete To-Do"
 				%Label.uppercase = false
 				%FoldHeading.hide()

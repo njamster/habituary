@@ -42,6 +42,7 @@ icon = ExtResource("2_3qe07")
 [node name="Tooltip" type="Node" parent="VBox/HBox/PreviousMonth"]
 script = ExtResource("2_yxtut")
 text = "Previous Month"
+popup_position = 2
 
 [node name="Today" type="Button" parent="VBox/HBox"]
 layout_mode = 2
@@ -53,6 +54,7 @@ icon = ExtResource("4_w73ku")
 [node name="Tooltip" type="Node" parent="VBox/HBox/Today"]
 script = ExtResource("2_yxtut")
 text = "Jump To Today"
+popup_position = 2
 
 [node name="NextMonth" type="Button" parent="VBox/HBox"]
 layout_mode = 2
@@ -64,6 +66,7 @@ icon = ExtResource("5_kngd2")
 [node name="Tooltip" type="Node" parent="VBox/HBox/NextMonth"]
 script = ExtResource("2_yxtut")
 text = "Next Month"
+popup_position = 2
 
 [node name="GridContainer" type="GridContainer" parent="VBox"]
 layout_mode = 2

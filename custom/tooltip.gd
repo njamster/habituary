@@ -13,8 +13,8 @@ class_name Tooltip
 
 @export_range(0.0, 0.0, 0.1, "suffix:seconds", "or_greater") var popup_delay := 0.5
 
-enum PopupPosition {AUTOMATIC, LEFT, RIGHT}
-@export var popup_position := PopupPosition.AUTOMATIC
+enum PopupPosition {AUTOMATIC_HORIZONTAL, AUTOMATIC_VERTICAL, ABOVE, RIGHT, BELOW, LEFT}
+@export var popup_position := PopupPosition.AUTOMATIC_HORIZONTAL
 
 @export_range(0, 0, 1, "suffix:px", "or_greater") var gap_width := 8
 
@@ -90,22 +90,59 @@ func _spawn_panel() -> void:
 
 
 func _position_tooltip() -> void:
+	# temporarily anchor tooltip at the top left corner of the parent node
 	_tooltip_panel.global_position = get_parent().global_position
+
 	match self.popup_position:
-		PopupPosition.LEFT:
-			# shift tooltip to the left
-			_tooltip_panel.global_position.x -= _tooltip_panel.size.x + gap_width
-		PopupPosition.RIGHT:
-			# shift tooltip to the right
-			_tooltip_panel.global_position.x += get_parent().size.x + gap_width
-		PopupPosition.AUTOMATIC:
-			if get_window().size.x - _tooltip_panel.global_position.x > _tooltip_panel.global_position.x:
-				# shift tooltip to the right
-				_tooltip_panel.global_position.x += get_parent().size.x + gap_width
+		PopupPosition.AUTOMATIC_HORIZONTAL:
+			if _tooltip_panel.global_position.x > 0.5 * get_window().size.x:
+				_position_left()
 			else:
-				# shift tooltip to the left
-				_tooltip_panel.global_position.x -= _tooltip_panel.size.x + gap_width
-	# center tooltip vertically where possible, but make sure it stays fully inside the window
+				_position_right()
+		PopupPosition.AUTOMATIC_VERTICAL:
+			if _tooltip_panel.global_position.y > 0.5 * get_window().size.y:
+				_position_above()
+			else:
+				_position_below()
+		PopupPosition.ABOVE:
+			_position_above()
+		PopupPosition.RIGHT:
+			_position_right()
+		PopupPosition.BELOW:
+			_position_below()
+		PopupPosition.LEFT:
+			_position_left()
+
+
+func _position_above() -> void:
+	_center_horizontally()
+	_tooltip_panel.global_position.y -= _tooltip_panel.size.y + gap_width
+
+
+func _position_below() -> void:
+	_center_horizontally()
+	_tooltip_panel.global_position.y += get_parent().size.y + gap_width
+
+
+func _center_horizontally() -> void:
+	_tooltip_panel.global_position.x = clamp(
+		_tooltip_panel.global_position.x + 0.5 * (get_parent().size.x - _tooltip_panel.size.x),
+		gap_width,
+		get_window().size.x - _tooltip_panel.size.x - gap_width
+	)
+
+
+func _position_left() -> void:
+	_center_vertically()
+	_tooltip_panel.global_position.x -= _tooltip_panel.size.x + gap_width
+
+
+func _position_right() -> void:
+	_center_vertically()
+	_tooltip_panel.global_position.x += get_parent().size.x + gap_width
+
+
+func _center_vertically() -> void:
 	_tooltip_panel.global_position.y = clamp(
 		_tooltip_panel.global_position.y + 0.5 * (get_parent().size.y - _tooltip_panel.size.y),
 		gap_width,

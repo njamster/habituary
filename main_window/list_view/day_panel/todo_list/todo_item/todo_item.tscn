@@ -195,7 +195,7 @@ script = ExtResource("5_mx38m")
 [node name="Tooltip" type="Node" parent="MainRow/HBox/DragHandle"]
 script = ExtResource("3_oduck")
 text = "Move To-Do"
-popup_position = 1
+popup_position = 5
 
 [node name="Triangle" type="TextureRect" parent="."]
 modulate = Color(0.560784, 0.737255, 0.733333, 1)
@@ -238,7 +238,7 @@ icon = ExtResource("8_5475s")
 script = ExtResource("3_oduck")
 text = "Make Heading"
 popup_delay = 1.2
-popup_position = 2
+popup_position = 3
 gap_width = 4
 
 [node name="Bold" type="Button" parent="EditingOptions/HBox"]
@@ -259,7 +259,7 @@ icon = ExtResource("9_boywj")
 script = ExtResource("3_oduck")
 text = "Make Bold"
 popup_delay = 1.2
-popup_position = 2
+popup_position = 3
 gap_width = 4
 
 [node name="Italic" type="Button" parent="EditingOptions/HBox"]
@@ -280,7 +280,7 @@ icon = ExtResource("10_2fgom")
 script = ExtResource("3_oduck")
 text = "Make Italic"
 popup_delay = 1.2
-popup_position = 2
+popup_position = 3
 gap_width = 4
 
 [node name="Delete" type="Button" parent="EditingOptions/HBox"]
@@ -304,7 +304,7 @@ flat = true
 
 [node name="Tooltip" type="Node" parent="EditingOptions/HBox/Delete"]
 script = ExtResource("3_oduck")
-popup_position = 1
+popup_position = 5
 gap_width = 0
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
