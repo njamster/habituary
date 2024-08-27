@@ -161,25 +161,19 @@ size_flags_horizontal = 3
 mouse_default_cursor_shape = 1
 theme_override_constants/margin_right = 6
 
-[node name="Label" type="Label" parent="MainRow/HBox/Content"]
-unique_name_in_owner = true
-layout_mode = 2
-mouse_filter = 1
-mouse_default_cursor_shape = 1
-theme_override_font_sizes/font_size = 14
-text_overrun_behavior = 3
-
 [node name="Edit" type="LineEdit" parent="MainRow/HBox/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
 theme_override_constants/caret_width = 2
+theme_override_constants/minimum_character_width = 0
 theme_override_font_sizes/font_size = 14
 theme_override_styles/focus = SubResource("StyleBoxEmpty_0pwns")
 theme_override_styles/read_only = SubResource("StyleBoxEmpty_4lcjl")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_3h3so")
 placeholder_text = "Enter to-do..."
 context_menu_enabled = false
+drag_and_drop_selection_enabled = false
 caret_blink = true
 caret_blink_interval = 0.45
 
@@ -312,6 +306,7 @@ gap_width = 0
 [connection signal="gui_input" from="MainRow/HBox/Toggle/CheckBox" to="." method="_on_check_box_gui_input"]
 [connection signal="toggled" from="MainRow/HBox/Toggle/FoldHeading" to="." method="_on_fold_heading_toggled"]
 [connection signal="gui_input" from="MainRow/HBox/Content" to="." method="_on_content_gui_input"]
+[connection signal="focus_entered" from="MainRow/HBox/Content/Edit" to="." method="edit"]
 [connection signal="focus_exited" from="MainRow/HBox/Content/Edit" to="." method="_on_edit_focus_exited"]
 [connection signal="gui_input" from="MainRow/HBox/Content/Edit" to="." method="_on_edit_gui_input"]
 [connection signal="text_changed" from="MainRow/HBox/Content/Edit" to="." method="_on_edit_text_changed"]

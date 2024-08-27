@@ -13,7 +13,6 @@ signal unfolded
 	set(value):
 		text = value
 		if is_inside_tree():
-			%Label.text = text
 			%Edit.text = text
 
 enum States { TO_DO, DONE, FAILED }
@@ -51,13 +50,19 @@ enum States { TO_DO, DONE, FAILED }
 			if state == States.TO_DO:
 				%CheckBox.modulate.a = 1.0
 				%Content.modulate.a = 1.0
-				for node in [%Content, %Label, %Edit]:
+				for node in [%Content, %Edit]:
 					node.mouse_default_cursor_shape = CURSOR_IBEAM
+				%Edit.focus_mode = FOCUS_ALL
+				%Edit.selecting_enabled = true
+				%Edit.editable = true
 			else:
 				%CheckBox.modulate.a = 0.5
 				%Content.modulate.a = 0.5
-				for node in [%Content, %Label, %Edit]:
+				for node in [%Content, %Edit]:
 					node.mouse_default_cursor_shape = CURSOR_ARROW
+				%Edit.focus_mode = FOCUS_NONE
+				%Edit.selecting_enabled = false
+				%Edit.editable = false
 
 @export var is_heading := false:
 	set(value):
@@ -67,7 +72,6 @@ enum States { TO_DO, DONE, FAILED }
 				$MainRow.get("theme_override_styles/panel").draw_center = true
 				%Heading.get_node("Tooltip").text = "Undo Heading"
 				%Delete.text = "Delete Heading"
-				%Label.uppercase = true
 				%FoldHeading.show()
 				%CheckBox.hide()
 			else:
@@ -76,7 +80,6 @@ enum States { TO_DO, DONE, FAILED }
 				$MainRow.get("theme_override_styles/panel").draw_center = false
 				%Heading.get_node("Tooltip").text = "Make Heading"
 				%Delete.text = "Delete To-Do"
-				%Label.uppercase = false
 				%FoldHeading.hide()
 				%CheckBox.show()
 			_on_editing_options_resized()
@@ -131,8 +134,6 @@ func _ready() -> void:
 
 	_apply_formatting()
 
-	%Edit.hide()
-	%Label.show()
 	$Triangle.hide()
 	%EditingOptions.hide()
 	%DragHandle.visible = _contains_mouse_cursor
@@ -142,18 +143,15 @@ func _ready() -> void:
 
 
 func is_in_edit_mode() -> bool:
-	return %Edit.visible
+	return %Edit.has_focus()
 
 
 func edit() -> void:
 	for child in %Toggle.get_children():
 		child.mouse_default_cursor_shape = CURSOR_FORBIDDEN
 		child.disabled = true
-	%Label.hide()
-	%Edit.show()
-	%DragHandle.hide()
-	%Edit.caret_column = %Edit.text.length()
 	%Edit.grab_focus()
+	%DragHandle.hide()
 	$Triangle.show()
 	%EditingOptions.show()
 	editing_started.emit()
@@ -177,8 +175,7 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 		if self.text != new_text:
 			self.text = new_text
 			changed.emit()
-		%Edit.hide()
-		%Label.show()
+		%Edit.release_focus()
 		%EditingOptions.hide()
 		$Triangle.hide()
 		for child in %Toggle.get_children():
@@ -281,7 +278,6 @@ func load_from_disk(line : String) -> void:
 
 func _on_mouse_entered() -> void:
 	_contains_mouse_cursor = true
-	%Label.set("theme_override_colors/font_color", Settings.NORD_09)
 	%ExtraInfo.set("theme_override_colors/font_color", Settings.NORD_09)
 	%CheckBox.set("theme_override_colors/icon_normal_color", Settings.NORD_09)
 	%CheckBox.set("theme_override_colors/icon_hover_color", Settings.NORD_09)
@@ -307,7 +303,6 @@ func _on_mouse_exited() -> void:
 			icon_color = Color("#BF616A")
 
 		if Settings.dark_mode:
-			%Label.set("theme_override_colors/font_color", Settings.NORD_06)
 			%ExtraInfo.set("theme_override_colors/font_color", Settings.NORD_06)
 			for toggle in [%CheckBox, %FoldHeading]:
 				toggle.set("theme_override_colors/icon_normal_color", icon_color)
@@ -315,7 +310,6 @@ func _on_mouse_exited() -> void:
 				toggle.set("theme_override_colors/icon_pressed_color", icon_color)
 				toggle.set("theme_override_colors/icon_disabled_color", icon_color)
 		else:
-			%Label.set("theme_override_colors/font_color", Settings.NORD_00)
 			%ExtraInfo.set("theme_override_colors/font_color", Settings.NORD_00)
 			for toggle in [%CheckBox, %FoldHeading]:
 				toggle.set("theme_override_colors/icon_normal_color", icon_color)
@@ -333,7 +327,6 @@ func _on_dark_mode_changed(dark_mode : bool) -> void:
 
 	if dark_mode:
 		$MainRow.get("theme_override_styles/panel").bg_color = Settings.NORD_02
-		%Label.set("theme_override_colors/font_color", Settings.NORD_06)
 		%ExtraInfo.set("theme_override_colors/font_color", Settings.NORD_06)
 		for toggle in [%CheckBox, %FoldHeading]:
 			toggle.set("theme_override_colors/icon_normal_color", icon_color)
@@ -343,7 +336,6 @@ func _on_dark_mode_changed(dark_mode : bool) -> void:
 		%DragHandle.modulate = Settings.NORD_06
 	else:
 		$MainRow.get("theme_override_styles/panel").bg_color = Settings.NORD_04
-		%Label.set("theme_override_colors/font_color", Settings.NORD_00)
 		%ExtraInfo.set("theme_override_colors/font_color", Settings.NORD_00)
 		for toggle in [%CheckBox, %FoldHeading]:
 			toggle.set("theme_override_colors/icon_normal_color", icon_color)
@@ -392,7 +384,6 @@ func _apply_formatting() -> void:
 			font = preload("res://theme/fonts/OpenSans-Medium.ttf")
 
 	%Edit.add_theme_font_override("font", font)
-	%Label.add_theme_font_override("font", font)
 	%ExtraInfo.add_theme_font_override("font", font)
 
 
