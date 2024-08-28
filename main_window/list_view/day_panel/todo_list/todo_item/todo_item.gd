@@ -364,9 +364,53 @@ func _on_check_box_gui_input(event: InputEvent) -> void:
 	if not is_in_edit_mode() and event is InputEventMouseButton and event.is_released():
 		match event.button_index:
 			MOUSE_BUTTON_LEFT:
+				if event.ctrl_pressed:
+					_add_end_time()
 				self.state = States.DONE if self.state != States.DONE else States.TO_DO
 			MOUSE_BUTTON_RIGHT:
-				self.state = States.FAILED if self.state != States.FAILED else States.TO_DO
+				if event.ctrl_pressed:
+					_add_start_time()
+				else:
+					self.state = States.FAILED if self.state != States.FAILED else States.TO_DO
+
+
+func _add_start_time() -> void:
+	var regex1 = RegEx.new()
+	regex1.compile("^[0-9]{2}:[0-9]{2}: ")
+	var regex2 = RegEx.new()
+	regex2.compile("^[0-9]{2}:[0-9]{2}–[0-9]{2}:[0-9]{2}: ")
+	if regex1.search(text):
+		pass # do nothing
+	elif regex2.search(text):
+		pass # do nothing
+	else:
+		# add first time
+		var current_time := Time.get_time_string_from_system().left(5)
+		text = current_time + ": " + text
+
+
+func _add_end_time() -> void:
+	var regex1 = RegEx.new()
+	regex1.compile("^[0-9]{2}:[0-9]{2}: ")
+	var result1 = regex1.search(text)
+	var regex2 = RegEx.new()
+	regex2.compile("^[0-9]{2}:[0-9]{2}–[0-9]{2}:[0-9]{2}: ")
+	if result1:
+		var current_time := Time.get_time_string_from_system().left(5)
+		if result1.get_string(0).left(-2) == current_time:
+			# replace first time
+			text = current_time + text.right(-5)
+		else:
+			# keep first time, add second time
+			text = text.left(5) + "–" + current_time + text.right(-5)
+	elif regex2.search(text):
+		var current_time := Time.get_time_string_from_system().left(5)
+		# keep first time, replace second time
+		text = text.left(5) + "–" + current_time + text.right(-11)
+	else:
+		# add first time
+		var current_time := Time.get_time_string_from_system().left(5)
+		text = current_time + ": " + text
 
 
 func _apply_formatting() -> void:
