@@ -151,7 +151,6 @@ func edit() -> void:
 		child.mouse_default_cursor_shape = CURSOR_FORBIDDEN
 		child.disabled = true
 	%Edit.grab_focus()
-	%DragHandle.hide()
 	$Triangle.show()
 	%EditingOptions.show()
 	editing_started.emit()
@@ -294,7 +293,8 @@ func _on_mouse_entered() -> void:
 func _on_mouse_exited() -> void:
 	_contains_mouse_cursor = false
 	if not is_queued_for_deletion():
-		%DragHandle.hide()
+		if not is_in_edit_mode():
+			%DragHandle.hide()
 
 		var icon_color := Settings.NORD_06 if Settings.dark_mode else Settings.NORD_00
 		if self.state == States.DONE:
