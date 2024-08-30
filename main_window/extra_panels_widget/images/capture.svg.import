@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://lqaqpht4rju6"
-path="res://.godot/imported/mode_dark.svg-6870831673058712023dfb8fe2489b6e.ctex"
+uid="uid://bpfw6aor5w57f"
+path="res://.godot/imported/capture.svg-60855d59b3c9dc377b2f234883e9c8db.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://main_window/settings_widget/images/mode_dark.svg"
-dest_files=["res://.godot/imported/mode_dark.svg-6870831673058712023dfb8fe2489b6e.ctex"]
+source_file="res://main_window/extra_panels_widget/images/capture.svg"
+dest_files=["res://.godot/imported/capture.svg-60855d59b3c9dc377b2f234883e9c8db.ctex"]
 
 [params]
 
