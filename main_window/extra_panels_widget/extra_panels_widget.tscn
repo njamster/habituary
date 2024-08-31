@@ -8,11 +8,11 @@
 [ext_resource type="Texture2D" uid="uid://ckpsnrmdqsa6r" path="res://main_window/extra_panels_widget/images/search_screen.svg" id="6_uai1x"]
 [ext_resource type="Texture2D" uid="uid://dnbodke4qy5dd" path="res://main_window/extra_panels_widget/images/search_all.svg" id="7_sxtfu"]
 
-[sub_resource type="InputEventAction" id="InputEventAction_lv7wu"]
-action = &"toggle_dark_mode"
+[sub_resource type="InputEventAction" id="InputEventAction_ph12k"]
+action = &"search_screen"
 
-[sub_resource type="Shortcut" id="Shortcut_qi7jp"]
-events = [SubResource("InputEventAction_lv7wu")]
+[sub_resource type="Shortcut" id="Shortcut_aym7u"]
+events = [SubResource("InputEventAction_ph12k")]
 
 [node name="ExtraPanelsWidget" type="VBoxContainer"]
 size_flags_vertical = 10
@@ -23,7 +23,6 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"LeftSidebarButton"
-shortcut = SubResource("Shortcut_qi7jp")
 shortcut_in_tooltip = false
 icon = ExtResource("4_h4on7")
 
@@ -36,7 +35,6 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"LeftSidebarButton"
-shortcut = SubResource("Shortcut_qi7jp")
 shortcut_in_tooltip = false
 icon = ExtResource("5_u4xd2")
 
@@ -53,7 +51,6 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"LeftSidebarButton"
-shortcut = SubResource("Shortcut_qi7jp")
 shortcut_in_tooltip = false
 icon = ExtResource("7_sxtfu")
 
@@ -66,13 +63,14 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"LeftSidebarButton"
-shortcut = SubResource("Shortcut_qi7jp")
+toggle_mode = true
+shortcut = SubResource("Shortcut_aym7u")
 shortcut_in_tooltip = false
 icon = ExtResource("6_uai1x")
 
 [node name="Tooltip" type="Node" parent="SearchScreen"]
 script = ExtResource("3_diiyk")
-text = "Search Screen (Coming Soon)"
+text = "Search Screen"
 
 [node name="Spacer2" type="Control" parent="."]
 custom_minimum_size = Vector2(0, 8)
@@ -89,4 +87,5 @@ icon = ExtResource("2_fp5hp")
 script = ExtResource("3_diiyk")
 text = "Open Settings"
 
+[connection signal="toggled" from="SearchScreen" to="." method="_on_search_screen_toggled"]
 [connection signal="pressed" from="Settings" to="." method="_on_settings_pressed"]

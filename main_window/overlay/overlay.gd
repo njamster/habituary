@@ -15,9 +15,28 @@ func _ready() -> void:
 			else:
 				close_overlay()
 	)
+	EventBus.search_screen_button_pressed.connect(
+		func():
+			if not $SearchBar.visible:
+				open_component($SearchBar, false)
+				EventBus.search_query_changed.emit($SearchBar.text)
+				$SearchBar.grab_focus()
+			else:
+				EventBus.search_query_changed.emit("")
+				close_overlay()
+	)
 	EventBus.settings_button_pressed.connect(open_component.bind($SettingsPanel, true))
 
 	EventBus.todo_list_clicked.connect(close_overlay)
+
+	EventBus.view_mode_changed.connect(func(_view_mode):
+		if $SearchBar.visible:
+				EventBus.search_query_changed.emit($SearchBar.text)
+	)
+	EventBus.current_day_changed.connect(func(_current_day):
+		if $SearchBar.visible:
+				EventBus.search_query_changed.emit($SearchBar.text)
+	)
 
 
 func open_component(component : Control, dimmed_background : bool) -> void:
@@ -36,7 +55,7 @@ func open_component(component : Control, dimmed_background : bool) -> void:
 		focus_owner.release_focus()
 
 	self.show()
-	for c in [$CalendarWidget, $SettingsPanel]:
+	for c in [$CalendarWidget, $SettingsPanel, $SearchBar]:
 		c.hide()
 		if c.item_rect_changed.is_connected(_update_min_size):
 			c.item_rect_changed.disconnect(_update_min_size)
@@ -59,7 +78,7 @@ func close_overlay() -> void:
 	if not self.visible:
 		return
 
-	for component in [$CalendarWidget, $SettingsPanel]:
+	for component in [$CalendarWidget, $SettingsPanel, $SearchBar]:
 		component.hide()
 		if component.item_rect_changed.is_connected(_update_min_size):
 			component.item_rect_changed.disconnect(_update_min_size)
@@ -68,6 +87,8 @@ func close_overlay() -> void:
 	# FIXME: re-triggering the min_size calculation of the MainWindow would probably be cleaner
 	get_window().min_size = _previous_min_size
 	_previous_min_size = Vector2i.ZERO
+
+	EventBus.overlay_closed.emit()
 
 
 func _on_background_gui_input(event: InputEvent) -> void:
@@ -92,3 +113,13 @@ func _unhandled_input(_event: InputEvent) -> void:
 		# consume any remaining unhandled input events here to stop it from propagating further up
 		# in the tree (i.e. beyond the scope of this overlay)
 		get_viewport().set_input_as_handled()
+
+
+func _on_search_bar_text_changed(new_text: String) -> void:
+	EventBus.search_query_changed.emit(new_text)
+
+
+func _on_search_bar_gui_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.keycode == KEY_ESCAPE and event.pressed:
+		EventBus.search_query_changed.emit("")
+		close_overlay()

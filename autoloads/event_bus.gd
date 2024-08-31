@@ -18,6 +18,13 @@ signal day_start_hour_offset_changed(shift)
 signal settings_button_pressed
 @warning_ignore("unused_signal")
 signal calendar_button_pressed
+@warning_ignore("unused_signal")
+signal search_screen_button_pressed
+
+@warning_ignore("unused_signal")
+signal overlay_closed
 
 @warning_ignore("unused_signal")
 signal todo_list_clicked
+@warning_ignore("unused_signal")
+signal search_query_changed
