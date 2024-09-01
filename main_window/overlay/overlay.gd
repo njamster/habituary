@@ -113,13 +113,3 @@ func _unhandled_input(_event: InputEvent) -> void:
 		# consume any remaining unhandled input events here to stop it from propagating further up
 		# in the tree (i.e. beyond the scope of this overlay)
 		get_viewport().set_input_as_handled()
-
-
-func _on_search_bar_text_changed(new_text: String) -> void:
-	EventBus.search_query_changed.emit(new_text)
-
-
-func _on_search_bar_gui_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.keycode == KEY_ESCAPE and event.pressed:
-		EventBus.search_query_changed.emit("")
-		close_overlay()

@@ -1,0 +1,42 @@
+[gd_scene load_steps=3 format=3 uid="uid://s8tp0j755w33"]
+
+[ext_resource type="Script" path="res://main_window/overlay/search_bar/search_bar.gd" id="1_pascc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1rtvm"]
+content_margin_left = 8.0
+content_margin_top = 1.0
+content_margin_right = 8.0
+content_margin_bottom = 1.0
+bg_color = Color(0.262745, 0.298039, 0.368627, 1)
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.368627, 0.505882, 0.67451, 1)
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_detail = 5
+
+[node name="SearchBar" type="LineEdit"]
+custom_minimum_size = Vector2(180, 0)
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_top = -82.0
+offset_right = 208.0
+offset_bottom = -58.0
+grow_vertical = 0
+theme_override_constants/caret_width = 2
+theme_override_font_sizes/font_size = 14
+theme_override_styles/focus = SubResource("StyleBoxFlat_1rtvm")
+theme_override_styles/read_only = SubResource("StyleBoxFlat_1rtvm")
+theme_override_styles/normal = SubResource("StyleBoxFlat_1rtvm")
+placeholder_text = "Enter search term…"
+context_menu_enabled = false
+drag_and_drop_selection_enabled = false
+select_all_on_focus = true
+caret_blink = true
+script = ExtResource("1_pascc")
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="text_changed" from="." to="." method="_on_text_changed"]
