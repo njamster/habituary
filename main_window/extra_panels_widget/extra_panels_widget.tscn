@@ -1,18 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://bmrx40aplh6c1"]
+[gd_scene load_steps=6 format=3 uid="uid://bmrx40aplh6c1"]
 
 [ext_resource type="Script" path="res://main_window/extra_panels_widget/extra_panels_widget.gd" id="1_1d7q7"]
 [ext_resource type="Texture2D" uid="uid://vs7ua0yf1lr" path="res://main_window/extra_panels_widget/images/settings.svg" id="2_fp5hp"]
 [ext_resource type="Script" path="res://custom/tooltip.gd" id="3_diiyk"]
 [ext_resource type="Texture2D" uid="uid://bpfw6aor5w57f" path="res://main_window/extra_panels_widget/images/capture.svg" id="4_h4on7"]
 [ext_resource type="Texture2D" uid="uid://dv4okd56jtc61" path="res://main_window/extra_panels_widget/images/alarms.svg" id="5_u4xd2"]
-[ext_resource type="Texture2D" uid="uid://ckpsnrmdqsa6r" path="res://main_window/extra_panels_widget/images/search_screen.svg" id="6_uai1x"]
-[ext_resource type="Texture2D" uid="uid://dnbodke4qy5dd" path="res://main_window/extra_panels_widget/images/search_all.svg" id="7_sxtfu"]
-
-[sub_resource type="InputEventAction" id="InputEventAction_ph12k"]
-action = &"search_screen"
-
-[sub_resource type="Shortcut" id="Shortcut_aym7u"]
-events = [SubResource("InputEventAction_ph12k")]
 
 [node name="ExtraPanelsWidget" type="VBoxContainer"]
 size_flags_vertical = 10
@@ -46,36 +38,6 @@ text = "Show Alarms (Coming Soon)"
 custom_minimum_size = Vector2(0, 8)
 layout_mode = 2
 
-[node name="SearchAll" type="Button" parent="."]
-layout_mode = 2
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_type_variation = &"LeftSidebarButton"
-shortcut_in_tooltip = false
-icon = ExtResource("7_sxtfu")
-
-[node name="Tooltip" type="Node" parent="SearchAll"]
-script = ExtResource("3_diiyk")
-text = "Search All To-Dos (Coming Soon)"
-
-[node name="SearchScreen" type="Button" parent="."]
-layout_mode = 2
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_type_variation = &"LeftSidebarButton"
-toggle_mode = true
-shortcut = SubResource("Shortcut_aym7u")
-shortcut_in_tooltip = false
-icon = ExtResource("6_uai1x")
-
-[node name="Tooltip" type="Node" parent="SearchScreen"]
-script = ExtResource("3_diiyk")
-text = "Search Screen"
-
-[node name="Spacer2" type="Control" parent="."]
-custom_minimum_size = Vector2(0, 8)
-layout_mode = 2
-
 [node name="Settings" type="Button" parent="."]
 layout_mode = 2
 focus_mode = 0
@@ -87,5 +49,4 @@ icon = ExtResource("2_fp5hp")
 script = ExtResource("3_diiyk")
 text = "Open Settings"
 
-[connection signal="toggled" from="SearchScreen" to="." method="_on_search_screen_toggled"]
 [connection signal="pressed" from="Settings" to="." method="_on_settings_pressed"]

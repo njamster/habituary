@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://brgpa340xc1dn"]
+[gd_scene load_steps=4 format=3 uid="uid://brgpa340xc1dn"]
 
 [ext_resource type="Script" path="res://main_window/overlay/overlay.gd" id="1_ippme"]
 [ext_resource type="PackedScene" uid="uid://l4kyh6xqycoy" path="res://main_window/overlay/calendar_widget/calendar_widget.tscn" id="2_4rb6r"]
 [ext_resource type="PackedScene" uid="uid://dkopw4i7xb1hs" path="res://main_window/overlay/settings_panel/settings_panel.tscn" id="2_qeh0g"]
-[ext_resource type="PackedScene" uid="uid://s8tp0j755w33" path="res://main_window/overlay/search_bar/search_bar.tscn" id="4_3huye"]
 
 [node name="Overlay" type="CanvasLayer"]
 script = ExtResource("1_ippme")
@@ -25,7 +24,5 @@ offset_left = -306.5
 offset_top = -150.5
 offset_right = 306.5
 offset_bottom = 150.5
-
-[node name="SearchBar" parent="." instance=ExtResource("4_3huye")]
 
 [connection signal="gui_input" from="Background" to="." method="_on_background_gui_input"]

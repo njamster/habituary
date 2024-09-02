@@ -15,28 +15,9 @@ func _ready() -> void:
 			else:
 				close_overlay()
 	)
-	EventBus.search_screen_button_pressed.connect(
-		func():
-			if not $SearchBar.visible:
-				open_component($SearchBar, false)
-				EventBus.search_query_changed.emit($SearchBar.text)
-				$SearchBar.grab_focus()
-			else:
-				EventBus.search_query_changed.emit("")
-				close_overlay()
-	)
 	EventBus.settings_button_pressed.connect(open_component.bind($SettingsPanel, true))
 
 	EventBus.todo_list_clicked.connect(close_overlay)
-
-	EventBus.view_mode_changed.connect(func(_view_mode):
-		if $SearchBar.visible:
-				EventBus.search_query_changed.emit($SearchBar.text)
-	)
-	EventBus.current_day_changed.connect(func(_current_day):
-		if $SearchBar.visible:
-				EventBus.search_query_changed.emit($SearchBar.text)
-	)
 
 
 func open_component(component : Control, dimmed_background : bool) -> void:
@@ -55,7 +36,7 @@ func open_component(component : Control, dimmed_background : bool) -> void:
 		focus_owner.release_focus()
 
 	self.show()
-	for c in [$CalendarWidget, $SettingsPanel, $SearchBar]:
+	for c in [$CalendarWidget, $SettingsPanel]:
 		c.hide()
 		if c.item_rect_changed.is_connected(_update_min_size):
 			c.item_rect_changed.disconnect(_update_min_size)
@@ -78,7 +59,7 @@ func close_overlay() -> void:
 	if not self.visible:
 		return
 
-	for component in [$CalendarWidget, $SettingsPanel, $SearchBar]:
+	for component in [$CalendarWidget, $SettingsPanel]:
 		component.hide()
 		if component.item_rect_changed.is_connected(_update_min_size):
 			component.item_rect_changed.disconnect(_update_min_size)

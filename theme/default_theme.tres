@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=31 format=3 uid="uid://r4f841iblmo"]
+[gd_resource type="Theme" load_steps=33 format=3 uid="uid://r4f841iblmo"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vf7p3"]
 content_margin_left = 8.0
@@ -280,6 +280,33 @@ corner_radius_top_left = 4
 corner_radius_bottom_left = 4
 corner_detail = 5
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fb5wc"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.262745, 0.298039, 0.368627, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g2gwl"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.262745, 0.298039, 0.368627, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.368627, 0.505882, 0.67451, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4010s"]
 content_margin_left = 6.0
 content_margin_top = 2.0
@@ -348,6 +375,10 @@ RightSidebarButton/styles/focus = SubResource("StyleBoxFlat_0flkb")
 RightSidebarButton/styles/hover = SubResource("StyleBoxFlat_vbyk6")
 RightSidebarButton/styles/normal = SubResource("StyleBoxFlat_001vx")
 RightSidebarButton/styles/pressed = SubResource("StyleBoxFlat_ggb6q")
+SearchBar/base_type = &"PanelContainer"
+SearchBar/styles/panel = SubResource("StyleBoxFlat_fb5wc")
+SearchBar_Focused/base_type = &"PanelContainer"
+SearchBar_Focused/styles/panel = SubResource("StyleBoxFlat_g2gwl")
 SubtleLabel/base_type = &"Label"
 SubtleLabel/colors/font_color = Color(0.847059, 0.870588, 0.913725, 1)
 TooltipLabel/font_sizes/font_size = 13

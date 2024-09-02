@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://bdu13hjjrxtck"]
+[gd_scene load_steps=10 format=3 uid="uid://bdu13hjjrxtck"]
 
 [ext_resource type="Script" path="res://main_window/main_window.gd" id="1_cqr1i"]
+[ext_resource type="PackedScene" uid="uid://c0f0h24u7wfrh" path="res://main_window/search_bar/search_bar.tscn" id="2_40nwn"]
 [ext_resource type="PackedScene" uid="uid://bjv3cb21jdiu3" path="res://main_window/navigation_bar_left/navigation_bar_left.tscn" id="2_l73p5"]
 [ext_resource type="PackedScene" uid="uid://dgxug4yl0qg3x" path="res://main_window/appearance_widget/appearance_widget.tscn" id="2_qblvu"]
 [ext_resource type="PackedScene" uid="uid://d0nq3bl1c4e0i" path="res://main_window/navigation_bar_right/navigation_bar_right.tscn" id="5_s2ne8"]
@@ -20,31 +21,39 @@ theme_override_constants/margin_bottom = 12
 script = ExtResource("1_cqr1i")
 minimum_vertical_margin = 12
 
-[node name="HBox" type="HBoxContainer" parent="."]
+[node name="VBox" type="VBoxContainer" parent="."]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="ToolbarLeft" type="VBoxContainer" parent="HBox"]
+[node name="SearchBar" parent="VBox" instance=ExtResource("2_40nwn")]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="ToolbarLeft" type="VBoxContainer" parent="VBox/HBox"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="NavigationBarLeft" parent="HBox/ToolbarLeft" instance=ExtResource("2_l73p5")]
+[node name="NavigationBarLeft" parent="VBox/HBox/ToolbarLeft" instance=ExtResource("2_l73p5")]
 layout_mode = 2
 
-[node name="ExtraPanelsWidget" parent="HBox/ToolbarLeft" instance=ExtResource("6_1c6x1")]
+[node name="ExtraPanelsWidget" parent="VBox/HBox/ToolbarLeft" instance=ExtResource("6_1c6x1")]
 layout_mode = 2
 
-[node name="ListView" parent="HBox" instance=ExtResource("7_ajas6")]
+[node name="ListView" parent="VBox/HBox" instance=ExtResource("7_ajas6")]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ToolbarRight" type="VBoxContainer" parent="HBox"]
+[node name="ToolbarRight" type="VBoxContainer" parent="VBox/HBox"]
 layout_mode = 2
 
-[node name="NavigationBarRight" parent="HBox/ToolbarRight" instance=ExtResource("5_s2ne8")]
+[node name="NavigationBarRight" parent="VBox/HBox/ToolbarRight" instance=ExtResource("5_s2ne8")]
 layout_mode = 2
 
-[node name="AppearanceWidget" parent="HBox/ToolbarRight" instance=ExtResource("2_qblvu")]
+[node name="AppearanceWidget" parent="VBox/HBox/ToolbarRight" instance=ExtResource("2_qblvu")]
 layout_mode = 2
 size_flags_vertical = 10
 
