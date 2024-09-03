@@ -3,10 +3,10 @@ extends MarginContainer
 
 func _ready() -> void:
 	EventBus.current_day_changed.connect(func(_current_day):
-		EventBus.search_query_changed.emit.call_deferred(%SearchQuery.text)
+		EventBus.search_query_changed.emit.call_deferred()
 	)
 	EventBus.view_mode_changed.connect(func(_view_mode):
-		EventBus.search_query_changed.emit.call_deferred(%SearchQuery.text)
+		EventBus.search_query_changed.emit.call_deferred()
 	)
 
 
@@ -31,7 +31,7 @@ func _on_search_query_focus_exited() -> void:
 
 
 func _on_search_query_text_changed(new_text: String) -> void:
-	EventBus.search_query_changed.emit(new_text)
+	Settings.search_query = new_text
 
 
 func _on_search_query_gui_input(event: InputEvent) -> void:

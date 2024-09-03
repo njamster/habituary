@@ -141,7 +141,7 @@ func _ready() -> void:
 	_on_dark_mode_changed(Settings.dark_mode)
 	EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
 
-	EventBus.search_query_changed.connect(_on_search_query_changed)
+	EventBus.search_query_changed.connect(_check_for_search_query_match)
 
 
 func is_in_edit_mode() -> bool:
@@ -175,6 +175,7 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 	if new_text:
 		if self.text != new_text:
 			self.text = new_text
+			_check_for_search_query_match()
 			changed.emit()
 		%Edit.release_focus()
 		%EditingOptions.hide()
@@ -479,12 +480,12 @@ func _on_edit_gui_input(event: InputEvent) -> void:
 				accept_event()
 
 
-func _on_search_query_changed(search_query: String) -> void:
-	if not search_query:
+func _check_for_search_query_match() -> void:
+	if not Settings.search_query:
 		%Edit.remove_theme_color_override("font_color")
 		%Edit.remove_theme_color_override("font_uneditable_color")
 		%Edit.modulate.a = 1.0
-	elif text.contains(search_query):
+	elif text.contains(Settings.search_query):
 		%Edit.add_theme_color_override("font_color", Color("#88c0d0"))
 		%Edit.add_theme_color_override("font_uneditable_color", Color("#88c0d0"))
 		%Edit.modulate.a = 1.0

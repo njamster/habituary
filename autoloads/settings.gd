@@ -180,6 +180,12 @@ var dark_mode := true:
 		EventBus.dark_mode_changed.emit(dark_mode)
 
 
+var search_query := "":
+	set(value):
+		search_query = value
+		EventBus.search_query_changed.emit()
+
+
 func _enter_tree() -> void:
 	if OS.is_debug_build():
 		store_path = ProjectSettings.globalize_path("user://")
