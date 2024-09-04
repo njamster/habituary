@@ -119,6 +119,13 @@ var dark_mode := true:
 			var button_disabled_stylebox := theme.get_stylebox("disabled", "CalendarWidget_Button")
 			button_disabled_stylebox.bg_color = Color(NORD_03, 0.3)
 			theme.set_stylebox("normal", "CalendarWidget_Button", button_disabled_stylebox)
+
+			var search_bar := theme.get_stylebox("panel", "SearchBar")
+			search_bar.bg_color = NORD_01
+			theme.set_stylebox("panel", "SearchBar", search_bar)
+			var search_bar_focused := theme.get_stylebox("panel", "SearchBar_Focused")
+			search_bar_focused.bg_color = NORD_02
+			theme.set_stylebox("panel", "SearchBar_Focused", search_bar_focused)
 		else:
 			RenderingServer.set_default_clear_color("#ECEFF4")
 			theme.set_color("font_color", "Label", NORD_00)
@@ -177,6 +184,13 @@ var dark_mode := true:
 			var button_disabled_stylebox := theme.get_stylebox("disabled", "CalendarWidget_Button")
 			button_disabled_stylebox.bg_color = Color(NORD_04, 0.3)
 			theme.set_stylebox("normal", "CalendarWidget_Button", button_disabled_stylebox)
+
+			var search_bar := theme.get_stylebox("panel", "SearchBar")
+			search_bar.bg_color = NORD_05
+			theme.set_stylebox("panel", "SearchBar", search_bar)
+			var search_bar_focused := theme.get_stylebox("panel", "SearchBar_Focused")
+			search_bar_focused.bg_color = NORD_04
+			theme.set_stylebox("panel", "SearchBar_Focused", search_bar_focused)
 		EventBus.dark_mode_changed.emit(dark_mode)
 
 

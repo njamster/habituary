@@ -1,8 +1,7 @@
-[gd_scene load_steps=15 format=3 uid="uid://dgxug4yl0qg3x"]
+[gd_scene load_steps=12 format=3 uid="uid://dgxug4yl0qg3x"]
 
 [ext_resource type="Script" path="res://main_window/appearance_widget/appearance_widget.gd" id="1_1o2da"]
 [ext_resource type="Script" path="res://custom/tooltip.gd" id="2_4x6jm"]
-[ext_resource type="Texture2D" uid="uid://lqaqpht4rju6" path="res://main_window/appearance_widget/images/mode_dark.svg" id="3_o8p33"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_43ver"]
 
@@ -33,12 +32,6 @@ pressed = true
 
 [sub_resource type="Shortcut" id="Shortcut_8cdb0"]
 events = [SubResource("InputEventAction_uckjy")]
-
-[sub_resource type="InputEventAction" id="InputEventAction_lv7wu"]
-action = &"toggle_dark_mode"
-
-[sub_resource type="Shortcut" id="Shortcut_ljh70"]
-events = [SubResource("InputEventAction_lv7wu")]
 
 [node name="AppearanceWidget" type="VBoxContainer"]
 offset_right = 15.0
@@ -112,22 +105,3 @@ text = "7"
 [node name="Tooltip" type="Node" parent="SevenDays"]
 script = ExtResource("2_4x6jm")
 text = "Show 7 Days"
-
-[node name="Spacer" type="Control" parent="."]
-custom_minimum_size = Vector2(0, 20)
-layout_mode = 2
-
-[node name="Mode" type="Button" parent="."]
-layout_mode = 2
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_type_variation = &"RightSidebarButton"
-shortcut = SubResource("Shortcut_ljh70")
-shortcut_in_tooltip = false
-icon = ExtResource("3_o8p33")
-
-[node name="Tooltip" type="Node" parent="Mode"]
-script = ExtResource("2_4x6jm")
-text = "Switch To Light Mode"
-
-[connection signal="pressed" from="Mode" to="." method="_on_mode_pressed"]

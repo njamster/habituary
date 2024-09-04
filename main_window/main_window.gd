@@ -16,7 +16,8 @@ func _ready() -> void:
 
 	get_window().min_size = Vector2i(
 		# FIXME: get rid of those hardcoded values
-		2 * 28 + 2 * 16 + 160, 2 * minimum_vertical_margin + 79 + 7 * 40
+		2 * 28 + 2 * 16 + 160,
+		2 * minimum_vertical_margin + 28 + 16 + 79 + 5 * 40
 	)
 	get_tree().get_root().size_changed.connect(_on_window_size_changed)
 
@@ -27,7 +28,7 @@ func _on_window_size_changed() -> void:
 
 	var window_height := DisplayServer.window_get_size().y
 
-	var todo_list_height := window_height - 2 * minimum_vertical_margin - 79
+	var todo_list_height := window_height - (28 + 16) - 2 * minimum_vertical_margin - 79
 	var todo_item_height := 40
 
 	var total_vertical_margin = 2 * minimum_vertical_margin + todo_list_height % todo_item_height

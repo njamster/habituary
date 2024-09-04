@@ -331,6 +331,7 @@ func _on_dark_mode_changed(dark_mode : bool) -> void:
 	if dark_mode:
 		$MainRow.get("theme_override_styles/panel").bg_color = Settings.NORD_02
 		%ExtraInfo.set("theme_override_colors/font_color", Settings.NORD_06)
+		%Edit.set("theme_override_colors/font_uneditable_color", Settings.NORD_06)
 		for toggle in [%CheckBox, %FoldHeading]:
 			toggle.set("theme_override_colors/icon_normal_color", icon_color)
 			toggle.set("theme_override_colors/icon_hover_color", icon_color)
@@ -340,6 +341,7 @@ func _on_dark_mode_changed(dark_mode : bool) -> void:
 	else:
 		$MainRow.get("theme_override_styles/panel").bg_color = Settings.NORD_04
 		%ExtraInfo.set("theme_override_colors/font_color", Settings.NORD_00)
+		%Edit.set("theme_override_colors/font_uneditable_color", Settings.NORD_00)
 		for toggle in [%CheckBox, %FoldHeading]:
 			toggle.set("theme_override_colors/icon_normal_color", icon_color)
 			toggle.set("theme_override_colors/icon_hover_color", icon_color)

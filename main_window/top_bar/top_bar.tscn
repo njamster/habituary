@@ -1,0 +1,48 @@
+[gd_scene load_steps=8 format=3 uid="uid://dw6xo448aao72"]
+
+[ext_resource type="Texture2D" uid="uid://vs7ua0yf1lr" path="res://main_window/top_bar/images/settings.svg" id="1_abaqs"]
+[ext_resource type="Script" path="res://main_window/top_bar/top_bar.gd" id="1_qvgdf"]
+[ext_resource type="PackedScene" uid="uid://c0f0h24u7wfrh" path="res://main_window/top_bar/search_bar/search_bar.tscn" id="2_4r6hc"]
+[ext_resource type="Script" path="res://custom/tooltip.gd" id="3_sm771"]
+[ext_resource type="Texture2D" uid="uid://lqaqpht4rju6" path="res://main_window/top_bar/images/mode_dark.svg" id="5_jyq3k"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_lv7wu"]
+action = &"toggle_dark_mode"
+
+[sub_resource type="Shortcut" id="Shortcut_rh1sk"]
+events = [SubResource("InputEventAction_lv7wu")]
+
+[node name="TopBar" type="HBoxContainer"]
+theme_override_constants/separation = 16
+script = ExtResource("1_qvgdf")
+theme_override_constants/separation = 16
+
+[node name="Settings" type="Button" parent="."]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"LeftSidebarButton"
+icon = ExtResource("1_abaqs")
+
+[node name="Tooltip" type="Node" parent="Settings"]
+script = ExtResource("3_sm771")
+text = "Open Settings"
+
+[node name="SearchBar" parent="." instance=ExtResource("2_4r6hc")]
+layout_mode = 2
+
+[node name="Mode" type="Button" parent="."]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"RightSidebarButton"
+shortcut = SubResource("Shortcut_rh1sk")
+shortcut_in_tooltip = false
+icon = ExtResource("5_jyq3k")
+
+[node name="Tooltip" type="Node" parent="Mode"]
+script = ExtResource("3_sm771")
+text = "Switch To Light Mode"
+
+[connection signal="pressed" from="Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="Mode" to="." method="_on_mode_pressed"]

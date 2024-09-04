@@ -1,9 +1,9 @@
 [gd_scene load_steps=10 format=3 uid="uid://bdu13hjjrxtck"]
 
 [ext_resource type="Script" path="res://main_window/main_window.gd" id="1_cqr1i"]
-[ext_resource type="PackedScene" uid="uid://c0f0h24u7wfrh" path="res://main_window/search_bar/search_bar.tscn" id="2_40nwn"]
 [ext_resource type="PackedScene" uid="uid://bjv3cb21jdiu3" path="res://main_window/navigation_bar_left/navigation_bar_left.tscn" id="2_l73p5"]
 [ext_resource type="PackedScene" uid="uid://dgxug4yl0qg3x" path="res://main_window/appearance_widget/appearance_widget.tscn" id="2_qblvu"]
+[ext_resource type="PackedScene" uid="uid://dw6xo448aao72" path="res://main_window/top_bar/top_bar.tscn" id="2_tkl15"]
 [ext_resource type="PackedScene" uid="uid://d0nq3bl1c4e0i" path="res://main_window/navigation_bar_right/navigation_bar_right.tscn" id="5_s2ne8"]
 [ext_resource type="PackedScene" uid="uid://bmrx40aplh6c1" path="res://main_window/extra_panels_widget/extra_panels_widget.tscn" id="6_1c6x1"]
 [ext_resource type="PackedScene" uid="uid://brgpa340xc1dn" path="res://main_window/overlay/overlay.tscn" id="7_77111"]
@@ -25,7 +25,7 @@ minimum_vertical_margin = 12
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="SearchBar" parent="VBox" instance=ExtResource("2_40nwn")]
+[node name="TopBar" parent="VBox" instance=ExtResource("2_tkl15")]
 layout_mode = 2
 
 [node name="HBox" type="HBoxContainer" parent="VBox"]

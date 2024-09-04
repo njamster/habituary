@@ -1,14 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://bmrx40aplh6c1"]
+[gd_scene load_steps=5 format=3 uid="uid://bmrx40aplh6c1"]
 
-[ext_resource type="Script" path="res://main_window/extra_panels_widget/extra_panels_widget.gd" id="1_1d7q7"]
-[ext_resource type="Texture2D" uid="uid://vs7ua0yf1lr" path="res://main_window/extra_panels_widget/images/settings.svg" id="2_fp5hp"]
+[ext_resource type="Texture2D" uid="uid://b6m2sbtuimpqj" path="res://main_window/extra_panels_widget/images/help.svg" id="1_ywxe7"]
 [ext_resource type="Script" path="res://custom/tooltip.gd" id="3_diiyk"]
 [ext_resource type="Texture2D" uid="uid://bpfw6aor5w57f" path="res://main_window/extra_panels_widget/images/capture.svg" id="4_h4on7"]
 [ext_resource type="Texture2D" uid="uid://dv4okd56jtc61" path="res://main_window/extra_panels_widget/images/alarms.svg" id="5_u4xd2"]
 
 [node name="ExtraPanelsWidget" type="VBoxContainer"]
 size_flags_vertical = 10
-script = ExtResource("1_1d7q7")
 
 [node name="Capture" type="Button" parent="."]
 layout_mode = 2
@@ -34,19 +32,18 @@ icon = ExtResource("5_u4xd2")
 script = ExtResource("3_diiyk")
 text = "Show Alarms (Coming Soon)"
 
-[node name="Spacer1" type="Control" parent="."]
-custom_minimum_size = Vector2(0, 8)
+[node name="Spacer" type="Control" parent="."]
+custom_minimum_size = Vector2(0, 6)
 layout_mode = 2
 
-[node name="Settings" type="Button" parent="."]
+[node name="Help" type="Button" parent="."]
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"LeftSidebarButton"
-icon = ExtResource("2_fp5hp")
+shortcut_in_tooltip = false
+icon = ExtResource("1_ywxe7")
 
-[node name="Tooltip" type="Node" parent="Settings"]
+[node name="Tooltip" type="Node" parent="Help"]
 script = ExtResource("3_diiyk")
-text = "Open Settings"
-
-[connection signal="pressed" from="Settings" to="." method="_on_settings_pressed"]
+text = "Show Help (Coming Soon)"
