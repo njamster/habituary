@@ -65,7 +65,7 @@ func hide_tooltip() -> void:
 	_hover_timer.stop()
 
 	if get_child_count():
-		remove_child(_tooltip_panel)
+		_tooltip_panel.hide()
 		_tooltip_panel.queue_free()
 
 
