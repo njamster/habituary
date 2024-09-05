@@ -183,8 +183,7 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 		for child in %Toggle.get_children():
 			child.mouse_default_cursor_shape = CURSOR_POINTING_HAND
 			child.disabled = false
-		if _contains_mouse_cursor:
-			%DragHandle.show()
+		%DragHandle.visible = _contains_mouse_cursor
 
 		if new_item and key_input:
 			if Input.is_key_pressed(KEY_SHIFT):
