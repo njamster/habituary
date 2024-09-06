@@ -1,6 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://bdu13hjjrxtck"]
+[gd_scene load_steps=11 format=3 uid="uid://bdu13hjjrxtck"]
 
 [ext_resource type="Script" path="res://main_window/main_window.gd" id="1_cqr1i"]
+[ext_resource type="PackedScene" uid="uid://bbv588umdv0q4" path="res://main_window/side_panel/side_panel.tscn" id="1_rij1k"]
 [ext_resource type="PackedScene" uid="uid://bjv3cb21jdiu3" path="res://main_window/navigation_bar_left/navigation_bar_left.tscn" id="2_l73p5"]
 [ext_resource type="PackedScene" uid="uid://dgxug4yl0qg3x" path="res://main_window/appearance_widget/appearance_widget.tscn" id="2_qblvu"]
 [ext_resource type="PackedScene" uid="uid://dw6xo448aao72" path="res://main_window/top_bar/top_bar.tscn" id="2_tkl15"]
@@ -10,50 +11,68 @@
 [ext_resource type="PackedScene" uid="uid://esddcur57ihc" path="res://main_window/list_view/list_view.tscn" id="7_ajas6"]
 [ext_resource type="PackedScene" uid="uid://cih6c2f3oxfl0" path="res://main_window/drag_overlay/drag_overlay.tscn" id="7_mttq0"]
 
-[node name="MainWindow" type="MarginContainer"]
+[node name="Control" type="Control"]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="HBox" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="SidePanel" parent="HBox" instance=ExtResource("1_rij1k")]
+layout_mode = 2
+
+[node name="MainWindow" type="MarginContainer" parent="HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_bottom = 12
 script = ExtResource("1_cqr1i")
 minimum_vertical_margin = 12
 
-[node name="VBox" type="VBoxContainer" parent="."]
+[node name="VBox" type="VBoxContainer" parent="HBox/MainWindow"]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 16
 
-[node name="TopBar" parent="VBox" instance=ExtResource("2_tkl15")]
+[node name="TopBar" parent="HBox/MainWindow/VBox" instance=ExtResource("2_tkl15")]
 layout_mode = 2
 
-[node name="HBox" type="HBoxContainer" parent="VBox"]
+[node name="HBox" type="HBoxContainer" parent="HBox/MainWindow/VBox"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 16
 
-[node name="ToolbarLeft" type="VBoxContainer" parent="VBox/HBox"]
+[node name="ToolbarLeft" type="VBoxContainer" parent="HBox/MainWindow/VBox/HBox"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="NavigationBarLeft" parent="VBox/HBox/ToolbarLeft" instance=ExtResource("2_l73p5")]
+[node name="NavigationBarLeft" parent="HBox/MainWindow/VBox/HBox/ToolbarLeft" instance=ExtResource("2_l73p5")]
 layout_mode = 2
 
-[node name="ExtraPanelsWidget" parent="VBox/HBox/ToolbarLeft" instance=ExtResource("6_1c6x1")]
+[node name="ExtraPanelsWidget" parent="HBox/MainWindow/VBox/HBox/ToolbarLeft" instance=ExtResource("6_1c6x1")]
 layout_mode = 2
 
-[node name="ListView" parent="VBox/HBox" instance=ExtResource("7_ajas6")]
+[node name="ListView" parent="HBox/MainWindow/VBox/HBox" instance=ExtResource("7_ajas6")]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ToolbarRight" type="VBoxContainer" parent="VBox/HBox"]
+[node name="ToolbarRight" type="VBoxContainer" parent="HBox/MainWindow/VBox/HBox"]
 layout_mode = 2
 
-[node name="NavigationBarRight" parent="VBox/HBox/ToolbarRight" instance=ExtResource("5_s2ne8")]
+[node name="NavigationBarRight" parent="HBox/MainWindow/VBox/HBox/ToolbarRight" instance=ExtResource("5_s2ne8")]
 layout_mode = 2
 
-[node name="AppearanceWidget" parent="VBox/HBox/ToolbarRight" instance=ExtResource("2_qblvu")]
+[node name="AppearanceWidget" parent="HBox/MainWindow/VBox/HBox/ToolbarRight" instance=ExtResource("2_qblvu")]
 layout_mode = 2
 size_flags_vertical = 10
 

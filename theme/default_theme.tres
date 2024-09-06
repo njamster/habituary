@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=33 format=3 uid="uid://r4f841iblmo"]
+[gd_resource type="Theme" load_steps=34 format=3 uid="uid://r4f841iblmo"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vf7p3"]
 content_margin_left = 8.0
@@ -307,6 +307,15 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0oodh"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.262745, 0.298039, 0.368627, 1)
+border_width_right = 4
+border_color = Color(0.368627, 0.505882, 0.67451, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4010s"]
 content_margin_left = 6.0
 content_margin_top = 2.0
@@ -379,6 +388,8 @@ SearchBar/base_type = &"PanelContainer"
 SearchBar/styles/panel = SubResource("StyleBoxFlat_fb5wc")
 SearchBar_Focused/base_type = &"PanelContainer"
 SearchBar_Focused/styles/panel = SubResource("StyleBoxFlat_g2gwl")
+SidePanel/base_type = &"PanelContainer"
+SidePanel/styles/panel = SubResource("StyleBoxFlat_0oodh")
 SubtleLabel/base_type = &"Label"
 SubtleLabel/colors/font_color = Color(0.847059, 0.870588, 0.913725, 1)
 TooltipLabel/font_sizes/font_size = 13

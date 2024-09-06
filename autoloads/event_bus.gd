@@ -20,6 +20,12 @@ signal settings_button_pressed
 signal calendar_button_pressed
 @warning_ignore("unused_signal")
 signal search_screen_button_pressed
+@warning_ignore("unused_signal")
+signal capture_button_pressed
+@warning_ignore("unused_signal")
+signal alarms_button_pressed
+@warning_ignore("unused_signal")
+signal help_button_pressed
 
 @warning_ignore("unused_signal")
 signal overlay_closed

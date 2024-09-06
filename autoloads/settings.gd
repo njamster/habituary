@@ -126,6 +126,10 @@ var dark_mode := true:
 			var search_bar_focused := theme.get_stylebox("panel", "SearchBar_Focused")
 			search_bar_focused.bg_color = NORD_02
 			theme.set_stylebox("panel", "SearchBar_Focused", search_bar_focused)
+
+			var side_panel := theme.get_stylebox("panel", "SidePanel")
+			side_panel.bg_color = NORD_02
+			theme.set_stylebox("panel", "SidePanel", side_panel)
 		else:
 			RenderingServer.set_default_clear_color("#ECEFF4")
 			theme.set_color("font_color", "Label", NORD_00)
@@ -191,6 +195,10 @@ var dark_mode := true:
 			var search_bar_focused := theme.get_stylebox("panel", "SearchBar_Focused")
 			search_bar_focused.bg_color = NORD_04
 			theme.set_stylebox("panel", "SearchBar_Focused", search_bar_focused)
+
+			var side_panel := theme.get_stylebox("panel", "SidePanel")
+			side_panel.bg_color = NORD_04
+			theme.set_stylebox("panel", "SidePanel", side_panel)
 		EventBus.dark_mode_changed.emit(dark_mode)
 
 
