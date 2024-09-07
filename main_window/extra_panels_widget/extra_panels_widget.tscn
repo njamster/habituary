@@ -33,6 +33,7 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"LeftSidebarButton"
+toggle_mode = true
 shortcut = SubResource("Shortcut_1oi36")
 shortcut_in_tooltip = false
 icon = ExtResource("4_h4on7")
@@ -46,6 +47,7 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"LeftSidebarButton"
+toggle_mode = true
 shortcut = SubResource("Shortcut_5eyie")
 shortcut_in_tooltip = false
 icon = ExtResource("5_u4xd2")
@@ -63,6 +65,7 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"LeftSidebarButton"
+toggle_mode = true
 shortcut = SubResource("Shortcut_ndv5d")
 shortcut_in_tooltip = false
 icon = ExtResource("1_ywxe7")
@@ -71,6 +74,6 @@ icon = ExtResource("1_ywxe7")
 script = ExtResource("3_diiyk")
 text = "Show Help"
 
-[connection signal="pressed" from="Capture" to="." method="_on_capture_pressed"]
-[connection signal="pressed" from="Alarms" to="." method="_on_alarms_pressed"]
-[connection signal="pressed" from="Help" to="." method="_on_help_pressed"]
+[connection signal="toggled" from="Capture" to="." method="_on_capture_toggled"]
+[connection signal="toggled" from="Alarms" to="." method="_on_alarms_toggled"]
+[connection signal="toggled" from="Help" to="." method="_on_help_toggled"]
