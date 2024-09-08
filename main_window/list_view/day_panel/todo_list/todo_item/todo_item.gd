@@ -127,6 +127,19 @@ var is_folded := false:
 			%ExtraInfo.hide()
 
 
+var has_alarm := false:
+	set(value):
+		has_alarm = value
+
+		if is_inside_tree():
+			if has_alarm:
+				%SetAlarm.get_node("Tooltip").text = %SetAlarm.get_node("Tooltip").text.replace("Add", "Remove")
+				%SetAlarm.text = %SetAlarm.text.replace("Add", "Remove")
+			else:
+				%SetAlarm.get_node("Tooltip").text = %SetAlarm.get_node("Tooltip").text.replace("Remove", "Add")
+				%SetAlarm.text = %SetAlarm.text.replace("Remove", "Add")
+
+
 func _ready() -> void:
 	# manually trigger setters
 	text = text
@@ -448,20 +461,34 @@ func _on_italic_toggled(toggled_on: bool) -> void:
 
 
 func _on_editing_options_resized() -> void:
-	if %EditingOptions.size.x < 300:
+	if %EditingOptions.size.x < 350:
 		%FormatLabel.hide()
+
 		if is_heading:
 			%Delete.get_node("Tooltip").text = "Delete Heading"
 		else:
 			%Delete.get_node("Tooltip").text = "Delete To-Do"
 		%Delete.text = ""
+
+		if has_alarm:
+			%SetAlarm.get_node("Tooltip").text = "Remove Alarm"
+		else:
+			%SetAlarm.get_node("Tooltip").text = "Add Alarm"
+		%SetAlarm.text = ""
 	else:
 		%FormatLabel.show()
+
 		if is_heading:
 			%Delete.text = "Delete Heading"
 		else:
 			%Delete.text = "Delete To-Do"
 		%Delete.get_node("Tooltip").text = ""
+
+		%SetAlarm.get_node("Tooltip").text = ""
+		if has_alarm:
+			%SetAlarm.text = "Remove Alarm"
+		else:
+			%SetAlarm.text = "Add Alarm"
 
 
 func _on_edit_gui_input(event: InputEvent) -> void:
@@ -494,3 +521,7 @@ func _check_for_search_query_match() -> void:
 		%Edit.remove_theme_color_override("font_color")
 		%Edit.remove_theme_color_override("font_uneditable_color")
 		%Edit.modulate.a = 0.1
+
+
+func _on_set_alarm_pressed() -> void:
+	has_alarm = not has_alarm
