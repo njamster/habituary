@@ -34,3 +34,8 @@ signal overlay_closed
 signal todo_list_clicked
 @warning_ignore("unused_signal")
 signal search_query_changed
+
+@warning_ignore("unused_signal")
+signal alarm_added(to_do)
+@warning_ignore("unused_signal")
+signal alarm_removed(to_do)

@@ -139,6 +139,11 @@ var has_alarm := false:
 				%SetAlarm.get_node("Tooltip").text = %SetAlarm.get_node("Tooltip").text.replace("Remove", "Add")
 				%SetAlarm.text = %SetAlarm.text.replace("Remove", "Add")
 
+			if has_alarm:
+				EventBus.alarm_added.emit(self)
+			else:
+				EventBus.alarm_removed.emit(self)
+
 
 func _ready() -> void:
 	# manually trigger setters
@@ -172,6 +177,8 @@ func edit() -> void:
 
 
 func delete() -> void:
+	if has_alarm:
+		EventBus.alarm_removed.emit(self)
 	self.unfolded.emit()
 	queue_free()
 	if self.text:

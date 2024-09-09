@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://ba4ne2kctshba"]
+
+[ext_resource type="Script" path="res://main_window/side_panel/alarms/alarms.gd" id="1_f4ba0"]
+
+[node name="Alarms" type="VBoxContainer"]
+theme_override_constants/separation = 16
+script = ExtResource("1_f4ba0")
+
+[node name="Heading" type="Label" parent="."]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Alarms"
+horizontal_alignment = 1
+
+[node name="None" type="Label" parent="."]
+layout_mode = 2
+text = "none set"
+horizontal_alignment = 1
+
+[node name="List" type="VBoxContainer" parent="."]
+layout_mode = 2
