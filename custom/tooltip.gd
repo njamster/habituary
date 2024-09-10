@@ -40,8 +40,11 @@ func _ready() -> void:
 
 	if get_parent() is BaseButton:
 		get_parent().pressed.connect(func():
-			if _contains_mouse_cursor and not get_child_count():
-				_hover_timer.start(popup_delay)
+			# If the mouse remains on top of a button after being pressed and the _hover_timer has
+			# not yet finished (i.e. there's no tooltip visible), reset the _hover_timer.
+			# => While rapidly pressing a button, no tooltip will be shown!
+			if _contains_mouse_cursor and not _hover_timer.is_stopped():
+				show_tooltip()
 		)
 
 	get_tree().get_root().size_changed.connect(hide_tooltip)
