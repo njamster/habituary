@@ -9,12 +9,6 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
-	var app_version : String = ProjectSettings.get("application/config/version")
-	if app_version:
-		$VBox/VBox/Version/ID.text = app_version
-	else:
-		$VBox/VBox/Version.queue_free()
-
 	%StorePath/Path.text = Settings.store_path
 
 	for option_name in Settings.TodayPosition:

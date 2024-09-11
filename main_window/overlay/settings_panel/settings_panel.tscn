@@ -1,12 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://dkopw4i7xb1hs"]
+[gd_scene load_steps=2 format=3 uid="uid://dkopw4i7xb1hs"]
 
 [ext_resource type="Script" path="res://main_window/overlay/settings_panel/settings_panel.gd" id="1_yrmyc"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3ie06"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_iqkin"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mc45l"]
 
 [node name="SettingsPanel" type="PanelContainer"]
 anchors_preset = 8
@@ -28,40 +22,11 @@ metadata/y_padding = 64
 layout_mode = 2
 theme_override_constants/separation = 32
 
-[node name="VBox" type="VBoxContainer" parent="VBox"]
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="Heading" type="Label" parent="VBox/VBox"]
+[node name="Heading" type="Label" parent="VBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "Settings"
 horizontal_alignment = 1
-
-[node name="Version" type="HBoxContainer" parent="VBox/VBox"]
-layout_mode = 2
-alignment = 1
-
-[node name="Label" type="Label" parent="VBox/VBox/Version"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 12
-text = "Version:"
-
-[node name="ID" type="LineEdit" parent="VBox/VBox/Version"]
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_colors/font_uneditable_color = Color(0.505882, 0.631373, 0.756863, 1)
-theme_override_constants/minimum_character_width = 0
-theme_override_font_sizes/font_size = 12
-theme_override_styles/normal = SubResource("StyleBoxEmpty_3ie06")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_iqkin")
-theme_override_styles/read_only = SubResource("StyleBoxEmpty_mc45l")
-text = "alpha"
-editable = false
-expand_to_text_length = true
-drag_and_drop_selection_enabled = false
-flat = true
-select_all_on_focus = true
 
 [node name="VBox1" type="VBoxContainer" parent="VBox"]
 layout_mode = 2
