@@ -9,7 +9,7 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_unkbq"]
 
 [node name="Help" type="VBoxContainer"]
-theme_override_constants/separation = 16
+theme_override_constants/separation = 32
 script = ExtResource("1_1rhmu")
 
 [node name="VBox1" type="VBoxContainer" parent="."]
@@ -50,11 +50,19 @@ select_all_on_focus = true
 [node name="KeyBindingsBlock1" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_constants/separation = 8
 
 [node name="KeyBindingsBlock2" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_constants/separation = 8
 
 [node name="KeyBindingsBlock3" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="KeyBindingsBlock4" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
