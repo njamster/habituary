@@ -1,0 +1,39 @@
+[gd_scene load_steps=3 format=3 uid="uid://clk7mchfrgbnh"]
+
+[ext_resource type="Script" path="res://main_window/side_panel/alarms/alarm/alarm.gd" id="1_cjbqa"]
+[ext_resource type="Script" path="res://custom/tooltip.gd" id="2_ufj5y"]
+
+[node name="Alarm" type="PanelContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 101.0
+grow_horizontal = 2
+mouse_default_cursor_shape = 2
+script = ExtResource("1_cjbqa")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DayCounter" type="Label" parent="VBox"]
+unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0.75)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 1
+theme_override_font_sizes/font_size = 14
+text = "1337 days left"
+
+[node name="Tooltip" type="Node" parent="VBox/DayCounter"]
+unique_name_in_owner = true
+script = ExtResource("2_ufj5y")
+text_alignment = 2
+
+[node name="Heading" type="Label" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Super Important To-Do"
+text_overrun_behavior = 3
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
