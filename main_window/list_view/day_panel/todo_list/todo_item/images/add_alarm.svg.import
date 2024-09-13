@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c0fxtm7uxf6lx"
-path="res://.godot/imported/set_alarm.svg-34840fa7cbdd791edffe501ab3a28839.ctex"
+path="res://.godot/imported/add_alarm.svg-13a12c8828fbbeb77521accbc8b19506.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://main_window/list_view/day_panel/todo_list/todo_item/images/set_alarm.svg"
-dest_files=["res://.godot/imported/set_alarm.svg-34840fa7cbdd791edffe501ab3a28839.ctex"]
+source_file="res://main_window/list_view/day_panel/todo_list/todo_item/images/add_alarm.svg"
+dest_files=["res://.godot/imported/add_alarm.svg-13a12c8828fbbeb77521accbc8b19506.ctex"]
 
 [params]
 
