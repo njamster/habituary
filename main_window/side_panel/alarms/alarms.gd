@@ -11,6 +11,7 @@ func _ready() -> void:
 		#file.close()
 
 	EventBus.alarm_added.connect(_on_alarm_added)
+	EventBus.alarm_text_changed.connect(_on_alarm_text_changed)
 	EventBus.alarm_removed.connect(_on_alarm_removed)
 
 	%List.child_entered_tree.connect(func(_node): $None.hide())
@@ -42,6 +43,16 @@ func _on_alarm_added(to_do : Control) -> void:
 
 	_add_alarm(date, to_do.text)
 	# TODO: save new state to disk
+
+
+func _on_alarm_text_changed(to_do : Control, old_text : String) -> void:
+	# FIXME: avoid using a relative path that involves parent nodes
+	var date := Date.new(to_do.get_node("../../../../..").date.as_dict())
+
+	for child in %List.get_children():
+		if child.text == old_text and child.date.day_difference_to(date) == 0:
+			child.text = to_do.text
+			return
 
 
 func _on_alarm_removed(to_do : Control) -> void:

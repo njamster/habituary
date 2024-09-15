@@ -12,7 +12,7 @@ signal unfolded
 @export var text := "":
 	set(value):
 		text = value
-		if is_inside_tree():
+		if not is_in_edit_mode():
 			%Edit.text = text
 
 enum States { TO_DO, DONE, FAILED }
@@ -166,6 +166,8 @@ func is_in_edit_mode() -> bool:
 	return %Edit.has_focus()
 
 
+var _pre_edit_text := ""
+
 func edit() -> void:
 	for child in %Toggle.get_children():
 		child.mouse_default_cursor_shape = CURSOR_FORBIDDEN
@@ -173,6 +175,7 @@ func edit() -> void:
 	%Edit.grab_focus()
 	$Triangle.show()
 	%EditingOptions.show()
+	_pre_edit_text = self.text
 	editing_started.emit()
 
 
@@ -186,16 +189,21 @@ func delete() -> void:
 		changed.emit()
 
 
+func _on_edit_text_changed(new_text: String) -> void:
+	var old_text = self.text
+	self.text = new_text
+	EventBus.alarm_text_changed.emit(self, old_text)
+	_check_for_search_query_match()
+
+
 func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 	# trim any leading & trailing whitespace
 	new_text = new_text.strip_edges()
 
-	var new_item := (self.text == "")
+	var new_item := (_pre_edit_text == "")
 
 	if new_text:
-		if self.text != new_text:
-			self.text = new_text
-			_check_for_search_query_match()
+		if _pre_edit_text != new_text:
 			changed.emit()
 		%Edit.release_focus()
 		%EditingOptions.hide()

@@ -38,4 +38,6 @@ signal search_query_changed
 @warning_ignore("unused_signal")
 signal alarm_added(to_do)
 @warning_ignore("unused_signal")
+signal alarm_text_changed(to_do, old_text)
+@warning_ignore("unused_signal")
 signal alarm_removed(to_do)
