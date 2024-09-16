@@ -182,6 +182,29 @@ func as_dict() -> Dictionary:
 	}
 
 
+static func from_string(date_string: String) -> Date:
+	var parts := date_string.split("-")
+	var new_year = int(parts[0])
+	var new_month = int(parts[1])
+	var new_day = int(parts[2])
+
+	var new_date_dict :={
+		"year": new_year,
+		"month": new_month,
+		"day": min(new_day, Date._days_in_month(new_month, new_year))
+	}
+
+	var unix_time := Time.get_unix_time_from_datetime_dict(new_date_dict)
+	var new_weekday = Time.get_datetime_dict_from_unix_time(unix_time).weekday
+
+	return Date.new({
+		"year": new_year,
+		"month": new_month,
+		"day": min(new_day, Date._days_in_month(new_month, new_year)),
+		"weekday": new_weekday
+	})
+
+
 func day_difference_to(date : Date) -> int:
 	var t1 := Time.get_unix_time_from_datetime_dict(self.as_dict())
 	var t2 := Time.get_unix_time_from_datetime_dict(date.as_dict())

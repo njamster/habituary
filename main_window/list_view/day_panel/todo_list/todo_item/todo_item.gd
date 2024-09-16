@@ -141,10 +141,11 @@ var is_bookmarked := false:
 				%Bookmark.text = %Bookmark.text.replace("Remove", "Add")
 				%BookmarkIndicator.hide()
 
-			if is_bookmarked:
-				EventBus.bookmark_added.emit(self)
-			else:
-				EventBus.bookmark_removed.emit(self)
+			if text:
+				if is_bookmarked:
+					EventBus.bookmark_added.emit(self)
+				else:
+					EventBus.bookmark_removed.emit(self)
 
 
 func _ready() -> void:
@@ -275,6 +276,9 @@ func save_to_disk(file : FileAccess) -> void:
 	if is_italic:
 		string += "*"
 
+	if is_bookmarked:
+		string += " [BOOKMARK]"
+
 	file.store_line(string)
 
 
@@ -304,6 +308,10 @@ func load_from_disk(line : String) -> void:
 	if line.begins_with("*") and  line.ends_with("*"):
 		line = line.substr(1, line.length() - 2)
 		is_italic = true
+
+	if line.ends_with(" [BOOKMARK]"):
+		line = line.substr(0, line.length() - 11)
+		is_bookmarked = true
 
 	self.text = line
 
