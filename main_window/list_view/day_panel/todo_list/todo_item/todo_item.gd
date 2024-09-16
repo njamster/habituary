@@ -135,9 +135,11 @@ var is_bookmarked := false:
 			if is_bookmarked:
 				%Bookmark.get_node("Tooltip").text = %Bookmark.get_node("Tooltip").text.replace("Add", "Remove")
 				%Bookmark.text = %Bookmark.text.replace("Add", "Remove")
+				%BookmarkIndicator.show()
 			else:
 				%Bookmark.get_node("Tooltip").text = %Bookmark.get_node("Tooltip").text.replace("Remove", "Add")
 				%Bookmark.text = %Bookmark.text.replace("Remove", "Add")
+				%BookmarkIndicator.hide()
 
 			if is_bookmarked:
 				EventBus.bookmark_added.emit(self)
@@ -149,6 +151,7 @@ func _ready() -> void:
 	# manually trigger setters
 	text = text
 	state = state
+	is_bookmarked = is_bookmarked
 
 	_apply_formatting()
 
@@ -540,3 +543,9 @@ func _check_for_search_query_match() -> void:
 
 func _on_bookmark_pressed() -> void:
 	is_bookmarked = not is_bookmarked
+
+
+func _on_bookmark_indicator_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
+		%BookmarkIndicator.get_node("Tooltip").hide_tooltip()
+		edit()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://v8u8oswwmlf3"]
+[gd_scene load_steps=47 format=3 uid="uid://v8u8oswwmlf3"]
 
 [ext_resource type="Texture2D" uid="uid://ci7y27fysy52o" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/unfolded.svg" id="2_2nsse"]
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/todo_list/todo_item/todo_item.gd" id="2_6v2l5"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://4eakbxkw2dmx" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/delete.svg" id="3_nsj7w"]
 [ext_resource type="Script" path="res://custom/tooltip.gd" id="3_oduck"]
 [ext_resource type="Texture2D" uid="uid://6im7rq1y7co6" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/folded.svg" id="4_fnk6y"]
+[ext_resource type="Texture2D" uid="uid://3ry73dkvfi1u" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/bookmark_indicator.svg" id="5_eqyfo"]
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/todo_list/todo_item/drag_handle.gd" id="5_mx38m"]
 [ext_resource type="Texture2D" uid="uid://d2xrq4e5mb2sv" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/triangle_up.png" id="8_5rkws"]
 [ext_resource type="Texture2D" uid="uid://gy7qpfsq4aaa" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/heading.svg" id="8_5475s"]
@@ -46,6 +47,7 @@ corner_detail = 5
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_civ8j"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j6fnp"]
+content_margin_left = 3.0
 content_margin_right = 3.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0pwns"]
@@ -193,6 +195,18 @@ script = ExtResource("3_oduck")
 text = "Move To-Do"
 popup_position = 5
 
+[node name="BookmarkIndicator" type="TextureRect" parent="MainRow/HBox"]
+unique_name_in_owner = true
+modulate = Color(0.505882, 0.631373, 0.756863, 1)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+texture = ExtResource("5_eqyfo")
+stretch_mode = 2
+
+[node name="Tooltip" type="Node" parent="MainRow/HBox/BookmarkIndicator"]
+script = ExtResource("3_oduck")
+text = "Bookmarked To-Do"
+
 [node name="Triangle" type="TextureRect" parent="."]
 modulate = Color(0.560784, 0.737255, 0.733333, 1)
 layout_mode = 2
@@ -335,6 +349,7 @@ gap_width = 0
 [connection signal="gui_input" from="MainRow/HBox/Content/Edit" to="." method="_on_edit_gui_input"]
 [connection signal="text_changed" from="MainRow/HBox/Content/Edit" to="." method="_on_edit_text_changed"]
 [connection signal="text_submitted" from="MainRow/HBox/Content/Edit" to="." method="_on_edit_text_submitted"]
+[connection signal="gui_input" from="MainRow/HBox/BookmarkIndicator" to="." method="_on_bookmark_indicator_gui_input"]
 [connection signal="resized" from="EditingOptions" to="." method="_on_editing_options_resized"]
 [connection signal="toggled" from="EditingOptions/HBox/Heading" to="." method="_on_heading_toggled"]
 [connection signal="toggled" from="EditingOptions/HBox/Bold" to="." method="_on_bold_toggled"]
