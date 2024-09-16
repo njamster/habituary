@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bbv588umdv0q4"]
 
 [ext_resource type="Script" path="res://main_window/side_panel/side_panel.gd" id="1_mcu5f"]
-[ext_resource type="PackedScene" uid="uid://ba4ne2kctshba" path="res://main_window/side_panel/alarms/alarms.tscn" id="2_wylvk"]
+[ext_resource type="PackedScene" uid="uid://ba4ne2kctshba" path="res://main_window/side_panel/bookmarks/bookmarks.tscn" id="2_wylvk"]
 [ext_resource type="PackedScene" uid="uid://d15dr447oxpgn" path="res://main_window/side_panel/help/help.tscn" id="3_kejmd"]
 
 [node name="SidePanel" type="PanelContainer"]
@@ -24,7 +24,7 @@ layout_mode = 2
 text = "Coming soon"
 horizontal_alignment = 1
 
-[node name="Alarms" parent="." instance=ExtResource("2_wylvk")]
+[node name="Bookmarks" parent="." instance=ExtResource("2_wylvk")]
 visible = false
 layout_mode = 2
 

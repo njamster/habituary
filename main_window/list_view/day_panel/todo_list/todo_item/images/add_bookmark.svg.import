@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://0iwnu08jsh0h"
-path="res://.godot/imported/remove_alarm.svg-e66f799984a8a604e340427579530c6c.ctex"
+uid="uid://cwqxidmwtgk3w"
+path="res://.godot/imported/add_bookmark.svg-80dbea28f4e15c46df22bf5d8854052c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://main_window/list_view/day_panel/todo_list/todo_item/images/remove_alarm.svg"
-dest_files=["res://.godot/imported/remove_alarm.svg-e66f799984a8a604e340427579530c6c.ctex"]
+source_file="res://main_window/list_view/day_panel/todo_list/todo_item/images/add_bookmark.svg"
+dest_files=["res://.godot/imported/add_bookmark.svg-80dbea28f4e15c46df22bf5d8854052c.ctex"]
 
 [params]
 

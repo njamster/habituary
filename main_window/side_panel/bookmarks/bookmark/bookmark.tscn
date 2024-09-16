@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://clk7mchfrgbnh"]
 
-[ext_resource type="Script" path="res://main_window/side_panel/alarms/alarm/alarm.gd" id="1_cjbqa"]
+[ext_resource type="Script" path="res://main_window/side_panel/bookmarks/bookmark/bookmark.gd" id="1_cjbqa"]
 [ext_resource type="Script" path="res://custom/tooltip.gd" id="2_ufj5y"]
 
 [node name="Alarm" type="PanelContainer"]

@@ -12,8 +12,8 @@
 [ext_resource type="Texture2D" uid="uid://gy7qpfsq4aaa" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/heading.svg" id="8_5475s"]
 [ext_resource type="Texture2D" uid="uid://dr7xg2ji33j32" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/bold.svg" id="9_boywj"]
 [ext_resource type="Texture2D" uid="uid://b8u24hbkd0vj1" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/italic.svg" id="10_2fgom"]
-[ext_resource type="Texture2D" uid="uid://c0fxtm7uxf6lx" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/add_alarm.svg" id="12_4b3gx"]
-[ext_resource type="Texture2D" uid="uid://0iwnu08jsh0h" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/remove_alarm.svg" id="13_6n0rc"]
+[ext_resource type="Texture2D" uid="uid://cwqxidmwtgk3w" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/add_bookmark.svg" id="12_5svov"]
+[ext_resource type="Texture2D" uid="uid://dkggv455u3otk" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/remove_bookmark.svg" id="13_itt7w"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fnmjf"]
 resource_local_to_scene = true
@@ -279,7 +279,7 @@ popup_delay = 1.2
 popup_position = 3
 gap_width = 4
 
-[node name="SetAlarm" type="Button" parent="EditingOptions/HBox"]
+[node name="Bookmark" type="Button" parent="EditingOptions/HBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(27, 0)
 layout_mode = 2
@@ -290,13 +290,13 @@ mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0.92549, 0.937255, 0.956863, 1)
 theme_override_colors/icon_normal_color = Color(0.92549, 0.937255, 0.956863, 1)
 theme_override_font_sizes/font_size = 12
-text = "Set Alarm"
+text = "Add Bookmark"
 flat = true
 script = ExtResource("2_n5f11")
-icon_toggled_off = ExtResource("12_4b3gx")
-icon_toggled_on = ExtResource("13_6n0rc")
+icon_toggled_off = ExtResource("12_5svov")
+icon_toggled_on = ExtResource("13_itt7w")
 
-[node name="Tooltip" type="Node" parent="EditingOptions/HBox/SetAlarm"]
+[node name="Tooltip" type="Node" parent="EditingOptions/HBox/Bookmark"]
 script = ExtResource("3_oduck")
 popup_position = 5
 gap_width = 0
@@ -339,5 +339,5 @@ gap_width = 0
 [connection signal="toggled" from="EditingOptions/HBox/Heading" to="." method="_on_heading_toggled"]
 [connection signal="toggled" from="EditingOptions/HBox/Bold" to="." method="_on_bold_toggled"]
 [connection signal="toggled" from="EditingOptions/HBox/Italic" to="." method="_on_italic_toggled"]
-[connection signal="pressed" from="EditingOptions/HBox/SetAlarm" to="." method="_on_set_alarm_pressed"]
+[connection signal="pressed" from="EditingOptions/HBox/Bookmark" to="." method="_on_bookmark_pressed"]
 [connection signal="pressed" from="EditingOptions/HBox/Delete" to="." method="delete"]

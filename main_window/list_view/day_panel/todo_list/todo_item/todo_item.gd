@@ -127,22 +127,22 @@ var is_folded := false:
 			%ExtraInfo.hide()
 
 
-var has_alarm := false:
+var is_bookmarked := false:
 	set(value):
-		has_alarm = value
+		is_bookmarked = value
 
 		if is_inside_tree():
-			if has_alarm:
-				%SetAlarm.get_node("Tooltip").text = %SetAlarm.get_node("Tooltip").text.replace("Add", "Remove")
-				%SetAlarm.text = %SetAlarm.text.replace("Add", "Remove")
+			if is_bookmarked:
+				%Bookmark.get_node("Tooltip").text = %Bookmark.get_node("Tooltip").text.replace("Add", "Remove")
+				%Bookmark.text = %Bookmark.text.replace("Add", "Remove")
 			else:
-				%SetAlarm.get_node("Tooltip").text = %SetAlarm.get_node("Tooltip").text.replace("Remove", "Add")
-				%SetAlarm.text = %SetAlarm.text.replace("Remove", "Add")
+				%Bookmark.get_node("Tooltip").text = %Bookmark.get_node("Tooltip").text.replace("Remove", "Add")
+				%Bookmark.text = %Bookmark.text.replace("Remove", "Add")
 
-			if has_alarm:
-				EventBus.alarm_added.emit(self)
+			if is_bookmarked:
+				EventBus.bookmark_added.emit(self)
 			else:
-				EventBus.alarm_removed.emit(self)
+				EventBus.bookmark_removed.emit(self)
 
 
 func _ready() -> void:
@@ -180,8 +180,8 @@ func edit() -> void:
 
 
 func delete() -> void:
-	if has_alarm:
-		EventBus.alarm_removed.emit(self)
+	if is_bookmarked:
+		EventBus.bookmark_removed.emit(self)
 	self.unfolded.emit()
 	queue_free()
 	if self.text:
@@ -192,7 +192,7 @@ func delete() -> void:
 func _on_edit_text_changed(new_text: String) -> void:
 	var old_text = self.text
 	self.text = new_text
-	EventBus.alarm_text_changed.emit(self, old_text)
+	EventBus.bookmark_text_changed.emit(self, old_text)
 	_check_for_search_query_match()
 
 
@@ -476,7 +476,7 @@ func _on_italic_toggled(toggled_on: bool) -> void:
 
 
 func _on_editing_options_resized() -> void:
-	if %EditingOptions.size.x < 350:
+	if %EditingOptions.size.x < 370:
 		%FormatLabel.hide()
 
 		if is_heading:
@@ -485,11 +485,11 @@ func _on_editing_options_resized() -> void:
 			%Delete.get_node("Tooltip").text = "Delete To-Do"
 		%Delete.text = ""
 
-		if has_alarm:
-			%SetAlarm.get_node("Tooltip").text = "Remove Alarm"
+		if is_bookmarked:
+			%Bookmark.get_node("Tooltip").text = "Remove Bookmark"
 		else:
-			%SetAlarm.get_node("Tooltip").text = "Add Alarm"
-		%SetAlarm.text = ""
+			%Bookmark.get_node("Tooltip").text = "Add Bookmark"
+		%Bookmark.text = ""
 	else:
 		%FormatLabel.show()
 
@@ -499,11 +499,11 @@ func _on_editing_options_resized() -> void:
 			%Delete.text = "Delete To-Do"
 		%Delete.get_node("Tooltip").text = ""
 
-		%SetAlarm.get_node("Tooltip").text = ""
-		if has_alarm:
-			%SetAlarm.text = "Remove Alarm"
+		%Bookmark.get_node("Tooltip").text = ""
+		if is_bookmarked:
+			%Bookmark.text = "Remove Bookmark"
 		else:
-			%SetAlarm.text = "Add Alarm"
+			%Bookmark.text = "Add Bookmark"
 
 
 func _on_edit_gui_input(event: InputEvent) -> void:
@@ -538,5 +538,5 @@ func _check_for_search_query_match() -> void:
 		%Edit.modulate.a = 0.1
 
 
-func _on_set_alarm_pressed() -> void:
-	has_alarm = not has_alarm
+func _on_bookmark_pressed() -> void:
+	is_bookmarked = not is_bookmarked

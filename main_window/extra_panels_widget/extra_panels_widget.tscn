@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://main_window/extra_panels_widget/extra_panels_widget.gd" id="1_5x0ik"]
 [ext_resource type="Texture2D" uid="uid://b6m2sbtuimpqj" path="res://main_window/extra_panels_widget/images/help.svg" id="1_ywxe7"]
 [ext_resource type="Script" path="res://custom/tooltip.gd" id="3_diiyk"]
+[ext_resource type="Texture2D" uid="uid://c634eemojquwr" path="res://main_window/extra_panels_widget/images/bookmarks.svg" id="4_45dt0"]
 [ext_resource type="Texture2D" uid="uid://bpfw6aor5w57f" path="res://main_window/extra_panels_widget/images/capture.svg" id="4_h4on7"]
-[ext_resource type="Texture2D" uid="uid://dv4okd56jtc61" path="res://main_window/extra_panels_widget/images/alarms.svg" id="5_u4xd2"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_dtnv5"]
 action = &"show_capture"
@@ -13,7 +13,7 @@ action = &"show_capture"
 events = [SubResource("InputEventAction_dtnv5")]
 
 [sub_resource type="InputEventAction" id="InputEventAction_ux27k"]
-action = &"show_alarms"
+action = &"show_bookmarks"
 
 [sub_resource type="Shortcut" id="Shortcut_5eyie"]
 events = [SubResource("InputEventAction_ux27k")]
@@ -42,7 +42,7 @@ icon = ExtResource("4_h4on7")
 script = ExtResource("3_diiyk")
 text = "Show Capture"
 
-[node name="Alarms" type="Button" parent="."]
+[node name="Bookmarks" type="Button" parent="."]
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
@@ -50,11 +50,11 @@ theme_type_variation = &"LeftSidebarButton"
 toggle_mode = true
 shortcut = SubResource("Shortcut_5eyie")
 shortcut_in_tooltip = false
-icon = ExtResource("5_u4xd2")
+icon = ExtResource("4_45dt0")
 
-[node name="Tooltip" type="Node" parent="Alarms"]
+[node name="Tooltip" type="Node" parent="Bookmarks"]
 script = ExtResource("3_diiyk")
-text = "Show Alarms"
+text = "Show Bookmarks"
 
 [node name="Spacer" type="Control" parent="."]
 custom_minimum_size = Vector2(0, 6)
@@ -75,5 +75,5 @@ script = ExtResource("3_diiyk")
 text = "Show Help"
 
 [connection signal="toggled" from="Capture" to="." method="_on_capture_toggled"]
-[connection signal="toggled" from="Alarms" to="." method="_on_alarms_toggled"]
+[connection signal="toggled" from="Bookmarks" to="." method="_on_bookmarks_toggled"]
 [connection signal="toggled" from="Help" to="." method="_on_help_toggled"]

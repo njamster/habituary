@@ -16,7 +16,7 @@ var descriptions := {
 	"toggle_calendar_widget": "Open/Close Calendar Widget",
 	"search_screen": "Search To-Dos On Screen",
 	"show_help": "Open/Close Help Panel",
-	"show_alarms": "Open/Close Alarms Panel",
+	"show_bookmarks": "Open/Close Bookmarks Panel",
 	"show_capture": "Open/Close Capture Panel",
 	"toggle_fullscreen": "Toggle Fullscreen On/Off",
 	"toggle_dark_mode": "Toggle Dark Mode On/Off",
@@ -64,7 +64,7 @@ func _ready() -> void:
 	for action in [
 		"toggle_calendar_widget",
 		"show_help",
-		"show_alarms",
+		"show_bookmarks",
 		"show_capture",
 		"toggle_fullscreen",
 		"toggle_dark_mode",

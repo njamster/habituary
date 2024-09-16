@@ -23,7 +23,7 @@ signal search_screen_button_pressed
 @warning_ignore("unused_signal")
 signal capture_button_pressed
 @warning_ignore("unused_signal")
-signal alarms_button_pressed
+signal bookmarks_button_pressed
 @warning_ignore("unused_signal")
 signal help_button_pressed
 
@@ -36,8 +36,8 @@ signal todo_list_clicked
 signal search_query_changed
 
 @warning_ignore("unused_signal")
-signal alarm_added(to_do)
+signal bookmark_added(to_do)
 @warning_ignore("unused_signal")
-signal alarm_text_changed(to_do, old_text)
+signal bookmark_text_changed(to_do, old_text)
 @warning_ignore("unused_signal")
-signal alarm_removed(to_do)
+signal bookmark_removed(to_do)
