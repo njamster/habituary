@@ -5,6 +5,11 @@ var date : Date:
 		date = value
 		%Tooltip.text = date.format("MMM DD, YYYY")
 
+		# reset formatting
+		%DayCounter.remove_theme_color_override("font_color")
+		modulate.a = 1.0
+
+		# apply formatting
 		var day_diff := date.day_difference_to(DayTimer.today)
 		if day_diff < 0:
 			modulate.a = 0.4

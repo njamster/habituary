@@ -131,7 +131,12 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 			if entry.get_parent() != %Items:
 				# item moved from one list to another
 				disconnect_todo_signals(entry)
-				entry.reparent(%Items)
+				if entry.is_bookmarked:
+					var old_date = Date.new(entry.get_node("../../../../..").date.as_dict())
+					entry.reparent(%Items)
+					EventBus.bookmark_date_changed.emit(entry, old_date)
+				else:
+					entry.reparent(%Items)
 				connect_todo_signals(entry)
 				%Items.move_child(entry, base_position + i)
 			else:

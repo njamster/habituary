@@ -6,6 +6,7 @@ func _ready() -> void:
 
 	EventBus.bookmark_added.connect(_on_bookmark_added)
 	EventBus.bookmark_text_changed.connect(_on_bookmark_text_changed)
+	EventBus.bookmark_date_changed.connect(_on_bookmark_date_changed)
 	EventBus.bookmark_removed.connect(_on_bookmark_removed)
 
 
@@ -72,6 +73,16 @@ func _on_bookmark_text_changed(to_do : Control, old_text : String) -> void:
 	for bookmark in %List.get_children():
 		if bookmark.text == old_text and bookmark.date.day_difference_to(date) == 0:
 			bookmark.text = to_do.text
+			return
+
+
+func _on_bookmark_date_changed(to_do : Control, old_date : Date) -> void:
+	# FIXME: avoid using a relative path that involves parent nodes
+	var new_date := Date.new(to_do.get_node("../../../../..").date.as_dict())
+
+	for bookmark in %List.get_children():
+		if bookmark.text == to_do.text and bookmark.date.day_difference_to(old_date) == 0:
+			bookmark.date = new_date
 			return
 
 
