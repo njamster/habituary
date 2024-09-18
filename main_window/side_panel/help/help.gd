@@ -20,6 +20,12 @@ var descriptions := {
 	"show_capture": "Open/Close Capture Panel",
 	"toggle_fullscreen": "Toggle Fullscreen On/Off",
 	"toggle_dark_mode": "Toggle Dark Mode On/Off",
+
+	"toggle_heading": "Set/Unset As Foldable Heading",
+	"toggle_bold": "Add/Remove Bold Formatting",
+	"toggle_italic": "Add/Remove Italic Formatting",
+	"toggle_bookmark": "Add/Remove Bookmark",
+	"delete_todo": "Delete To-Do",
 }
 
 
@@ -73,3 +79,19 @@ func _ready() -> void:
 		hint.description = descriptions[action]
 		hint.key_binding = InputMap.action_get_events(action)[0]
 		%KeyBindingsBlock4.add_child(hint)
+
+	for action in [
+		"toggle_heading",
+		"toggle_bold",
+		"toggle_italic",
+		"toggle_bookmark",
+		"delete_todo",
+	]:
+		var hint = preload("input_hint/input_hint.tscn").instantiate()
+		hint.description = descriptions[action]
+		hint.key_binding = InputMap.action_get_events(action)[0]
+		%KeyBindingsBlock5.add_child(hint)
+
+
+func _on_report_issue_meta_clicked(_meta: Variant) -> void:
+	OS.shell_open("https://github.com/njamster/habituary/issues")

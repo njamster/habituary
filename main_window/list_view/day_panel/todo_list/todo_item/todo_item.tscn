@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://v8u8oswwmlf3"]
+[gd_scene load_steps=57 format=3 uid="uid://v8u8oswwmlf3"]
 
 [ext_resource type="Texture2D" uid="uid://ci7y27fysy52o" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/unfolded.svg" id="2_2nsse"]
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/todo_list/todo_item/todo_item.gd" id="2_6v2l5"]
@@ -77,6 +77,12 @@ corner_detail = 5
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qoi1k"]
 
+[sub_resource type="InputEventAction" id="InputEventAction_cishq"]
+action = &"toggle_heading"
+
+[sub_resource type="Shortcut" id="Shortcut_nnvv7"]
+events = [SubResource("InputEventAction_cishq")]
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xrdh6"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_62n5v"]
@@ -87,6 +93,12 @@ corner_detail = 5
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dpqet"]
 
+[sub_resource type="InputEventAction" id="InputEventAction_rvq25"]
+action = &"toggle_bold"
+
+[sub_resource type="Shortcut" id="Shortcut_2niux"]
+events = [SubResource("InputEventAction_rvq25")]
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hk2kt"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_25qu6"]
@@ -96,6 +108,24 @@ corner_detail = 5
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_713ie"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e50g5"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_q0hmr"]
+action = &"toggle_italic"
+
+[sub_resource type="Shortcut" id="Shortcut_hrpfk"]
+events = [SubResource("InputEventAction_q0hmr")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_i0vg5"]
+action = &"toggle_bookmark"
+
+[sub_resource type="Shortcut" id="Shortcut_lnt4s"]
+events = [SubResource("InputEventAction_i0vg5")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_8e6wv"]
+action = &"delete_todo"
+
+[sub_resource type="Shortcut" id="Shortcut_3nsuj"]
+events = [SubResource("InputEventAction_8e6wv")]
 
 [node name="ToDoItem" type="VBoxContainer" groups=["todo_item"]]
 custom_minimum_size = Vector2(0, 27)
@@ -242,6 +272,8 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_ll8pp")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_vi4l2")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_qoi1k")
 toggle_mode = true
+shortcut = SubResource("Shortcut_nnvv7")
+shortcut_in_tooltip = false
 icon = ExtResource("8_5475s")
 
 [node name="Tooltip" type="Node" parent="EditingOptions/HBox/Heading"]
@@ -263,6 +295,8 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_xqpcy")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_qx2ft")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_dpqet")
 toggle_mode = true
+shortcut = SubResource("Shortcut_2niux")
+shortcut_in_tooltip = false
 icon = ExtResource("9_boywj")
 
 [node name="Tooltip" type="Node" parent="EditingOptions/HBox/Bold"]
@@ -284,6 +318,8 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_5bidg")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_713ie")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_e50g5")
 toggle_mode = true
+shortcut = SubResource("Shortcut_hrpfk")
+shortcut_in_tooltip = false
 icon = ExtResource("10_2fgom")
 
 [node name="Tooltip" type="Node" parent="EditingOptions/HBox/Italic"]
@@ -304,6 +340,8 @@ mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0.92549, 0.937255, 0.956863, 1)
 theme_override_colors/icon_normal_color = Color(0.92549, 0.937255, 0.956863, 1)
 theme_override_font_sizes/font_size = 12
+shortcut = SubResource("Shortcut_lnt4s")
+shortcut_in_tooltip = false
 text = "Add Bookmark"
 flat = true
 script = ExtResource("2_n5f11")
@@ -330,6 +368,8 @@ theme_override_colors/icon_normal_color = Color(0.92549, 0.937255, 0.956863, 1)
 theme_override_colors/icon_pressed_color = Color(0.815686, 0.529412, 0.439216, 1)
 theme_override_colors/icon_hover_color = Color(0.74902, 0.380392, 0.415686, 1)
 theme_override_font_sizes/font_size = 12
+shortcut = SubResource("Shortcut_3nsuj")
+shortcut_in_tooltip = false
 text = "Delete To-Do"
 icon = ExtResource("3_nsj7w")
 flat = true
@@ -346,7 +386,6 @@ gap_width = 0
 [connection signal="gui_input" from="MainRow/HBox/Content" to="." method="_on_content_gui_input"]
 [connection signal="focus_entered" from="MainRow/HBox/Content/Edit" to="." method="edit"]
 [connection signal="focus_exited" from="MainRow/HBox/Content/Edit" to="." method="_on_edit_focus_exited"]
-[connection signal="gui_input" from="MainRow/HBox/Content/Edit" to="." method="_on_edit_gui_input"]
 [connection signal="text_changed" from="MainRow/HBox/Content/Edit" to="." method="_on_edit_text_changed"]
 [connection signal="text_submitted" from="MainRow/HBox/Content/Edit" to="." method="_on_edit_text_submitted"]
 [connection signal="gui_input" from="MainRow/HBox/BookmarkIndicator" to="." method="_on_bookmark_indicator_gui_input"]

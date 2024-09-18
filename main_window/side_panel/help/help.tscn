@@ -9,17 +9,17 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_unkbq"]
 
 [node name="Help" type="VBoxContainer"]
-theme_override_constants/separation = 32
+theme_override_constants/separation = 16
 script = ExtResource("1_1rhmu")
 
-[node name="VBox" type="VBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="Heading" type="Label" parent="VBox"]
+[node name="Heading" type="Label" parent="."]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "Help"
 horizontal_alignment = 1
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
 
 [node name="Version" type="HBoxContainer" parent="VBox"]
 unique_name_in_owner = true
@@ -28,7 +28,7 @@ alignment = 1
 
 [node name="Label" type="Label" parent="VBox/Version"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 14
 text = "Version:"
 
 [node name="ID" type="LineEdit" parent="VBox/Version"]
@@ -36,7 +36,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_uneditable_color = Color(0.505882, 0.631373, 0.756863, 1)
 theme_override_constants/minimum_character_width = 0
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 14
 theme_override_styles/focus = SubResource("StyleBoxEmpty_ag0c0")
 theme_override_styles/read_only = SubResource("StyleBoxEmpty_02jsr")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_unkbq")
@@ -47,6 +47,16 @@ drag_and_drop_selection_enabled = false
 flat = true
 select_all_on_focus = true
 
+[node name="ReportIssue" type="RichTextLabel" parent="VBox"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 14
+bbcode_enabled = true
+text = "[center][url]Report Issue[/url][/center]"
+fit_content = true
+
+[node name="Spacer" type="Control" parent="."]
+layout_mode = 2
+
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 3
@@ -55,6 +65,7 @@ horizontal_scroll_mode = 0
 [node name="VBox" type="VBoxContainer" parent="ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 32
 
 [node name="KeyBindingsBlock1" type="VBoxContainer" parent="ScrollContainer/VBox"]
 unique_name_in_owner = true
@@ -75,3 +86,16 @@ theme_override_constants/separation = 8
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 8
+
+[node name="KeyBindingsBlock5" type="VBoxContainer" parent="ScrollContainer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Heading" type="Label" parent="ScrollContainer/VBox/KeyBindingsBlock5"]
+layout_mode = 2
+text = "While Editing A To-Do"
+horizontal_alignment = 1
+uppercase = true
+
+[connection signal="meta_clicked" from="VBox/ReportIssue" to="." method="_on_report_issue_meta_clicked"]
