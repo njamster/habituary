@@ -12,7 +12,7 @@ func _on_gui_input(event: InputEvent) -> void:
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			self.scroll_vertical = min(
 				self.scroll_vertical + 40,
-				get_child(0).size.y - self.size.y - 39
+				get_child(0).size.y - self.size.y
 			)
 			accept_event()
 
@@ -24,7 +24,7 @@ func _on_gui_input(event: InputEvent) -> void:
 			if event.button_index == MOUSE_BUTTON_WHEEL_RIGHT:
 				self.scroll_vertical = min(
 					self.scroll_vertical + 40,
-					get_child(0).size.y - self.size.y - 39
+					get_child(0).size.y - self.size.y
 				)
 				accept_event()
 
