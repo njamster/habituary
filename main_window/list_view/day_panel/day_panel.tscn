@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cmdy32v105kli"]
+[gd_scene load_steps=6 format=3 uid="uid://cmdy32v105kli"]
 
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/day_panel.gd" id="1_a2phy"]
+[ext_resource type="PackedScene" uid="uid://ofa44bt1yn4u" path="res://main_window/list_view/day_panel/scroll_button/scroll_button.tscn" id="2_4oqj4"]
 [ext_resource type="PackedScene" uid="uid://dw8mvf72vw7qk" path="res://main_window/list_view/day_panel/todo_list/todo_list.tscn" id="2_66ttt"]
+[ext_resource type="Script" path="res://main_window/list_view/day_panel/scroll_container.gd" id="4_t4q73"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8t3rb"]
 resource_local_to_scene = true
@@ -27,7 +29,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 0
 mouse_default_cursor_shape = 2
-theme_override_constants/separation = 16
+theme_override_constants/separation = 0
 script = ExtResource("1_a2phy")
 
 [node name="Header" type="PanelContainer" parent="."]
@@ -55,15 +57,24 @@ theme_override_font_sizes/font_size = 24
 text = "WEEKDAY"
 uppercase = true
 
+[node name="ScrollUpButton" parent="." instance=ExtResource("2_4oqj4")]
+layout_mode = 2
+
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 3
 follow_focus = true
-horizontal_scroll_mode = 3
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+script = ExtResource("4_t4q73")
 
 [node name="TodoList" parent="ScrollContainer" instance=ExtResource("2_66ttt")]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="ScrollDownButton" parent="." instance=ExtResource("2_4oqj4")]
+layout_mode = 2
+mode = 1
 
 [node name="HoverTimer" type="Timer" parent="."]
 wait_time = 0.1
@@ -75,4 +86,5 @@ one_shot = true
 [connection signal="gui_input" from="Header" to="." method="_on_header_gui_input"]
 [connection signal="mouse_entered" from="Header" to="." method="_on_header_mouse_entered"]
 [connection signal="mouse_exited" from="Header" to="." method="_on_header_mouse_exited"]
+[connection signal="gui_input" from="ScrollContainer" to="ScrollContainer" method="_on_gui_input"]
 [connection signal="timeout" from="HoverTimer" to="." method="_on_hover_timer_timeout"]
