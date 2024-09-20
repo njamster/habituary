@@ -6,26 +6,46 @@ signal scrolled
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			self.scroll_vertical = max(self.scroll_vertical - 40, 0)
+			if self.scroll_vertical <= 80:
+				# scroll two items up (since the ScrollUpButton will disappear)
+				self.scroll_vertical = 0
+			else:
+				# scroll one item up
+				self.scroll_vertical -= 40
 			accept_event()
 
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			self.scroll_vertical = min(
-				self.scroll_vertical + 40,
-				get_child(0).size.y - self.size.y
-			)
+			if self.scroll_vertical == 0:
+				# scroll two items down (since the ScrollUpButton will appear)
+				self.scroll_vertical += 80
+			elif self.scroll_vertical < get_child(0).size.y - self.size.y - 80:
+				# scroll one item down
+				self.scroll_vertical += 40
+			else:
+				# scroll two items down (since the ScrollDownButton will disappear)
+				self.scroll_vertical = get_child(0).size.y - self.size.y
 			accept_event()
 
 		if vertical_scroll_mode == SCROLL_MODE_SHOW_NEVER:
 			if event.button_index == MOUSE_BUTTON_WHEEL_LEFT:
-				self.scroll_vertical = max(self.scroll_vertical - 40, 0)
+				if self.scroll_vertical <= 80:
+					# scroll two items up (since the ScrollUpButton will disappear)
+					self.scroll_vertical = 0
+				else:
+					# scroll one item up
+					self.scroll_vertical -= 40
 				accept_event()
 
 			if event.button_index == MOUSE_BUTTON_WHEEL_RIGHT:
-				self.scroll_vertical = min(
-					self.scroll_vertical + 40,
-					get_child(0).size.y - self.size.y
-				)
+				if self.scroll_vertical == 0:
+					# scroll two items down (since the ScrollUpButton will appear)
+					self.scroll_vertical += 80
+				elif self.scroll_vertical < get_child(0).size.y - self.size.y - 80:
+					# scroll one item down
+					self.scroll_vertical += 40
+				else:
+					# scroll two items down (since the ScrollDownButton will disappear)
+					self.scroll_vertical = get_child(0).size.y - self.size.y
 				accept_event()
 
 
