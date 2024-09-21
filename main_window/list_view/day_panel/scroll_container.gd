@@ -23,25 +23,13 @@ func _on_gui_input(event: InputEvent) -> void:
 				accept_event()
 
 
-func _scroll_one_item_down() -> void:
-	if self.scroll_vertical == 0:
-		# scroll two (!) items down, since the ScrollUpButton will appear above
-		self.scroll_vertical += 2 * TODO_ITEM_HEIGHT
-	else:
-		# scroll one item down
-		self.scroll_vertical += TODO_ITEM_HEIGHT
-
-
-func _scroll_one_item_up() -> void:
-	if self.scroll_vertical == 2 * TODO_ITEM_HEIGHT:
-		# scroll two (!) items up, since the ScrollUpButton will disappear above
-		self.scroll_vertical = 0
-	else:
-		# scroll one item down
-		self.scroll_vertical -= TODO_ITEM_HEIGHT
-
-
-func _set(property, _value) -> bool:
-	if property == "scroll_vertical":
+func _scroll_one_item_down(emit_scrolled_signal := true) -> void:
+	self.scroll_vertical += TODO_ITEM_HEIGHT
+	if emit_scrolled_signal:
 		scrolled.emit.call_deferred()
-	return false
+
+
+func _scroll_one_item_up(emit_scrolled_signal := true) -> void:
+	self.scroll_vertical -= TODO_ITEM_HEIGHT
+	if emit_scrolled_signal:
+		scrolled.emit.call_deferred()

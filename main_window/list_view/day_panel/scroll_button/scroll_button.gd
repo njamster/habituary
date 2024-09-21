@@ -8,10 +8,14 @@ enum Modes {UP, DOWN}
 
 
 func _ready() -> void:
+	self.hide()
+
 	SCROLL_CONTAINER.resized.connect(_update_button)
 	SCROLL_CONTAINER_CONTENT.resized.connect(_update_button)
 
 	SCROLL_CONTAINER.scrolled.connect(_update_button)
+
+	_update_button.call_deferred()
 
 
 func _update_button() -> void:
@@ -19,21 +23,33 @@ func _update_button() -> void:
 
 	if mode == Modes.UP:
 		items_out_of_view = SCROLL_CONTAINER.scroll_vertical / SCROLL_CONTAINER.TODO_ITEM_HEIGHT
-
-		if items_out_of_view > 1:
-			%Text.text = "%d more to-dos above" % items_out_of_view
-			self.show()
-		else:
-			self.hide()
+		if items_out_of_view == 1:
+			if self.visible:
+				# hide the button, freeing up space to display the last remaining to-do
+				SCROLL_CONTAINER._scroll_one_item_up.call_deferred(false)
+				self.hide()
+				return
+			else:
+				# show the button, occupying the space of one previously visible to-do
+				SCROLL_CONTAINER._scroll_one_item_down.call_deferred(false)
+				items_out_of_view += 1
+				self.show()
+		%Text.text = "%d more to-dos above" % items_out_of_view
 	else:
-		items_out_of_view = (SCROLL_CONTAINER_CONTENT.size.y - SCROLL_CONTAINER.size.y - SCROLL_CONTAINER.scroll_vertical) / SCROLL_CONTAINER.TODO_ITEM_HEIGHT
+		var max_scroll_offset = max(SCROLL_CONTAINER_CONTENT.size.y - SCROLL_CONTAINER.size.y, 0)
+		items_out_of_view = (max_scroll_offset - SCROLL_CONTAINER.scroll_vertical) / SCROLL_CONTAINER.TODO_ITEM_HEIGHT
+		if items_out_of_view == 1:
+			if self.visible:
+				# hide the button, freeing up space to display the last remaining to-do
+				self.hide()
+				return
+			else:
+				# show the button, occupying the space of one previously visible to-do
+				items_out_of_view += 1
+				self.show()
+		%Text.text = "%d more to-dos below" % items_out_of_view
 
-		if items_out_of_view > 0:
-			%Text.text = "%d more to-dos below" % items_out_of_view
-			self.show()
-		else:
-			self.hide()
-
+	self.visible = (items_out_of_view > 0)
 
 
 func _on_gui_input(event: InputEvent) -> void:
