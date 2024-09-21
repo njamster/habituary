@@ -7,7 +7,7 @@ func _ready() -> void:
 	$LineHighlight.modulate.a = 0.0
 
 	if OS.is_debug_build():
-		for i in range(24):
+		for i in range(26):
 			var debug_item := add_todo(Vector2.ZERO, true)
 			debug_item.text = "Debug_%d" % i
 			if i == 0:

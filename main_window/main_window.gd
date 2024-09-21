@@ -33,8 +33,8 @@ func _on_window_size_changed() -> void:
 	var todo_item_height := 40
 
 	var total_vertical_margin = 2 * minimum_vertical_margin + todo_list_height % todo_item_height
-	add_theme_constant_override("margin_top", 0.5 * total_vertical_margin)
-	add_theme_constant_override("margin_bottom", 0.5 * total_vertical_margin)
+	add_theme_constant_override("margin_top", floor(0.5 * total_vertical_margin))
+	add_theme_constant_override("margin_bottom", ceil(0.5 * total_vertical_margin))
 
 
 func _unhandled_input(event: InputEvent) -> void:
