@@ -6,6 +6,8 @@ enum Modes {UP, DOWN}
 @onready var SCROLL_CONTAINER := $"../ScrollContainer"
 @onready var SCROLL_CONTAINER_CONTENT := SCROLL_CONTAINER.get_child(0)
 
+var items_out_of_view := 0
+
 
 func _ready() -> void:
 	self.hide()
@@ -17,9 +19,11 @@ func _ready() -> void:
 
 	_update_button.call_deferred()
 
+	EventBus.search_query_changed.connect(_on_search_query_changed)
+
 
 func _update_button() -> void:
-	var items_out_of_view := 0
+	items_out_of_view = 0
 
 	if mode == Modes.UP:
 		items_out_of_view = SCROLL_CONTAINER.scroll_vertical / SCROLL_CONTAINER.TODO_ITEM_HEIGHT
@@ -51,6 +55,8 @@ func _update_button() -> void:
 
 	self.visible = (items_out_of_view > 0)
 
+	_on_search_query_changed()
+
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
@@ -58,3 +64,43 @@ func _on_gui_input(event: InputEvent) -> void:
 			SCROLL_CONTAINER._scroll_one_item_up()
 		else:
 			SCROLL_CONTAINER._scroll_one_item_down()
+
+
+func _on_search_query_changed() -> void:
+	if not Settings.search_query:
+		if mode == Modes.UP:
+			%Text.text = "%d more to-dos above" % items_out_of_view
+		else:
+			%Text.text = "%d more to-dos below" % items_out_of_view
+		%Text.add_theme_color_override("font_color", Color("#8fbcbb"))
+		%Text.modulate.a = 1.0
+	else:
+		var matches_outside_view := 0
+
+		for i in range(items_out_of_view):
+			var todo
+			if mode == Modes.UP:
+				todo = SCROLL_CONTAINER_CONTENT.get_node("%Items").get_child(i)
+			else:
+				todo = SCROLL_CONTAINER_CONTENT.get_node("%Items").get_child(-i - 1)
+			if todo.text.contains(Settings.search_query):
+				matches_outside_view += 1
+
+		if matches_outside_view:
+			if matches_outside_view == 1:
+				%Text.text = "%d match" % matches_outside_view
+			else:
+				%Text.text = "%d matches" % matches_outside_view
+			if mode == Modes.UP:
+				%Text.text += " above"
+			else:
+				%Text.text += " below"
+			%Text.add_theme_color_override("font_color", Color("#88c0d0"))
+			%Text.modulate.a = 1.0
+		else:
+			if mode == Modes.UP:
+				%Text.text = "%d more to-dos above" % items_out_of_view
+			else:
+				%Text.text = "%d more to-dos below" % items_out_of_view
+			%Text.remove_theme_color_override("font_color")
+			%Text.modulate.a = 0.1
