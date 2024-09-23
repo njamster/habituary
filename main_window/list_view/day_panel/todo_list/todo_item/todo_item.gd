@@ -180,6 +180,23 @@ func edit() -> void:
 	$Triangle.show()
 	%EditingOptions.show()
 	_pre_edit_text = self.text
+
+	#region Make sure edited to-do is visible
+	# FIXME: this is pretty hacky patch...
+	await get_tree().process_frame
+	await get_tree().process_frame
+	var scroll_container := get_node("../../../..")
+	scroll_container.ensure_control_visible(self)
+	var row_height = scroll_container.TODO_ITEM_HEIGHT
+	if scroll_container.scroll_vertical % row_height != 0:
+		# round to next multiple of `row_height`
+		scroll_container.scroll_vertical += (
+			row_height - scroll_container.scroll_vertical % row_height
+		)
+	# emit scrolled signal for the ScrollButtons to update
+	scroll_container.scrolled.emit.call_deferred()
+	#endregion
+
 	editing_started.emit()
 
 

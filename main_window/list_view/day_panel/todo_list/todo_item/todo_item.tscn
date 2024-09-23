@@ -131,6 +131,7 @@ events = [SubResource("InputEventAction_8e6wv")]
 custom_minimum_size = Vector2(0, 27)
 offset_right = 1920.0
 offset_bottom = 27.0
+focus_mode = 2
 mouse_filter = 0
 theme_override_constants/separation = 0
 script = ExtResource("2_6v2l5")
