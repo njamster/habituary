@@ -165,11 +165,24 @@ func save_to_disk(file : FileAccess) -> void:
 		if not child.is_in_group("debug_item"):
 			child.save_to_disk(file)
 
+	var scroll_offset : int = get_node("..").scroll_vertical
+	if scroll_offset != 0:
+		file.store_line("SCROLL:%d" % scroll_offset)
+
 
 func load_from_disk(file : FileAccess) -> void:
 	while file.get_position() < file.get_length():
-		var restored_item := add_todo()
-		restored_item.load_from_disk(file.get_line())
+		var next_line := file.get_line()
+		if next_line.begins_with("SCROLL:"):
+			var scroll_offset := int(next_line.right(-7))
+			# FIXME: the following works, but is rather hacky...
+			await get_tree().process_frame
+			await get_tree().process_frame
+			get_node("..").set("scroll_vertical", scroll_offset)
+			get_node("..").scrolled.emit.call_deferred()
+		else:
+			var restored_item := add_todo()
+			restored_item.load_from_disk(next_line)
 
 
 func show_line_highlight(mouse_position : Vector2) -> void:
