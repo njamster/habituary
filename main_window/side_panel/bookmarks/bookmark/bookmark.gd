@@ -9,22 +9,48 @@ var date : Date:
 		%DayCounter.remove_theme_color_override("font_color")
 		modulate.a = 1.0
 
-		# apply formatting
 		var day_diff := date.day_difference_to(DayTimer.today)
+
+		var years := int(abs(day_diff) / 365)
+		var weeks := int(abs(day_diff) % 365 / 7)
+		var days := int(abs(day_diff) % 365 % 7)
+
+		var remaining_time = ""
+		if years:
+			if years > 1:
+				remaining_time += "%d years" % [years]
+			else:
+				remaining_time += "%d year" % [years]
+		if weeks:
+			if remaining_time:
+				if days:
+					remaining_time += ", "
+				else:
+					remaining_time += " and "
+			if weeks > 1:
+				remaining_time += "%d weeks" % [weeks]
+			else:
+				remaining_time += "%d week" % [weeks]
+		if days:
+			if remaining_time:
+				remaining_time += " and "
+			if days > 1:
+				remaining_time += "%d days" % [days]
+			else:
+				remaining_time += "%d day" % [days]
+
 		if day_diff < 0:
 			modulate.a = 0.4
-			if day_diff == -1:
-				%DayCounter.text = "%d day ago" % abs(day_diff)
-			else:
-				%DayCounter.text = "%d days ago" % abs(day_diff)
+			%DayCounter.remove_theme_color_override("font_color")
+			%DayCounter.text = remaining_time + " ago"
 		elif day_diff > 0:
-			if day_diff == 1:
-				%DayCounter.text = "%d day left" % day_diff
-			else:
-				%DayCounter.text = "%d days left" % day_diff
+			modulate.a = 1.0
+			%DayCounter.remove_theme_color_override("font_color")
+			%DayCounter.text = remaining_time + " remaining"
 		else:
+			modulate.a = 1.0
 			%DayCounter.add_theme_color_override("font_color", "ebcb8b")
-			%DayCounter.text = "Today"
+			%DayCounter.text = "TODAY"
 
 var text := "":
 	set(value):
