@@ -8,7 +8,7 @@ func _ready() -> void:
 
 	# check if the user already set the store path
 	var config := ConfigFile.new()
-	var error := config.load(Settings.SETTINGS_PATH)
+	var error := config.load(Settings.settings_path)
 	if not error:
 		if config.has_section_key("Settings", "store_path"):
 			var store_path = config.get_value("Settings", "store_path")
@@ -40,9 +40,9 @@ func _on_confirm_pressed() -> void:
 
 	# permanently save store path
 	var config = ConfigFile.new()
-	config.load(Settings.SETTINGS_PATH) # keep existing settings (if there are any)
+	config.load(Settings.settings_path) # keep existing settings (if there are any)
 	config.set_value("Settings", "store_path", %Path.text)
-	config.save(Settings.SETTINGS_PATH)
+	config.save(Settings.settings_path)
 
 	Settings.store_path = %Path.text
 	change_to_main_scene()

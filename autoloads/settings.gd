@@ -25,11 +25,17 @@ enum TodayPosition {
 	CENTERED
 }
 
-const SETTINGS_PATH := "user://settings.cfg"
-
-var date_format_save := "YYYY-MM-DD"
+enum SidePanelState {
+	HIDDEN,
+	CAPTURE,
+	BOOKMARKS,
+	HELP
+}
 
 var store_path : String
+var settings_path : String
+
+var date_format_save := "YYYY-MM-DD"
 
 var today_position := TodayPosition.CENTERED:
 	set(value):
@@ -127,9 +133,9 @@ var dark_mode := true:
 			search_bar_focused.bg_color = NORD_02
 			theme.set_stylebox("panel", "SearchBar_Focused", search_bar_focused)
 
-			var side_panel := theme.get_stylebox("panel", "SidePanel")
-			side_panel.bg_color = NORD_02
-			theme.set_stylebox("panel", "SidePanel", side_panel)
+			var side_panel_style := theme.get_stylebox("panel", "SidePanel")
+			side_panel_style.bg_color = NORD_02
+			theme.set_stylebox("panel", "SidePanel", side_panel_style)
 		else:
 			RenderingServer.set_default_clear_color("#ECEFF4")
 			theme.set_color("font_color", "Label", NORD_00)
@@ -196,50 +202,59 @@ var dark_mode := true:
 			search_bar_focused.bg_color = NORD_04
 			theme.set_stylebox("panel", "SearchBar_Focused", search_bar_focused)
 
-			var side_panel := theme.get_stylebox("panel", "SidePanel")
-			side_panel.bg_color = NORD_04
-			theme.set_stylebox("panel", "SidePanel", side_panel)
+			var side_panel_style := theme.get_stylebox("panel", "SidePanel")
+			side_panel_style.bg_color = NORD_04
+			theme.set_stylebox("panel", "SidePanel", side_panel_style)
 		EventBus.dark_mode_changed.emit(dark_mode)
-
 
 var search_query := "":
 	set(value):
 		search_query = value
 		EventBus.search_query_changed.emit()
 
+var side_panel := SidePanelState.HIDDEN:
+	set(value):
+		side_panel = value
+		EventBus.side_panel_changed.emit()
+
 
 func _enter_tree() -> void:
 	if OS.is_debug_build():
 		store_path = ProjectSettings.globalize_path("user://")
+		settings_path = ProjectSettings.globalize_path("user://debug_settings.cfg")
 	else:
 		if OS.has_feature("windows"):
 			store_path = OS.get_environment("USERPROFILE") + "/habituary/"
 		else:
 			store_path = OS.get_environment("HOME") + "/habituary/"
-
-	if OS.is_debug_build():
-		return
+		settings_path = ProjectSettings.globalize_path("user://settings.cfg")
 
 	var config := ConfigFile.new()
-	var error := config.load(SETTINGS_PATH)
+	var error := config.load(settings_path)
 	if not error:
 		dark_mode = config.get_value("AppState", "dark_mode", dark_mode)
 		today_position = config.get_value("AppState", "today_position", today_position)
 		view_mode = config.get_value("AppState", "view_mode", view_mode)
 		start_week_on_monday = config.get_value("AppState", "start_week_on_monday", start_week_on_monday)
 		day_start_hour_offset = config.get_value("AppState", "day_start_hour_offset", day_start_hour_offset)
+		side_panel = config.get_value("AppState", "side_panel", side_panel)
+
+
+func _ready() -> void:
+	# FIXME: can we make this work without waitingt 2 frames?
+	await get_tree().process_frame
+	await get_tree().process_frame
+	side_panel = side_panel # trigger setter manually
 
 
 func _notification(what: int) -> void:
-	if OS.is_debug_build():
-		return
-
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		var config = ConfigFile.new()
-		config.load(SETTINGS_PATH) # keep existing settings (if there are any)
+		config.load(settings_path) # keep existing settings (if there are any)
 		config.set_value("AppState", "dark_mode", dark_mode)
 		config.set_value("AppState", "today_position", today_position)
 		config.set_value("AppState", "view_mode", view_mode)
 		config.set_value("AppState", "start_week_on_monday", start_week_on_monday)
 		config.set_value("AppState", "day_start_hour_offset", day_start_hour_offset)
-		config.save(SETTINGS_PATH)
+		config.set_value("AppState", "side_panel", side_panel)
+		config.save(settings_path)

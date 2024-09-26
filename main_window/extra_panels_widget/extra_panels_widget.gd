@@ -1,18 +1,57 @@
 extends VBoxContainer
 
 
+func _ready() -> void:
+	EventBus.side_panel_changed.connect(_on_side_panel_changed)
+
+
+func _on_side_panel_changed() -> void:
+	match Settings.side_panel:
+		Settings.SidePanelState.HIDDEN:
+			$Capture.set_pressed_no_signal(false)
+			_update_tooltip($Capture)
+			$Bookmarks.set_pressed_no_signal(false)
+			_update_tooltip($Bookmarks)
+			$Help.set_pressed_no_signal(false)
+			_update_tooltip($Help)
+		Settings.SidePanelState.CAPTURE:
+			$Capture.set_pressed_no_signal(true)
+			_update_tooltip($Capture)
+			$Bookmarks.set_pressed_no_signal(false)
+			_update_tooltip($Bookmarks)
+			$Help.set_pressed_no_signal(false)
+			_update_tooltip($Help)
+		Settings.SidePanelState.BOOKMARKS:
+			$Capture.set_pressed_no_signal(false)
+			_update_tooltip($Capture)
+			$Bookmarks.set_pressed_no_signal(true)
+			_update_tooltip($Bookmarks)
+			$Help.set_pressed_no_signal(false)
+			_update_tooltip($Help)
+		Settings.SidePanelState.HELP:
+			$Capture.set_pressed_no_signal(false)
+			_update_tooltip($Capture)
+			$Bookmarks.set_pressed_no_signal(false)
+			_update_tooltip($Bookmarks)
+			$Help.set_pressed_no_signal(true)
+			_update_tooltip($Help)
+
+
+func _update_tooltip(node : Control) -> void:
+	if node.button_pressed:
+		node.get_node("Tooltip").text = node.get_node("Tooltip").text.replace("Show", "Hide")
+	else:
+		node.get_node("Tooltip").text = node.get_node("Tooltip").text.replace("Hide", "Show")
+
+
 func _on_capture_toggled(toggled_on: bool) -> void:
 	if not($Bookmarks.button_pressed or $Help.button_pressed):
 		$Capture/Tooltip.hide_tooltip()
 
 	if toggled_on:
-		$Capture/Tooltip.text = $Capture/Tooltip.text.replace("Show", "Hide")
-		$Bookmarks.button_pressed = false
-		$Help.button_pressed = false
+		Settings.side_panel = Settings.SidePanelState.CAPTURE
 	else:
-		$Capture/Tooltip.text = $Capture/Tooltip.text.replace("Hide", "Show")
-
-	EventBus.capture_button_pressed.emit()
+		Settings.side_panel = Settings.SidePanelState.HIDDEN
 
 
 func _on_bookmarks_toggled(toggled_on: bool) -> void:
@@ -20,13 +59,9 @@ func _on_bookmarks_toggled(toggled_on: bool) -> void:
 		$Bookmarks/Tooltip.hide_tooltip()
 
 	if toggled_on:
-		$Capture.button_pressed = false
-		$Bookmarks/Tooltip.text = $Bookmarks/Tooltip.text.replace("Show", "Hide")
-		$Help.button_pressed = false
+		Settings.side_panel = Settings.SidePanelState.BOOKMARKS
 	else:
-		$Bookmarks/Tooltip.text = $Bookmarks/Tooltip.text.replace("Hide", "Show")
-
-	EventBus.bookmarks_button_pressed.emit()
+		Settings.side_panel = Settings.SidePanelState.HIDDEN
 
 
 func _on_help_toggled(toggled_on: bool) -> void:
@@ -34,10 +69,6 @@ func _on_help_toggled(toggled_on: bool) -> void:
 		$Help/Tooltip.hide_tooltip()
 
 	if toggled_on:
-		$Capture.button_pressed = false
-		$Bookmarks.button_pressed = false
-		$Help/Tooltip.text = $Help/Tooltip.text.replace("Show", "Hide")
+		Settings.side_panel = Settings.SidePanelState.HELP
 	else:
-		$Help/Tooltip.text = $Help/Tooltip.text.replace("Hide", "Show")
-
-	EventBus.help_button_pressed.emit()
+		Settings.side_panel = Settings.SidePanelState.HIDDEN

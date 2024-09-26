@@ -7,12 +7,23 @@ func _ready() -> void:
 	for panel in [$Capture, $Bookmarks, $Help]:
 		panel.hide()
 
-	EventBus.capture_button_pressed.connect(_toggle_panel.bind($Capture))
-	EventBus.bookmarks_button_pressed.connect(_toggle_panel.bind($Bookmarks))
-	EventBus.help_button_pressed.connect(_toggle_panel.bind($Help))
+	EventBus.side_panel_changed.connect(_on_side_panel_changed)
 
 	EventBus.view_mode_changed.connect(func(_view_mode): _calculate_minimum_width())
 	get_viewport().size_changed.connect(_calculate_minimum_width)
+
+
+func _on_side_panel_changed() -> void:
+	match Settings.side_panel:
+		Settings.SidePanelState.HIDDEN:
+			_toggle_panel(self)
+			self.hide()
+		Settings.SidePanelState.CAPTURE:
+			_toggle_panel($Capture)
+		Settings.SidePanelState.BOOKMARKS:
+			_toggle_panel($Bookmarks)
+		Settings.SidePanelState.HELP:
+			_toggle_panel($Help)
 
 
 func _toggle_panel(target : Control) -> void:
