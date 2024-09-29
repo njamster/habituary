@@ -1,10 +1,16 @@
-[gd_scene load_steps=8 format=3 uid="uid://dw6xo448aao72"]
+[gd_scene load_steps=10 format=3 uid="uid://dw6xo448aao72"]
 
 [ext_resource type="Texture2D" uid="uid://vs7ua0yf1lr" path="res://main_window/top_bar/images/settings.svg" id="1_abaqs"]
 [ext_resource type="Script" path="res://main_window/top_bar/top_bar.gd" id="1_qvgdf"]
 [ext_resource type="PackedScene" uid="uid://c0f0h24u7wfrh" path="res://main_window/top_bar/search_bar/search_bar.tscn" id="2_4r6hc"]
 [ext_resource type="Script" path="res://custom/tooltip.gd" id="3_sm771"]
 [ext_resource type="Texture2D" uid="uid://lqaqpht4rju6" path="res://main_window/top_bar/images/mode_dark.svg" id="5_jyq3k"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_qlcvu"]
+action = &"show_settings"
+
+[sub_resource type="Shortcut" id="Shortcut_550rp"]
+events = [SubResource("InputEventAction_qlcvu")]
 
 [sub_resource type="InputEventAction" id="InputEventAction_lv7wu"]
 action = &"toggle_dark_mode"
@@ -15,13 +21,14 @@ events = [SubResource("InputEventAction_lv7wu")]
 [node name="TopBar" type="HBoxContainer"]
 theme_override_constants/separation = 16
 script = ExtResource("1_qvgdf")
-theme_override_constants/separation = 16
 
 [node name="Settings" type="Button" parent="."]
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"LeftSidebarButton"
+shortcut = SubResource("Shortcut_550rp")
+shortcut_in_tooltip = false
 icon = ExtResource("1_abaqs")
 
 [node name="Tooltip" type="Node" parent="Settings"]

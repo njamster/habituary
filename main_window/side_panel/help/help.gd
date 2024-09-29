@@ -18,6 +18,7 @@ var descriptions := {
 	"show_help": "Open/Close Help Panel",
 	"show_bookmarks": "Open/Close Bookmarks Panel",
 	"show_capture": "Open/Close Capture Panel",
+	"show_settings": "Open/Close Settings Panel",
 	"toggle_fullscreen": "Toggle Fullscreen On/Off",
 	"toggle_dark_mode": "Toggle Dark Mode On/Off",
 
@@ -72,6 +73,7 @@ func _ready() -> void:
 		"show_help",
 		"show_bookmarks",
 		"show_capture",
+		"show_settings",
 		"toggle_fullscreen",
 		"toggle_dark_mode",
 	]:

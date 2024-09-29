@@ -9,7 +9,9 @@ class_name Tooltip
 			_tooltip_panel.size = Vector2.ZERO # shrink to content
 			_position_tooltip()
 
-@export var text_alignment : HorizontalAlignment
+@export var input_action : String
+
+@export var text_alignment := HORIZONTAL_ALIGNMENT_CENTER
 
 @export_range(0.0, 0.0, 0.1, "suffix:seconds", "or_greater") var popup_delay := 0.5
 
@@ -39,6 +41,11 @@ func _ready() -> void:
 	get_parent().mouse_exited.connect(hide_tooltip)
 
 	if get_parent() is BaseButton:
+		if not self.input_action:
+			# try to grab input action from first shortcut event
+			if get_parent().shortcut and get_parent().shortcut.events:
+				self.input_action = get_parent().shortcut.events[0].action
+
 		get_parent().pressed.connect(func():
 			# If the mouse remains on top of a button after being pressed and the _hover_timer has
 			# not yet finished (i.e. there's no tooltip visible), reset the _hover_timer.
@@ -79,16 +86,37 @@ func _spawn_panel() -> void:
 
 	_tooltip_panel.theme_type_variation = "TooltipPanel"
 
-	# step 2: create label
+	# step 2: create vbox
+	var vbox = VBoxContainer.new()
+	_tooltip_panel.add_child(vbox)
+
+	# step 3: add tooltip label
 	_tooltip_label = Label.new()
-	_tooltip_panel.add_child(_tooltip_label)
+	vbox.add_child(_tooltip_label)
 
 	_tooltip_label.theme_type_variation = "TooltipLabel"
 
 	_tooltip_label.text = text
 	_tooltip_label.horizontal_alignment = self.text_alignment
 
-	# step 3: position tooltip
+	# step 4: add shortcut hint (optional)
+	if self.input_action:
+		if InputMap.has_action(self.input_action):
+			var events := InputMap.action_get_events(self.input_action)
+			if events:
+				var _shortcut_hint = Label.new()
+				vbox.add_child(_shortcut_hint)
+
+				_shortcut_hint.theme_type_variation = "TooltipLabel"
+				_shortcut_hint.add_theme_font_size_override("font_size", 11)
+				_shortcut_hint.modulate.a = 0.5
+
+				_shortcut_hint.text = events[0].as_text().to_upper().replace("+", " + ")
+				_shortcut_hint.horizontal_alignment = self.text_alignment
+		else:
+			push_warning("Unknown input action: '%s'" % self.input_action)
+
+	# step 5: position tooltip
 	_position_tooltip()
 
 
