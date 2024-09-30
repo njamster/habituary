@@ -234,6 +234,8 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 			child.disabled = false
 		%DragHandle.visible = _contains_mouse_cursor
 
+		%Edit.caret_column = 0   # scroll item text back to its beginning
+
 		if new_item and key_input:
 			if Input.is_key_pressed(KEY_SHIFT):
 				predecessor_requested.emit()
