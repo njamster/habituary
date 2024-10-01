@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://d15dr447oxpgn" path="res://main_window/side_panel/help/help.tscn" id="3_kejmd"]
 
 [node name="SidePanel" type="PanelContainer"]
+custom_minimum_size = Vector2(360, 0)
 theme_type_variation = &"SidePanel"
 script = ExtResource("1_mcu5f")
 

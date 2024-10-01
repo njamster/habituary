@@ -9,9 +9,6 @@ func _ready() -> void:
 
 	EventBus.side_panel_changed.connect(_on_side_panel_changed)
 
-	EventBus.view_mode_changed.connect(func(_view_mode): _calculate_minimum_width())
-	get_viewport().size_changed.connect(_calculate_minimum_width)
-
 
 func _on_side_panel_changed() -> void:
 	match Settings.side_panel:
@@ -36,13 +33,3 @@ func _toggle_panel(target : Control) -> void:
 				self.hide()
 		else:
 			panel.hide()
-
-
-func _on_visibility_changed() -> void:
-	if self.visible:
-		_calculate_minimum_width()
-
-
-func _calculate_minimum_width() -> void:
-	# FIXME: get rid of the hardcoded values
-	custom_minimum_size.x = (get_window().size.x - 2 * 28 + 2 * 16) / float(Settings.view_mode + 1)

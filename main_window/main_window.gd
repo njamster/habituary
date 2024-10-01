@@ -51,3 +51,11 @@ func _unhandled_input(event: InputEvent) -> void:
 				DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 			_:
 				DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	elif event.is_action_pressed("ui_cancel"):
+		if Settings.previous_day and Settings.previous_view_mode:
+			# restore previous values
+			Settings.current_day = Settings.previous_day
+			Settings.view_mode = Settings.previous_view_mode
+			# clear the cached values
+			Settings.previous_day = null
+			Settings.previous_view_mode = null

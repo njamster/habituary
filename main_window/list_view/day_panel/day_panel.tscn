@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://cmdy32v105kli"]
+[gd_scene load_steps=7 format=3 uid="uid://cmdy32v105kli"]
 
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/day_panel.gd" id="1_a2phy"]
 [ext_resource type="PackedScene" uid="uid://ofa44bt1yn4u" path="res://main_window/list_view/day_panel/scroll_button/scroll_button.tscn" id="2_4oqj4"]
 [ext_resource type="PackedScene" uid="uid://dw8mvf72vw7qk" path="res://main_window/list_view/day_panel/todo_list/todo_list.tscn" id="2_66ttt"]
+[ext_resource type="Script" path="res://custom/tooltip.gd" id="2_wbwrx"]
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/scroll_container.gd" id="4_t4q73"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8t3rb"]
@@ -38,7 +39,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_8t3rb")
 
 [node name="VBox" type="VBoxContainer" parent="Header"]
 layout_mode = 2
-mouse_default_cursor_shape = 2
 
 [node name="Date" type="Label" parent="Header/VBox"]
 unique_name_in_owner = true
@@ -56,6 +56,10 @@ size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 24
 text = "WEEKDAY"
 uppercase = true
+
+[node name="Tooltip" type="Node" parent="Header"]
+script = ExtResource("2_wbwrx")
+popup_position = 4
 
 [node name="ScrollUpButton" parent="." instance=ExtResource("2_4oqj4")]
 layout_mode = 2

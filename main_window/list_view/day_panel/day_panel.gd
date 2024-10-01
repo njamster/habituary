@@ -29,6 +29,8 @@ func _ready() -> void:
 		EventBus.today_changed.connect(_apply_date_relative_formating)
 		_on_dark_mode_changed(Settings.dark_mode)
 		EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
+		EventBus.view_mode_changed.connect(_on_view_mode_changed)
+		_on_view_mode_changed(Settings.view_mode)
 
 
 func _update_header() -> void:
@@ -86,9 +88,16 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 
 func _on_header_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_MASK_LEFT:
-		if event.pressed:
+		if event.pressed and event.double_click:
 			get_viewport().set_input_as_handled()
+			# save previous state
+			Settings.previous_day = Settings.current_day
+			Settings.previous_view_mode = Settings.view_mode
+			# zoom in on the double clicked date
 			Settings.current_day = date
+			Settings.view_mode = 1
+			# unfocus the header
+			_on_header_mouse_exited()
 
 
 func _on_gui_input(event: InputEvent) -> void:
@@ -124,11 +133,14 @@ func _on_mouse_exited() -> void:
 
 
 func _on_header_mouse_entered() -> void:
-	$Header.get("theme_override_styles/panel").draw_center = true
+	if Settings.view_mode != 1:
+		$Header.get("theme_override_styles/panel").draw_center = true
+		$Header.mouse_default_cursor_shape = CURSOR_POINTING_HAND
 
 
 func _on_header_mouse_exited() -> void:
 	$Header.get("theme_override_styles/panel").draw_center = false
+	$Header.mouse_default_cursor_shape = CURSOR_ARROW
 
 
 func _on_dark_mode_changed(dark_mode : bool) -> void:
@@ -136,3 +148,11 @@ func _on_dark_mode_changed(dark_mode : bool) -> void:
 		$Header.get("theme_override_styles/panel").bg_color = Settings.NORD_02
 	else:
 		$Header.get("theme_override_styles/panel").bg_color = Settings.NORD_04
+
+
+func _on_view_mode_changed(view_mode : int) -> void:
+	if view_mode == 1:
+		$Header/Tooltip.text = ""
+		$Header/Tooltip.hide_tooltip()
+	else:
+		$Header/Tooltip.text = "Double-Click To Zoom In"

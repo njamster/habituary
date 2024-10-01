@@ -42,14 +42,22 @@ var today_position := TodayPosition.CENTERED:
 		today_position = value
 		EventBus.current_day_changed.emit(current_day)
 
+var previous_view_mode
+
 var view_mode := 3:
 	set(value):
+		if previous_view_mode != view_mode:
+			previous_view_mode = null
 		view_mode = value
 		EventBus.view_mode_changed.emit(view_mode)
+
+var previous_day
 
 var current_day := DayTimer.today:
 	set(value):
 		if current_day.day_difference_to(value) != 0:
+			if previous_day != current_day:
+				previous_day = null
 			current_day = value
 			EventBus.current_day_changed.emit(current_day)
 
