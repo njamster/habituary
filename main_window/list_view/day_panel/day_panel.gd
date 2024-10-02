@@ -152,7 +152,7 @@ func _on_dark_mode_changed(dark_mode : bool) -> void:
 
 func _on_view_mode_changed(view_mode : int) -> void:
 	if view_mode == 1:
-		$Header/Tooltip.text = ""
+		$Header/Tooltip.disabled = true
 		$Header/Tooltip.hide_tooltip()
 	else:
-		$Header/Tooltip.text = "Double-Click To Zoom In"
+		$Header/Tooltip.disabled = false

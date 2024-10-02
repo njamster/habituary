@@ -11,6 +11,8 @@ class_name Tooltip
 
 @export var input_action : String
 
+@export var disabled := false
+
 @export var text_alignment := HORIZONTAL_ALIGNMENT_CENTER
 
 @export_range(0.0, 0.0, 0.1, "suffix:seconds", "or_greater") var popup_delay := 0.5
@@ -60,7 +62,7 @@ func _ready() -> void:
 func show_tooltip() -> void:
 	_contains_mouse_cursor = true
 
-	if not text:
+	if disabled or not text:
 		return
 
 	if get_parent() is BaseButton and get_parent().disabled and not show_on_disabled_buttons:

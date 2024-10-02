@@ -82,6 +82,7 @@ enum States { TO_DO, DONE, FAILED }
 				%Delete.text = "Delete To-Do"
 				%FoldHeading.hide()
 				%CheckBox.show()
+			%Delete.get_node("Tooltip").text = %Delete.text
 			_on_editing_options_resized()
 			%Heading.button_pressed = is_heading
 
@@ -140,6 +141,7 @@ var is_bookmarked := false:
 				%Bookmark.get_node("Tooltip").text = %Bookmark.get_node("Tooltip").text.replace("Remove", "Add")
 				%Bookmark.text = %Bookmark.text.replace("Remove", "Add")
 				%BookmarkIndicator.hide()
+			%Bookmark.get_node("Tooltip").text = %Bookmark.text
 
 			if text:
 				if is_bookmarked:
@@ -152,6 +154,7 @@ func _ready() -> void:
 	# manually trigger setters
 	text = text
 	state = state
+	is_heading = is_heading
 	is_bookmarked = is_bookmarked
 
 	_apply_formatting()
@@ -509,31 +512,19 @@ func _on_editing_options_resized() -> void:
 	if %EditingOptions.size.x < 370:
 		%FormatLabel.hide()
 
-		if is_heading:
-			%Delete.get_node("Tooltip").text = "Delete Heading"
-		else:
-			%Delete.get_node("Tooltip").text = "Delete To-Do"
-		%Delete.text = ""
+		%Delete.clip_text = true
+		%Delete.get_node("Tooltip").disabled = false
 
-		if is_bookmarked:
-			%Bookmark.get_node("Tooltip").text = "Remove Bookmark"
-		else:
-			%Bookmark.get_node("Tooltip").text = "Add Bookmark"
-		%Bookmark.text = ""
+		%Bookmark.clip_text = true
+		%Bookmark.get_node("Tooltip").disabled = false
 	else:
 		%FormatLabel.show()
 
-		if is_heading:
-			%Delete.text = "Delete Heading"
-		else:
-			%Delete.text = "Delete To-Do"
-		%Delete.get_node("Tooltip").text = ""
+		%Delete.clip_text = false
+		%Delete.get_node("Tooltip").disabled = true
 
-		%Bookmark.get_node("Tooltip").text = ""
-		if is_bookmarked:
-			%Bookmark.text = "Remove Bookmark"
-		else:
-			%Bookmark.text = "Add Bookmark"
+		%Bookmark.clip_text = false
+		%Bookmark.get_node("Tooltip").disabled = true
 
 
 func _check_for_search_query_match() -> void:

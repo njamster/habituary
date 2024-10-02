@@ -59,6 +59,7 @@ uppercase = true
 
 [node name="Tooltip" type="Node" parent="Header"]
 script = ExtResource("2_wbwrx")
+text = "Double-Click To Zoom In"
 popup_position = 4
 
 [node name="ScrollUpButton" parent="." instance=ExtResource("2_4oqj4")]
