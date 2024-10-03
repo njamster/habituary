@@ -25,16 +25,19 @@ width = 50
 [node name="DragOverlay" type="CanvasLayer"]
 script = ExtResource("1_0aom8")
 
-[node name="LeftBorder" type="TextureRect" parent="."]
+[node name="LeftBorder" type="MarginContainer" parent="."]
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_right = 20.0
+offset_right = 50.0
 grow_vertical = 2
-texture = SubResource("GradientTexture1D_fknvn")
 script = ExtResource("2_wtf54")
 day_offset = -1
 
-[node name="Arrow" type="TextureRect" parent="LeftBorder"]
+[node name="Gradient" type="TextureRect" parent="LeftBorder"]
+layout_mode = 2
+texture = SubResource("GradientTexture1D_fknvn")
+
+[node name="Arrow" type="TextureRect" parent="LeftBorder/Gradient"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -46,19 +49,22 @@ grow_vertical = 2
 texture = ExtResource("3_ndai4")
 stretch_mode = 3
 
-[node name="RightBorder" type="TextureRect" parent="."]
+[node name="RightBorder" type="MarginContainer" parent="."]
 anchors_preset = 11
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -40.0
+offset_left = -50.0
 grow_horizontal = 0
 grow_vertical = 2
-texture = SubResource("GradientTexture1D_6y3cx")
 script = ExtResource("2_wtf54")
 day_offset = 1
 
-[node name="Arrow" type="TextureRect" parent="RightBorder"]
+[node name="Gradient" type="TextureRect" parent="RightBorder"]
+layout_mode = 2
+texture = SubResource("GradientTexture1D_6y3cx")
+
+[node name="Arrow" type="TextureRect" parent="RightBorder/Gradient"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0

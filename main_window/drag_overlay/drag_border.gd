@@ -1,4 +1,4 @@
-extends TextureRect
+extends MarginContainer
 
 const INITIAL_DELAY := 0.9 # seconds
 const REPEAT_DELAY := 0.5 # seconds
@@ -12,12 +12,6 @@ func _ready() -> void:
 	add_child(timer)
 
 	timer.timeout.connect(_on_timer_timeout)
-
-
-func _can_drop_data(_at_position: Vector2, _data: Variant) -> bool:
-	# To prevent the mouse cursor from changing to CURSOR_FORBIDDEN when dragging items over here
-	# we return `true` here. That being said, dropping an item here won't do anything.
-	return true
 
 
 func _on_mouse_entered() -> void:

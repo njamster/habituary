@@ -1,8 +1,12 @@
 extends CanvasLayer
 
+const TRIGGER_ZONE_WIDTH := 44  # pixels
+
 
 func _ready() -> void:
 	deactivate()
+
+	EventBus.side_panel_changed.connect(_on_side_panel_changed)
 
 
 func activate() -> void:
@@ -24,7 +28,17 @@ func _notification(what: int) -> void:
 			deactivate()
 
 
+func _on_side_panel_changed() -> void:
+	if Settings.side_panel == Settings.SidePanelState.HIDDEN:
+		$LeftBorder.add_theme_constant_override("margin_left", 0)
+		$LeftBorder.size.x = 0 # shrink to minimum width again
+	else:
+		var side_panel_width = get_node("../HBox/SidePanel").custom_minimum_size.x
+		$LeftBorder.add_theme_constant_override("margin_left", side_panel_width)
+
+
 func _process(_delta: float) -> void:
 	var window_size = get_window().size.x
-	$LeftBorder.visible = (get_parent().get_global_mouse_position().x < 0.1 * window_size)
-	$RightBorder.visible = (get_parent().get_global_mouse_position().x > 0.9 * window_size)
+	var left_padding = $LeftBorder["theme_override_constants/margin_left"]
+	$LeftBorder.visible = (get_parent().get_global_mouse_position().x < left_padding + TRIGGER_ZONE_WIDTH)
+	$RightBorder.visible = (get_parent().get_global_mouse_position().x > window_size - TRIGGER_ZONE_WIDTH)
