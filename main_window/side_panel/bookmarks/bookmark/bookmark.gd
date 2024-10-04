@@ -57,6 +57,33 @@ var text := "":
 		text = value
 		%Heading.text = text
 
+var is_bold := false:
+	set(value):
+		is_bold = value
+		_apply_formatting()
+
+var is_italic := false:
+	set(value):
+		is_italic = value
+		_apply_formatting()
+
+
+func _apply_formatting() -> void:
+	var font : Font
+
+	if is_bold:
+		if is_italic:
+			font = preload("res://theme/fonts/OpenSans-ExtraBoldItalic.ttf")
+		else:
+			font = preload("res://theme/fonts/OpenSans-ExtraBold.ttf")
+	else:
+		if is_italic:
+			font = preload("res://theme/fonts/OpenSans-MediumItalic.ttf")
+		else:
+			font = preload("res://theme/fonts/OpenSans-Medium.ttf")
+
+	%Heading.add_theme_font_override("font", font)
+
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():

@@ -96,6 +96,7 @@ enum States { TO_DO, DONE, FAILED }
 				%Bold.get_node("Tooltip").text = "Make Bold"
 			_apply_formatting()
 			%Bold.button_pressed = is_bold
+			EventBus.bookmark_text_changed.emit(self, self.text)
 
 @export var is_italic := false:
 	set(value):
@@ -107,6 +108,7 @@ enum States { TO_DO, DONE, FAILED }
 				%Italic.get_node("Tooltip").text = "Make Italic"
 			_apply_formatting()
 			%Italic.button_pressed = is_italic
+			EventBus.bookmark_text_changed.emit(self, self.text)
 
 
 var _contains_mouse_cursor := false
@@ -324,16 +326,16 @@ func load_from_disk(line : String) -> void:
 	else:
 		push_warning("Unknown format for line \"%s\" (will be automatically converted into a todo)" % line)
 
+	if line.ends_with(" [BOOKMARK]"):
+		line = line.substr(0, line.length() - 11)
+		is_bookmarked = true
+
 	if line.begins_with("**") and  line.ends_with("**"):
 		line = line.substr(2, line.length() - 4)
 		is_bold = true
 	if line.begins_with("*") and  line.ends_with("*"):
 		line = line.substr(1, line.length() - 2)
 		is_italic = true
-
-	if line.ends_with(" [BOOKMARK]"):
-		line = line.substr(0, line.length() - 11)
-		is_bookmarked = true
 
 	self.text = line
 

@@ -19,20 +19,30 @@ func _search_for_bookmarks() -> void:
 				while file.get_position() < file.get_length():
 					var line := file.get_line()
 					if line.ends_with( " [BOOKMARK]"):
+						# remove the "[BOOKMARK]" tag
+						line = line.substr(0, line.length() - 11)
+
 						# FIXME: avoid replicating the entire line parsing from todo_item.gd here
 						if line.begins_with("# ") or line.begins_with("v ") or line.begins_with("> "):
 							line = line.right(-2)
 						elif line.begins_with("[ ] ") or line.begins_with("[x] ") or line.begins_with("[-] "):
 							line = line.right(-4)
 
+						var is_bold := false
 						if line.begins_with("**") and  line.ends_with("**"):
 							line = line.substr(2, line.length() - 4)
+							is_bold = true
+
+						var is_italic := false
 						if line.begins_with("*") and  line.ends_with("*"):
 							line = line.substr(1, line.length() - 2)
+							is_italic = true
 
 						_add_bookmark(
 							Date.from_string(file_name.left(-4)),
-							line.substr(0, line.length() - 11)
+							line,
+							is_bold,
+							is_italic
 						)
 			else:
 				pass  # FIXME: print error?
@@ -40,10 +50,12 @@ func _search_for_bookmarks() -> void:
 		pass  # FIXME: print error?
 
 
-func _add_bookmark(date : Date, todo_text : String) -> void:
+func _add_bookmark(date : Date, todo_text : String, is_bold := false, is_italic := false) -> void:
 	var bookmark := preload("bookmark/bookmark.tscn").instantiate()
 	bookmark.date = date
 	bookmark.text = todo_text
+	bookmark.is_bold = is_bold
+	bookmark.is_italic = is_italic
 	%List.add_child(bookmark)
 
 	$None.hide()
@@ -63,7 +75,7 @@ func _on_bookmark_added(to_do : Control) -> void:
 		if bookmark.text == to_do.text and bookmark.date.day_difference_to(date) == 0:
 			return
 
-	_add_bookmark(date, to_do.text)
+	_add_bookmark(date, to_do.text, to_do.is_bold, to_do.is_italic)
 
 
 func _on_bookmark_text_changed(to_do : Control, old_text : String) -> void:
@@ -73,6 +85,8 @@ func _on_bookmark_text_changed(to_do : Control, old_text : String) -> void:
 	for bookmark in %List.get_children():
 		if bookmark.text == old_text and bookmark.date.day_difference_to(date) == 0:
 			bookmark.text = to_do.text
+			bookmark.is_bold = to_do.is_bold
+			bookmark.is_italic = to_do.is_italic
 			return
 
 
