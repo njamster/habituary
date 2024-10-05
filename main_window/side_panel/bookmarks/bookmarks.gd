@@ -2,6 +2,10 @@ extends VBoxContainer
 
 
 func _ready() -> void:
+	$NoneSet.show()
+	$IncludePastDates.hide()
+	$IncludePastDates.set_pressed_no_signal(Settings.show_bookmarks_from_the_past)
+
 	_search_for_bookmarks()
 
 	EventBus.bookmark_added.connect(_on_bookmark_added)
@@ -58,7 +62,8 @@ func _add_bookmark(date : Date, todo_text : String, is_bold := false, is_italic 
 	bookmark.is_italic = is_italic
 	%List.add_child(bookmark)
 
-	$None.hide()
+	$NoneSet.hide()
+	$IncludePastDates.show()
 
 	for i in %List.get_child_count():
 		var child = %List.get_child(i)
@@ -106,6 +111,11 @@ func _on_bookmark_removed(to_do : Control) -> void:
 
 	for bookmark in %List.get_children():
 		if bookmark.text == to_do.text and bookmark.date.day_difference_to(date) == 0:
-			$None.visible = (%List.get_child_count() == 1)
+			$NoneSet.visible = (%List.get_child_count() == 1)
+			$IncludePastDates.visible = not $NoneSet.visible
 			bookmark.queue_free()
 			return
+
+
+func _on_include_past_dates_toggled(toggled_on: bool) -> void:
+	Settings.show_bookmarks_from_the_past = toggled_on

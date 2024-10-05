@@ -225,6 +225,11 @@ var side_panel := SidePanelState.HIDDEN:
 		side_panel = value
 		EventBus.side_panel_changed.emit()
 
+var show_bookmarks_from_the_past := true:
+	set(value):
+		show_bookmarks_from_the_past = value
+		EventBus.show_bookmarks_from_the_past_changed.emit()
+
 
 func _enter_tree() -> void:
 	if OS.is_debug_build():
@@ -246,6 +251,7 @@ func _enter_tree() -> void:
 		start_week_on_monday = config.get_value("AppState", "start_week_on_monday", start_week_on_monday)
 		day_start_hour_offset = config.get_value("AppState", "day_start_hour_offset", day_start_hour_offset)
 		side_panel = config.get_value("AppState", "side_panel", side_panel)
+		show_bookmarks_from_the_past = config.get_value("AppState", "show_bookmarks_from_the_past", show_bookmarks_from_the_past)
 
 
 func _ready() -> void:
@@ -265,4 +271,5 @@ func _notification(what: int) -> void:
 		config.set_value("AppState", "start_week_on_monday", start_week_on_monday)
 		config.set_value("AppState", "day_start_hour_offset", day_start_hour_offset)
 		config.set_value("AppState", "side_panel", side_panel)
+		config.set_value("AppState", "show_bookmarks_from_the_past", show_bookmarks_from_the_past)
 		config.save(settings_path)

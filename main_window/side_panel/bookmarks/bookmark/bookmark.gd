@@ -40,17 +40,22 @@ var date : Date:
 				remaining_time += "%d day" % [days]
 
 		if day_diff < 0:
+			_is_past_date = true
 			modulate.a = 0.4
 			%DayCounter.remove_theme_color_override("font_color")
 			%DayCounter.text = remaining_time + " ago"
 		elif day_diff > 0:
+			_is_past_date = false
 			modulate.a = 1.0
 			%DayCounter.remove_theme_color_override("font_color")
 			%DayCounter.text = remaining_time + " remaining"
 		else:
+			_is_past_date = false
 			modulate.a = 1.0
 			%DayCounter.add_theme_color_override("font_color", "ebcb8b")
 			%DayCounter.text = "TODAY"
+
+var _is_past_date := false
 
 var text := "":
 	set(value):
@@ -66,6 +71,15 @@ var is_italic := false:
 	set(value):
 		is_italic = value
 		_apply_formatting()
+
+
+func _ready() -> void:
+	EventBus.show_bookmarks_from_the_past_changed.connect(_on_show_bookmarks_from_the_past_changed)
+	_on_show_bookmarks_from_the_past_changed()
+
+
+func _on_show_bookmarks_from_the_past_changed() -> void:
+	self.visible = (not _is_past_date or Settings.show_bookmarks_from_the_past)
 
 
 func _apply_formatting() -> void:

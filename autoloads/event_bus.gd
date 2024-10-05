@@ -13,6 +13,8 @@ signal view_mode_changed(view_mode)
 signal current_day_changed(current_day)
 @warning_ignore("unused_signal")
 signal day_start_hour_offset_changed(shift)
+@warning_ignore("unused_signal")
+signal show_bookmarks_from_the_past_changed
 
 @warning_ignore("unused_signal")
 signal settings_button_pressed
