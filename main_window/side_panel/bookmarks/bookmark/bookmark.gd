@@ -99,6 +99,6 @@ func _apply_formatting() -> void:
 	%Heading.add_theme_font_override("font", font)
 
 
-func _on_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
-		Settings.current_day = date
+func _on_jump_to_pressed() -> void:
+	Settings.current_day = date
+	EventBus.bookmark_jump_requested.emit(text)

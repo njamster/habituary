@@ -170,6 +170,13 @@ func _ready() -> void:
 
 	EventBus.search_query_changed.connect(_check_for_search_query_match)
 
+	EventBus.bookmark_jump_requested.connect(func(to_do_text):
+		if self.is_bookmarked and self.text == to_do_text:
+			var date := Date.new(get_node("../../../../..").date.as_dict())
+			if date.day_difference_to(Settings.current_day) == 0:
+				edit()
+	)
+
 
 func is_in_edit_mode() -> bool:
 	return %Edit.has_focus()

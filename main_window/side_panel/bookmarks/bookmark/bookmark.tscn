@@ -1,33 +1,52 @@
-[gd_scene load_steps=3 format=3 uid="uid://clk7mchfrgbnh"]
+[gd_scene load_steps=4 format=3 uid="uid://clk7mchfrgbnh"]
 
 [ext_resource type="Script" path="res://main_window/side_panel/bookmarks/bookmark/bookmark.gd" id="1_cjbqa"]
 [ext_resource type="Script" path="res://custom/tooltip.gd" id="2_ufj5y"]
+[ext_resource type="Texture2D" uid="uid://fwaqgbwuue6c" path="res://main_window/side_panel/bookmarks/bookmark/images/jump_to_todo.svg" id="3_qdkvd"]
 
 [node name="Bookmark" type="PanelContainer"]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 101.0
 grow_horizontal = 2
-mouse_default_cursor_shape = 2
 script = ExtResource("1_cjbqa")
 
 [node name="VBox" type="VBoxContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 0
 
-[node name="DayCounter" type="Label" parent="VBox"]
+[node name="HBox" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="DayCounter" type="Label" parent="VBox/HBox"]
 unique_name_in_owner = true
 self_modulate = Color(1, 1, 1, 0.75)
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 2
 mouse_filter = 1
 theme_override_font_sizes/font_size = 14
 text = "1337 days left"
 
-[node name="Tooltip" type="Node" parent="VBox/DayCounter"]
+[node name="Tooltip" type="Node" parent="VBox/HBox/DayCounter"]
 unique_name_in_owner = true
 script = ExtResource("2_ufj5y")
 text_alignment = 2
+
+[node name="JumpTo" type="Button" parent="VBox/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+icon = ExtResource("3_qdkvd")
+flat = true
+
+[node name="Tooltip" type="Node" parent="VBox/HBox/JumpTo"]
+script = ExtResource("2_ufj5y")
+text = "Jump to To-Do"
+popup_position = 5
 
 [node name="Heading" type="Label" parent="VBox"]
 unique_name_in_owner = true
@@ -36,4 +55,4 @@ theme_override_font_sizes/font_size = 16
 text = "Super Important To-Do"
 text_overrun_behavior = 3
 
-[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="pressed" from="VBox/HBox/JumpTo" to="." method="_on_jump_to_pressed"]
