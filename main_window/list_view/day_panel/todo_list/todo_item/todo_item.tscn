@@ -280,6 +280,7 @@ icon = ExtResource("8_5475s")
 [node name="Tooltip" type="Node" parent="EditingOptions/HBox/Heading"]
 script = ExtResource("3_oduck")
 text = "Make Heading"
+is_dense = true
 popup_delay = 1.2
 popup_position = 3
 gap_width = 4
@@ -303,6 +304,7 @@ icon = ExtResource("9_boywj")
 [node name="Tooltip" type="Node" parent="EditingOptions/HBox/Bold"]
 script = ExtResource("3_oduck")
 text = "Make Bold"
+is_dense = true
 popup_delay = 1.2
 popup_position = 3
 gap_width = 4
@@ -326,6 +328,7 @@ icon = ExtResource("10_2fgom")
 [node name="Tooltip" type="Node" parent="EditingOptions/HBox/Italic"]
 script = ExtResource("3_oduck")
 text = "Make Italic"
+is_dense = true
 popup_delay = 1.2
 popup_position = 3
 gap_width = 4
@@ -351,6 +354,7 @@ icon_toggled_on = ExtResource("13_itt7w")
 
 [node name="Tooltip" type="Node" parent="EditingOptions/HBox/Bookmark"]
 script = ExtResource("3_oduck")
+is_dense = true
 popup_position = 5
 gap_width = 0
 
@@ -377,6 +381,7 @@ flat = true
 
 [node name="Tooltip" type="Node" parent="EditingOptions/HBox/Delete"]
 script = ExtResource("3_oduck")
+is_dense = true
 popup_position = 5
 gap_width = 0
 

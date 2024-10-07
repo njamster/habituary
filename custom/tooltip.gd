@@ -11,6 +11,9 @@ class_name Tooltip
 
 @export var input_action : String
 
+## When enabled, [member text] and [member input_action] are printed in one line, not two.
+@export var is_dense := false
+
 @export var disabled := false
 
 @export var text_alignment := HORIZONTAL_ALIGNMENT_CENTER
@@ -48,13 +51,8 @@ func _ready() -> void:
 			if get_parent().shortcut and get_parent().shortcut.events:
 				self.input_action = get_parent().shortcut.events[0].action
 
-		get_parent().pressed.connect(func():
-			# If the mouse remains on top of a button after being pressed and the _hover_timer has
-			# not yet finished (i.e. there's no tooltip visible), reset the _hover_timer.
-			# => While rapidly pressing a button, no tooltip will be shown!
-			if _contains_mouse_cursor and not _hover_timer.is_stopped():
-				show_tooltip()
-		)
+		get_parent().pressed.connect(_on_press_or_toggle)
+		get_parent().toggled.connect(_on_press_or_toggle)
 
 	get_tree().get_root().size_changed.connect(hide_tooltip)
 
@@ -88,13 +86,15 @@ func _spawn_panel() -> void:
 
 	_tooltip_panel.theme_type_variation = "TooltipPanel"
 
-	# step 2: create vbox
-	var vbox = VBoxContainer.new()
-	_tooltip_panel.add_child(vbox)
+	# step 2: create container
+	var container = BoxContainer.new()
+	_tooltip_panel.add_child(container)
+
+	container.vertical = not is_dense
 
 	# step 3: add tooltip label
 	_tooltip_label = Label.new()
-	vbox.add_child(_tooltip_label)
+	container.add_child(_tooltip_label)
 
 	_tooltip_label.theme_type_variation = "TooltipLabel"
 
@@ -107,7 +107,7 @@ func _spawn_panel() -> void:
 			var events := InputMap.action_get_events(self.input_action)
 			if events:
 				var _shortcut_hint = Label.new()
-				vbox.add_child(_shortcut_hint)
+				container.add_child(_shortcut_hint)
 
 				_shortcut_hint.theme_type_variation = "TooltipLabel"
 				_shortcut_hint.add_theme_font_size_override("font_size", 11)
@@ -181,3 +181,16 @@ func _center_vertically() -> void:
 		gap_width,
 		get_window().size.y - _tooltip_panel.size.y - gap_width
 	)
+
+
+func _on_press_or_toggle(_toggled_on := false) -> void:
+	if _hover_timer.is_stopped():
+		# If the _hover_timer has already finished (i.e. the tooltip is visible), hide it
+		# once the user clicks the button. It will only show again after moving the mouse
+		# off of the button and back on and waiting for the _hover_timer to finish.
+		hide_tooltip()
+	elif _contains_mouse_cursor:
+		# If the mouse remains on top of a button after being pressed and the _hover_timer
+		# has not yet finished (i.e. there's no tooltip visible), reset the _hover_timer.
+		# => While rapidly pressing a button, no tooltip will be shown!
+		show_tooltip()

@@ -45,9 +45,6 @@ func _update_tooltip(node : Control) -> void:
 
 
 func _on_capture_toggled(toggled_on: bool) -> void:
-	if not($Bookmarks.button_pressed or $Help.button_pressed):
-		$Capture/Tooltip.hide_tooltip()
-
 	if toggled_on:
 		Settings.side_panel = Settings.SidePanelState.CAPTURE
 	else:
@@ -55,9 +52,6 @@ func _on_capture_toggled(toggled_on: bool) -> void:
 
 
 func _on_bookmarks_toggled(toggled_on: bool) -> void:
-	if not($Capture.button_pressed or $Help.button_pressed):
-		$Bookmarks/Tooltip.hide_tooltip()
-
 	if toggled_on:
 		Settings.side_panel = Settings.SidePanelState.BOOKMARKS
 	else:
@@ -65,9 +59,6 @@ func _on_bookmarks_toggled(toggled_on: bool) -> void:
 
 
 func _on_help_toggled(toggled_on: bool) -> void:
-	if not($Capture.button_pressed or $Bookmarks.button_pressed):
-		$Help/Tooltip.hide_tooltip()
-
 	if toggled_on:
 		Settings.side_panel = Settings.SidePanelState.HELP
 	else:

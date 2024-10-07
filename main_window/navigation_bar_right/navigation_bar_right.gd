@@ -23,7 +23,6 @@ func _on_view_mode_changed(view_mode : int) -> void:
 
 func _on_calendar_toggled(toggled_on: bool) -> void:
 	EventBus.calendar_button_pressed.emit()
-	$Calendar/Tooltip.hide_tooltip()
 
 	if toggled_on:
 		$Calendar/Tooltip.disabled = true
