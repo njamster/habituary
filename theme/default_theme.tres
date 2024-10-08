@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=34 format=3 uid="uid://r4f841iblmo"]
+[gd_resource type="Theme" load_steps=35 format=3 uid="uid://r4f841iblmo"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vf7p3"]
 content_margin_left = 8.0
@@ -307,6 +307,17 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g2de2"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.262745, 0.298039, 0.368627, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0oodh"]
 content_margin_left = 8.0
 content_margin_top = 8.0
@@ -388,6 +399,8 @@ SearchBar/base_type = &"PanelContainer"
 SearchBar/styles/panel = SubResource("StyleBoxFlat_fb5wc")
 SearchBar_Focused/base_type = &"PanelContainer"
 SearchBar_Focused/styles/panel = SubResource("StyleBoxFlat_g2gwl")
+SearchBar_Hover/base_type = &"PanelContainer"
+SearchBar_Hover/styles/panel = SubResource("StyleBoxFlat_g2de2")
 SidePanel/base_type = &"PanelContainer"
 SidePanel/styles/panel = SubResource("StyleBoxFlat_0oodh")
 SubtleLabel/base_type = &"Label"

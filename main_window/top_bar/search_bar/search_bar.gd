@@ -68,3 +68,13 @@ func _on_search_query_text_submitted(_new_text: String) -> void:
 
 func _on_shortcut_hint_pressed() -> void:
 	%SearchQuery.grab_focus()
+
+
+func _on_mouse_entered() -> void:
+	if get_viewport().gui_get_focus_owner() != %SearchQuery:
+		self.theme_type_variation = "SearchBar_Hover"
+
+
+func _on_mouse_exited() -> void:
+	if get_viewport().gui_get_focus_owner() != %SearchQuery:
+		self.theme_type_variation = "SearchBar"
