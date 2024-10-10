@@ -17,14 +17,14 @@ layout_mode = 2
 text = "none set"
 horizontal_alignment = 1
 
-[node name="IncludePastDates" type="CheckButton" parent="."]
+[node name="IncludePast" type="CheckButton" parent="."]
 layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
 button_pressed = true
-text = "Include Past Dates"
+text = "Include Past"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 2
@@ -37,4 +37,4 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
-[connection signal="toggled" from="IncludePastDates" to="." method="_on_include_past_dates_toggled"]
+[connection signal="toggled" from="IncludePast" to="." method="_on_include_past_toggled"]

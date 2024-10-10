@@ -64,6 +64,8 @@ enum States { TO_DO, DONE, FAILED }
 				%Edit.selecting_enabled = false
 				%Edit.editable = false
 
+			EventBus.bookmark_text_changed.emit(self, self.text)
+
 @export var is_heading := false:
 	set(value):
 		is_heading = value
@@ -96,7 +98,6 @@ enum States { TO_DO, DONE, FAILED }
 				%Bold.get_node("Tooltip").text = "Make Bold"
 			_apply_formatting()
 			%Bold.button_pressed = is_bold
-			EventBus.bookmark_text_changed.emit(self, self.text)
 
 @export var is_italic := false:
 	set(value):
@@ -108,7 +109,6 @@ enum States { TO_DO, DONE, FAILED }
 				%Italic.get_node("Tooltip").text = "Make Italic"
 			_apply_formatting()
 			%Italic.button_pressed = is_italic
-			EventBus.bookmark_text_changed.emit(self, self.text)
 
 
 var _contains_mouse_cursor := false

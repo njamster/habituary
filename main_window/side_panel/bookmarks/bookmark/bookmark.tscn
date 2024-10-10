@@ -16,10 +16,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="HBox" type="HBoxContainer" parent="VBox"]
+[node name="Row1" type="HBoxContainer" parent="VBox"]
 layout_mode = 2
 
-[node name="DayCounter" type="Label" parent="VBox/HBox"]
+[node name="DayCounter" type="Label" parent="VBox/Row1"]
 unique_name_in_owner = true
 self_modulate = Color(1, 1, 1, 0.75)
 layout_mode = 2
@@ -28,12 +28,12 @@ mouse_filter = 1
 theme_override_font_sizes/font_size = 14
 text = "1337 days left"
 
-[node name="Tooltip" type="Node" parent="VBox/HBox/DayCounter"]
+[node name="Tooltip" type="Node" parent="VBox/Row1/DayCounter"]
 unique_name_in_owner = true
 script = ExtResource("2_ufj5y")
 text_alignment = 2
 
-[node name="JumpTo" type="Button" parent="VBox/HBox"]
+[node name="JumpTo" type="Button" parent="VBox/Row1"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
@@ -43,16 +43,20 @@ mouse_default_cursor_shape = 2
 icon = ExtResource("3_qdkvd")
 flat = true
 
-[node name="Tooltip" type="Node" parent="VBox/HBox/JumpTo"]
+[node name="Tooltip" type="Node" parent="VBox/Row1/JumpTo"]
 script = ExtResource("2_ufj5y")
 text = "Jump to To-Do"
 popup_position = 5
 
-[node name="Heading" type="Label" parent="VBox"]
+[node name="Row2" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="Heading" type="Label" parent="VBox/Row2"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 16
 text = "Super Important To-Do"
 text_overrun_behavior = 3
 
-[connection signal="pressed" from="VBox/HBox/JumpTo" to="." method="_on_jump_to_pressed"]
+[connection signal="pressed" from="VBox/Row1/JumpTo" to="." method="_on_jump_to_pressed"]
