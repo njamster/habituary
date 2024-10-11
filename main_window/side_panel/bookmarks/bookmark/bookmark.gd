@@ -27,11 +27,18 @@ var is_done := false:
 				%DayCounter.remove_theme_color_override("font_color")
 			else:
 				modulate.a = 1.0
-				%DayCounter.add_theme_color_override("font_color", "ebcb8b")
+				%DayCounter.add_theme_color_override("font_color", "a3be8c")
 		_on_show_bookmarks_from_the_past_changed()
 
 
 func _ready() -> void:
+	EventBus.dark_mode_changed.connect(func(dark_mode):
+		if dark_mode:
+			%JumpTo.remove_theme_color_override("icon_normal_color")
+		else:
+			%JumpTo.add_theme_color_override("icon_normal_color", Settings.NORD_00)
+	)
+
 	EventBus.today_changed.connect(_apply_date_relative_formating)
 
 	EventBus.show_bookmarks_from_the_past_changed.connect(_on_show_bookmarks_from_the_past_changed)
@@ -73,14 +80,17 @@ func _apply_date_relative_formating() -> void:
 		modulate.a = 0.4
 		%DayCounter.remove_theme_color_override("font_color")
 		%DayCounter.text = remaining_time + " ago"
+		theme_type_variation = ""
 	elif day_diff > 0:
 		modulate.a = 1.0
 		%DayCounter.remove_theme_color_override("font_color")
 		%DayCounter.text = remaining_time + " remaining"
+		theme_type_variation = ""
 	else:
 		modulate.a = 1.0
-		%DayCounter.add_theme_color_override("font_color", "ebcb8b")
+		%DayCounter.add_theme_color_override("font_color", "a3be8c")
 		%DayCounter.text = "TODAY"
+		theme_type_variation = "Bookmark_Today"
 
 
 func _on_show_bookmarks_from_the_past_changed() -> void:
