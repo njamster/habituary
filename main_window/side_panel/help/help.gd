@@ -22,6 +22,8 @@ var descriptions := {
 	"toggle_fullscreen": "Toggle Fullscreen On/Off",
 	"toggle_dark_mode": "Toggle Dark Mode On/Off",
 
+	"toggle_todo": "Toggle Done State",
+	"cancel_todo": "Toggle Canceled State",
 	"toggle_heading": "Set/Unset As Foldable Heading",
 	"toggle_bold": "Add/Remove Bold Formatting",
 	"toggle_italic": "Add/Remove Italic Formatting",
@@ -83,6 +85,8 @@ func _ready() -> void:
 		%KeyBindingsBlock4.add_child(hint)
 
 	for action in [
+		"toggle_todo",
+		"cancel_todo",
 		"toggle_heading",
 		"toggle_bold",
 		"toggle_italic",

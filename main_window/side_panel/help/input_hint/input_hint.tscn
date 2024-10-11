@@ -25,6 +25,7 @@ script = ExtResource("1_w586x")
 [node name="Description" type="Label" parent="."]
 layout_mode = 2
 size_flags_vertical = 8
+theme_override_font_sizes/font_size = 14
 text = "Select All"
 
 [node name="ConnectorLine" type="TextureRect" parent="."]
@@ -38,7 +39,7 @@ stretch_mode = 1
 [node name="KeyBinding" type="Label" parent="."]
 custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = SubResource("StyleBoxFlat_rlewr")
 text = "CTRL+A"
 horizontal_alignment = 1

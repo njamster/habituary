@@ -6,8 +6,7 @@ var nodes_to_move := []
 
 
 func _get_drag_data(_at_position: Vector2) -> Variant:
-	if host.state == host.States.DONE:
-		return
+	host._on_edit_text_submitted(host.get_node("%Edit").text, false)
 
 	get_node("Tooltip").hide_tooltip()
 

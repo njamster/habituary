@@ -50,19 +50,9 @@ enum States { TO_DO, DONE, FAILED }
 			if state == States.TO_DO:
 				%CheckBox.modulate.a = 1.0
 				%Content.modulate.a = 1.0
-				for node in [%Content, %Edit]:
-					node.mouse_default_cursor_shape = CURSOR_IBEAM
-				%Edit.focus_mode = FOCUS_ALL
-				%Edit.selecting_enabled = true
-				%Edit.editable = true
 			else:
 				%CheckBox.modulate.a = 0.5
 				%Content.modulate.a = 0.5
-				for node in [%Content, %Edit]:
-					node.mouse_default_cursor_shape = CURSOR_ARROW
-				%Edit.focus_mode = FOCUS_NONE
-				%Edit.selecting_enabled = false
-				%Edit.editable = false
 
 			EventBus.bookmark_text_changed.emit(self, self.text)
 
@@ -179,15 +169,12 @@ func _ready() -> void:
 
 
 func is_in_edit_mode() -> bool:
-	return %Edit.has_focus()
+	return %EditingOptions.visible
 
 
 var _pre_edit_text := ""
 
 func edit() -> void:
-	for child in %Toggle.get_children():
-		child.mouse_default_cursor_shape = CURSOR_FORBIDDEN
-		child.disabled = true
 	%Edit.grab_focus()
 	$Triangle.show()
 	%EditingOptions.show()
@@ -241,9 +228,6 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 		%Edit.release_focus()
 		%EditingOptions.hide()
 		$Triangle.hide()
-		for child in %Toggle.get_children():
-			child.mouse_default_cursor_shape = CURSOR_POINTING_HAND
-			child.disabled = false
 		%DragHandle.visible = _contains_mouse_cursor
 
 		%Edit.caret_column = 0   # scroll item text back to its beginning
@@ -259,7 +243,14 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 
 func _on_edit_focus_exited() -> void:
 	if not is_queued_for_deletion() and %Edit.visible:
-		_on_edit_text_submitted(%Edit.text, false)
+		await get_tree().process_frame
+		var focus_owner := get_viewport().gui_get_focus_owner()
+		if not focus_owner or (not focus_owner == self and not focus_owner.owner == self):
+			_on_edit_text_submitted(%Edit.text, false)
+
+
+func _on_focus_exited() -> void:
+	_on_edit_focus_exited()
 
 
 func _on_content_gui_input(event: InputEvent) -> void:
@@ -358,7 +349,7 @@ func _on_mouse_entered() -> void:
 	%FoldHeading.set("theme_override_colors/icon_hover_color", Settings.NORD_09)
 	%FoldHeading.set("theme_override_colors/icon_pressed_color", Settings.NORD_10)
 	%FoldHeading.set("theme_override_colors/icon_disabled_color", Settings.NORD_10)
-	if not is_in_edit_mode() and self.state == States.TO_DO and not get_viewport().gui_is_dragging():
+	if not get_viewport().gui_is_dragging():
 		%DragHandle.show()
 
 
@@ -427,15 +418,18 @@ func set_extra_info(num_done : int , num_items : int) -> void:
 	%ExtraInfo.text = "%d/%d" % [num_done, num_items]
 
 
-func _gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
-		var focus_owner := get_viewport().gui_get_focus_owner()
-		if focus_owner and not focus_owner.owner == self:
-			focus_owner.release_focus()
+func _input(event: InputEvent):
+	if is_in_edit_mode():
+		if event.is_action_pressed("toggle_todo"):
+			self.state = States.DONE if self.state != States.DONE else States.TO_DO
+			accept_event()
+		elif event.is_action_pressed("cancel_todo"):
+			self.state = States.FAILED if self.state != States.FAILED else States.TO_DO
+			accept_event()
 
 
 func _on_check_box_gui_input(event: InputEvent) -> void:
-	if not is_in_edit_mode() and event is InputEventMouseButton and event.is_released():
+	if event is InputEventMouseButton and event.is_released():
 		match event.button_index:
 			MOUSE_BUTTON_LEFT:
 				if event.ctrl_pressed:
