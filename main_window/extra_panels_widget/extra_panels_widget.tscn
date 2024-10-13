@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bmrx40aplh6c1"]
+[gd_scene load_steps=13 format=3 uid="uid://bmrx40aplh6c1"]
 
 [ext_resource type="Script" path="res://main_window/extra_panels_widget/extra_panels_widget.gd" id="1_5x0ik"]
 [ext_resource type="Texture2D" uid="uid://b6m2sbtuimpqj" path="res://main_window/extra_panels_widget/images/help.svg" id="1_ywxe7"]
@@ -17,6 +17,8 @@ action = &"show_bookmarks"
 
 [sub_resource type="Shortcut" id="Shortcut_5eyie"]
 events = [SubResource("InputEventAction_ux27k")]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pyle2"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_j70y2"]
 action = &"show_help"
@@ -55,6 +57,20 @@ icon = ExtResource("4_45dt0")
 [node name="Tooltip" type="Node" parent="Bookmarks"]
 script = ExtResource("3_diiyk")
 text = "Show Bookmarks"
+
+[node name="TodayCount" type="Label" parent="Bookmarks"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 10.0
+offset_top = 8.0
+offset_right = 16.0
+offset_bottom = 22.0
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.180392, 0.203922, 0.25098, 1)
+theme_override_font_sizes/font_size = 9
+theme_override_styles/normal = SubResource("StyleBoxEmpty_pyle2")
+text = "9
+"
 
 [node name="Spacer" type="Control" parent="."]
 custom_minimum_size = Vector2(0, 6)

@@ -43,3 +43,5 @@ signal bookmark_date_changed(to_do, old_date)
 signal bookmark_jump_requested(to_do_text)
 @warning_ignore("unused_signal")
 signal bookmark_removed(to_do)
+@warning_ignore("unused_signal")
+signal bookmarks_due_today_changed

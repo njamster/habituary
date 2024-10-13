@@ -63,6 +63,9 @@ func _add_bookmark(date : Date, todo_text : String, is_done := false) -> void:
 	$NoneSet.hide()
 	$IncludePast.show()
 
+	if date.day_difference_to(DayTimer.today) == 0:
+		Settings.bookmarks_due_today += 1
+
 	for i in %List.get_child_count():
 		var child = %List.get_child(i)
 		if child.date.day_difference_to(date) > 0:
@@ -96,6 +99,11 @@ func _on_bookmark_date_changed(to_do : Control, old_date : Date) -> void:
 	# FIXME: avoid using a relative path that involves parent nodes
 	var new_date := Date.new(to_do.get_node("../../../../..").date.as_dict())
 
+	if old_date.day_difference_to(DayTimer.today) == 0:
+		Settings.bookmarks_due_today -= 1
+	elif new_date.day_difference_to(DayTimer.today) == 0:
+		Settings.bookmarks_due_today += 1
+
 	for bookmark in %List.get_children():
 		if bookmark.text == to_do.text and bookmark.date.day_difference_to(old_date) == 0:
 			bookmark.date = new_date
@@ -105,6 +113,9 @@ func _on_bookmark_date_changed(to_do : Control, old_date : Date) -> void:
 func _on_bookmark_removed(to_do : Control) -> void:
 	# FIXME: avoid using a relative path that involves parent nodes
 	var date := Date.new(to_do.get_node("../../../../..").date.as_dict())
+
+	if date.day_difference_to(DayTimer.today) == 0:
+		Settings.bookmarks_due_today -= 1
 
 	for bookmark in %List.get_children():
 		if bookmark.text == to_do.text and bookmark.date.day_difference_to(date) == 0:

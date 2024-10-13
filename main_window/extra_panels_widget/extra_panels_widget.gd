@@ -4,6 +4,14 @@ extends VBoxContainer
 func _ready() -> void:
 	EventBus.side_panel_changed.connect(_on_side_panel_changed)
 
+	EventBus.bookmarks_due_today_changed.connect(_update_today_count)
+	_update_today_count()
+
+
+func _update_today_count() -> void:
+	%TodayCount.text = str(min(Settings.bookmarks_due_today, 9))
+	%TodayCount.visible = (Settings.bookmarks_due_today != 0)
+
 
 func _on_side_panel_changed() -> void:
 	match Settings.side_panel:

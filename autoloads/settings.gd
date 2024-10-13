@@ -238,6 +238,11 @@ var show_bookmarks_from_the_past := true:
 		show_bookmarks_from_the_past = value
 		EventBus.show_bookmarks_from_the_past_changed.emit()
 
+var bookmarks_due_today := 0:
+	set(value):
+		bookmarks_due_today = value
+		EventBus.bookmarks_due_today_changed.emit()
+
 
 func _enter_tree() -> void:
 	if OS.is_debug_build():
