@@ -134,6 +134,7 @@ var is_bookmarked := false:
 				%Bookmark.text = %Bookmark.text.replace("Remove", "Add")
 				%BookmarkIndicator.hide()
 			%Bookmark.get_node("Tooltip").text = %Bookmark.text
+			%Bookmark.button_pressed = is_bookmarked
 
 			if text:
 				if is_bookmarked:
