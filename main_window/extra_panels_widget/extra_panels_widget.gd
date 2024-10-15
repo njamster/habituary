@@ -11,6 +11,7 @@ func _ready() -> void:
 func _update_today_count() -> void:
 	%TodayCount.text = str(min(Settings.bookmarks_due_today, 9))
 	%TodayCount.visible = (Settings.bookmarks_due_today != 0)
+	%NotificationDot.visible = (Settings.bookmarks_due_today != 0)
 
 
 func _on_side_panel_changed() -> void:
