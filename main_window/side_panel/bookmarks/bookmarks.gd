@@ -63,7 +63,7 @@ func _add_bookmark(date : Date, todo_text : String, is_done := false) -> void:
 	$NoneSet.hide()
 	$IncludePast.show()
 
-	if date.day_difference_to(DayTimer.today) == 0:
+	if date.day_difference_to(DayTimer.today) == 0 and not is_done:
 		Settings.bookmarks_due_today += 1
 
 	for i in %List.get_child_count():
@@ -91,7 +91,13 @@ func _on_bookmark_text_changed(to_do : Control, old_text : String) -> void:
 	for bookmark in %List.get_children():
 		if bookmark.text == old_text and bookmark.date.day_difference_to(date) == 0:
 			bookmark.text = to_do.text
+			var was_done = bookmark.is_done
 			bookmark.is_done = (to_do.state != to_do.States.TO_DO)
+			if bookmark.date.day_difference_to(DayTimer.today) == 0 and bookmark.is_done != was_done:
+				if bookmark.is_done:
+					Settings.bookmarks_due_today -= 1
+				else:
+					Settings.bookmarks_due_today += 1
 			return
 
 
