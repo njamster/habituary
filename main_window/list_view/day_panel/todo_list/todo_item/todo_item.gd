@@ -126,21 +126,13 @@ var is_bookmarked := false:
 
 		if is_inside_tree():
 			if is_bookmarked:
-				%Bookmark.get_node("Tooltip").text = %Bookmark.get_node("Tooltip").text.replace("Add", "Remove")
 				%Bookmark.text = %Bookmark.text.replace("Add", "Remove")
 				%BookmarkIndicator.show()
 			else:
-				%Bookmark.get_node("Tooltip").text = %Bookmark.get_node("Tooltip").text.replace("Remove", "Add")
 				%Bookmark.text = %Bookmark.text.replace("Remove", "Add")
 				%BookmarkIndicator.hide()
 			%Bookmark.get_node("Tooltip").text = %Bookmark.text
 			%Bookmark.button_pressed = is_bookmarked
-
-			if text:
-				if is_bookmarked:
-					EventBus.bookmark_added.emit(self)
-				else:
-					EventBus.bookmark_removed.emit(self)
 
 
 func _ready() -> void:
@@ -548,6 +540,11 @@ func _check_for_search_query_match() -> void:
 
 func _on_bookmark_pressed() -> void:
 	is_bookmarked = not is_bookmarked
+
+	if is_bookmarked:
+		EventBus.bookmark_added.emit(self)
+	else:
+		EventBus.bookmark_removed.emit(self)
 
 
 func _on_bookmark_indicator_gui_input(event: InputEvent) -> void:
