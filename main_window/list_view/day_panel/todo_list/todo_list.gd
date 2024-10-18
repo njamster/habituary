@@ -242,4 +242,8 @@ func _input(event: InputEvent) -> void:
 
 
 func _on_items_child_order_changed() -> void:
-	pass # TODO!
+	if is_inside_tree():
+		for item in %Items.get_children():
+			if item.is_bookmarked:
+				EventBus.bookmark_changed.emit.call_deferred(item, item.date, item.last_index)
+				item.last_index = item.get_index()

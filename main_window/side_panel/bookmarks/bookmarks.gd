@@ -90,7 +90,7 @@ func _on_bookmark_changed(to_do : Control, old_date : Date, old_index : int) -> 
 	for bookmark in %Items.get_children():
 		if bookmark.date.day_difference_to(old_date) == 0 and bookmark.line_number == old_index:
 			bookmark.date = to_do.date
-			bookmark.line_number = to_do.get_index()
+			bookmark.set_deferred("line_number", to_do.get_index())
 			bookmark.text = to_do.text
 			bookmark.is_done = (to_do.state != to_do.States.TO_DO)
 			return

@@ -9,6 +9,8 @@ signal changed
 signal folded
 signal unfolded
 
+@onready var last_index := get_index()
+
 var date : Date:
 	get():
 		# FIXME: avoid using a relative path that involves parent nodes
@@ -240,9 +242,10 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 func _on_edit_focus_exited() -> void:
 	if not is_queued_for_deletion() and %Edit.visible:
 		await get_tree().process_frame
-		var focus_owner := get_viewport().gui_get_focus_owner()
-		if not focus_owner or (not focus_owner == self and not focus_owner.owner == self):
-			_on_edit_text_submitted(%Edit.text, false)
+		if is_inside_tree():
+			var focus_owner := get_viewport().gui_get_focus_owner()
+			if not focus_owner or (not focus_owner == self and not focus_owner.owner == self):
+				_on_edit_text_submitted(%Edit.text, false)
 
 
 func _on_focus_exited() -> void:
