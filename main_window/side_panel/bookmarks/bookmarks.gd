@@ -9,8 +9,7 @@ func _ready() -> void:
 	_search_for_bookmarks()
 
 	EventBus.bookmark_added.connect(_on_bookmark_added)
-	EventBus.bookmark_text_changed.connect(_on_bookmark_text_changed)
-	EventBus.bookmark_date_changed.connect(_on_bookmark_date_changed)
+	EventBus.bookmark_changed.connect(_on_bookmark_changed)
 	EventBus.bookmark_removed.connect(_on_bookmark_removed)
 
 
@@ -20,8 +19,12 @@ func _search_for_bookmarks() -> void:
 		for file_name in directory.get_files():
 			var file = FileAccess.open(Settings.store_path.path_join(file_name), FileAccess.READ)
 			if file:
+				var line_number := -1
 				while file.get_position() < file.get_length():
 					var line := file.get_line()
+					if line.begins_with("# ") or line.begins_with("v ") or line.begins_with("> ") \
+						or line.begins_with("[ ] ") or line.begins_with("[x] ") or line.begins_with("[-] "):
+							line_number += 1
 					if line.ends_with( " [BOOKMARK]"):
 						# remove the "[BOOKMARK]" tag
 						line = line.substr(0, line.length() - 11)
@@ -44,6 +47,7 @@ func _search_for_bookmarks() -> void:
 
 						_add_bookmark(
 							Date.from_string(file_name.left(-4)),
+							line_number,
 							line,
 							is_done
 						)
@@ -53,62 +57,52 @@ func _search_for_bookmarks() -> void:
 		pass  # FIXME: print error?
 
 
-func _add_bookmark(date : Date, todo_text : String, is_done := false) -> void:
+func _add_bookmark(date : Date, line_number : int, todo_text : String, is_done := false) -> void:
 	var bookmark := preload("bookmark/bookmark.tscn").instantiate()
 	bookmark.date = date
+	bookmark.line_number = line_number
 	bookmark.text = todo_text
 	bookmark.is_done = is_done
-	%List.add_child(bookmark)
+	%Items.add_child(bookmark)
 
 	$NoneSet.hide()
 	$IncludePast.show()
 
-	for i in %List.get_child_count():
-		var child = %List.get_child(i)
+	for i in %Items.get_child_count():
+		var child = %Items.get_child(i)
 		if child.date.day_difference_to(date) > 0:
-			%List.move_child(bookmark, i)
+			%Items.move_child(bookmark, i)
 			return
 
 
 func _on_bookmark_added(to_do : Control) -> void:
-	# FIXME: avoid using a relative path that involves parent nodes
-	var date := Date.new(to_do.get_node("../../../../..").date.as_dict())
+	var date = to_do.date
+	var line_number := to_do.get_index()
 
-	for bookmark in %List.get_children():
-		if bookmark.text == to_do.text and bookmark.date.day_difference_to(date) == 0:
+	for bookmark in %Items.get_children():
+		if bookmark.date.day_difference_to(date) == 0 and bookmark.line_number == line_number:
 			return
 
-	_add_bookmark(date, to_do.text, to_do.state != to_do.States.TO_DO)
+	_add_bookmark(date, line_number, to_do.text, to_do.state != to_do.States.TO_DO)
 
 
-func _on_bookmark_text_changed(to_do : Control, old_text : String) -> void:
-	# FIXME: avoid using a relative path that involves parent nodes
-	var date := Date.new(to_do.get_node("../../../../..").date.as_dict())
-
-	for bookmark in %List.get_children():
-		if bookmark.text == old_text and bookmark.date.day_difference_to(date) == 0:
+func _on_bookmark_changed(to_do : Control, old_date : Date, old_index : int) -> void:
+	for bookmark in %Items.get_children():
+		if bookmark.date.day_difference_to(old_date) == 0 and bookmark.line_number == old_index:
+			bookmark.date = to_do.date
+			bookmark.line_number = to_do.get_index()
 			bookmark.text = to_do.text
 			bookmark.is_done = (to_do.state != to_do.States.TO_DO)
 			return
 
 
-func _on_bookmark_date_changed(to_do : Control, old_date : Date) -> void:
-	# FIXME: avoid using a relative path that involves parent nodes
-	var new_date := Date.new(to_do.get_node("../../../../..").date.as_dict())
-
-	for bookmark in %List.get_children():
-		if bookmark.text == to_do.text and bookmark.date.day_difference_to(old_date) == 0:
-			bookmark.date = new_date
-			return
-
-
 func _on_bookmark_removed(to_do : Control) -> void:
-	# FIXME: avoid using a relative path that involves parent nodes
-	var date := Date.new(to_do.get_node("../../../../..").date.as_dict())
+	var date = to_do.date
+	var line_number := to_do.get_index()
 
-	for bookmark in %List.get_children():
-		if bookmark.text == to_do.text and bookmark.date.day_difference_to(date) == 0:
-			$NoneSet.visible = (%List.get_child_count() == 1)
+	for bookmark in %Items.get_children():
+		if bookmark.date.day_difference_to(date) == 0 and bookmark.line_number == line_number:
+			$NoneSet.visible = (%Items.get_child_count() == 1)
 			$IncludePast.visible = not $NoneSet.visible
 			bookmark.queue_free()
 			return

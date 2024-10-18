@@ -9,11 +9,17 @@ signal changed
 signal folded
 signal unfolded
 
+var date : Date:
+	get():
+		# FIXME: avoid using a relative path that involves parent nodes
+		return Date.new(get_node("../../../../..").date.as_dict())
+
 @export var text := "":
 	set(value):
 		text = value
 		if not is_in_edit_mode():
 			%Edit.text = text
+		EventBus.bookmark_changed.emit(self, date, get_index())
 
 enum States { TO_DO, DONE, FAILED }
 @export var state := States.TO_DO:
@@ -54,7 +60,7 @@ enum States { TO_DO, DONE, FAILED }
 				%CheckBox.modulate.a = 0.5
 				%Content.modulate.a = 0.5
 
-			EventBus.bookmark_text_changed.emit(self, self.text)
+			EventBus.bookmark_changed.emit(self, date, get_index())
 
 @export var is_heading := false:
 	set(value):
@@ -153,10 +159,9 @@ func _ready() -> void:
 
 	EventBus.search_query_changed.connect(_check_for_search_query_match)
 
-	EventBus.bookmark_jump_requested.connect(func(to_do_text):
-		if self.is_bookmarked and self.text == to_do_text:
-			var date := Date.new(get_node("../../../../..").date.as_dict())
-			if date.day_difference_to(Settings.current_day) == 0:
+	EventBus.bookmark_jump_requested.connect(func(bookmarked_date, bookmarked_line_number):
+		if self.is_bookmarked and date.day_difference_to(bookmarked_date) == 0 \
+			and get_index() == bookmarked_line_number:
 				edit()
 	)
 
@@ -203,9 +208,7 @@ func delete() -> void:
 
 
 func _on_edit_text_changed(new_text: String) -> void:
-	var old_text = self.text
 	self.text = new_text
-	EventBus.bookmark_text_changed.emit(self, old_text)
 	_check_for_search_query_match()
 
 

@@ -6,14 +6,14 @@ const TODO_ITEM := preload("todo_item/todo_item.tscn")
 func _ready() -> void:
 	$LineHighlight.modulate.a = 0.0
 
-	if OS.is_debug_build():
-		for i in range(7):
-			var debug_item := add_todo(Vector2.ZERO, true)
-			debug_item.text = "Debug_%d" % i
-			if i == 0:
-				debug_item.state = debug_item.States.DONE
-			elif i == 1 or i == 5:
-				debug_item.is_heading = true
+	#if OS.is_debug_build():
+		#for i in range(7):
+			#var debug_item := add_todo(Vector2.ZERO, true)
+			#debug_item.text = "Debug_%d" % i
+			#if i == 0:
+				#debug_item.state = debug_item.States.DONE
+			#elif i == 1 or i == 5:
+				#debug_item.is_heading = true
 
 
 func add_todo(at_position := Vector2.ZERO, is_debug_item := false) -> Control:
@@ -239,3 +239,7 @@ func _input(event: InputEvent) -> void:
 		if Rect2(global_position, size).has_point(event.global_position):
 			if self.is_ancestor_of(get_viewport().gui_get_hovered_control()):
 				EventBus.todo_list_clicked.emit()
+
+
+func _on_items_child_order_changed() -> void:
+	pass # TODO!

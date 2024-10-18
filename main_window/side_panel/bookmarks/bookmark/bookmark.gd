@@ -20,6 +20,11 @@ var date : Date:
 			if date.day_difference_to(DayTimer.today) == 0:
 				Settings.bookmarks_due_today += 1
 
+var line_number := -1:
+	set(value):
+		line_number = value
+		%LineNum.text = str(line_number)
+
 var day_diff := 0
 
 var text := "":
@@ -120,7 +125,7 @@ func _on_show_bookmarks_from_the_past_changed() -> void:
 
 func _on_jump_to_pressed() -> void:
 	Settings.current_day = date
-	EventBus.bookmark_jump_requested.emit(text)
+	EventBus.bookmark_jump_requested.emit(date, line_number)
 
 
 func _on_tree_exited() -> void:
