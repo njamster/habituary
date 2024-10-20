@@ -3,8 +3,11 @@ extends PanelContainer
 var date : Date:
 	set(value):
 		var old_date
-		if date and date.day_difference_to(value) != 0:
-			old_date = date
+		if date:
+			if date.day_difference_to(value) != 0:
+				old_date = date
+			else:
+				return # early
 		date = value
 		%Tooltip.text = date.format("MMM DD, YYYY")
 
