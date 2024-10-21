@@ -6,20 +6,9 @@ const TODO_ITEM := preload("todo_item/todo_item.tscn")
 func _ready() -> void:
 	$LineHighlight.modulate.a = 0.0
 
-	#if OS.is_debug_build():
-		#for i in range(7):
-			#var debug_item := add_todo(Vector2.ZERO, true)
-			#debug_item.text = "Debug_%d" % i
-			#if i == 0:
-				#debug_item.state = debug_item.States.DONE
-			#elif i == 1 or i == 5:
-				#debug_item.is_heading = true
 
-
-func add_todo(at_position := Vector2.ZERO, is_debug_item := false) -> Control:
+func add_todo(at_position := Vector2.ZERO) -> Control:
 	var new_item := TODO_ITEM.instantiate()
-	if is_debug_item:
-		new_item.add_to_group("debug_item")
 	%Items.add_child(new_item)
 	if at_position != Vector2.ZERO:
 		%Items.move_child(new_item, find_item_pos(at_position))
@@ -132,9 +121,10 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 				# item moved from one list to another
 				disconnect_todo_signals(entry)
 				if entry.is_bookmarked:
-					var old_date = Date.new(entry.get_node("../../../../..").date.as_dict())
+					var old_date = entry.date
+					var old_index = entry.get_index()
 					entry.reparent(%Items)
-					EventBus.bookmark_date_changed.emit(entry, old_date)
+					EventBus.bookmark_changed.emit(entry, old_date, old_index)
 				else:
 					entry.reparent(%Items)
 				connect_todo_signals(entry)
@@ -154,16 +144,12 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 
 
 func has_items() -> bool:
-	for child in %Items.get_children():
-		if not child.is_in_group("debug_item"):
-			return true
-	return false
+	return %Items.get_child_count() > 0
 
 
 func save_to_disk(file : FileAccess) -> void:
 	for child in %Items.get_children():
-		if not child.is_in_group("debug_item"):
-			child.save_to_disk(file)
+		child.save_to_disk(file)
 
 	var scroll_offset : int = get_node("..").scroll_vertical
 	if scroll_offset != 0:
