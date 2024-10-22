@@ -68,9 +68,14 @@ func _add_bookmark(date : Date, line_number : int, todo_text : String, is_done :
 	$NoneSet.hide()
 	$IncludePast.show()
 
+	bookmark.line_number_changed.connect(_on_line_number_changed)
+
 	for i in %Items.get_child_count():
 		var child = %Items.get_child(i)
-		if child.date.day_difference_to(date) > 0:
+		if child.date.day_difference_to(date) == 0 and child.line_number > line_number:
+			%Items.move_child(bookmark, i)
+			return
+		elif child.date.day_difference_to(date) > 0:
 			%Items.move_child(bookmark, i)
 			return
 
@@ -105,6 +110,22 @@ func _on_bookmark_removed(to_do : Control) -> void:
 			$NoneSet.visible = (%Items.get_child_count() == 1)
 			$IncludePast.visible = not $NoneSet.visible
 			bookmark.queue_free()
+			return
+
+
+func _on_line_number_changed(signal_source : Control) -> void:
+	var date = signal_source.date
+	var new_line_number = signal_source.line_number
+
+	for i in %Items.get_child_count():
+		var bookmark = %Items.get_child(i)
+		if bookmark.date.day_difference_to(date) < 0:
+			continue
+		elif bookmark.date.day_difference_to(date) == 0:
+			if bookmark.line_number >= new_line_number:
+				%Items.move_child(signal_source, i)
+				return
+		elif bookmark.date.day_difference_to(date) > 0:
 			return
 
 
