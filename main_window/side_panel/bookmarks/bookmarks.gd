@@ -68,27 +68,44 @@ func _add_bookmark(date : Date, line_number : int, todo_text : String, is_done :
 	$NoneSet.hide()
 	$IncludePast.show()
 
-	bookmark.line_number_changed.connect(_on_line_number_changed)
-
 	for i in %Items.get_child_count():
 		var child = %Items.get_child(i)
-		if child.date.day_difference_to(date) == 0 and child.line_number > line_number:
-			%Items.move_child(bookmark, i)
-			return
-		elif child.date.day_difference_to(date) > 0:
-			%Items.move_child(bookmark, i)
-			return
+		if (child.date.day_difference_to(date) == 0 and child.line_number > line_number) \
+			or child.date.day_difference_to(date) > 0:
+				%Items.move_child(bookmark, i)
+				return
+
+
+func _resort_list() -> void:
+	var data := []
+	for bookmark in %Items.get_children():
+		data.append({
+			"bookmark": bookmark,
+			"day_difference": bookmark.day_diff,
+			"line_number": bookmark.line_number
+		})
+
+	# Sort bookmarks...
+	data.sort_custom(func(a, b):
+		# ... primarily by date...
+		if a.day_difference < b.day_difference:
+			return true
+		# ... otherwise by line_number.
+		elif a.day_difference == b.day_difference and a.line_number < b.line_number:
+			return true
+		else:
+			return false
+	)
+
+	# reorder bookmarks to match the sorted data
+	for j in data.size():
+		var bookmark = data[j].bookmark
+		if bookmark.get_index() != j:
+			%Items.move_child(bookmark, j)
 
 
 func _on_bookmark_added(to_do : Control) -> void:
-	var date = to_do.date
-	var line_number := to_do.get_index()
-
-	for bookmark in %Items.get_children():
-		if bookmark.date.day_difference_to(date) == 0 and bookmark.line_number == line_number:
-			return
-
-	_add_bookmark(date, line_number, to_do.text, to_do.state != to_do.States.TO_DO)
+	_add_bookmark(to_do.date, to_do.get_index(), to_do.text, to_do.state != to_do.States.TO_DO)
 
 
 func _on_bookmark_changed(to_do : Control, old_date : Date, old_index : int) -> void:
@@ -98,6 +115,7 @@ func _on_bookmark_changed(to_do : Control, old_date : Date, old_index : int) -> 
 			bookmark.set_deferred("line_number", to_do.get_index())
 			bookmark.text = to_do.text
 			bookmark.is_done = (to_do.state != to_do.States.TO_DO)
+			_resort_list.call_deferred()
 			return
 
 
@@ -110,22 +128,6 @@ func _on_bookmark_removed(to_do : Control) -> void:
 			$NoneSet.visible = (%Items.get_child_count() == 1)
 			$IncludePast.visible = not $NoneSet.visible
 			bookmark.queue_free()
-			return
-
-
-func _on_line_number_changed(signal_source : Control) -> void:
-	var date = signal_source.date
-	var new_line_number = signal_source.line_number
-
-	for i in %Items.get_child_count():
-		var bookmark = %Items.get_child(i)
-		if bookmark.date.day_difference_to(date) < 0:
-			continue
-		elif bookmark.date.day_difference_to(date) == 0:
-			if bookmark.line_number >= new_line_number:
-				%Items.move_child(signal_source, i)
-				return
-		elif bookmark.date.day_difference_to(date) > 0:
 			return
 
 

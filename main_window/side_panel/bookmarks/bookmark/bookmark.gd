@@ -1,7 +1,5 @@
 extends PanelContainer
 
-signal line_number_changed(signal_source)
-
 var date : Date:
 	set(value):
 		var old_date
@@ -30,7 +28,6 @@ var line_number := -1:
 		if line_number != value:
 			line_number = value
 			%LineNum.text = str(line_number)
-			line_number_changed.emit.call_deferred(self)
 
 var day_diff := 0
 
