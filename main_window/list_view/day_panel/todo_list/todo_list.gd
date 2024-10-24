@@ -123,6 +123,7 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 				if entry.is_bookmarked:
 					var old_date = entry.date
 					var old_index = entry.get_index()
+					entry.last_index = base_position + i
 					entry.reparent(%Items)
 					EventBus.bookmark_changed.emit(entry, old_date, old_index)
 				else:
