@@ -23,11 +23,7 @@ var date : Date:
 			if date.day_difference_to(DayTimer.today) == 0:
 				Settings.bookmarks_due_today += 1
 
-var line_number := -1:
-	set(value):
-		if line_number != value:
-			line_number = value
-			%LineNum.text = str(line_number)
+var line_number := -1
 
 var day_diff := 0
 

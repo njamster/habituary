@@ -81,6 +81,7 @@ func _resort_list() -> void:
 	for bookmark in %Items.get_children():
 		data.append({
 			"bookmark": bookmark,
+			"is_done": bookmark.is_done,
 			"day_difference": bookmark.day_diff,
 			"line_number": bookmark.line_number
 		})
@@ -90,9 +91,13 @@ func _resort_list() -> void:
 		# ... primarily by date...
 		if a.day_difference < b.day_difference:
 			return true
-		# ... otherwise by line_number.
-		elif a.day_difference == b.day_difference and a.line_number < b.line_number:
-			return true
+		elif a.day_difference == b.day_difference:
+			# ... secondarily by state...
+			if a.is_done != b.is_done:
+				return a.is_done
+			# ... otherwise by line_number.
+			elif a.line_number < b.line_number:
+				return true
 		else:
 			return false
 	)
