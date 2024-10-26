@@ -77,23 +77,16 @@ func _add_bookmark(date : Date, line_number : int, todo_text : String, is_done :
 
 
 func _resort_list() -> void:
-	var data := []
-	for bookmark in %Items.get_children():
-		data.append({
-			"bookmark": bookmark,
-			"is_done": bookmark.is_done,
-			"day_difference": bookmark.day_diff,
-			"line_number": bookmark.line_number
-		})
+	var bookmarks := %Items.get_children()
 
 	# Sort bookmarks...
-	data.sort_custom(func(a, b):
+	bookmarks.sort_custom(func(a, b):
 		# ... primarily by date...
-		if a.day_difference < b.day_difference:
+		if a.day_diff < b.day_diff:
 			return true
-		elif a.day_difference == b.day_difference:
-			# ... secondarily by state...
-			if a.is_done != b.is_done:
+		elif a.day_diff == b.day_diff:
+			# ... secondarily (if bookmark is due today) by state...
+			if a.date.day_difference_to(DayTimer.today) <= 0 and a.is_done != b.is_done:
 				return a.is_done
 			# ... otherwise by line_number.
 			elif a.line_number < b.line_number:
@@ -102,9 +95,9 @@ func _resort_list() -> void:
 			return false
 	)
 
-	# reorder bookmarks to match the sorted data
-	for j in data.size():
-		var bookmark = data[j].bookmark
+	# reorder bookmarks to match the sorted bookmarks
+	for j in bookmarks.size():
+		var bookmark = bookmarks[j]
 		if bookmark.get_index() != j:
 			%Items.move_child(bookmark, j)
 
@@ -117,7 +110,7 @@ func _on_bookmark_changed(to_do : Control, old_date : Date, old_index : int) -> 
 	for bookmark in %Items.get_children():
 		if bookmark.date.day_difference_to(old_date) == 0 and bookmark.line_number == old_index:
 			bookmark.date = to_do.date
-			bookmark.set_deferred("line_number", to_do.get_index())
+			bookmark.line_number = to_do.get_index()
 			bookmark.text = to_do.text
 			bookmark.is_done = (to_do.state != to_do.States.TO_DO)
 			_resort_list.call_deferred()

@@ -17,11 +17,12 @@ var date : Date:
 
 		_apply_date_relative_formating()
 
-		if old_date and old_date.day_difference_to(DayTimer.today) == 0:
-			Settings.bookmarks_due_today -= 1
-		else:
-			if date.day_difference_to(DayTimer.today) == 0:
-				Settings.bookmarks_due_today += 1
+		if not is_done:
+			if old_date and old_date.day_difference_to(DayTimer.today) == 0:
+				Settings.bookmarks_due_today -= 1
+			else:
+				if date.day_difference_to(DayTimer.today) == 0:
+					Settings.bookmarks_due_today += 1
 
 var line_number := -1
 
@@ -34,9 +35,7 @@ var text := "":
 
 var is_done := false:
 	set(value):
-		var old_value
-		if is_done != value:
-			old_value = is_done
+		var old_value = is_done
 		is_done = value
 		if day_diff == 0:
 			if is_done:
