@@ -419,10 +419,10 @@ func set_extra_info(num_done : int , num_items : int) -> void:
 
 func _input(event: InputEvent):
 	if is_in_edit_mode():
-		if event.is_action_pressed("toggle_todo"):
+		if event.is_action_pressed("toggle_todo", false, true):
 			self.state = States.DONE if self.state != States.DONE else States.TO_DO
 			accept_event()
-		elif event.is_action_pressed("cancel_todo"):
+		elif event.is_action_pressed("cancel_todo", false, true):
 			self.state = States.FAILED if self.state != States.FAILED else States.TO_DO
 			accept_event()
 
