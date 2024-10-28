@@ -557,3 +557,8 @@ func _on_bookmark_indicator_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
 		%BookmarkIndicator.get_node("Tooltip").hide_tooltip()
 		edit()
+
+
+func _on_gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		release_focus()
