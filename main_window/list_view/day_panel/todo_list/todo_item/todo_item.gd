@@ -218,6 +218,13 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 	# trim any leading & trailing whitespace
 	new_text = new_text.strip_edges()
 
+	# if users manually added the bookmark tag to the end of the to-do's text, remove it...
+	while new_text.ends_with("[BOOKMARK]"):
+		new_text = new_text.left(-10).strip_edges()
+	# ... and change the line edit's text accordingly
+	%Edit.text = new_text
+	_on_edit_text_changed(new_text)
+
 	var new_item := (_pre_edit_text == "")
 
 	if new_text:
