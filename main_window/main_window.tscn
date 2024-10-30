@@ -49,6 +49,7 @@ size_flags_horizontal = 3
 theme_override_constants/separation = 16
 
 [node name="TopBar" parent="HBox/MainPanel/VBox" instance=ExtResource("2_tkl15")]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="HBox" type="HBoxContainer" parent="HBox/MainPanel/VBox"]

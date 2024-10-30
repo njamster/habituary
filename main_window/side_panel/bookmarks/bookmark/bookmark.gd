@@ -103,12 +103,18 @@ func _apply_date_relative_formating() -> void:
 	if day_diff < 0:
 		modulate.a = 0.4
 		%DayCounter.remove_theme_color_override("font_color")
-		%DayCounter.text = remaining_time + " ago"
+		if day_diff == -1:
+			%DayCounter.text = "Yesterday"
+		else:
+			%DayCounter.text = remaining_time + " ago"
 		theme_type_variation = ""
 	elif day_diff > 0:
 		modulate.a = 1.0
 		%DayCounter.remove_theme_color_override("font_color")
-		%DayCounter.text = remaining_time + " remaining"
+		if day_diff == 1:
+			%DayCounter.text = "Tomorrow"
+		else:
+			%DayCounter.text = "in " + remaining_time
 		theme_type_variation = ""
 	else:
 		modulate.a = 1.0

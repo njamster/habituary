@@ -28,7 +28,7 @@ func _on_window_size_changed() -> void:
 
 	var window_height := DisplayServer.window_get_size().y
 
-	var todo_list_height := window_height - 28 - 16 - 2 * minimum_vertical_margin - 61
+	var todo_list_height := window_height - 28 - 16 - 2 * minimum_vertical_margin - 81 - 8
 	var todo_item_height := 40
 
 	var total_vertical_margin = 2 * minimum_vertical_margin + todo_list_height % todo_item_height

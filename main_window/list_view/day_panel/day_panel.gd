@@ -31,6 +31,7 @@ func _ready() -> void:
 		EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
 		EventBus.view_mode_changed.connect(_on_view_mode_changed)
 		_on_view_mode_changed(Settings.view_mode)
+		EventBus.today_changed.connect(_update_date_offset)
 
 
 func _update_header() -> void:
@@ -40,7 +41,25 @@ func _update_header() -> void:
 	else:
 		%Date.text = "MMM DD, YYYY"
 		%Weekday.text = "WEEKDAY"
+	_update_date_offset()
 	_apply_date_relative_formating()
+
+
+func _update_date_offset() -> void:
+	if date:
+		var day_offset := date.day_difference_to(DayTimer.today)
+		if day_offset == -1:
+			%DayOffset.text = "Yesterday"
+		elif day_offset == 0:
+			%DayOffset.text = "TODAY"
+		elif day_offset == 1:
+			%DayOffset.text = "Tomorrow"
+		elif day_offset < 0:
+			%DayOffset.text = "%d days ago" % abs(day_offset)
+		elif day_offset > 0:
+			%DayOffset.text = "in %d days" % abs(day_offset)
+	else:
+		%DayOffset.text = ""
 
 
 func _update_store_path() -> void:
