@@ -14,16 +14,12 @@ func _ready() -> void:
 	EventBus.dark_mode_changed.connect(func(dark_mode):
 		if dark_mode:
 			%Icon.self_modulate = Settings.NORD_06
-			for override in ["font_color", "font_hover_color", "font_pressed_color"]:
-				%ShortcutHint.add_theme_color_override(override, Settings.NORD_00)
 			var stylebox = %ShortcutHint.get_theme_stylebox("normal")
 			stylebox.bg_color = Settings.NORD_03
 			for style in ["normal", "hover", "pressed"]:
 				%ShortcutHint.add_theme_stylebox_override(style, stylebox)
 		else:
 			%Icon.self_modulate = Settings.NORD_00
-			for override in ["font_color", "font_hover_color", "font_pressed_color"]:
-				%ShortcutHint.add_theme_color_override(override, Settings.NORD_04)
 			var stylebox = %ShortcutHint.get_theme_stylebox("normal")
 			stylebox.bg_color = Settings.NORD_06
 			for style in ["normal", "hover", "pressed"]:
@@ -78,3 +74,7 @@ func _on_mouse_entered() -> void:
 func _on_mouse_exited() -> void:
 	if get_viewport().gui_get_focus_owner() != %SearchQuery:
 		self.theme_type_variation = "SearchBar"
+
+
+func _on_icon_pressed() -> void:
+	%SearchQuery.grab_focus()

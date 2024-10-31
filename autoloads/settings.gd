@@ -148,6 +148,11 @@ var dark_mode := true:
 			var side_panel_style := theme.get_stylebox("panel", "SidePanel")
 			side_panel_style.bg_color = NORD_02
 			theme.set_stylebox("panel", "SidePanel", side_panel_style)
+
+			var search_bar_hover_style := theme.get_stylebox("panel", "SearchBar_Hover")
+			search_bar_hover_style.bg_color = NORD_02
+			search_bar_hover_style.border_color = NORD_04
+			theme.set_stylebox("panel", "SearchBar_Hover", search_bar_hover_style)
 		else:
 			RenderingServer.set_default_clear_color("#ECEFF4")
 			theme.set_color("font_color", "Label", NORD_00)
@@ -221,6 +226,11 @@ var dark_mode := true:
 			var side_panel_style := theme.get_stylebox("panel", "SidePanel")
 			side_panel_style.bg_color = NORD_04
 			theme.set_stylebox("panel", "SidePanel", side_panel_style)
+
+			var search_bar_hover_style := theme.get_stylebox("panel", "SearchBar_Hover")
+			search_bar_hover_style.bg_color = NORD_04
+			search_bar_hover_style.border_color = NORD_02
+			theme.set_stylebox("panel", "SearchBar_Hover", search_bar_hover_style)
 		EventBus.dark_mode_changed.emit(dark_mode)
 
 var search_query := "":
