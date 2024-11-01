@@ -1,52 +1,73 @@
-extends Control
+extends MarginContainer
+
+## The [PackedScene] that the scene tree will be changed to after the user chose
+## a valid store path and pressed the "Confirm" button.
+@export var main_scene := preload("res://main_window/main_window.tscn")
 
 
 func _ready() -> void:
-	if OS.is_debug_build():
-		change_to_main_scene.call_deferred()
-		return
+	$FileDialog.hide()
+	%ErrorMessage.visible_ratio = 0.0
 
-	# check if the user already set the store path
-	var config := ConfigFile.new()
-	var error := config.load(Settings.settings_path)
-	if not error:
-		if config.has_section_key("Settings", "store_path"):
-			var store_path = config.get_value("Settings", "store_path")
-			if DirAccess.dir_exists_absolute(store_path):
-				Settings.store_path = store_path
-				change_to_main_scene.call_deferred()
-				return
+	if not OS.has_feature("editor"):
+		#region Check if `store_path` is already set
+		var config := ConfigFile.new()
+		var error := config.load(Settings.settings_path)
+		if not error:
+			# If a settings file exists...
+			if config.has_section_key("Settings", "store_path"):
+				# ... it contains a `store_path` key...
+				Settings.store_path = config.get_value("Settings", "store_path")
+				if DirAccess.dir_exists_absolute(Settings.store_path):
+					# ... and its value is (still?) valid, accept it and change to the main scene.
+					get_tree().change_scene_to_packed.call_deferred(main_scene)
+				else:
+					# ... and its value is *not* valid (anymore?), show an error message.
+					%ErrorMessage.visible_ratio = 1.0
+					%Confirm.focus_mode = FOCUS_NONE
+					%Confirm.disabled = true
+		#endregion
 
-	get_window().min_size = size
-
-	%Path.text = Settings.store_path
+	%DirectoryPath.text = Settings.store_path
 	%BrowseFiles.grab_focus()
 
 
 func _on_browse_files_pressed() -> void:
-	if DirAccess.dir_exists_absolute(%Path.text):
-		$FileDialog.current_path = %Path.text
-	else:
+	if DirAccess.dir_exists_absolute(Settings.store_path):
 		$FileDialog.current_path = Settings.store_path
+	elif OS.has_feature("windows"):
+		$FileDialog.current_path = OS.get_environment("USERPROFILE") + "/"
+	else:
+		$FileDialog.current_path = OS.get_environment("HOME") + "/"
+
 	$FileDialog.popup_centered()
 
 
-func _on_file_dialog_dir_selected(dir_path : String) -> void:
-	%Path.text = dir_path
+func _on_file_dialog_dir_selected(path_to_directory : String) -> void:
+	%DirectoryPath.text = path_to_directory
+	Settings.store_path = path_to_directory
+	%ErrorMessage.visible_ratio = 0.0
+	%Confirm.focus_mode = FOCUS_ALL
+	%Confirm.disabled = false
 
 
 func _on_confirm_pressed() -> void:
-	DirAccess.make_dir_recursive_absolute(%Path.text)
+	if Settings.store_path == Settings.DEFAULT_STORE_PATH:
+		DirAccess.make_dir_recursive_absolute(Settings.store_path)
 
-	# permanently save store path
-	var config = ConfigFile.new()
-	config.load(Settings.settings_path) # keep existing settings (if there are any)
-	config.set_value("Settings", "store_path", %Path.text)
-	config.save(Settings.settings_path)
+	if not DirAccess.dir_exists_absolute(Settings.store_path):
+		%ErrorMessage.visible_ratio = 1.0
+		%Confirm.focus_mode = FOCUS_NONE
+		%Confirm.disabled = true
+		%BrowseFiles.grab_focus()
+		return # early
 
-	Settings.store_path = %Path.text
-	change_to_main_scene()
+	if not OS.has_feature("editor"):
+		#region Save `store_path` to disk
+		var config = ConfigFile.new()
+		config.load(Settings.settings_path) # keep existing settings (if there are any)
+		config.set_value("Settings", "store_path", Settings.store_path)
+		config.save(Settings.settings_path)
+		#endregion
 
-
-func change_to_main_scene() -> void:
-	get_tree().change_scene_to_file("res://main_window/main_window.tscn")
+	get_tree().change_scene_to_packed.call_deferred(main_scene)

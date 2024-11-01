@@ -32,7 +32,17 @@ enum SidePanelState {
 	HELP
 }
 
-var store_path : String
+var DEFAULT_STORE_PATH : String:
+	get():
+		if OS.has_feature("editor"):
+			return ProjectSettings.globalize_path("user://")
+		elif OS.has_feature("windows"):
+			return OS.get_environment("USERPROFILE") + "/habituary/"
+		else:
+			return OS.get_environment("HOME") + "/habituary/"
+
+var store_path := DEFAULT_STORE_PATH
+
 var settings_path : String
 
 var date_format_save := "YYYY-MM-DD"
@@ -255,14 +265,9 @@ var bookmarks_due_today := 0:
 
 
 func _enter_tree() -> void:
-	if OS.is_debug_build():
-		store_path = ProjectSettings.globalize_path("user://")
+	if OS.has_feature("editor"):
 		settings_path = ProjectSettings.globalize_path("user://debug_settings.cfg")
 	else:
-		if OS.has_feature("windows"):
-			store_path = OS.get_environment("USERPROFILE") + "/habituary/"
-		else:
-			store_path = OS.get_environment("HOME") + "/habituary/"
 		settings_path = ProjectSettings.globalize_path("user://settings.cfg")
 
 	var config := ConfigFile.new()
