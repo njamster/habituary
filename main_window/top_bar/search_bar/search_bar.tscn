@@ -24,8 +24,7 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
 [node name="SearchBar" type="PanelContainer"]
-offset_left = 14.0
-offset_right = 121.0
+offset_right = 164.0
 offset_bottom = 28.0
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 1
@@ -58,6 +57,7 @@ gap_width = 12
 
 [node name="SearchQuery" type="LineEdit" parent="HBox"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(118, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
@@ -69,7 +69,6 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_oc8vk")
 placeholder_text = "Search To-Dos..."
 context_menu_enabled = false
 clear_button_enabled = true
-draw_control_chars = true
 select_all_on_focus = true
 caret_blink = true
 caret_blink_interval = 0.45

@@ -39,7 +39,6 @@ icon = ExtResource("1_q3y45")
 [node name="Tooltip" type="Node" parent="NextDay"]
 script = ExtResource("3_42o0e")
 text = "Next Day"
-input_action = "next_day"
 
 [node name="ShiftViewForward" type="Button" parent="."]
 layout_mode = 2
@@ -53,10 +52,9 @@ icon = ExtResource("2_satv2")
 [node name="Tooltip" type="Node" parent="ShiftViewForward"]
 script = ExtResource("3_42o0e")
 text = "Move 3 Days Forward"
-input_action = "shift_view_forward"
 
 [node name="Spacer" type="Control" parent="."]
-custom_minimum_size = Vector2(0, 18)
+custom_minimum_size = Vector2(0, 26)
 layout_mode = 2
 
 [node name="Calendar" type="Button" parent="."]

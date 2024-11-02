@@ -1,4 +1,4 @@
-extends Control
+extends MarginContainer
 
 
 func _unhandled_input(event: InputEvent) -> void:

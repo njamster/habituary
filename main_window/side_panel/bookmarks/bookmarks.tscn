@@ -3,6 +3,11 @@
 [ext_resource type="Script" path="res://main_window/side_panel/bookmarks/bookmarks.gd" id="1_60nsm"]
 
 [node name="Bookmarks" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/separation = 16
 script = ExtResource("1_60nsm")
 

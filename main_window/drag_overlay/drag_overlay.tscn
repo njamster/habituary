@@ -26,6 +26,7 @@ width = 50
 script = ExtResource("1_0aom8")
 
 [node name="LeftBorder" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(50, 0)
 anchors_preset = 9
 anchor_bottom = 1.0
 offset_right = 50.0
@@ -50,6 +51,7 @@ texture = ExtResource("3_ndai4")
 stretch_mode = 3
 
 [node name="RightBorder" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(50, 0)
 anchors_preset = 11
 anchor_left = 1.0
 anchor_right = 1.0

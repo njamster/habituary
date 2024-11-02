@@ -28,6 +28,8 @@ action = &"show_help"
 events = [SubResource("InputEventAction_j70y2")]
 
 [node name="ExtraPanelsWidget" type="VBoxContainer"]
+offset_right = 28.0
+offset_bottom = 102.0
 size_flags_vertical = 10
 script = ExtResource("1_5x0ik")
 
@@ -76,15 +78,11 @@ text = "9
 [node name="NotificationDot" type="TextureRect" parent="Bookmarks"]
 unique_name_in_owner = true
 self_modulate = Color(1, 0, 0, 1)
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -11.0
+layout_mode = 0
+offset_left = 16.0
 offset_top = 3.0
-offset_right = -4.0
+offset_right = 23.0
 offset_bottom = 10.0
-grow_horizontal = 0
 texture = ExtResource("5_o3mjg")
 
 [node name="Spacer" type="Control" parent="."]

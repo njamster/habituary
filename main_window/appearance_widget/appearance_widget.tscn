@@ -34,8 +34,8 @@ pressed = true
 events = [SubResource("InputEventAction_uckjy")]
 
 [node name="AppearanceWidget" type="VBoxContainer"]
-offset_right = 15.0
-offset_bottom = 122.0
+offset_right = 28.0
+offset_bottom = 124.0
 script = ExtResource("1_1o2da")
 
 [node name="SingleDay" type="Button" parent="."]

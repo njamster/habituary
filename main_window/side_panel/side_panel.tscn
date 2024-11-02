@@ -6,6 +6,11 @@
 
 [node name="SidePanel" type="PanelContainer"]
 custom_minimum_size = Vector2(360, 0)
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 216.0
+grow_vertical = 2
+size_flags_vertical = 3
 theme_type_variation = &"SidePanel"
 script = ExtResource("1_mcu5f")
 
@@ -31,5 +36,3 @@ layout_mode = 2
 
 [node name="Help" parent="." instance=ExtResource("3_kejmd")]
 layout_mode = 2
-
-[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]

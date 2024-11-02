@@ -65,7 +65,6 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("2_ttk1a")
 theme_override_font_sizes/font_size = 14
-text = "4 days away"
 
 [node name="Tooltip" type="Node" parent="Header"]
 script = ExtResource("2_wbwrx")
@@ -105,4 +104,3 @@ one_shot = true
 [connection signal="mouse_entered" from="Header" to="." method="_on_header_mouse_entered"]
 [connection signal="mouse_exited" from="Header" to="." method="_on_header_mouse_exited"]
 [connection signal="gui_input" from="ScrollContainer" to="ScrollContainer" method="_on_gui_input"]
-[connection signal="timeout" from="HoverTimer" to="." method="_on_hover_timer_timeout"]

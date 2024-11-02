@@ -9,6 +9,11 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_unkbq"]
 
 [node name="Help" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/separation = 16
 script = ExtResource("1_1rhmu")
 
@@ -33,7 +38,6 @@ text = "Version:"
 
 [node name="ID" type="LineEdit" parent="VBox/Version"]
 layout_mode = 2
-size_flags_horizontal = 4
 theme_override_colors/font_uneditable_color = Color(0.505882, 0.631373, 0.756863, 1)
 theme_override_constants/minimum_character_width = 0
 theme_override_font_sizes/font_size = 14

@@ -265,6 +265,8 @@ var bookmarks_due_today := 0:
 
 
 func _enter_tree() -> void:
+	get_window().wrap_controls = true # Sadly, there is no ProjectSetting to enable this by default
+
 	if OS.has_feature("editor"):
 		settings_path = ProjectSettings.globalize_path("user://debug_settings.cfg")
 	else:

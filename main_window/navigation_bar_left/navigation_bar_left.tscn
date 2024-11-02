@@ -25,6 +25,8 @@ action = &"jump_to_today"
 events = [SubResource("InputEventAction_e5hy0")]
 
 [node name="NavigationBarLeft" type="VBoxContainer"]
+offset_right = 28.0
+offset_bottom = 114.0
 script = ExtResource("1_kn5h0")
 
 [node name="PreviousDay" type="Button" parent="."]
@@ -39,7 +41,6 @@ icon = ExtResource("1_rckff")
 [node name="Tooltip" type="Node" parent="PreviousDay"]
 script = ExtResource("3_6cgsb")
 text = "Previous Day"
-input_action = "previous_day"
 
 [node name="ShiftViewBackward" type="Button" parent="."]
 layout_mode = 2
@@ -53,10 +54,9 @@ icon = ExtResource("2_s8dw8")
 [node name="Tooltip" type="Node" parent="ShiftViewBackward"]
 script = ExtResource("3_6cgsb")
 text = "Move 3 Days Back"
-input_action = "shift_view_backward"
 
 [node name="Spacer" type="Control" parent="."]
-custom_minimum_size = Vector2(0, 18)
+custom_minimum_size = Vector2(0, 26)
 layout_mode = 2
 
 [node name="Today" type="Button" parent="."]

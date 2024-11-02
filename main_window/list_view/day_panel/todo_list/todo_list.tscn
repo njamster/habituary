@@ -41,6 +41,5 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 13
 
-[connection signal="item_rect_changed" from="." to="." method="_on_item_rect_changed"]
 [connection signal="item_rect_changed" from="LineHighlight" to="." method="_on_line_highlight_item_rect_changed"]
 [connection signal="child_order_changed" from="VerticalPadding/Items" to="." method="_on_items_child_order_changed"]

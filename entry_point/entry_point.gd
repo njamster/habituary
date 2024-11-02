@@ -1,4 +1,4 @@
-extends MarginContainer
+extends CenterContainer
 
 ## The [PackedScene] that the scene tree will be changed to after the user chose
 ## a valid store path and pressed the "Confirm" button.

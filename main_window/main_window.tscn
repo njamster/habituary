@@ -12,23 +12,16 @@
 [ext_resource type="PackedScene" uid="uid://esddcur57ihc" path="res://main_window/list_view/list_view.tscn" id="7_ajas6"]
 [ext_resource type="PackedScene" uid="uid://cih6c2f3oxfl0" path="res://main_window/drag_overlay/drag_overlay.tscn" id="7_mttq0"]
 
-[node name="MainWindow" type="Control"]
-layout_mode = 3
+[node name="MainWindow" type="MarginContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 1
 script = ExtResource("1_cqr1i")
 
 [node name="HBox" type="HBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 theme_override_constants/separation = 0
 
 [node name="SidePanel" parent="HBox" instance=ExtResource("1_rij1k")]
@@ -41,15 +34,12 @@ size_flags_horizontal = 3
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_bottom = 12
 script = ExtResource("3_y34bb")
-minimum_vertical_margin = 12
 
 [node name="VBox" type="VBoxContainer" parent="HBox/MainPanel"]
 layout_mode = 2
-size_flags_horizontal = 3
 theme_override_constants/separation = 16
 
 [node name="TopBar" parent="HBox/MainPanel/VBox" instance=ExtResource("2_tkl15")]
-unique_name_in_owner = true
 layout_mode = 2
 
 [node name="HBox" type="HBoxContainer" parent="HBox/MainPanel/VBox"]
@@ -59,7 +49,7 @@ theme_override_constants/separation = 16
 
 [node name="ToolbarLeft" type="VBoxContainer" parent="HBox/MainPanel/VBox/HBox"]
 layout_mode = 2
-theme_override_constants/separation = 0
+theme_override_constants/separation = 34
 
 [node name="NavigationBarLeft" parent="HBox/MainPanel/VBox/HBox/ToolbarLeft" instance=ExtResource("2_l73p5")]
 layout_mode = 2
@@ -69,10 +59,10 @@ layout_mode = 2
 
 [node name="ListView" parent="HBox/MainPanel/VBox/HBox" instance=ExtResource("7_ajas6")]
 layout_mode = 2
-size_flags_horizontal = 3
 
 [node name="ToolbarRight" type="VBoxContainer" parent="HBox/MainPanel/VBox/HBox"]
 layout_mode = 2
+theme_override_constants/separation = 34
 
 [node name="NavigationBarRight" parent="HBox/MainPanel/VBox/HBox/ToolbarRight" instance=ExtResource("5_s2ne8")]
 layout_mode = 2
