@@ -22,15 +22,18 @@ colors = PackedColorArray(0.505882, 0.631373, 0.756863, 0.0352941, 0.505882, 0.6
 gradient = SubResource("Gradient_4o26m")
 width = 50
 
-[node name="DragOverlay" type="CanvasLayer"]
+[node name="DragOverlay" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_0aom8")
 
 [node name="LeftBorder" type="MarginContainer" parent="."]
 custom_minimum_size = Vector2(50, 0)
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 50.0
-grow_vertical = 2
+layout_mode = 2
 script = ExtResource("2_wtf54")
 day_offset = -1
 
@@ -52,13 +55,8 @@ stretch_mode = 3
 
 [node name="RightBorder" type="MarginContainer" parent="."]
 custom_minimum_size = Vector2(50, 0)
-anchors_preset = 11
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -50.0
-grow_horizontal = 0
-grow_vertical = 2
+layout_mode = 2
+size_flags_horizontal = 10
 script = ExtResource("2_wtf54")
 day_offset = 1
 

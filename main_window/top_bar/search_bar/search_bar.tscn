@@ -24,7 +24,7 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
 [node name="SearchBar" type="PanelContainer"]
-offset_right = 164.0
+offset_right = 215.0
 offset_bottom = 28.0
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 1

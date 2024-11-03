@@ -29,6 +29,7 @@ layout_mode = 2
 mouse_filter = 1
 
 [node name="MainPanel" type="MarginContainer" parent="HBox"]
+custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_top = 12
@@ -72,5 +73,9 @@ layout_mode = 2
 size_flags_vertical = 10
 
 [node name="DragOverlay" parent="." instance=ExtResource("7_mttq0")]
+visible = false
+layout_mode = 2
 
 [node name="Overlay" parent="." instance=ExtResource("7_77111")]
+visible = false
+layout_mode = 2

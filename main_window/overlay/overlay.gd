@@ -1,21 +1,21 @@
-extends CanvasLayer
+extends MarginContainer
 
 const DIMMED_ALPHA := 0.7
 
-var _previous_min_size := Vector2i.ZERO
-
 
 func _ready() -> void:
-	close_overlay()
+	for component in [%CalendarWidget, %SettingsPanel]:
+		component.hide()
+	self.hide()
 
 	EventBus.calendar_button_pressed.connect(
 		func():
-			if not $CalendarWidget.visible:
-				open_component($CalendarWidget, false)
+			if not %CalendarWidget.visible:
+				open_component(%CalendarWidget, false)
 			else:
 				close_overlay()
 	)
-	EventBus.settings_button_pressed.connect(open_component.bind($SettingsPanel, true))
+	EventBus.settings_button_pressed.connect(open_component.bind(%SettingsPanel, true))
 
 	EventBus.todo_list_clicked.connect(close_overlay)
 
@@ -36,38 +36,18 @@ func open_component(component : Control, dimmed_background : bool) -> void:
 		focus_owner.release_focus()
 
 	self.show()
-	for c in [$CalendarWidget, $SettingsPanel]:
+	for c in [%CalendarWidget, %SettingsPanel]:
 		c.hide()
-		if c.item_rect_changed.is_connected(_update_min_size):
-			c.item_rect_changed.disconnect(_update_min_size)
 	component.show()
-
-	_previous_min_size = DisplayServer.window_get_min_size()
-
-	component.item_rect_changed.connect(_update_min_size.bind(component))
-	_update_min_size(component)
-
-
-func _update_min_size(component : Control) -> void:
-	get_window().min_size = Vector2i(
-		max(component.size.x + component.get_meta("x_padding", 0), _previous_min_size.x),
-		max(component.size.y + component.get_meta("y_padding", 0), _previous_min_size.y)
-	)
 
 
 func close_overlay() -> void:
 	if not self.visible:
 		return
 
-	for component in [$CalendarWidget, $SettingsPanel]:
+	for component in [%CalendarWidget, %SettingsPanel]:
 		component.hide()
-		if component.item_rect_changed.is_connected(_update_min_size):
-			component.item_rect_changed.disconnect(_update_min_size)
 	self.hide()
-
-	# FIXME: re-triggering the min_size calculation of the MainWindow would probably be cleaner
-	get_window().min_size = _previous_min_size
-	_previous_min_size = Vector2i.ZERO
 
 	EventBus.overlay_closed.emit()
 

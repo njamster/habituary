@@ -26,7 +26,7 @@ func _ready() -> void:
 
 
 func _on_visibility_changed() -> void:
-	if visible:
+	if visible and is_node_ready():
 		%Close.grab_focus()
 
 
@@ -61,4 +61,4 @@ func _on_options_value_changed(value: int) -> void:
 
 
 func _on_close_pressed() -> void:
-	get_parent().close_overlay()
+	get_parent().get_parent().close_overlay()

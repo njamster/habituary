@@ -4,25 +4,41 @@
 [ext_resource type="PackedScene" uid="uid://l4kyh6xqycoy" path="res://main_window/overlay/calendar_widget/calendar_widget.tscn" id="2_4rb6r"]
 [ext_resource type="PackedScene" uid="uid://dkopw4i7xb1hs" path="res://main_window/overlay/settings_panel/settings_panel.tscn" id="2_qeh0g"]
 
-[node name="Overlay" type="CanvasLayer"]
-script = ExtResource("1_ippme")
-
-[node name="Background" type="ColorRect" parent="."]
+[node name="Overlay" type="MarginContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_ippme")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 2
 color = Color(0, 0, 0, 0.7)
 
-[node name="CalendarWidget" parent="." instance=ExtResource("2_4rb6r")]
-visible = false
+[node name="ExtraPadding1" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 87
+theme_override_constants/margin_right = 40
 
-[node name="SettingsPanel" parent="." instance=ExtResource("2_qeh0g")]
-visible = false
-offset_left = -306.5
-offset_top = -150.5
-offset_right = 306.5
-offset_bottom = 150.5
+[node name="CalendarWidget" parent="ExtraPadding1" instance=ExtResource("2_4rb6r")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ExtraPadding2" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="SettingsPanel" parent="ExtraPadding2" instance=ExtResource("2_qeh0g")]
+unique_name_in_owner = true
+layout_mode = 2
 
 [connection signal="gui_input" from="Background" to="." method="_on_background_gui_input"]

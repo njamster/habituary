@@ -8,12 +8,14 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
+offset_left = -306.5
+offset_top = -231.0
+offset_right = 306.5
+offset_bottom = 231.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 script = ExtResource("1_yrmyc")
 metadata/x_padding = 64
 metadata/y_padding = 64
@@ -39,12 +41,11 @@ theme_override_constants/separation = 8
 [node name="Label" type="Label" parent="VBox/VBox1/StorePath"]
 layout_mode = 2
 text = "Store Path"
-vertical_alignment = 1
 
 [node name="Path" type="LineEdit" parent="VBox/VBox1/StorePath"]
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
-text = "/home/ben/habituary/"
+text = "<store path>"
 alignment = 1
 editable = false
 
@@ -66,7 +67,6 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Current Day Position"
-vertical_alignment = 1
 
 [node name="Options" type="OptionButton" parent="VBox/VBox2/TodayPosition"]
 layout_mode = 2
@@ -87,7 +87,6 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Start Week on Monday"
-vertical_alignment = 1
 
 [node name="Options" type="CheckButton" parent="VBox/VBox3/FirstWeekday"]
 layout_mode = 2
@@ -108,7 +107,6 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 text = "New Days Start At"
-vertical_alignment = 1
 
 [node name="Options" type="SpinBox" parent="VBox/VBox4/DayStartsAt"]
 layout_mode = 2
@@ -119,7 +117,6 @@ alignment = 1
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
 text = "hours past midnight"
-vertical_alignment = 1
 
 [node name="Explanation" type="Label" parent="VBox/VBox4"]
 modulate = Color(1, 1, 1, 0.607843)

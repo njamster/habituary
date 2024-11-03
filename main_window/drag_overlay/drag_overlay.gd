@@ -1,4 +1,4 @@
-extends CanvasLayer
+extends HBoxContainer
 
 const TRIGGER_ZONE_WIDTH := 44  # pixels
 

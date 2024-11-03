@@ -111,7 +111,7 @@ func update_month() -> void:
 				date.format(Settings.date_format_save)
 			) + ".txt"):
 				button.modulate.a = 0.55
-		button.pressed.connect(get_parent().close_overlay)
+		button.pressed.connect(get_parent().get_parent().close_overlay)
 		$VBox/GridContainer.add_child(button)
 		date = date.add_days(1)
 
