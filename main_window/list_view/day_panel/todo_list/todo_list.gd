@@ -162,6 +162,9 @@ func load_from_disk(file : FileAccess) -> void:
 		var next_line := file.get_line()
 		if next_line.begins_with("SCROLL:"):
 			var scroll_offset := int(next_line.right(-7))
+			# ensure that the scroll offset is a multiple of the height of one row in the list
+			const ROW_HEIGHT := 40.0 # FIXME: avoid magic numbers...
+			scroll_offset = int(round(scroll_offset / ROW_HEIGHT) * ROW_HEIGHT)
 			# FIXME: the following works, but is rather hacky...
 			await get_tree().process_frame
 			await get_tree().process_frame
