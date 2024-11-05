@@ -132,6 +132,9 @@ func save_to_disk() -> void:
 	elif FileAccess.file_exists(store_path):
 		DirAccess.remove_absolute(store_path)
 
+	if OS.is_debug_build():
+		print("[DEBUG] List Saved to Disk!")
+
 
 func load_from_disk() -> void:
 	if FileAccess.file_exists(store_path):

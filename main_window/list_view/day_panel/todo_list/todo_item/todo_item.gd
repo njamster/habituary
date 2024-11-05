@@ -4,7 +4,7 @@ signal predecessor_requested
 signal successor_requested
 
 signal editing_started
-signal changed
+signal list_save_requested
 
 signal folded
 signal unfolded
@@ -206,7 +206,7 @@ func delete() -> void:
 	queue_free()
 	if self.text:
 		await tree_exited
-		changed.emit()
+		list_save_requested.emit()
 
 
 func _on_edit_text_changed(new_text: String) -> void:
@@ -228,8 +228,8 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 	var new_item := (_pre_edit_text == "")
 
 	if new_text:
-		if _pre_edit_text != new_text:
-			changed.emit()
+		if _pre_edit_text != new_text and not key_input:
+			list_save_requested.emit()
 		%Edit.release_focus()
 		%EditingOptions.hide()
 		$Triangle.hide()

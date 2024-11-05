@@ -6,6 +6,12 @@ const TODO_ITEM := preload("todo_item/todo_item.tscn")
 func _ready() -> void:
 	$LineHighlight.modulate.a = 0.0
 
+	$DebounceTimer.timeout.connect(func():
+		if OS.is_debug_build():
+			print("[DEBUG] DebounceTimer Timed Out: Saving List...")
+		get_parent().get_parent().save_to_disk()
+	)
+
 
 func add_todo(at_position := Vector2.ZERO) -> Control:
 	var new_item := TODO_ITEM.instantiate()
@@ -21,8 +27,10 @@ func add_todo(at_position := Vector2.ZERO) -> Control:
 
 func connect_todo_signals(todo_item : Control) -> void:
 	todo_item.editing_started.connect(hide_line_highlight)
-	todo_item.changed.connect(func():
-		get_parent().get_parent().save_to_disk()
+	todo_item.list_save_requested.connect(func():
+		if OS.is_debug_build():
+			print("[DEBUG] List Save Requested: (Re)Starting DebounceTimer...")
+		$DebounceTimer.start()
 	)
 	todo_item.predecessor_requested.connect(func():
 		add_todo(self.global_position + todo_item.position - Vector2(0, 32))
@@ -41,7 +49,7 @@ func connect_todo_signals(todo_item : Control) -> void:
 func disconnect_todo_signals(todo_item : Control) -> void:
 	var signal_names = [
 		"editing_started",
-		"changed",
+		"list_save_requested",
 		"predecessor_requested",
 		"successor_requested",
 		"folded",
