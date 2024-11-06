@@ -25,7 +25,12 @@ func _ready() -> void:
 	if not Engine.is_editor_hint():
 		_update_store_path()
 		load_from_disk()
+
+		%TodoList.list_save_requested.connect(save_to_disk)
+		# NOTE: `tree_exited` will be emitted both when this panel is removed from the tree because
+		# the user scrolled the list'view, as well as on a NOTIFICATION_WM_CLOSE_REQUEST.
 		self.tree_exited.connect(save_to_disk)
+
 		EventBus.today_changed.connect(_apply_date_relative_formating)
 		_on_dark_mode_changed(Settings.dark_mode)
 		EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
@@ -126,6 +131,10 @@ func _on_gui_input(event: InputEvent) -> void:
 
 
 func save_to_disk() -> void:
+	# If the list's DebounceTimer isn't running, that means there aren't any unsaved changes
+	if %TodoList/DebounceTimer.is_stopped():
+		return # early
+
 	if %TodoList.has_items():
 		var file := FileAccess.open(store_path, FileAccess.WRITE)
 		%TodoList.save_to_disk(file)
@@ -133,6 +142,8 @@ func save_to_disk() -> void:
 		DirAccess.remove_absolute(store_path)
 
 	if OS.is_debug_build():
+		# NOTE: This will *not* be printed when this function is called after `tree_exited` was
+		# emitted. See: https://github.com/godotengine/godot/issues/90667
 		print("[DEBUG] List Saved to Disk!")
 
 

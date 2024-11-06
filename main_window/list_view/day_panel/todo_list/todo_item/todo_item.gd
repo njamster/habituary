@@ -64,6 +64,8 @@ enum States { TO_DO, DONE, FAILED }
 
 			EventBus.bookmark_changed.emit(self, date, get_index())
 
+			list_save_requested.emit()
+
 @export var is_heading := false:
 	set(value):
 		is_heading = value
@@ -86,6 +88,8 @@ enum States { TO_DO, DONE, FAILED }
 			_on_editing_options_resized()
 			%Heading.button_pressed = is_heading
 
+			list_save_requested.emit()
+
 @export var is_bold := false:
 	set(value):
 		is_bold = value
@@ -97,6 +101,8 @@ enum States { TO_DO, DONE, FAILED }
 			_apply_formatting()
 			%Bold.button_pressed = is_bold
 
+			list_save_requested.emit()
+
 @export var is_italic := false:
 	set(value):
 		is_italic = value
@@ -107,6 +113,8 @@ enum States { TO_DO, DONE, FAILED }
 				%Italic.get_node("Tooltip").text = "Make Italic"
 			_apply_formatting()
 			%Italic.button_pressed = is_italic
+
+			list_save_requested.emit()
 
 
 var _contains_mouse_cursor := false
@@ -127,6 +135,8 @@ var is_folded := false:
 			self.unfolded.emit.call_deferred()
 			%ExtraInfo.hide()
 
+		list_save_requested.emit()
+
 
 var is_bookmarked := false:
 	set(value):
@@ -141,6 +151,8 @@ var is_bookmarked := false:
 				%BookmarkIndicator.hide()
 			%Bookmark.get_node("Tooltip").text = %Bookmark.text
 			%Bookmark.button_pressed = is_bookmarked
+
+			list_save_requested.emit()
 
 
 func _ready() -> void:

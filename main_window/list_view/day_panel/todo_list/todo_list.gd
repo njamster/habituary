@@ -1,5 +1,7 @@
 extends MarginContainer
 
+signal list_save_requested
+
 const TODO_ITEM := preload("todo_item/todo_item.tscn")
 
 
@@ -9,7 +11,7 @@ func _ready() -> void:
 	$DebounceTimer.timeout.connect(func():
 		if OS.is_debug_build():
 			print("[DEBUG] DebounceTimer Timed Out: Saving List...")
-		get_parent().get_parent().save_to_disk()
+		list_save_requested.emit()
 	)
 
 
