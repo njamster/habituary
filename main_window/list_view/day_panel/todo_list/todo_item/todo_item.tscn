@@ -1,6 +1,7 @@
-[gd_scene load_steps=57 format=3 uid="uid://v8u8oswwmlf3"]
+[gd_scene load_steps=58 format=3 uid="uid://v8u8oswwmlf3"]
 
 [ext_resource type="Texture2D" uid="uid://ci7y27fysy52o" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/unfolded.svg" id="2_2nsse"]
+[ext_resource type="Texture2D" uid="uid://d00v4pleoufwq" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/to_do.svg" id="2_6dyr4"]
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/todo_list/todo_item/todo_item.gd" id="2_6v2l5"]
 [ext_resource type="Script" path="res://custom/toggle_button.gd" id="2_n5f11"]
 [ext_resource type="Texture2D" uid="uid://b80hle2h5sj20" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/drag_indicator.svg" id="3_avsfu"]
@@ -163,6 +164,7 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_j40uj")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_1ifsp")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_ojvrp")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_5kfd2")
+icon = ExtResource("2_6dyr4")
 flat = true
 
 [node name="FoldHeading" type="Button" parent="MainRow/HBox/Toggle"]
@@ -354,6 +356,7 @@ icon_toggled_on = ExtResource("13_itt7w")
 
 [node name="Tooltip" type="Node" parent="EditingOptions/HBox/Bookmark"]
 script = ExtResource("3_oduck")
+text = "Add Bookmark"
 is_dense = true
 popup_position = 5
 gap_width = 0
@@ -381,6 +384,7 @@ flat = true
 
 [node name="Tooltip" type="Node" parent="EditingOptions/HBox/Delete"]
 script = ExtResource("3_oduck")
+text = "Delete To-Do"
 is_dense = true
 popup_position = 5
 gap_width = 0

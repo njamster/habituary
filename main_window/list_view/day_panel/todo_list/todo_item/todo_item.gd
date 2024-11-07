@@ -11,6 +11,9 @@ signal unfolded
 
 @onready var last_index := get_index()
 
+# used to avoid emitting `list_save_requested` too early
+var _initialization_finished := false
+
 var date : Date:
 	get():
 		# FIXME: avoid using a relative path that involves parent nodes
@@ -18,10 +21,15 @@ var date : Date:
 
 @export var text := "":
 	set(value):
-		text = value
-		if not is_in_edit_mode():
-			%Edit.text = text
-		EventBus.bookmark_changed.emit(self, date, get_index())
+		if text != value:
+			text = value
+			if is_inside_tree():
+				%Edit.text = text
+
+				EventBus.bookmark_changed.emit(self, date, get_index())
+
+				if _initialization_finished:
+					list_save_requested.emit()
 
 enum States { TO_DO, DONE, FAILED }
 @export var state := States.TO_DO:
@@ -64,7 +72,8 @@ enum States { TO_DO, DONE, FAILED }
 
 			EventBus.bookmark_changed.emit(self, date, get_index())
 
-			list_save_requested.emit()
+			if _initialization_finished and self.text:
+				list_save_requested.emit()
 
 @export var is_heading := false:
 	set(value):
@@ -88,7 +97,8 @@ enum States { TO_DO, DONE, FAILED }
 			_on_editing_options_resized()
 			%Heading.button_pressed = is_heading
 
-			list_save_requested.emit()
+			if _initialization_finished and self.text:
+				list_save_requested.emit()
 
 @export var is_bold := false:
 	set(value):
@@ -101,7 +111,8 @@ enum States { TO_DO, DONE, FAILED }
 			_apply_formatting()
 			%Bold.button_pressed = is_bold
 
-			list_save_requested.emit()
+			if _initialization_finished and self.text:
+				list_save_requested.emit()
 
 @export var is_italic := false:
 	set(value):
@@ -114,7 +125,8 @@ enum States { TO_DO, DONE, FAILED }
 			_apply_formatting()
 			%Italic.button_pressed = is_italic
 
-			list_save_requested.emit()
+			if _initialization_finished and self.text:
+				list_save_requested.emit()
 
 
 var _contains_mouse_cursor := false
@@ -135,7 +147,8 @@ var is_folded := false:
 			self.unfolded.emit.call_deferred()
 			%ExtraInfo.hide()
 
-		list_save_requested.emit()
+		if _initialization_finished and self.text:
+			list_save_requested.emit()
 
 
 var is_bookmarked := false:
@@ -152,24 +165,18 @@ var is_bookmarked := false:
 			%Bookmark.get_node("Tooltip").text = %Bookmark.text
 			%Bookmark.button_pressed = is_bookmarked
 
-			list_save_requested.emit()
+			if _initialization_finished and self.text:
+				list_save_requested.emit()
 
 
 func _ready() -> void:
-	# manually trigger setters
-	text = text
-	state = state
-	is_heading = is_heading
-	is_bookmarked = is_bookmarked
-
-	_apply_formatting()
-
 	$Triangle.hide()
 	%EditingOptions.hide()
-	%DragHandle.visible = _contains_mouse_cursor
+	%BookmarkIndicator.hide()
+	%DragHandle.visible = false
 
-	_on_dark_mode_changed(Settings.dark_mode)
 	EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
+	_on_dark_mode_changed(Settings.dark_mode)
 
 	EventBus.search_query_changed.connect(_check_for_search_query_match)
 
@@ -179,18 +186,17 @@ func _ready() -> void:
 				edit()
 	)
 
+	set_deferred("_initialization_finished", true) # deferred, in case this item is loaded from disk
+
 
 func is_in_edit_mode() -> bool:
 	return %EditingOptions.visible
 
 
-var _pre_edit_text := ""
-
 func edit() -> void:
 	%Edit.grab_focus()
 	$Triangle.show()
 	%EditingOptions.show()
-	_pre_edit_text = self.text
 
 	#region Make sure edited to-do is visible
 	# FIXME: this is pretty hacky patch...
@@ -221,8 +227,7 @@ func delete() -> void:
 		list_save_requested.emit()
 
 
-func _on_edit_text_changed(new_text: String) -> void:
-	self.text = new_text
+func _on_edit_text_changed(_new_text: String) -> void:
 	_check_for_search_query_match()
 
 
@@ -237,11 +242,11 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 	%Edit.text = new_text
 	_on_edit_text_changed(new_text)
 
-	var new_item := (_pre_edit_text == "")
+	var new_item := (self.text == "")
 
 	if new_text:
-		if _pre_edit_text != new_text and not key_input:
-			list_save_requested.emit()
+		if not key_input:
+			self.text = new_text
 		%Edit.release_focus()
 		%EditingOptions.hide()
 		$Triangle.hide()
@@ -289,7 +294,7 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 
 
 func save_to_disk(file : FileAccess) -> void:
-	if not text:
+	if not self.text:
 		return
 
 	var string := ""
@@ -310,7 +315,7 @@ func save_to_disk(file : FileAccess) -> void:
 		string += "*"
 	if is_bold:
 		string += "**"
-	string += text
+	string += self.text
 	if is_bold:
 		string += "**"
 	if is_italic:
@@ -465,38 +470,38 @@ func _add_start_time() -> void:
 	regex1.compile("^[0-9]{2}:[0-9]{2}: ")
 	var regex2 = RegEx.new()
 	regex2.compile("^[0-9]{2}:[0-9]{2}–[0-9]{2}:[0-9]{2}: ")
-	if regex1.search(text):
+	if regex1.search(self.text):
 		pass # do nothing
-	elif regex2.search(text):
+	elif regex2.search(self.text):
 		pass # do nothing
 	else:
 		# add first time
 		var current_time := Time.get_time_string_from_system().left(5)
-		text = current_time + ": " + text
+		self.text = current_time + ": " + self.text
 
 
 func _add_end_time() -> void:
 	var regex1 = RegEx.new()
 	regex1.compile("^[0-9]{2}:[0-9]{2}: ")
-	var result1 = regex1.search(text)
+	var result1 = regex1.search(self.text)
 	var regex2 = RegEx.new()
 	regex2.compile("^[0-9]{2}:[0-9]{2}–[0-9]{2}:[0-9]{2}: ")
 	if result1:
 		var current_time := Time.get_time_string_from_system().left(5)
 		if result1.get_string(0).left(-2) == current_time:
 			# replace first time
-			text = current_time + text.right(-5)
+			self.text = current_time + self.text.right(-5)
 		else:
 			# keep first time, add second time
-			text = text.left(5) + "–" + current_time + text.right(-5)
+			self.text = self.text.left(5) + "–" + current_time + self.text.right(-5)
 	elif regex2.search(text):
 		var current_time := Time.get_time_string_from_system().left(5)
 		# keep first time, replace second time
-		text = text.left(5) + "–" + current_time + text.right(-11)
+		self.text = self.text.left(5) + "–" + current_time + self.text.right(-11)
 	else:
 		# add first time
 		var current_time := Time.get_time_string_from_system().left(5)
-		text = current_time + ": " + text
+		self.text = current_time + ": " + self.text
 
 
 func _apply_formatting() -> void:
@@ -553,7 +558,7 @@ func _check_for_search_query_match() -> void:
 		%Edit.remove_theme_color_override("font_color")
 		%Edit.remove_theme_color_override("font_uneditable_color")
 		%Edit.modulate.a = 1.0
-	elif text.contains(Settings.search_query):
+	elif %Edit.text.contains(Settings.search_query):
 		%Edit.add_theme_color_override("font_color", Color("#88c0d0"))
 		%Edit.add_theme_color_override("font_uneditable_color", Color("#88c0d0"))
 		%Edit.modulate.a = 1.0
