@@ -17,8 +17,6 @@ signal day_start_hour_offset_changed(shift)
 signal show_bookmarks_from_the_past_changed
 
 @warning_ignore("unused_signal")
-signal settings_button_pressed
-@warning_ignore("unused_signal")
 signal calendar_button_pressed
 @warning_ignore("unused_signal")
 signal search_screen_button_pressed

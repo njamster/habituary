@@ -1,11 +1,11 @@
-extends PanelContainer
+extends VBoxContainer
 
 
 func _enter_tree() -> void:
 	# See: https://github.com/godotengine/godot/issues/83546#issuecomment-1856927502
 	# Without this line (or a custom_minimum_size for the label), the autowrapping will blow up the
 	# vertical size of the panel. This can (as of now) only be done via code, not in the editor.
-	$VBox/VBox1/Explanation.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	$ScrollContainer/VBox/VBox1/Explanation.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
 
 
 func _ready() -> void:
@@ -23,11 +23,6 @@ func _ready() -> void:
 
 	%DayStartsAt/Options.value = Settings.day_start_hour_offset
 	_on_options_value_changed(Settings.day_start_hour_offset)
-
-
-func _on_visibility_changed() -> void:
-	if visible and is_node_ready():
-		%Close.grab_focus()
 
 
 func _on_options_item_selected(index: int) -> void:
@@ -58,7 +53,3 @@ func _on_options_value_changed(value: int) -> void:
 	Settings.day_start_hour_offset = value
 	%DayStartsAt.get_node("../Explanation").text = \
 		"Today's date will shift one day forward at %02d:00." % value
-
-
-func _on_close_pressed() -> void:
-	get_parent().get_parent().close_overlay()

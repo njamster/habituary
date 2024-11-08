@@ -4,7 +4,7 @@ const DIMMED_ALPHA := 0.7
 
 
 func _ready() -> void:
-	for component in [%CalendarWidget, %SettingsPanel]:
+	for component in [%CalendarWidget]:
 		component.hide()
 	self.hide()
 
@@ -15,7 +15,6 @@ func _ready() -> void:
 			else:
 				close_overlay()
 	)
-	EventBus.settings_button_pressed.connect(open_component.bind(%SettingsPanel, true))
 
 	EventBus.todo_list_clicked.connect(close_overlay)
 
@@ -36,7 +35,7 @@ func open_component(component : Control, dimmed_background : bool) -> void:
 		focus_owner.release_focus()
 
 	self.show()
-	for c in [%CalendarWidget, %SettingsPanel]:
+	for c in [%CalendarWidget]:
 		c.hide()
 	component.show()
 
@@ -45,7 +44,7 @@ func close_overlay() -> void:
 	if not self.visible:
 		return
 
-	for component in [%CalendarWidget, %SettingsPanel]:
+	for component in [%CalendarWidget]:
 		component.hide()
 	self.hide()
 

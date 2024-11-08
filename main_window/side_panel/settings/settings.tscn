@@ -1,0 +1,123 @@
+[gd_scene load_steps=2 format=3 uid="uid://cid0gwgt0yh1p"]
+
+[ext_resource type="Script" path="res://main_window/side_panel/settings/settings.gd" id="1_xu2b7"]
+
+[node name="Settings" type="VBoxContainer"]
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+script = ExtResource("1_xu2b7")
+
+[node name="Heading" type="Label" parent="."]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Settings"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="VBox1" type="VBoxContainer" parent="ScrollContainer/VBox"]
+layout_mode = 2
+
+[node name="StorePath" type="HBoxContainer" parent="ScrollContainer/VBox/VBox1"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="ScrollContainer/VBox/VBox1/StorePath"]
+layout_mode = 2
+text = "Store Path"
+
+[node name="Path" type="LineEdit" parent="ScrollContainer/VBox/VBox1/StorePath"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "<store path>"
+alignment = 1
+editable = false
+
+[node name="Explanation" type="Label" parent="ScrollContainer/VBox/VBox1"]
+modulate = Color(1, 1, 1, 0.607843)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "This is the path under which Habituary will store all your to-dos. It is highly recommended that you keep regular backups of this directory to prevent data loss in case of errors or bugs."
+autowrap_mode = 3
+
+[node name="VBox2" type="VBoxContainer" parent="ScrollContainer/VBox"]
+layout_mode = 2
+
+[node name="TodayPosition" type="HBoxContainer" parent="ScrollContainer/VBox/VBox2"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/VBox/VBox2/TodayPosition"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Current Day Position"
+
+[node name="Options" type="OptionButton" parent="ScrollContainer/VBox/VBox2/TodayPosition"]
+layout_mode = 2
+
+[node name="Explanation" type="Label" parent="ScrollContainer/VBox/VBox2"]
+modulate = Color(1, 1, 1, 0.607843)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+autowrap_mode = 3
+
+[node name="VBox3" type="VBoxContainer" parent="ScrollContainer/VBox"]
+layout_mode = 2
+
+[node name="FirstWeekday" type="HBoxContainer" parent="ScrollContainer/VBox/VBox3"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/VBox/VBox3/FirstWeekday"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Start Week on Monday"
+
+[node name="Options" type="CheckButton" parent="ScrollContainer/VBox/VBox3/FirstWeekday"]
+layout_mode = 2
+
+[node name="Explanation" type="Label" parent="ScrollContainer/VBox/VBox3"]
+modulate = Color(1, 1, 1, 0.607843)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+autowrap_mode = 3
+
+[node name="VBox4" type="VBoxContainer" parent="ScrollContainer/VBox"]
+layout_mode = 2
+
+[node name="DayStartsAt" type="HBoxContainer" parent="ScrollContainer/VBox/VBox4"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/VBox/VBox4/DayStartsAt"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Days Start At"
+
+[node name="Options" type="SpinBox" parent="ScrollContainer/VBox/VBox4/DayStartsAt"]
+layout_mode = 2
+max_value = 23.0
+alignment = 1
+
+[node name="Unit" type="Label" parent="ScrollContainer/VBox/VBox4/DayStartsAt"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "hours past midnight"
+
+[node name="Explanation" type="Label" parent="ScrollContainer/VBox/VBox4"]
+modulate = Color(1, 1, 1, 0.607843)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+autowrap_mode = 3
+
+[connection signal="item_selected" from="ScrollContainer/VBox/VBox2/TodayPosition/Options" to="." method="_on_options_item_selected"]
+[connection signal="toggled" from="ScrollContainer/VBox/VBox3/FirstWeekday/Options" to="." method="_on_options_toggled"]
+[connection signal="value_changed" from="ScrollContainer/VBox/VBox4/DayStartsAt/Options" to="." method="_on_options_value_changed"]

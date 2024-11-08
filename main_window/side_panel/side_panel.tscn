@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://bbv588umdv0q4"]
+[gd_scene load_steps=5 format=3 uid="uid://bbv588umdv0q4"]
 
 [ext_resource type="Script" path="res://main_window/side_panel/side_panel.gd" id="1_mcu5f"]
+[ext_resource type="PackedScene" uid="uid://cid0gwgt0yh1p" path="res://main_window/side_panel/settings/settings.tscn" id="2_rvfgn"]
 [ext_resource type="PackedScene" uid="uid://ba4ne2kctshba" path="res://main_window/side_panel/bookmarks/bookmarks.tscn" id="2_wylvk"]
 [ext_resource type="PackedScene" uid="uid://d15dr447oxpgn" path="res://main_window/side_panel/help/help.tscn" id="3_kejmd"]
 
@@ -13,6 +14,10 @@ grow_vertical = 2
 size_flags_vertical = 3
 theme_type_variation = &"SidePanel"
 script = ExtResource("1_mcu5f")
+
+[node name="Settings" parent="." instance=ExtResource("2_rvfgn")]
+visible = false
+layout_mode = 2
 
 [node name="Capture" type="VBoxContainer" parent="."]
 visible = false

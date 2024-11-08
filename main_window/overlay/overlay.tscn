@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://brgpa340xc1dn"]
+[gd_scene load_steps=3 format=3 uid="uid://brgpa340xc1dn"]
 
 [ext_resource type="Script" path="res://main_window/overlay/overlay.gd" id="1_ippme"]
 [ext_resource type="PackedScene" uid="uid://l4kyh6xqycoy" path="res://main_window/overlay/calendar_widget/calendar_widget.tscn" id="2_4rb6r"]
-[ext_resource type="PackedScene" uid="uid://dkopw4i7xb1hs" path="res://main_window/overlay/settings_panel/settings_panel.tscn" id="2_qeh0g"]
 
 [node name="Overlay" type="MarginContainer"]
 anchors_preset = 15
@@ -25,19 +24,6 @@ theme_override_constants/margin_top = 87
 theme_override_constants/margin_right = 40
 
 [node name="CalendarWidget" parent="ExtraPadding1" instance=ExtResource("2_4rb6r")]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="ExtraPadding2" type="MarginContainer" parent="."]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
-
-[node name="SettingsPanel" parent="ExtraPadding2" instance=ExtResource("2_qeh0g")]
 unique_name_in_owner = true
 layout_mode = 2
 

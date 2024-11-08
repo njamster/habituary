@@ -16,7 +16,7 @@ func _update_today_count() -> void:
 
 func _on_side_panel_changed() -> void:
 	match Settings.side_panel:
-		Settings.SidePanelState.HIDDEN:
+		Settings.SidePanelState.HIDDEN, Settings.SidePanelState.SETTINGS:
 			$Capture.set_pressed_no_signal(false)
 			_update_tooltip($Capture)
 			$Bookmarks.set_pressed_no_signal(false)

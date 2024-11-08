@@ -27,9 +27,10 @@ enum TodayPosition {
 
 enum SidePanelState {
 	HIDDEN,
-	CAPTURE,
+	HELP,
 	BOOKMARKS,
-	HELP
+	CAPTURE,
+	SETTINGS
 }
 
 var DEFAULT_STORE_PATH : String:
