@@ -11,7 +11,11 @@ func _ready() -> void:
 		EventBus.search_query_changed.emit.call_deferred()
 	)
 
-	EventBus.dark_mode_changed.connect(func(dark_mode):
+	EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
+	_on_dark_mode_changed(Settings.dark_mode)
+
+
+func _on_dark_mode_changed(dark_mode):
 		if dark_mode:
 			%Icon.self_modulate = Settings.NORD_06
 			var stylebox = %ShortcutHint.get_theme_stylebox("normal")
@@ -24,7 +28,7 @@ func _ready() -> void:
 			stylebox.bg_color = Settings.NORD_06
 			for style in ["normal", "hover", "pressed"]:
 				%ShortcutHint.add_theme_stylebox_override(style, stylebox)
-	)
+
 
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("search_screen"):

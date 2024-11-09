@@ -52,13 +52,6 @@ var is_done := false:
 
 
 func _ready() -> void:
-	EventBus.dark_mode_changed.connect(func(dark_mode):
-		if dark_mode:
-			%JumpTo.remove_theme_color_override("icon_normal_color")
-		else:
-			%JumpTo.add_theme_color_override("icon_normal_color", Settings.NORD_00)
-	)
-
 	EventBus.today_changed.connect(func():
 		self.date = self.date
 		self.is_done = self.is_done
@@ -67,6 +60,18 @@ func _ready() -> void:
 
 	EventBus.show_bookmarks_from_the_past_changed.connect(_on_show_bookmarks_from_the_past_changed)
 	_on_show_bookmarks_from_the_past_changed()
+
+	EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
+	_on_dark_mode_changed(Settings.dark_mode)
+
+
+func _on_dark_mode_changed(dark_mode) -> void:
+		if dark_mode:
+			%JumpTo.remove_theme_color_override("icon_normal_color")
+			%JumpTo.remove_theme_color_override("icon_hover_color")
+		else:
+			%JumpTo.add_theme_color_override("icon_normal_color", Settings.NORD_00)
+			%JumpTo.add_theme_color_override("icon_hover_color", Settings.NORD_00)
 
 
 func _apply_date_relative_formating() -> void:

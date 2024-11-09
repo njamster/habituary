@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://dgxug4yl0qg3x"]
+[gd_scene load_steps=13 format=3 uid="uid://dgxug4yl0qg3x"]
 
 [ext_resource type="Script" path="res://main_window/appearance_widget/appearance_widget.gd" id="1_1o2da"]
 [ext_resource type="Script" path="res://custom/tooltip.gd" id="2_4x6jm"]
+[ext_resource type="FontFile" uid="uid://clgk36lj6qey" path="res://theme/fonts/OpenSans-ExtraBold.ttf" id="2_ppxgy"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_43ver"]
 
@@ -44,6 +45,7 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"RightSidebarButton"
+theme_override_fonts/font = ExtResource("2_ppxgy")
 theme_override_font_sizes/font_size = 12
 toggle_mode = true
 button_group = SubResource("ButtonGroup_43ver")
@@ -61,6 +63,7 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"RightSidebarButton"
+theme_override_fonts/font = ExtResource("2_ppxgy")
 theme_override_font_sizes/font_size = 12
 toggle_mode = true
 button_group = SubResource("ButtonGroup_43ver")
@@ -78,6 +81,7 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"RightSidebarButton"
+theme_override_fonts/font = ExtResource("2_ppxgy")
 theme_override_font_sizes/font_size = 12
 toggle_mode = true
 button_group = SubResource("ButtonGroup_43ver")
@@ -95,6 +99,7 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"RightSidebarButton"
+theme_override_fonts/font = ExtResource("2_ppxgy")
 theme_override_font_sizes/font_size = 12
 toggle_mode = true
 button_group = SubResource("ButtonGroup_43ver")

@@ -7,6 +7,16 @@ func _ready() -> void:
 	EventBus.bookmarks_due_today_changed.connect(_update_today_count)
 	_update_today_count()
 
+	EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
+	_on_dark_mode_changed(Settings.dark_mode)
+
+
+func _on_dark_mode_changed(dark_mode) -> void:
+		if dark_mode:
+			%TodayCount.add_theme_color_override("font_color", Settings.NORD_00)
+		else:
+			%TodayCount.add_theme_color_override("font_color", Settings.NORD_06)
+
 
 func _update_today_count() -> void:
 	%TodayCount.text = str(min(Settings.bookmarks_due_today, 9))
@@ -72,3 +82,13 @@ func _on_help_toggled(toggled_on: bool) -> void:
 		Settings.side_panel = Settings.SidePanelState.HELP
 	else:
 		Settings.side_panel = Settings.SidePanelState.HIDDEN
+
+
+func _on_bookmarks_mouse_entered() -> void:
+	if not Settings.dark_mode:
+		%TodayCount.add_theme_color_override("font_color", Settings.NORD_00)
+
+
+func _on_bookmarks_mouse_exited() -> void:
+	if not Settings.dark_mode:
+		%TodayCount.add_theme_color_override("font_color", Settings.NORD_06)

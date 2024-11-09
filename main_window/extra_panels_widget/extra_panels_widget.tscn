@@ -104,5 +104,7 @@ script = ExtResource("3_diiyk")
 text = "Show Help"
 
 [connection signal="toggled" from="Capture" to="." method="_on_capture_toggled"]
+[connection signal="mouse_entered" from="Bookmarks" to="." method="_on_bookmarks_mouse_entered"]
+[connection signal="mouse_exited" from="Bookmarks" to="." method="_on_bookmarks_mouse_exited"]
 [connection signal="toggled" from="Bookmarks" to="." method="_on_bookmarks_toggled"]
 [connection signal="toggled" from="Help" to="." method="_on_help_toggled"]
