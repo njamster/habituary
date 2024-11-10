@@ -228,6 +228,7 @@ func delete() -> void:
 
 
 func _on_edit_text_changed(_new_text: String) -> void:
+	EventBus.bookmark_changed.emit(self, date, get_index())
 	_check_for_search_query_match()
 
 

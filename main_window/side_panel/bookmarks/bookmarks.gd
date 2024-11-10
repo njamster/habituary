@@ -103,7 +103,12 @@ func _resort_list() -> void:
 
 
 func _on_bookmark_added(to_do : Control) -> void:
-	_add_bookmark(to_do.date, to_do.get_index(), to_do.text, to_do.state != to_do.States.TO_DO)
+	_add_bookmark(
+		to_do.date,
+		to_do.get_index(),
+		to_do.get_node("%Edit").text,
+		to_do.state != to_do.States.TO_DO
+	)
 
 
 func _on_bookmark_changed(to_do : Control, old_date : Date, old_index : int) -> void:
@@ -111,7 +116,7 @@ func _on_bookmark_changed(to_do : Control, old_date : Date, old_index : int) -> 
 		if bookmark.date.day_difference_to(old_date) == 0 and bookmark.line_number == old_index:
 			bookmark.date = to_do.date
 			bookmark.line_number = to_do.get_index()
-			bookmark.text = to_do.text
+			bookmark.text = to_do.get_node("%Edit").text
 			bookmark.is_done = (to_do.state != to_do.States.TO_DO)
 			_resort_list.call_deferred()
 			return
