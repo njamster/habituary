@@ -4,6 +4,8 @@ signal list_save_requested
 
 const TODO_ITEM := preload("todo_item/todo_item.tscn")
 
+var pending_save := false
+
 
 func _ready() -> void:
 	$LineHighlight.modulate.a = 0.0
@@ -27,13 +29,16 @@ func add_todo(at_position := Vector2.ZERO) -> Control:
 	return new_item
 
 
+func _start_debounce_timer():
+	if OS.is_debug_build():
+		print("[DEBUG] List Save Requested: (Re)Starting DebounceTimer...")
+	pending_save = true
+	$DebounceTimer.start()
+
+
 func connect_todo_signals(todo_item : Control) -> void:
 	todo_item.editing_started.connect(hide_line_highlight)
-	todo_item.list_save_requested.connect(func():
-		if OS.is_debug_build():
-			print("[DEBUG] List Save Requested: (Re)Starting DebounceTimer...")
-		$DebounceTimer.start()
-	)
+	todo_item.list_save_requested.connect(_start_debounce_timer)
 	todo_item.predecessor_requested.connect(func():
 		add_todo(self.global_position + todo_item.position - Vector2(0, 32))
 	)
@@ -127,8 +132,10 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 		var base_position := find_item_pos(self.global_position + at_position)
 		for i in data.size():
 			var entry = data[i]
+
 			if entry.get_parent() != %Items:
 				# item moved from one list to another
+				var old_list = entry.get_parent().get_parent().get_parent()
 				disconnect_todo_signals(entry)
 				if entry.is_bookmarked:
 					var old_date = entry.date
@@ -140,6 +147,7 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 					entry.reparent(%Items)
 				connect_todo_signals(entry)
 				%Items.move_child(entry, base_position + i)
+				old_list._start_debounce_timer()
 			else:
 				# item changed its position inside the list
 				if base_position >= entry.get_index() - i and \
@@ -152,6 +160,8 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 				else:
 					# new position is _above_ the previous position
 					%Items.move_child(entry, min(%Items.get_child_count(), base_position + i))
+
+			self._start_debounce_timer()
 
 
 func has_items() -> bool:

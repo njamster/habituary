@@ -132,7 +132,7 @@ func _on_gui_input(event: InputEvent) -> void:
 
 func save_to_disk() -> void:
 	# If the list's DebounceTimer isn't running, that means there aren't any unsaved changes
-	if %TodoList/DebounceTimer.is_stopped():
+	if not %TodoList.pending_save:
 		return # early
 
 	if %TodoList.has_items():
@@ -141,6 +141,7 @@ func save_to_disk() -> void:
 	elif FileAccess.file_exists(store_path):
 		DirAccess.remove_absolute(store_path)
 
+	%TodoList.pending_save = false
 	if OS.is_debug_build():
 		# NOTE: This will *not* be printed when this function is called after `tree_exited` was
 		# emitted. See: https://github.com/godotengine/godot/issues/90667
