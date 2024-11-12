@@ -131,7 +131,6 @@ func _on_gui_input(event: InputEvent) -> void:
 
 
 func save_to_disk() -> void:
-	# If the list's DebounceTimer isn't running, that means there aren't any unsaved changes
 	if not %TodoList.pending_save:
 		return # early
 

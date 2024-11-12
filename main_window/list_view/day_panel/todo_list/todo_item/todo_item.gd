@@ -450,6 +450,26 @@ func _input(event: InputEvent):
 		elif event.is_action_pressed("cancel_todo", false, true):
 			self.state = States.FAILED if self.state != States.FAILED else States.TO_DO
 			accept_event()
+		elif event.is_action_pressed("first_todo", false, true):
+			var index := get_index()
+			if index:
+				get_parent().get_child(0).edit()
+				accept_event()
+		elif event.is_action_pressed("previous_todo", true, true):
+			var index := get_index()
+			if index:
+				get_parent().get_child(index - 1).edit()
+				accept_event()
+		elif event.is_action_pressed("next_todo", true, true):
+			var index := get_index()
+			if index < get_parent().get_child_count() - 1:
+				get_parent().get_child(index + 1).edit()
+				accept_event()
+		elif event.is_action_pressed("last_todo", false, true):
+			var index := get_index()
+			if index < get_parent().get_child_count() - 1:
+				get_parent().get_child(get_parent().get_child_count() - 1).edit()
+				accept_event()
 
 
 func _on_check_box_gui_input(event: InputEvent) -> void:
