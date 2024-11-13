@@ -29,6 +29,10 @@ var descriptions := {
 	"toggle_italic": "Add/Remove Italic Formatting",
 	"toggle_bookmark": "Add/Remove Bookmark",
 	"delete_todo": "Delete To-Do",
+	"previous_todo": "Select Previous To-Do",
+	"next_todo": "Select Next To-Do",
+	"first_todo": "Select First To-Do",
+	"last_todo": "Select Last To-Do",
 }
 
 
@@ -92,6 +96,10 @@ func _ready() -> void:
 		"toggle_italic",
 		"toggle_bookmark",
 		"delete_todo",
+		"previous_todo",
+		"next_todo",
+		"first_todo",
+		"last_todo",
 	]:
 		var hint = preload("input_hint/input_hint.tscn").instantiate()
 		hint.description = descriptions[action]
