@@ -92,6 +92,6 @@ ok_button_text = "Select Current Folder"
 file_mode = 2
 access = 2
 
-[connection signal="pressed" from="OuterMargin/VBox/Block2/Form/Buttons/BrowseFiles" to="OuterMargin" method="_on_browse_files_pressed"]
-[connection signal="pressed" from="OuterMargin/VBox/Block2/Form/Buttons/Confirm" to="OuterMargin" method="_on_confirm_pressed"]
-[connection signal="dir_selected" from="FileDialog" to="OuterMargin" method="_on_file_dialog_dir_selected"]
+[connection signal="pressed" from="OuterMargin/VBox/Block2/Form/Buttons/BrowseFiles" to="." method="_on_browse_files_pressed"]
+[connection signal="pressed" from="OuterMargin/VBox/Block2/Form/Buttons/Confirm" to="." method="_on_confirm_pressed"]
+[connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
