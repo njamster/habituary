@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://ba4ne2kctshba"]
+[gd_scene load_steps=3 format=3 uid="uid://ba4ne2kctshba"]
 
 [ext_resource type="Script" path="res://main_window/side_panel/bookmarks/bookmarks.gd" id="1_60nsm"]
+[ext_resource type="Script" path="res://custom/padded_scrollbar.gd" id="2_d7bib"]
 
 [node name="Bookmarks" type="VBoxContainer"]
 anchors_preset = 15
@@ -36,7 +37,13 @@ layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="Items" type="VBoxContainer" parent="ScrollContainer"]
+[node name="PaddedScrollbar" type="MarginContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("2_d7bib")
+
+[node name="Items" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
