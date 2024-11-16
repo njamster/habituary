@@ -1,10 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://cid0gwgt0yh1p"]
+[gd_scene load_steps=5 format=3 uid="uid://cid0gwgt0yh1p"]
 
 [ext_resource type="Script" path="res://main_window/side_panel/settings/settings.gd" id="1_xu2b7"]
 [ext_resource type="Script" path="res://custom/padded_scrollbar.gd" id="2_r5ote"]
+[ext_resource type="Script" path="res://custom/tooltip.gd" id="4_70x8g"]
+[ext_resource type="Texture2D" uid="uid://c4185sydmovdc" path="res://main_window/side_panel/settings/images/open.svg" id="4_bf631"]
 
 [node name="Settings" type="VBoxContainer"]
-size_flags_vertical = 3
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 337.0
+grow_vertical = 2
 theme_override_constants/separation = 16
 script = ExtResource("1_xu2b7")
 
@@ -21,108 +26,132 @@ horizontal_scroll_mode = 0
 
 [node name="PaddedScrollbar" type="MarginContainer" parent="ScrollContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 script = ExtResource("2_r5ote")
 
 [node name="VBox" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar"]
 layout_mode = 2
-theme_override_constants/separation = 32
+theme_override_constants/separation = 24
 
-[node name="VBox1" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
+[node name="StorePath" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="StorePath" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/VBox1"]
-unique_name_in_owner = true
+[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/StorePath"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/VBox1/StorePath"]
-layout_mode = 2
-text = "Store Path"
-
-[node name="Path" type="LineEdit" parent="ScrollContainer/PaddedScrollbar/VBox/VBox1/StorePath"]
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/StorePath/Setting"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "<store path>"
-alignment = 1
-editable = false
+size_flags_vertical = 8
+text = "Store Path"
+vertical_alignment = 2
 
-[node name="Explanation" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/VBox1"]
+[node name="Change" type="Button" parent="ScrollContainer/PaddedScrollbar/VBox/StorePath/Setting"]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 14
+icon = ExtResource("4_bf631")
+
+[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/StorePath/Setting/Change"]
+script = ExtResource("4_70x8g")
+text = "Open Directory"
+popup_position = 5
+
+[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/VBox/StorePath"]
 modulate = Color(1, 1, 1, 0.607843)
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
-text = "This is the path under which Habituary will store all your to-dos. It is highly recommended that you keep regular backups of this directory to prevent data loss in case of errors or bugs."
-autowrap_mode = 3
+theme_override_font_sizes/normal_font_size = 12
+theme_override_font_sizes/bold_font_size = 12
+bbcode_enabled = true
+text = "[fill]The path under which Habituary stores your to-dos. [b]It is highly recommended that you keep regular backups of this directory to prevent data loss in case of errors![/b][/fill]"
+fit_content = true
 
-[node name="VBox2" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
-layout_mode = 2
-
-[node name="TodayPosition" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/VBox2"]
+[node name="TodayPosition" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/VBox2/TodayPosition"]
+[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/TodayPosition"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/TodayPosition/Setting"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 8
 text = "Current Day Position"
 
-[node name="Options" type="OptionButton" parent="ScrollContainer/PaddedScrollbar/VBox/VBox2/TodayPosition"]
+[node name="Options" type="OptionButton" parent="ScrollContainer/PaddedScrollbar/VBox/TodayPosition/Setting"]
 layout_mode = 2
 
-[node name="Explanation" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/VBox2"]
+[node name="Explanation" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/TodayPosition"]
 modulate = Color(1, 1, 1, 0.607843)
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
+text = "After changing dates, the currently selected day will be displayed at the center position of the list view."
+horizontal_alignment = 3
 autowrap_mode = 3
 
-[node name="VBox3" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
-layout_mode = 2
-
-[node name="FirstWeekday" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/VBox3"]
+[node name="FirstWeekday" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/VBox3/FirstWeekday"]
+[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/FirstWeekday"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/FirstWeekday/Setting"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 8
 text = "Start Week on Monday"
 
-[node name="Options" type="CheckButton" parent="ScrollContainer/PaddedScrollbar/VBox/VBox3/FirstWeekday"]
+[node name="Options" type="CheckButton" parent="ScrollContainer/PaddedScrollbar/VBox/FirstWeekday/Setting"]
 layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_pressed = true
 
-[node name="Explanation" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/VBox3"]
+[node name="Explanation" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/FirstWeekday"]
 modulate = Color(1, 1, 1, 0.607843)
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
+text = "New weeks in the calendar widget start on Mondays."
 autowrap_mode = 3
 
-[node name="VBox4" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
-layout_mode = 2
-
-[node name="DayStartsAt" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/VBox4"]
+[node name="DayStart" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/VBox4/DayStartsAt"]
+[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/DayStart"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/DayStart/Setting"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Days Start At"
+size_flags_vertical = 8
+text = "Days Start"
 
-[node name="Options" type="SpinBox" parent="ScrollContainer/PaddedScrollbar/VBox/VBox4/DayStartsAt"]
+[node name="Options" type="SpinBox" parent="ScrollContainer/PaddedScrollbar/VBox/DayStart/Setting"]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 max_value = 23.0
 alignment = 1
 
-[node name="Unit" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/VBox4/DayStartsAt"]
+[node name="Unit" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/DayStart/Setting"]
 layout_mode = 2
+size_flags_vertical = 8
 theme_override_font_sizes/font_size = 14
 text = "hours past midnight"
 
-[node name="Explanation" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/VBox4"]
+[node name="Explanation" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/DayStart"]
 modulate = Color(1, 1, 1, 0.607843)
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
+text = "Today's date will shift one day forward at 00:00."
 autowrap_mode = 3
 
-[connection signal="item_selected" from="ScrollContainer/PaddedScrollbar/VBox/VBox2/TodayPosition/Options" to="." method="_on_options_item_selected"]
-[connection signal="toggled" from="ScrollContainer/PaddedScrollbar/VBox/VBox3/FirstWeekday/Options" to="." method="_on_options_toggled"]
-[connection signal="value_changed" from="ScrollContainer/PaddedScrollbar/VBox/VBox4/DayStartsAt/Options" to="." method="_on_options_value_changed"]
+[connection signal="pressed" from="ScrollContainer/PaddedScrollbar/VBox/StorePath/Setting/Change" to="." method="_on_change_store_path_pressed"]
+[connection signal="item_selected" from="ScrollContainer/PaddedScrollbar/VBox/TodayPosition/Setting/Options" to="." method="_on_today_position_item_selected"]
+[connection signal="toggled" from="ScrollContainer/PaddedScrollbar/VBox/FirstWeekday/Setting/Options" to="." method="_on_first_weekday_toggled"]
+[connection signal="value_changed" from="ScrollContainer/PaddedScrollbar/VBox/DayStart/Setting/Options" to="." method="_on_day_start_value_changed"]
