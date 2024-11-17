@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://cid0gwgt0yh1p"]
+[gd_scene load_steps=6 format=3 uid="uid://cid0gwgt0yh1p"]
 
 [ext_resource type="Script" path="res://main_window/side_panel/settings/settings.gd" id="1_xu2b7"]
 [ext_resource type="Script" path="res://custom/padded_scrollbar.gd" id="2_r5ote"]
 [ext_resource type="Script" path="res://custom/tooltip.gd" id="4_70x8g"]
 [ext_resource type="Texture2D" uid="uid://c4185sydmovdc" path="res://main_window/side_panel/settings/images/open.svg" id="4_bf631"]
+[ext_resource type="Script" path="res://custom/formatted_spin_box.gd" id="5_px7qq"]
 
 [node name="Settings" type="VBoxContainer"]
 anchors_preset = 9
@@ -104,7 +105,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
-text = "Start Week on Monday"
+text = "Start Weeks on Monday"
 
 [node name="Options" type="CheckButton" parent="ScrollContainer/PaddedScrollbar/VBox/FirstWeekday/Setting"]
 layout_mode = 2
@@ -130,28 +131,35 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
-text = "Days Start"
+text = "Start Day At"
 
-[node name="Options" type="SpinBox" parent="ScrollContainer/PaddedScrollbar/VBox/DayStart/Setting"]
+[node name="Hours" type="SpinBox" parent="ScrollContainer/PaddedScrollbar/VBox/DayStart/Setting"]
 layout_mode = 2
-mouse_default_cursor_shape = 2
 max_value = 23.0
 alignment = 1
+select_all_on_focus = true
+script = ExtResource("5_px7qq")
+format_string = "%02d"
 
-[node name="Unit" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/DayStart/Setting"]
+[node name="Colon" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/DayStart/Setting"]
 layout_mode = 2
-size_flags_vertical = 8
-theme_override_font_sizes/font_size = 14
-text = "hours past midnight"
+text = " : "
+
+[node name="Minutes" type="SpinBox" parent="ScrollContainer/PaddedScrollbar/VBox/DayStart/Setting"]
+layout_mode = 2
+max_value = 59.0
+alignment = 1
+script = ExtResource("5_px7qq")
+format_string = "%02d"
 
 [node name="Explanation" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/DayStart"]
 modulate = Color(1, 1, 1, 0.607843)
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
-text = "Today's date will shift one day forward at 00:00."
+text = "After reaching this time of the day, Habituary will automatically move the list view one day forward."
+horizontal_alignment = 3
 autowrap_mode = 3
 
 [connection signal="pressed" from="ScrollContainer/PaddedScrollbar/VBox/StorePath/Setting/Change" to="." method="_on_change_store_path_pressed"]
 [connection signal="item_selected" from="ScrollContainer/PaddedScrollbar/VBox/TodayPosition/Setting/Options" to="." method="_on_today_position_item_selected"]
 [connection signal="toggled" from="ScrollContainer/PaddedScrollbar/VBox/FirstWeekday/Setting/Options" to="." method="_on_first_weekday_toggled"]
-[connection signal="value_changed" from="ScrollContainer/PaddedScrollbar/VBox/DayStart/Setting/Options" to="." method="_on_day_start_value_changed"]
