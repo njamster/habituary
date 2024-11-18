@@ -94,32 +94,6 @@ text = "After changing dates, the currently selected day will be displayed at th
 horizontal_alignment = 3
 autowrap_mode = 3
 
-[node name="FirstWeekday" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/FirstWeekday"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/FirstWeekday/Setting"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 8
-text = "Start Weeks on Monday"
-
-[node name="Options" type="CheckButton" parent="ScrollContainer/PaddedScrollbar/VBox/FirstWeekday/Setting"]
-layout_mode = 2
-focus_mode = 0
-mouse_default_cursor_shape = 2
-button_pressed = true
-
-[node name="Explanation" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/FirstWeekday"]
-modulate = Color(1, 1, 1, 0.607843)
-layout_mode = 2
-theme_override_font_sizes/font_size = 12
-text = "New weeks in the calendar widget start on Mondays."
-autowrap_mode = 3
-
 [node name="DayStart" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -160,6 +134,34 @@ text = "After reaching this time of the day, Habituary will automatically move t
 horizontal_alignment = 3
 autowrap_mode = 3
 
+[node name="FirstWeekday" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/FirstWeekday"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/FirstWeekday/Setting"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+text = "Start Weeks on Monday"
+
+[node name="Options" type="CheckButton" parent="ScrollContainer/PaddedScrollbar/VBox/FirstWeekday/Setting"]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_pressed = true
+
+[node name="Explanation" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/FirstWeekday"]
+modulate = Color(1, 1, 1, 0.607843)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "New weeks in the calendar widget start on Mondays."
+autowrap_mode = 3
+
 [connection signal="pressed" from="ScrollContainer/PaddedScrollbar/VBox/StorePath/Setting/Change" to="." method="_on_change_store_path_pressed"]
 [connection signal="item_selected" from="ScrollContainer/PaddedScrollbar/VBox/TodayPosition/Setting/Options" to="." method="_on_today_position_item_selected"]
+[connection signal="value_changed" from="ScrollContainer/PaddedScrollbar/VBox/DayStart/Setting/Hours" to="." method="_on_day_start_hours_value_changed"]
+[connection signal="value_changed" from="ScrollContainer/PaddedScrollbar/VBox/DayStart/Setting/Minutes" to="." method="_on_day_start_minutes_value_changed"]
 [connection signal="toggled" from="ScrollContainer/PaddedScrollbar/VBox/FirstWeekday/Setting/Options" to="." method="_on_first_weekday_toggled"]

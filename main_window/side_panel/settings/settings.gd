@@ -10,6 +10,9 @@ func _ready() -> void:
 
 	%FirstWeekday/Setting/Options.button_pressed = Settings.start_week_on_monday
 
+	$%DayStart/Setting/Hours.value = Settings.day_start_hour_offset
+	$%DayStart/Setting/Minutes.value = Settings.day_start_minute_offset
+
 
 func _on_change_store_path_pressed() -> void:
 	OS.shell_show_in_file_manager(Settings.store_path)
@@ -39,3 +42,11 @@ func _on_first_weekday_toggled(toggled_on: bool) -> void:
 		%FirstWeekday/Explanation.text = "New weeks in the calendar widget start on Mondays."
 	else:
 		%FirstWeekday/Explanation.text = "New weeks in the calendar widget start on Sundays."
+
+
+func _on_day_start_hours_value_changed(value: float) -> void:
+	Settings.day_start_hour_offset = int(value)
+
+
+func _on_day_start_minutes_value_changed(value: float) -> void:
+	Settings.day_start_minute_offset = int(value)

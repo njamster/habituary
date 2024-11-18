@@ -79,8 +79,16 @@ var day_start_hour_offset := 0:
 		if value != day_start_hour_offset:
 			var old_value := day_start_hour_offset
 			day_start_hour_offset = value
-			var shift := value - old_value
-			EventBus.day_start_hour_offset_changed.emit(shift)
+			var shift_in_seconds := (value - old_value) * 60 * 60
+			EventBus.day_start_changed.emit(shift_in_seconds)
+
+var day_start_minute_offset := 0:
+	set(value):
+		if value != day_start_minute_offset:
+			var old_value := day_start_minute_offset
+			day_start_minute_offset = value
+			var shift_in_seconds := (value - old_value) * 60
+			EventBus.day_start_changed.emit(shift_in_seconds)
 
 var dark_mode := true:
 	set(value):
@@ -295,6 +303,7 @@ func _enter_tree() -> void:
 		view_mode = config.get_value("AppState", "view_mode", view_mode)
 		start_week_on_monday = config.get_value("AppState", "start_week_on_monday", start_week_on_monday)
 		day_start_hour_offset = config.get_value("AppState", "day_start_hour_offset", day_start_hour_offset)
+		day_start_minute_offset = config.get_value("AppState", "day_start_minute_offset", day_start_minute_offset)
 		side_panel = config.get_value("AppState", "side_panel", side_panel)
 		show_bookmarks_from_the_past = config.get_value("AppState", "show_bookmarks_from_the_past", show_bookmarks_from_the_past)
 
@@ -315,6 +324,7 @@ func _notification(what: int) -> void:
 		config.set_value("AppState", "view_mode", view_mode)
 		config.set_value("AppState", "start_week_on_monday", start_week_on_monday)
 		config.set_value("AppState", "day_start_hour_offset", day_start_hour_offset)
+		config.set_value("AppState", "day_start_minute_offset", day_start_minute_offset)
 		config.set_value("AppState", "side_panel", side_panel)
 		config.set_value("AppState", "show_bookmarks_from_the_past", show_bookmarks_from_the_past)
 		config.save(settings_path)
