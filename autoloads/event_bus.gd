@@ -12,7 +12,7 @@ signal view_mode_changed(view_mode)
 @warning_ignore("unused_signal")
 signal current_day_changed(current_day)
 @warning_ignore("unused_signal")
-signal day_start_changed(shift_in_seconds)
+signal day_start_changed()
 @warning_ignore("unused_signal")
 signal show_bookmarks_from_the_past_changed
 

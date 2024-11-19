@@ -32,14 +32,23 @@ func _ready() -> void:
 
 func _get_seconds_till_tomorrow() -> int:
 	var current_time := Time.get_time_dict_from_system()
+
+	# Adjust current_time relative to the (potentially offset) day start, e.g.:
+	# current_time == 1:13 with day start == 2:17 => current_time (adjusted) == 22:56
 	current_time.hour = wrapi(current_time.hour - Settings.day_start_hour_offset, 0, 24)
+	if current_time.minute - Settings.day_start_minute_offset < 0:
+		current_time.hour -= 1
 	current_time.minute = wrapi(current_time.minute - Settings.day_start_minute_offset, 0, 60)
 
+	# Now simply calculate the seconds till the end of the day, using that current_time value:
 	var seconds_till_tomorrow := 0
+	# First, calculate remaining seconds until the next full minute
 	seconds_till_tomorrow += 60 - current_time.second
-	seconds_till_tomorrow += (59 - current_time.minute) * 60
-	seconds_till_tomorrow += (23 - current_time.hour) * SECONDS_PER_HOUR
-	print(seconds_till_tomorrow)
+	# Then, calculate remaining seconds until the next full hour
+	seconds_till_tomorrow += (60 - current_time.minute - 1) * 60
+	# Finally, calculate remaining seconds until the next full day
+	seconds_till_tomorrow += (24 - current_time.hour - 1) * SECONDS_PER_HOUR
+
 	return seconds_till_tomorrow
 
 
@@ -48,15 +57,15 @@ func _on_new_day() -> void:
 	self.start(SECONDS_PER_DAY)
 
 
-func _on_day_start_changed(shift_in_seconds : int) -> void:
-	var new_time_till_day_start := self.time_left + shift_in_seconds
-	printt(shift_in_seconds, new_time_till_day_start / 60.0 / 60.0)
+func _on_day_start_changed() -> void:
+	var old_time_left := self.time_left
+	var new_time_left := _get_seconds_till_tomorrow()
 
-	if new_time_till_day_start > SECONDS_PER_DAY:
-		# new offset shifted day start more than 24 hours into the future => decrease today by one
+	if old_time_left < SECONDS_PER_DAY and new_time_left > SECONDS_PER_DAY:
+		# the new offset shifted the day start above 24 hours into the future => decrease today
 		today = today.add_days(-1)
-	elif new_time_till_day_start <= 0:
-		# new offset shifted day start into the past => increase today by one
+	elif old_time_left > SECONDS_PER_DAY and new_time_left < SECONDS_PER_DAY:
+		# the new offset shifted the  day start below 24 hours into the future => increase today
 		today = today.add_days(1)
 
-	self.start(_get_seconds_till_tomorrow())
+	self.start(new_time_left)

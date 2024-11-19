@@ -77,18 +77,14 @@ var start_week_on_monday := true
 var day_start_hour_offset := 0:
 	set(value):
 		if value != day_start_hour_offset:
-			var old_value := day_start_hour_offset
 			day_start_hour_offset = value
-			var shift_in_seconds := (value - old_value) * 60 * 60
-			EventBus.day_start_changed.emit(shift_in_seconds)
+			EventBus.day_start_changed.emit()
 
 var day_start_minute_offset := 0:
 	set(value):
 		if value != day_start_minute_offset:
-			var old_value := day_start_minute_offset
 			day_start_minute_offset = value
-			var shift_in_seconds := (value - old_value) * 60
-			EventBus.day_start_changed.emit(shift_in_seconds)
+			EventBus.day_start_changed.emit()
 
 var dark_mode := true:
 	set(value):
