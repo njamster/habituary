@@ -52,6 +52,10 @@ var today_position := TodayPosition.CENTERED:
 	set(value):
 		today_position = value
 		EventBus.current_day_changed.emit(current_day)
+		if is_node_ready():
+			if OS.is_debug_build():
+				print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
+			debounce_timer.start()
 
 var previous_view_mode
 
@@ -61,6 +65,10 @@ var view_mode := 3:
 			previous_view_mode = null
 		view_mode = value
 		EventBus.view_mode_changed.emit(view_mode)
+		if is_node_ready():
+			if OS.is_debug_build():
+				print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
+			debounce_timer.start()
 
 var previous_day
 
@@ -72,19 +80,33 @@ var current_day := DayTimer.today:
 			current_day = value
 			EventBus.current_day_changed.emit(current_day)
 
-var start_week_on_monday := true
+var start_week_on_monday := true:
+	set(value):
+		start_week_on_monday = value
+		if is_node_ready():
+			if OS.is_debug_build():
+				print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
+			debounce_timer.start()
 
 var day_start_hour_offset := 0:
 	set(value):
 		if value != day_start_hour_offset:
 			day_start_hour_offset = value
 			EventBus.day_start_changed.emit()
+			if is_node_ready():
+				if OS.is_debug_build():
+					print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
+				debounce_timer.start()
 
 var day_start_minute_offset := 0:
 	set(value):
 		if value != day_start_minute_offset:
 			day_start_minute_offset = value
 			EventBus.day_start_changed.emit()
+			if is_node_ready():
+				if OS.is_debug_build():
+					print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
+				debounce_timer.start()
 
 var dark_mode := true:
 	set(value):
@@ -260,7 +282,12 @@ var dark_mode := true:
 			search_bar_hover_style.bg_color = NORD_04
 			search_bar_hover_style.border_color = NORD_02
 			theme.set_stylebox("panel", "SearchBar_Hover", search_bar_hover_style)
+
 		EventBus.dark_mode_changed.emit(dark_mode)
+		if is_node_ready():
+			if OS.is_debug_build():
+				print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
+			debounce_timer.start()
 
 var search_query := "":
 	set(value):
@@ -271,16 +298,26 @@ var side_panel := SidePanelState.HIDDEN:
 	set(value):
 		side_panel = value
 		EventBus.side_panel_changed.emit()
+		if is_node_ready():
+			if OS.is_debug_build():
+				print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
+			debounce_timer.start()
 
 var show_bookmarks_from_the_past := true:
 	set(value):
 		show_bookmarks_from_the_past = value
 		EventBus.show_bookmarks_from_the_past_changed.emit()
+		if is_node_ready():
+			if OS.is_debug_build():
+				print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
+			debounce_timer.start()
 
 var bookmarks_due_today := 0:
 	set(value):
 		bookmarks_due_today = value
 		EventBus.bookmarks_due_today_changed.emit()
+
+@onready var debounce_timer := Timer.new()
 
 
 func _enter_tree() -> void:
@@ -291,6 +328,46 @@ func _enter_tree() -> void:
 	else:
 		settings_path = ProjectSettings.globalize_path("user://settings.cfg")
 
+	load_from_disk()
+
+
+func _ready() -> void:
+	debounce_timer.wait_time = 6.0  # seconds
+	debounce_timer.one_shot = true
+	add_child(debounce_timer)
+
+	debounce_timer.timeout.connect(func():
+		if OS.is_debug_build():
+			print("[DEBUG] DebounceTimer Timed Out: Saving Settings...")
+		save_to_disk()
+	)
+
+	EventBus.side_panel_changed.emit.call_deferred()
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		save_to_disk()
+
+
+func save_to_disk() -> void:
+	var config = ConfigFile.new()
+	config.load(settings_path) # keep existing settings (if there are any)
+	config.set_value("AppState", "dark_mode", dark_mode)
+	config.set_value("AppState", "today_position", today_position)
+	config.set_value("AppState", "view_mode", view_mode)
+	config.set_value("AppState", "start_week_on_monday", start_week_on_monday)
+	config.set_value("AppState", "day_start_hour_offset", day_start_hour_offset)
+	config.set_value("AppState", "day_start_minute_offset", day_start_minute_offset)
+	config.set_value("AppState", "side_panel", side_panel)
+	config.set_value("AppState", "show_bookmarks_from_the_past", show_bookmarks_from_the_past)
+	config.save(settings_path)
+
+	if OS.is_debug_build():
+		print("[DEBUG] Settings Saved to Disk!")
+
+
+func load_from_disk() -> void:
 	var config := ConfigFile.new()
 	var error := config.load(settings_path)
 	if not error:
@@ -302,25 +379,3 @@ func _enter_tree() -> void:
 		day_start_minute_offset = config.get_value("AppState", "day_start_minute_offset", day_start_minute_offset)
 		side_panel = config.get_value("AppState", "side_panel", side_panel)
 		show_bookmarks_from_the_past = config.get_value("AppState", "show_bookmarks_from_the_past", show_bookmarks_from_the_past)
-
-
-func _ready() -> void:
-	# FIXME: can we make this work without waitingt 2 frames?
-	await get_tree().process_frame
-	await get_tree().process_frame
-	side_panel = side_panel # trigger setter manually
-
-
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_WM_CLOSE_REQUEST:
-		var config = ConfigFile.new()
-		config.load(settings_path) # keep existing settings (if there are any)
-		config.set_value("AppState", "dark_mode", dark_mode)
-		config.set_value("AppState", "today_position", today_position)
-		config.set_value("AppState", "view_mode", view_mode)
-		config.set_value("AppState", "start_week_on_monday", start_week_on_monday)
-		config.set_value("AppState", "day_start_hour_offset", day_start_hour_offset)
-		config.set_value("AppState", "day_start_minute_offset", day_start_minute_offset)
-		config.set_value("AppState", "side_panel", side_panel)
-		config.set_value("AppState", "show_bookmarks_from_the_past", show_bookmarks_from_the_past)
-		config.save(settings_path)

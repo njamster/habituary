@@ -8,7 +8,7 @@ func _ready() -> void:
 		if option_id == Settings.today_position:
 			%TodayPosition/Setting/Options.select(option_id)
 
-	%FirstWeekday/Setting/Options.button_pressed = Settings.start_week_on_monday
+	%FirstWeekday/Setting/Options.set_pressed_no_signal(Settings.start_week_on_monday)
 
 	$%DayStart/Setting/Hours.value = Settings.day_start_hour_offset
 	$%DayStart/Setting/Minutes.value = Settings.day_start_minute_offset
