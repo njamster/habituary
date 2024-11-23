@@ -342,8 +342,6 @@ func _ready() -> void:
 		save_to_disk()
 	)
 
-	EventBus.side_panel_changed.emit.call_deferred()
-
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:

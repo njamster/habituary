@@ -6,6 +6,7 @@ func _ready() -> void:
 	EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
 
 	EventBus.side_panel_changed.connect(_on_side_panel_changed)
+	_on_side_panel_changed()
 
 
 func _on_side_panel_changed() -> void:

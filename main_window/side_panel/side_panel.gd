@@ -8,6 +8,7 @@ func _ready() -> void:
 		panel.hide()
 
 	EventBus.side_panel_changed.connect(_on_side_panel_changed)
+	_on_side_panel_changed()
 
 
 func _on_side_panel_changed() -> void:

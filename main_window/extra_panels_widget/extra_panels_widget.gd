@@ -3,6 +3,7 @@ extends VBoxContainer
 
 func _ready() -> void:
 	EventBus.side_panel_changed.connect(_on_side_panel_changed)
+	_on_side_panel_changed()
 
 	EventBus.bookmarks_due_today_changed.connect(_update_today_count)
 	_update_today_count()
