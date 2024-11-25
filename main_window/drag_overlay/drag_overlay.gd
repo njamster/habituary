@@ -7,6 +7,7 @@ func _ready() -> void:
 	deactivate()
 
 	EventBus.side_panel_changed.connect(_on_side_panel_changed)
+	_on_side_panel_changed()
 
 
 func activate() -> void:
