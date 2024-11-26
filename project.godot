@@ -40,7 +40,7 @@ import/blender/enabled=false
 
 [gui]
 
-theme/custom="res://theme/default_theme.tres"
+theme/custom="res://theme/dark_theme.tres"
 
 [input]
 
