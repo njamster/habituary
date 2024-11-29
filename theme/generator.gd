@@ -78,17 +78,16 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	var base_dir : String = get_script().get_path().get_base_dir()
 	var file_path := base_dir.path_join(file_name) + ".tres"
 
-	var theme := Theme.new()
+	var theme := ConciseTheme.new()
 
-	theme.add_type("AcceptDialog")
+	theme.start_type_definition("AcceptDialog")
 	theme.set_stylebox("panel", "AcceptDialog", _create_style_box_flat({
 		"bg_color" = neutral_1,
 		"corner_radius" = 3,
 		"content_margin" = 8,
 	}))
 
-	theme.add_type("Bookmark_Today")
-	theme.set_type_variation("Bookmark_Today", "PanelContainer")
+	theme.start_type_definition("Bookmark_Today", "PanelContainer")
 	theme.set_stylebox("panel", "Bookmark_Today", _create_style_box_flat({
 		"bg_color" = neutral_1,
 		"border_width" = 3,
@@ -98,19 +97,19 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 		"content_margin" = 12,
 	}))
 
-	theme.add_type("Button")
-	theme.set_color("font_color", "Button", neutral_6)
-	theme.set_color("font_disabled_color", "Button", Color(neutral_6, 0.5))
-	theme.set_color("font_focus_color", "Button", neutral_6)
-	theme.set_color("font_hover_color", "Button", neutral_6)
-	theme.set_color("font_hover_pressed_color", "Button", neutral_6)
-	theme.set_color("font_pressed_color", "Button", neutral_6)
-	theme.set_color("icon_disabled_color", "Button", Color(neutral_6, 0.5))
-	theme.set_color("icon_focus_color", "Button", neutral_6)
-	theme.set_color("icon_hover_color", "Button", neutral_6)
-	theme.set_color("icon_hover_pressed_color", "Button", neutral_6)
-	theme.set_color("icon_normal_color", "Button", neutral_6)
-	theme.set_color("icon_pressed_color", "Button", neutral_6)
+	theme.start_type_definition("Button")
+	theme.font_color = neutral_6
+	theme.font_disabled_color = Color(neutral_6, 0.5)
+	theme.font_focus_color = neutral_6
+	theme.font_hover_color = neutral_6
+	theme.font_hover_pressed_color = neutral_6
+	theme.font_pressed_color = neutral_6
+	theme.icon_disabled_color = Color(neutral_6, 0.5)
+	theme.icon_focus_color = neutral_6
+	theme.icon_hover_color = neutral_6
+	theme.icon_hover_pressed_color = neutral_6
+	theme.icon_normal_color = neutral_6
+	theme.icon_pressed_color = neutral_6
 	theme.set_stylebox("focus", "Button", _create_style_box_flat({
 		"bg_color" = neutral_6,
 		"draw_center" = false,
@@ -135,11 +134,10 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 		"content_margin" = 4,
 	}))
 
-	theme.add_type("CalendarWidget_Button")
-	theme.set_type_variation("CalendarWidget_Button", "Button")
-	theme.set_color("font_color", "CalendarWidget_Button", neutral_7)
-	theme.set_color("icon_normal_color", "CalendarWidget_Button", neutral_7)
-	theme.set_color("icon_disabled_color", "CalendarWidget_Button", Color(neutral_7, 0.3))
+	theme.start_type_definition("CalendarWidget_Button", "Button")
+	theme.font_color = neutral_7
+	theme.icon_normal_color = neutral_7
+	theme.icon_disabled_color = Color(neutral_7, 0.3)
 	theme.set_stylebox("disabled", "CalendarWidget_Button", _create_style_box_flat({
 		"bg_color" = Color(neutral_4, 0.3),
 		"corner_radius" = 4,
@@ -161,10 +159,9 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 		"content_margin" = 4,
 	}))
 
-	theme.add_type("CalendarWidget_DayButton")
-	theme.set_type_variation("CalendarWidget_DayButton", "Button")
-	theme.set_color("font_color", "CalendarWidget_DayButton", neutral_7)
-	theme.set_color("font_hover_color", "CalendarWidget_DayButton", neutral_7)
+	theme.start_type_definition("CalendarWidget_DayButton", "Button")
+	theme.font_color = neutral_7
+	theme.font_hover_color = neutral_7
 	theme.set_font_size("font_size", "CalendarWidget_DayButton", 14)
 	theme.set_stylebox("hover", "CalendarWidget_DayButton", _create_style_box_flat({
 		"bg_color" = neutral_3,
@@ -179,10 +176,9 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 		"corner_radius" = 45,
 	}))
 
-	theme.add_type("CalendarWidget_DayButton_Selected")
-	theme.set_type_variation("CalendarWidget_DayButton_Selected", "Button")
-	theme.set_color("font_color", "CalendarWidget_DayButton_Select", neutral_7)
-	theme.set_color("font_hover_color", "CalendarWidget_DayButton_Selected", neutral_1)
+	theme.start_type_definition("CalendarWidget_DayButton_Selected", "Button")
+	theme.font_color = neutral_7
+	theme.font_hover_color = neutral_1
 	theme.set_font_size("font_size", "CalendarWidget_DayButton_Selected", 14)
 	theme.set_stylebox("hover", "CalendarWidget_DayButton_Selected", _create_style_box_flat({
 		"bg_color" = neutral_5,
@@ -197,10 +193,9 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 		"corner_radius" = 45,
 	}))
 
-	theme.add_type("CalendarWidget_DayButton_Today")
-	theme.set_type_variation("CalendarWidget_DayButton_Today", "Button")
-	theme.set_color("font_color", "CalendarWidget_DayButton_Today", neutral_7)
-	theme.set_color("font_hover_color", "CalendarWidget_DayButton_Today", neutral_1)
+	theme.start_type_definition("CalendarWidget_DayButton_Today", "Button")
+	theme.font_color = neutral_7
+	theme.font_hover_color = neutral_1
 	theme.set_font_size("font_size", "CalendarWidget_DayButton_Today", 14)
 	theme.set_stylebox("hover", "CalendarWidget_DayButton_Today", _create_style_box_flat({
 		"bg_color" = neutral_5,
@@ -215,9 +210,8 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 		"corner_radius" = 45,
 	}))
 
-	theme.add_type("CalendarWidget_DayButton_WeekendDay")
-	theme.set_type_variation("CalendarWidget_DayButton_WeekendDay", "Button")
-	theme.set_color("font_color", "CalendarWidget_DayButton_WeekendDay", primary_4)
+	theme.start_type_definition("CalendarWidget_DayButton_WeekendDay", "Button")
+	theme.font_color = primary_4
 	theme.set_font_size("font_size", "CalendarWidget_DayButton_WeekendDay", 14)
 	theme.set_stylebox("hover", "CalendarWidget_DayButton_WeekendDay", _create_style_box_flat({
 		"bg_color" = primary_4,
@@ -232,11 +226,11 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 		"corner_radius" = 45,
 	}))
 
-	theme.add_type("CheckButton")
-	theme.set_color("font_color", "CheckButton", neutral_7)
-	theme.set_color("font_hover_color", "CheckButton", neutral_7)
-	theme.set_color("font_pressed_color", "CheckButton", neutral_7)
-	theme.set_color("font_hover_pressed_color", "CheckButton", neutral_7)
+	theme.start_type_definition("CheckButton")
+	theme.font_color = neutral_7
+	theme.font_hover_color = neutral_7
+	theme.font_pressed_color = neutral_7
+	theme.font_hover_pressed_color = neutral_7
 	theme.set_stylebox("disabled", "CheckButton", StyleBoxEmpty.new())
 	theme.set_stylebox("focus", "CheckButton", StyleBoxEmpty.new())
 	theme.set_stylebox("hover", "CheckButton", StyleBoxEmpty.new())
@@ -244,17 +238,15 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	theme.set_stylebox("normal", "CheckButton", StyleBoxEmpty.new())
 	theme.set_stylebox("pressed", "CheckButton", StyleBoxEmpty.new())
 
-	theme.add_type("Label")
-	theme.set_color("font_color", "Label", neutral_6)
+	theme.start_type_definition("Label")
+	theme.font_color = neutral_6
 
-	theme.add_type("Label_WeekendDay")
-	theme.set_type_variation("Label_WeekendDay", "Label")
-	theme.set_color("font_color", "Label_WeekendDay", primary_4)
+	theme.start_type_definition("Label_WeekendDay", "Label")
+	theme.font_color = primary_4
 
-	theme.add_type("LeftSidebarButton")
-	theme.set_type_variation("LeftSidebarButton", "Button")
-	theme.set_color("font_color", "LeftSidebarButton", neutral_7)
-	theme.set_color("icon_normal_color", "LeftSidebarButton", neutral_7)
+	theme.start_type_definition("LeftSidebarButton", "Button")
+	theme.font_color = neutral_7
+	theme.icon_normal_color = neutral_7
 	theme.set_stylebox("disabled", "LeftSidebarButton", _create_style_box_flat({
 		"bg_color" = Color(neutral_3, 0.3),
 		"corner_radius" = [0, 4, 4, 0],
@@ -283,33 +275,31 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 		"content_margin" = 4,
 	}))
 
-	theme.add_type("LineEdit")
-	theme.set_color("caret_color", "LineEdit", primary_3)
-	theme.set_color("font_color", "LineEdit", neutral_7)
-	theme.set_color("font_placeholder_color", "LineEdit", Color(neutral_7, 0.6))
+	theme.start_type_definition("LineEdit")
+	theme.caret_color = primary_3
+	theme.font_color = neutral_7
+	theme.font_placeholder_color = Color(neutral_7, 0.6)
 
-	theme.add_type("PanelContainer")
+	theme.start_type_definition("PanelContainer")
 	theme.set_stylebox("panel", "PanelContainer", _create_style_box_flat({
 		"bg_color" = neutral_1,
 		"corner_radius" = 6,
 		"content_margin" = 12,
 	}))
 
-	theme.add_type("PanelContainer_Popup")
-	theme.set_type_variation("PanelContainer_Popup", "PanelContainer")
+	theme.start_type_definition("PanelContainer_Popup", "PanelContainer")
 	theme.set_stylebox("panel", "PanelContainer_Popup", _create_style_box_flat({
 		"bg_color" = neutral_2,
 		"corner_radius" = 6,
 		"content_margin" = 12,
 	}))
 
-	theme.add_type("RichTextLabel")
-	theme.set_color("default_color", "RichTextLabel", neutral_7)
+	theme.start_type_definition("RichTextLabel")
+	theme.default_color = neutral_7
 
-	theme.add_type("RightSidebarButton")
-	theme.set_type_variation("RightSidebarButton", "Button")
-	theme.set_color("font_color", "RightSidebarButton", neutral_7)
-	theme.set_color("icon_normal_color", "RightSidebarButton", neutral_7)
+	theme.start_type_definition("RightSidebarButton", "Button")
+	theme.font_color = neutral_7
+	theme.icon_normal_color = neutral_7
 	theme.set_stylebox("disabled", "RightSidebarButton", _create_style_box_flat({
 		"bg_color" = Color(neutral_3, 0.3),
 		"corner_radius" = [4, 0, 0, 4],
@@ -338,16 +328,14 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 		"content_margin" = 4,
 	}))
 
-	theme.add_type("SearchBar")
-	theme.set_type_variation("SearchBar", "PanelContainer")
+	theme.start_type_definition("SearchBar", "PanelContainer")
 	theme.set_stylebox("panel", "SearchBar", _create_style_box_flat({
 		"bg_color" = neutral_2,
 		"corner_radius" = 5,
 		"content_margin" = [8, 4, 8, 4],
 	}))
 
-	theme.add_type("SearchBar_Focused")
-	theme.set_type_variation("SearchBar_Focused", "PanelContainer")
+	theme.start_type_definition("SearchBar_Focused", "PanelContainer")
 	theme.set_stylebox("panel", "SearchBar_Focused", _create_style_box_flat({
 		"bg_color" = neutral_3,
 		"border_width" = 2,
@@ -356,8 +344,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 		"content_margin" = [8, 4, 8, 4],
 	}))
 
-	theme.add_type("SearchBar_Hover")
-	theme.set_type_variation("SearchBar_Hover", "PanelContainer")
+	theme.start_type_definition("SearchBar_Hover", "PanelContainer")
 	theme.set_stylebox("panel", "SearchBar_Hover", _create_style_box_flat({
 		"bg_color" = neutral_3,
 		"border_width" = 1,
@@ -366,8 +353,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 		"content_margin" = [8, 4, 8, 4],
 	}))
 
-	theme.add_type("SidePanel")
-	theme.set_type_variation("SidePanel", "PanelContainer")
+	theme.start_type_definition("SidePanel", "PanelContainer")
 	theme.set_stylebox("panel", "SidePanel", _create_style_box_flat({
 		"bg_color" = neutral_3,
 		"border_width" = [0, 0, 4, 0],
@@ -375,20 +361,18 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 		"content_margin" = [8, 8, 12, 8],
 	}))
 
-	# theme.add_type("SpinBox")
+	# theme.start_type_definition("SpinBox")
 	# ...
 	# NOTE: Cannot be themed properly yet! See: https://github.com/godotengine/godot/pull/89265
 	# FIXME: Wait for Godot 4.4
 
-	theme.add_type("SubtleLabel")
-	theme.set_type_variation("SubtleLabel", "Label")
-	theme.set_color("font_color", "SubtleLabel", neutral_5)
+	theme.start_type_definition("SubtleLabel", "Label")
+	theme.font_color = neutral_5
 
-	theme.add_type("TooltipLabel")
+	theme.start_type_definition("TooltipLabel")
 	theme.set_font_size("font_size", "TooltipLabel", 13)
 
-	theme.add_type("TooltipPanel")
-	theme.set_type_variation("TooltipPanel", "PanelContainer")
+	theme.start_type_definition("TooltipPanel", "PanelContainer")
 	theme.set_stylebox("panel", "TooltipPanel", _create_style_box_flat({
 		"bg_color" = neutral_4,
 		"corner_radius" = 5,
