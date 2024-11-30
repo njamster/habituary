@@ -80,308 +80,400 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 
 	var theme := ConciseTheme.new()
 
+	#region AcceptDialog
 	theme.start_type_definition("AcceptDialog")
-	theme.set_stylebox("panel", "AcceptDialog", _create_style_box_flat({
+
+	theme.panel = _create_style_box_flat({
 		"bg_color" = neutral_1,
 		"corner_radius" = 3,
 		"content_margin" = 8,
-	}))
+	})
+	#endregion
 
+	#region Bookmark_Today
 	theme.start_type_definition("Bookmark_Today", "PanelContainer")
-	theme.set_stylebox("panel", "Bookmark_Today", _create_style_box_flat({
+
+	theme.panel = _create_style_box_flat({
 		"bg_color" = neutral_1,
 		"border_width" = 3,
 		"border_color" = Color(secondary_4, 0.75),
 		"border_blend" = true,
 		"corner_radius" = 6,
 		"content_margin" = 12,
-	}))
+	})
+	#endregion
 
+	#region Button
 	theme.start_type_definition("Button")
+
 	theme.font_color = neutral_6
 	theme.font_disabled_color = Color(neutral_6, 0.5)
 	theme.font_focus_color = neutral_6
 	theme.font_hover_color = neutral_6
 	theme.font_hover_pressed_color = neutral_6
 	theme.font_pressed_color = neutral_6
+
 	theme.icon_disabled_color = Color(neutral_6, 0.5)
 	theme.icon_focus_color = neutral_6
 	theme.icon_hover_color = neutral_6
 	theme.icon_hover_pressed_color = neutral_6
 	theme.icon_normal_color = neutral_6
 	theme.icon_pressed_color = neutral_6
-	theme.set_stylebox("focus", "Button", _create_style_box_flat({
+
+	theme.focus = _create_style_box_flat({
 		"bg_color" = neutral_6,
 		"draw_center" = false,
 		"border_width" = 2,
 		"corner_radius" = 3,
 		"expand_margin" = 2,
 		"content_margin" = 4,
-	}))
-	theme.set_stylebox("hover", "Button", _create_style_box_flat({
+	})
+	theme.hover = _create_style_box_flat({
 		"bg_color" = neutral_1,
 		"corner_radius" = 3,
 		"content_margin" = 4,
-	}))
-	theme.set_stylebox("normal", "Button", _create_style_box_flat({
+	})
+	theme.normal = _create_style_box_flat({
 		"bg_color" = neutral_2,
 		"corner_radius" = 3,
 		"content_margin" = 4,
-	}))
-	theme.set_stylebox("pressed", "Button", _create_style_box_flat({
+	})
+	theme.pressed = _create_style_box_flat({
 		"bg_color" = primary_3,
 		"corner_radius" = 3,
 		"content_margin" = 4,
-	}))
+	})
+	#endregion
 
+	#region CalendarWidget_Button
 	theme.start_type_definition("CalendarWidget_Button", "Button")
+
 	theme.font_color = neutral_7
+
 	theme.icon_normal_color = neutral_7
 	theme.icon_disabled_color = Color(neutral_7, 0.3)
-	theme.set_stylebox("disabled", "CalendarWidget_Button", _create_style_box_flat({
+
+	theme.disabled = _create_style_box_flat({
 		"bg_color" = Color(neutral_4, 0.3),
 		"corner_radius" = 4,
 		"content_margin" = 4,
-	}))
-	theme.set_stylebox("hover", "CalendarWidget_Button", _create_style_box_flat({
+	})
+	theme.hover = _create_style_box_flat({
 		"bg_color" = primary_3,
 		"corner_radius" = 4,
 		"content_margin" = 4,
-	}))
-	theme.set_stylebox("normal", "CalendarWidget_Button", _create_style_box_flat({
+	})
+	theme.normal = _create_style_box_flat({
 		"bg_color" = neutral_4,
 		"corner_radius" = 4,
 		"content_margin" = 4,
-	}))
-	theme.set_stylebox("pressed", "CalendarWidget_Button", _create_style_box_flat({
+	})
+	theme.pressed = _create_style_box_flat({
 		"bg_color" = neutral_4,
 		"corner_radius" = 4,
 		"content_margin" = 4,
-	}))
+	})
+	#endregion
 
+	#region CalendarWidget_DayButton
 	theme.start_type_definition("CalendarWidget_DayButton", "Button")
+
 	theme.font_color = neutral_7
 	theme.font_hover_color = neutral_7
-	theme.set_font_size("font_size", "CalendarWidget_DayButton", 14)
-	theme.set_stylebox("hover", "CalendarWidget_DayButton", _create_style_box_flat({
+
+	theme.font_size = 14
+
+	theme.hover = _create_style_box_flat({
 		"bg_color" = neutral_3,
 		"corner_radius" = 45,
-	}))
-	theme.set_stylebox("normal", "CalendarWidget_DayButton", _create_style_box_flat({
+	})
+	theme.normal = _create_style_box_flat({
 		"draw_center" = false,
 		"corner_radius" = 45,
-	}))
-	theme.set_stylebox("pressed", "CalendarWidget_DayButton", _create_style_box_flat({
+	})
+	theme.pressed = _create_style_box_flat({
 		"bg_color" = primary_3,
 		"corner_radius" = 45,
-	}))
+	})
+	#endregion
 
+	#region CalendarWidget_DayButton_Selected
 	theme.start_type_definition("CalendarWidget_DayButton_Selected", "Button")
-	theme.font_color = neutral_7
-	theme.font_hover_color = neutral_1
-	theme.set_font_size("font_size", "CalendarWidget_DayButton_Selected", 14)
-	theme.set_stylebox("hover", "CalendarWidget_DayButton_Selected", _create_style_box_flat({
-		"bg_color" = neutral_5,
-		"corner_radius" = 45,
-	}))
-	theme.set_stylebox("normal", "CalendarWidget_DayButton_Selected", _create_style_box_flat({
-		"bg_color" = primary_3,
-		"corner_radius" = 45,
-	}))
-	theme.set_stylebox("pressed", "CalendarWidget_DayButton_Selected", _create_style_box_flat({
-		"bg_color" = primary_3,
-		"corner_radius" = 45,
-	}))
 
-	theme.start_type_definition("CalendarWidget_DayButton_Today", "Button")
 	theme.font_color = neutral_7
 	theme.font_hover_color = neutral_1
-	theme.set_font_size("font_size", "CalendarWidget_DayButton_Today", 14)
-	theme.set_stylebox("hover", "CalendarWidget_DayButton_Today", _create_style_box_flat({
+
+	theme.font_size = 14
+
+	theme.hover = _create_style_box_flat({
 		"bg_color" = neutral_5,
 		"corner_radius" = 45,
-	}))
-	theme.set_stylebox("normal", "CalendarWidget_DayButton_Today", _create_style_box_flat({
+	})
+	theme.normal = _create_style_box_flat({
+		"bg_color" = primary_3,
+		"corner_radius" = 45,
+	})
+	theme.pressed = _create_style_box_flat({
+		"bg_color" = primary_3,
+		"corner_radius" = 45,
+	})
+	#endregion
+
+	#region CalendarWidget_DayButton_Today
+	theme.start_type_definition("CalendarWidget_DayButton_Today", "Button")
+
+	theme.font_color = neutral_7
+	theme.font_hover_color = neutral_1
+
+	theme.font_size = 14
+
+	theme.hover = _create_style_box_flat({
+		"bg_color" = neutral_5,
+		"corner_radius" = 45,
+	})
+	theme.normal = _create_style_box_flat({
 		"bg_color" = Color(primary_1, 0.4),
 		"corner_radius" = 45,
-	}))
-	theme.set_stylebox("pressed", "CalendarWidget_DayButton_Today", _create_style_box_flat({
+	})
+	theme.pressed = _create_style_box_flat({
 		"bg_color" = primary_3,
 		"corner_radius" = 45,
-	}))
+	})
+	#endregion
 
+	#region CalendarWidget_DayButton_WeekendDay
 	theme.start_type_definition("CalendarWidget_DayButton_WeekendDay", "Button")
+
 	theme.font_color = primary_4
-	theme.set_font_size("font_size", "CalendarWidget_DayButton_WeekendDay", 14)
-	theme.set_stylebox("hover", "CalendarWidget_DayButton_WeekendDay", _create_style_box_flat({
+
+	theme.font_size = 14
+
+	theme.hover = _create_style_box_flat({
 		"bg_color" = primary_4,
 		"corner_radius" = 45,
-	}))
-	theme.set_stylebox("normal", "CalendarWidget_DayButton_WeekendDay", _create_style_box_flat({
+	})
+	theme.normal = _create_style_box_flat({
 		"draw_center" = false,
 		"corner_radius" = 45,
-	}))
-	theme.set_stylebox("pressed", "CalendarWidget_DayButton_WeekendDay", _create_style_box_flat({
+	})
+	theme.pressed = _create_style_box_flat({
 		"bg_color" = primary_3,
 		"corner_radius" = 45,
-	}))
+	})
+	#endregion
 
+	#region CheckButton
 	theme.start_type_definition("CheckButton")
+
 	theme.font_color = neutral_7
 	theme.font_hover_color = neutral_7
 	theme.font_pressed_color = neutral_7
 	theme.font_hover_pressed_color = neutral_7
-	theme.set_stylebox("disabled", "CheckButton", StyleBoxEmpty.new())
-	theme.set_stylebox("focus", "CheckButton", StyleBoxEmpty.new())
-	theme.set_stylebox("hover", "CheckButton", StyleBoxEmpty.new())
-	theme.set_stylebox("hover_pressed", "CheckButton", StyleBoxEmpty.new())
-	theme.set_stylebox("normal", "CheckButton", StyleBoxEmpty.new())
-	theme.set_stylebox("pressed", "CheckButton", StyleBoxEmpty.new())
 
+	theme.disabled = StyleBoxEmpty.new()
+	theme.focus = StyleBoxEmpty.new()
+	theme.hover = StyleBoxEmpty.new()
+	theme.hover_pressed = StyleBoxEmpty.new()
+	theme.normal = StyleBoxEmpty.new()
+	theme.pressed = StyleBoxEmpty.new()
+	#endregion
+
+	#region Label
 	theme.start_type_definition("Label")
+
 	theme.font_color = neutral_6
+	#endregion
 
+	#region Label_WeekendDay
 	theme.start_type_definition("Label_WeekendDay", "Label")
-	theme.font_color = primary_4
 
+	theme.font_color = primary_4
+	#endregion
+
+	#region LeftSidebarButton
 	theme.start_type_definition("LeftSidebarButton", "Button")
+
 	theme.font_color = neutral_7
+
 	theme.icon_normal_color = neutral_7
-	theme.set_stylebox("disabled", "LeftSidebarButton", _create_style_box_flat({
+
+	theme.disabled = _create_style_box_flat({
 		"bg_color" = Color(neutral_3, 0.3),
 		"corner_radius" = [0, 4, 4, 0],
 		"content_margin" = 4,
-	}))
-	theme.set_stylebox("focus", "LeftSidebarButton", _create_style_box_flat({
+	})
+	theme.focus = _create_style_box_flat({
 		"draw_center" = false,
 		"border_width" = [0, 2, 2, 2],
 		"corner_radius" = [0, 4, 4, 0],
 		"expand_margin" = [0, 2, 2, 2],
 		"content_margin" = 4,
-	}))
-	theme.set_stylebox("hover", "LeftSidebarButton", _create_style_box_flat({
+	})
+	theme.hover = _create_style_box_flat({
 		"bg_color" = primary_3,
 		"corner_radius" = [0, 4, 4, 0],
 		"content_margin" = 4,
-	}))
-	theme.set_stylebox("normal", "LeftSidebarButton", _create_style_box_flat({
+	})
+	theme.normal = _create_style_box_flat({
 		"bg_color" = neutral_3,
 		"corner_radius" = [0, 4, 4, 0],
 		"content_margin" = 4,
-	}))
-	theme.set_stylebox("pressed", "LeftSidebarButton", _create_style_box_flat({
+	})
+	theme.pressed = _create_style_box_flat({
 		"bg_color" = primary_4,
 		"corner_radius" = [0, 4, 4, 0],
 		"content_margin" = 4,
-	}))
+	})
+	#endregion
 
+	#region LineEdit
 	theme.start_type_definition("LineEdit")
+
 	theme.caret_color = primary_3
+
 	theme.font_color = neutral_7
 	theme.font_placeholder_color = Color(neutral_7, 0.6)
+	#endregion
 
+	#region PanelContainer
 	theme.start_type_definition("PanelContainer")
-	theme.set_stylebox("panel", "PanelContainer", _create_style_box_flat({
+
+	theme.panel = _create_style_box_flat({
 		"bg_color" = neutral_1,
 		"corner_radius" = 6,
 		"content_margin" = 12,
-	}))
+	})
+	#endregion
 
+	#region PanelContainer_Popup
 	theme.start_type_definition("PanelContainer_Popup", "PanelContainer")
-	theme.set_stylebox("panel", "PanelContainer_Popup", _create_style_box_flat({
+
+	theme.panel = _create_style_box_flat({
 		"bg_color" = neutral_2,
 		"corner_radius" = 6,
 		"content_margin" = 12,
-	}))
+	})
+	#endregion
 
+	#region RichTextLabel
 	theme.start_type_definition("RichTextLabel")
-	theme.default_color = neutral_7
 
+	theme.default_color = neutral_7
+	#endregion
+
+	#region RightSidebarButton
 	theme.start_type_definition("RightSidebarButton", "Button")
+
 	theme.font_color = neutral_7
+
 	theme.icon_normal_color = neutral_7
-	theme.set_stylebox("disabled", "RightSidebarButton", _create_style_box_flat({
+
+	theme.disabled = _create_style_box_flat({
 		"bg_color" = Color(neutral_3, 0.3),
 		"corner_radius" = [4, 0, 0, 4],
 		"content_margin" = 4,
-	}))
-	theme.set_stylebox("focus", "RightSidebarButton", _create_style_box_flat({
+	})
+	theme.focus = _create_style_box_flat({
 		"draw_center" = false,
 		"border_width" = [2, 2, 0, 2],
 		"corner_radius" = [4, 0, 0, 4],
 		"expand_margin" = [2, 2, 0, 2],
 		"content_margin" = 4,
-	}))
-	theme.set_stylebox("hover", "RightSidebarButton", _create_style_box_flat({
+	})
+	theme.hover = _create_style_box_flat({
 		"bg_color" = primary_3,
 		"corner_radius" = [4, 0, 0, 4],
 		"content_margin" = 4,
-	}))
-	theme.set_stylebox("normal", "RightSidebarButton", _create_style_box_flat({
+	})
+	theme.normal = _create_style_box_flat({
 		"bg_color" = neutral_3,
 		"corner_radius" = [4, 0, 0, 4],
 		"content_margin" = 4,
-	}))
-	theme.set_stylebox("pressed", "RightSidebarButton", _create_style_box_flat({
+	})
+	theme.pressed = _create_style_box_flat({
 		"bg_color" = primary_4,
 		"corner_radius" = [4, 0, 0, 4],
 		"content_margin" = 4,
-	}))
+	})
+	#endregion
 
+	#region SearchBar
 	theme.start_type_definition("SearchBar", "PanelContainer")
-	theme.set_stylebox("panel", "SearchBar", _create_style_box_flat({
+
+	theme.panel = _create_style_box_flat({
 		"bg_color" = neutral_2,
 		"corner_radius" = 5,
 		"content_margin" = [8, 4, 8, 4],
-	}))
+	})
+	#endregion
 
+	#region SearchBar_Focused
 	theme.start_type_definition("SearchBar_Focused", "PanelContainer")
-	theme.set_stylebox("panel", "SearchBar_Focused", _create_style_box_flat({
+
+	theme.panel = _create_style_box_flat({
 		"bg_color" = neutral_3,
 		"border_width" = 2,
 		"border_color" = primary_4,
 		"corner_radius" = 5,
 		"content_margin" = [8, 4, 8, 4],
-	}))
+	})
+	#endregion
 
+	#region SearchBar_Hover
 	theme.start_type_definition("SearchBar_Hover", "PanelContainer")
-	theme.set_stylebox("panel", "SearchBar_Hover", _create_style_box_flat({
+
+	theme.panel = _create_style_box_flat({
 		"bg_color" = neutral_3,
 		"border_width" = 1,
 		"border_color" = neutral_5,
 		"corner_radius" = 5,
 		"content_margin" = [8, 4, 8, 4],
-	}))
+	})
+	#endregion
 
+	#region SidePanel
 	theme.start_type_definition("SidePanel", "PanelContainer")
-	theme.set_stylebox("panel", "SidePanel", _create_style_box_flat({
+
+	theme.panel = _create_style_box_flat({
 		"bg_color" = neutral_3,
 		"border_width" = [0, 0, 4, 0],
 		"border_color" = primary_4,
 		"content_margin" = [8, 8, 12, 8],
-	}))
+	})
+	#endregion
 
+	#region SpinBox
 	# theme.start_type_definition("SpinBox")
 	# ...
 	# NOTE: Cannot be themed properly yet! See: https://github.com/godotengine/godot/pull/89265
 	# FIXME: Wait for Godot 4.4
+	#endregion
 
+	#region SubtleLabel
 	theme.start_type_definition("SubtleLabel", "Label")
+
 	theme.font_color = neutral_5
+	#endregion
 
+	#region TooltipLabel
 	theme.start_type_definition("TooltipLabel")
-	theme.set_font_size("font_size", "TooltipLabel", 13)
 
+	theme.font_size = 13
+	#endregion
+
+	#region TooltipPanel
 	theme.start_type_definition("TooltipPanel", "PanelContainer")
-	theme.set_stylebox("panel", "TooltipPanel", _create_style_box_flat({
+
+	theme.panel = _create_style_box_flat({
 		"bg_color" = neutral_4,
 		"corner_radius" = 5,
 		"content_margin" = [6, 2, 6, 2],
-	}))
+	})
+	#endregion
 
-	# FIXME: Looks like Godot has issues updating on changed resources, see:
+	# NOTE: Inspecting updated themes in Godot won't show the most recent version, see:
 	#   https://github.com/godotengine/godot/issues/30302
-	# Closing & reopening the project will reimport the resource properly, though!
+	# If that is required, reload the project via "Project" -> "Reload Current Project".
 	ResourceSaver.save(theme, file_path)
 
 
