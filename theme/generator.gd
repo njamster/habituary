@@ -299,29 +299,29 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 
 	left_sidebar_button.disabled = _create_style_box_flat({
 		"bg_color" = Color(neutral_3, 0.3),
-		"corner_radius" = [0, 4, 4, 0],
+		"corner_radius" = { "top_left": 0, "top_right": 4, "bottom_right": 4, "bottom_left": 0 },
 		"content_margin" = 4,
 	})
 	left_sidebar_button.focus = _create_style_box_flat({
 		"draw_center" = false,
-		"border_width" = [0, 2, 2, 2],
-		"corner_radius" = [0, 4, 4, 0],
-		"expand_margin" = [0, 2, 2, 2],
+		"border_width" = { "left": 0, "top": 2, "right": 2, "bottom": 2 },
+		"corner_radius" = { "top_left": 0, "top_right": 4, "bottom_right": 4, "bottom_left": 0 },
+		"expand_margin" = { "left": 0, "top": 2, "right": 2, "bottom": 2 },
 		"content_margin" = 4,
 	})
 	left_sidebar_button.hover = _create_style_box_flat({
 		"bg_color" = primary_3,
-		"corner_radius" = [0, 4, 4, 0],
+		"corner_radius" = { "top_left": 0, "top_right": 4, "bottom_right": 4, "bottom_left": 0 },
 		"content_margin" = 4,
 	})
 	left_sidebar_button.normal = _create_style_box_flat({
 		"bg_color" = neutral_3,
-		"corner_radius" = [0, 4, 4, 0],
+		"corner_radius" = { "top_left": 0, "top_right": 4, "bottom_right": 4, "bottom_left": 0 },
 		"content_margin" = 4,
 	})
 	left_sidebar_button.pressed = _create_style_box_flat({
 		"bg_color" = primary_4,
-		"corner_radius" = [0, 4, 4, 0],
+		"corner_radius" = { "top_left": 0, "top_right": 4, "bottom_right": 4, "bottom_left": 0 },
 		"content_margin" = 4,
 	})
 	#endregion
@@ -370,29 +370,29 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 
 	right_sidebar_button.disabled = _create_style_box_flat({
 		"bg_color" = Color(neutral_3, 0.3),
-		"corner_radius" = [4, 0, 0, 4],
+		"corner_radius" = { "top_left": 4, "top_right": 0, "bottom_right": 0, "bottom_left": 4 },
 		"content_margin" = 4,
 	})
 	right_sidebar_button.focus = _create_style_box_flat({
 		"draw_center" = false,
-		"border_width" = [2, 2, 0, 2],
-		"corner_radius" = [4, 0, 0, 4],
-		"expand_margin" = [2, 2, 0, 2],
+		"border_width" = { "left": 2, "top": 2, "right": 0, "bottom": 2 },
+		"corner_radius" = { "top_left": 4, "top_right": 0, "bottom_right": 0, "bottom_left": 4 },
+		"expand_margin" = { "left": 2, "top": 2, "right": 0, "bottom": 2 },
 		"content_margin" = 4,
 	})
 	right_sidebar_button.hover = _create_style_box_flat({
 		"bg_color" = primary_3,
-		"corner_radius" = [4, 0, 0, 4],
+		"corner_radius" = { "top_left": 4, "top_right": 0, "bottom_right": 0, "bottom_left": 4 },
 		"content_margin" = 4,
 	})
 	right_sidebar_button.normal = _create_style_box_flat({
 		"bg_color" = neutral_3,
-		"corner_radius" = [4, 0, 0, 4],
+		"corner_radius" = { "top_left": 4, "top_right": 0, "bottom_right": 0, "bottom_left": 4 },
 		"content_margin" = 4,
 	})
 	right_sidebar_button.pressed = _create_style_box_flat({
 		"bg_color" = primary_4,
-		"corner_radius" = [4, 0, 0, 4],
+		"corner_radius" = { "top_left": 4, "top_right": 0, "bottom_right": 0, "bottom_left": 4 },
 		"content_margin" = 4,
 	})
 	#endregion
@@ -403,7 +403,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	search_bar.panel = _create_style_box_flat({
 		"bg_color" = neutral_2,
 		"corner_radius" = 5,
-		"content_margin" = [8, 4, 8, 4],
+		"content_margin" = { "left": 8, "top": 4, "right": 8, "bottom": 4 },
 	})
 	#endregion
 
@@ -415,7 +415,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 		"border_width" = 2,
 		"border_color" = primary_4,
 		"corner_radius" = 5,
-		"content_margin" = [8, 4, 8, 4],
+		"content_margin" = { "left": 8, "top": 4, "right": 8, "bottom": 4 },
 	})
 	#endregion
 
@@ -427,7 +427,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 		"border_width" = 1,
 		"border_color" = neutral_5,
 		"corner_radius" = 5,
-		"content_margin" = [8, 4, 8, 4],
+		"content_margin" = { "left": 8, "top": 4, "right": 8, "bottom": 4 },
 	})
 	#endregion
 
@@ -436,9 +436,9 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 
 	side_panel.panel = _create_style_box_flat({
 		"bg_color" = neutral_3,
-		"border_width" = [0, 0, 4, 0],
+		"border_width" = { "left": 0, "top": 0, "right": 4, "bottom": 0 },
 		"border_color" = primary_4,
-		"content_margin" = [8, 8, 12, 8],
+		"content_margin" = { "left": 8, "top": 8, "right": 12, "bottom": 8 },
 	})
 	#endregion
 
@@ -467,7 +467,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	tooltip_panel.panel = _create_style_box_flat({
 		"bg_color" = neutral_4,
 		"corner_radius" = 5,
-		"content_margin" = [6, 2, 6, 2],
+		"content_margin" = { "left": 6, "top": 2, "right": 6, "bottom": 2 },
 	})
 	#endregion
 
@@ -501,6 +501,11 @@ func _create_style_box_flat(properties : Dictionary) -> StyleBoxFlat:
 					style_box.border_width_top = value[1]
 					style_box.border_width_right = value[2]
 					style_box.border_width_bottom = value[3]
+				elif value is Dictionary:
+					style_box.border_width_left = value.left
+					style_box.border_width_top = value.top
+					style_box.border_width_right = value.right
+					style_box.border_width_bottom = value.bottom
 			"border_color":
 				if value is Color:
 					style_box.border_color = value
@@ -515,6 +520,11 @@ func _create_style_box_flat(properties : Dictionary) -> StyleBoxFlat:
 					style_box.corner_radius_top_right = value[1]
 					style_box.corner_radius_bottom_right = value[2]
 					style_box.corner_radius_bottom_left = value[3]
+				elif value is Dictionary:
+					style_box.corner_radius_top_left = value.top_left
+					style_box.corner_radius_top_right = value.top_right
+					style_box.corner_radius_bottom_right = value.bottom_right
+					style_box.corner_radius_bottom_left = value.bottom_left
 			"expand_margin":
 				if value is int:
 					style_box.set_expand_margin_all(value)
@@ -523,6 +533,11 @@ func _create_style_box_flat(properties : Dictionary) -> StyleBoxFlat:
 					style_box.expand_margin_top = value[1]
 					style_box.expand_margin_right = value[2]
 					style_box.expand_margin_bottom = value[3]
+				elif value is Dictionary:
+					style_box.expand_margin_left = value.left
+					style_box.expand_margin_top = value.top
+					style_box.expand_margin_right = value.right
+					style_box.expand_margin_bottom = value.bottom
 			"content_margin":
 				if value is int:
 					style_box.set_content_margin_all(value)
@@ -531,6 +546,11 @@ func _create_style_box_flat(properties : Dictionary) -> StyleBoxFlat:
 					style_box.content_margin_top = value[1]
 					style_box.content_margin_right = value[2]
 					style_box.content_margin_bottom = value[3]
+				elif value is Dictionary:
+					style_box.content_margin_left = value.left
+					style_box.content_margin_top = value.top
+					style_box.content_margin_right = value.right
+					style_box.content_margin_bottom = value.bottom
 
 	# Unless it's manually set to a different value, automatically set the value of `corner_detail`
 	# relative to the StyleBox' maximum `corner_radius` (as recommended in Godot's documentation).
