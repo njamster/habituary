@@ -1,8 +1,7 @@
 @tool
 extends EditorScript
 
-# Colors from the popular "Nord" palette, see: https://www.nordtheme.com/
-
+#region Color Palette: https://www.nordtheme.com/
 # neutral colors (from dark to light)
 const NEUTRAL_1 := Color("#2E3440")
 const NEUTRAL_2 := Color("#3B4252")
@@ -25,12 +24,14 @@ const AURORA_2 := Color("#D08770")  # NOTE: unused, so far
 const AURORA_3 := Color("#EBCB8B")  # NOTE: unused, so far
 const AURORA_4 := Color("#A3BE8C")
 const AURORA_5 := Color("#B48EAD")  # NOTE: unused, so far
+#endregion
 
 
 ## This function will get called when this EditorScript is executed, clicking "File" > "Run" in the
 ## Script Editor, or pressing its associated keyboard shortcut (Ctrl + Shift + X, by default).
 func _run():
 	_create_theme("dark_theme",
+		#region Dark Color Palette
 		NEUTRAL_1,
 		NEUTRAL_2,
 		NEUTRAL_3,
@@ -48,9 +49,11 @@ func _run():
 		AURORA_3,
 		AURORA_4,
 		AURORA_5,
+		#endregion
 	)
 
 	_create_theme("light_theme",
+		#region Light Color Palette
 		NEUTRAL_8,
 		NEUTRAL_7,
 		NEUTRAL_6,
@@ -68,6 +71,7 @@ func _run():
 		AURORA_3,
 		AURORA_4,
 		AURORA_5,
+		#endregion
 	)
 
 
@@ -83,24 +87,24 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	#region AcceptDialog
 	var accept_dialog := theme.create_theme_type("AcceptDialog")
 
-	accept_dialog.panel = _create_style_box_flat({
+	accept_dialog.panel = {
 		"bg_color" = neutral_1,
 		"corner_radius" = 3,
 		"content_margin" = 8,
-	})
+	}
 	#endregion
 
 	#region Bookmark_Today
 	var bookmark_today := theme.create_theme_type("Bookmark_Today", "PanelContainer")
 
-	bookmark_today.panel = _create_style_box_flat({
+	bookmark_today.panel = {
 		"bg_color" = neutral_1,
 		"border_width" = 3,
 		"border_color" = Color(secondary_4, 0.75),
 		"border_blend" = true,
 		"corner_radius" = 6,
 		"content_margin" = 12,
-	})
+	}
 	#endregion
 
 	#region Button
@@ -120,29 +124,29 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	button.icon_normal_color = neutral_6
 	button.icon_pressed_color = neutral_6
 
-	button.focus = _create_style_box_flat({
+	button.focus = {
 		"bg_color" = neutral_6,
 		"draw_center" = false,
 		"border_width" = 2,
 		"corner_radius" = 3,
 		"expand_margin" = 2,
 		"content_margin" = 4,
-	})
-	button.hover = _create_style_box_flat({
+	}
+	button.hover = {
 		"bg_color" = neutral_1,
 		"corner_radius" = 3,
 		"content_margin" = 4,
-	})
-	button.normal = _create_style_box_flat({
+	}
+	button.normal = {
 		"bg_color" = neutral_2,
 		"corner_radius" = 3,
 		"content_margin" = 4,
-	})
-	button.pressed = _create_style_box_flat({
+	}
+	button.pressed = {
 		"bg_color" = primary_3,
 		"corner_radius" = 3,
 		"content_margin" = 4,
-	})
+	}
 	#endregion
 
 	#region CalendarWidget_Button
@@ -153,26 +157,26 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	calendar_widget_button.icon_normal_color = neutral_7
 	calendar_widget_button.icon_disabled_color = Color(neutral_7, 0.3)
 
-	calendar_widget_button.disabled = _create_style_box_flat({
+	calendar_widget_button.disabled = {
 		"bg_color" = Color(neutral_4, 0.3),
 		"corner_radius" = 4,
 		"content_margin" = 4,
-	})
-	calendar_widget_button.hover = _create_style_box_flat({
+	}
+	calendar_widget_button.hover = {
 		"bg_color" = primary_3,
 		"corner_radius" = 4,
 		"content_margin" = 4,
-	})
-	calendar_widget_button.normal = _create_style_box_flat({
+	}
+	calendar_widget_button.normal = {
 		"bg_color" = neutral_4,
 		"corner_radius" = 4,
 		"content_margin" = 4,
-	})
-	calendar_widget_button.pressed = _create_style_box_flat({
+	}
+	calendar_widget_button.pressed = {
 		"bg_color" = neutral_4,
 		"corner_radius" = 4,
 		"content_margin" = 4,
-	})
+	}
 	#endregion
 
 	#region CalendarWidget_DayButton
@@ -183,18 +187,18 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 
 	calendar_widget_day_button.font_size = 14
 
-	calendar_widget_day_button.hover = _create_style_box_flat({
+	calendar_widget_day_button.hover = {
 		"bg_color" = neutral_3,
 		"corner_radius" = 45,
-	})
-	calendar_widget_day_button.normal = _create_style_box_flat({
+	}
+	calendar_widget_day_button.normal = {
 		"draw_center" = false,
 		"corner_radius" = 45,
-	})
-	calendar_widget_day_button.pressed = _create_style_box_flat({
+	}
+	calendar_widget_day_button.pressed = {
 		"bg_color" = primary_3,
 		"corner_radius" = 45,
-	})
+	}
 	#endregion
 
 	#region CalendarWidget_DayButton_Selected
@@ -205,18 +209,18 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 
 	calendar_widget_day_button_selected.font_size = 14
 
-	calendar_widget_day_button_selected.hover = _create_style_box_flat({
+	calendar_widget_day_button_selected.hover = {
 		"bg_color" = neutral_5,
 		"corner_radius" = 45,
-	})
-	calendar_widget_day_button_selected.normal = _create_style_box_flat({
+	}
+	calendar_widget_day_button_selected.normal = {
 		"bg_color" = primary_3,
 		"corner_radius" = 45,
-	})
-	calendar_widget_day_button_selected.pressed = _create_style_box_flat({
+	}
+	calendar_widget_day_button_selected.pressed = {
 		"bg_color" = primary_3,
 		"corner_radius" = 45,
-	})
+	}
 	#endregion
 
 	#region CalendarWidget_DayButton_Today
@@ -227,18 +231,18 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 
 	calendar_widget_day_button_today.font_size = 14
 
-	calendar_widget_day_button_today.hover = _create_style_box_flat({
+	calendar_widget_day_button_today.hover = {
 		"bg_color" = neutral_5,
 		"corner_radius" = 45,
-	})
-	calendar_widget_day_button_today.normal = _create_style_box_flat({
+	}
+	calendar_widget_day_button_today.normal = {
 		"bg_color" = Color(primary_1, 0.4),
 		"corner_radius" = 45,
-	})
-	calendar_widget_day_button_today.pressed = _create_style_box_flat({
+	}
+	calendar_widget_day_button_today.pressed = {
 		"bg_color" = primary_3,
 		"corner_radius" = 45,
-	})
+	}
 	#endregion
 
 	#region CalendarWidget_DayButton_WeekendDay
@@ -248,18 +252,18 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 
 	calendar_widget_day_button_weekend_day.font_size = 14
 
-	calendar_widget_day_button_weekend_day.hover = _create_style_box_flat({
+	calendar_widget_day_button_weekend_day.hover = {
 		"bg_color" = primary_4,
 		"corner_radius" = 45,
-	})
-	calendar_widget_day_button_weekend_day.normal = _create_style_box_flat({
+	}
+	calendar_widget_day_button_weekend_day.normal = {
 		"draw_center" = false,
 		"corner_radius" = 45,
-	})
-	calendar_widget_day_button_weekend_day.pressed = _create_style_box_flat({
+	}
+	calendar_widget_day_button_weekend_day.pressed = {
 		"bg_color" = primary_3,
 		"corner_radius" = 45,
-	})
+	}
 	#endregion
 
 	#region CheckButton
@@ -297,33 +301,33 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 
 	left_sidebar_button.icon_normal_color = neutral_7
 
-	left_sidebar_button.disabled = _create_style_box_flat({
+	left_sidebar_button.disabled = {
 		"bg_color" = Color(neutral_3, 0.3),
 		"corner_radius" = { "top_left": 0, "top_right": 4, "bottom_right": 4, "bottom_left": 0 },
 		"content_margin" = 4,
-	})
-	left_sidebar_button.focus = _create_style_box_flat({
+	}
+	left_sidebar_button.focus = {
 		"draw_center" = false,
 		"border_width" = { "left": 0, "top": 2, "right": 2, "bottom": 2 },
 		"corner_radius" = { "top_left": 0, "top_right": 4, "bottom_right": 4, "bottom_left": 0 },
 		"expand_margin" = { "left": 0, "top": 2, "right": 2, "bottom": 2 },
 		"content_margin" = 4,
-	})
-	left_sidebar_button.hover = _create_style_box_flat({
+	}
+	left_sidebar_button.hover = {
 		"bg_color" = primary_3,
 		"corner_radius" = { "top_left": 0, "top_right": 4, "bottom_right": 4, "bottom_left": 0 },
 		"content_margin" = 4,
-	})
-	left_sidebar_button.normal = _create_style_box_flat({
+	}
+	left_sidebar_button.normal = {
 		"bg_color" = neutral_3,
 		"corner_radius" = { "top_left": 0, "top_right": 4, "bottom_right": 4, "bottom_left": 0 },
 		"content_margin" = 4,
-	})
-	left_sidebar_button.pressed = _create_style_box_flat({
+	}
+	left_sidebar_button.pressed = {
 		"bg_color" = primary_4,
 		"corner_radius" = { "top_left": 0, "top_right": 4, "bottom_right": 4, "bottom_left": 0 },
 		"content_margin" = 4,
-	})
+	}
 	#endregion
 
 	#region LineEdit
@@ -338,21 +342,21 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	#region PanelContainer
 	var panel_container := theme.create_theme_type("PanelContainer")
 
-	panel_container.panel = _create_style_box_flat({
+	panel_container.panel = {
 		"bg_color" = neutral_1,
 		"corner_radius" = 6,
 		"content_margin" = 12,
-	})
+	}
 	#endregion
 
 	#region PanelContainer_Popup
 	var panel_container_popup := theme.create_theme_type("PanelContainer_Popup", "PanelContainer")
 
-	panel_container_popup.panel = _create_style_box_flat({
+	panel_container_popup.panel = {
 		"bg_color" = neutral_2,
 		"corner_radius" = 6,
 		"content_margin" = 12,
-	})
+	}
 	#endregion
 
 	#region RichTextLabel
@@ -368,78 +372,78 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 
 	right_sidebar_button.icon_normal_color = neutral_7
 
-	right_sidebar_button.disabled = _create_style_box_flat({
+	right_sidebar_button.disabled = {
 		"bg_color" = Color(neutral_3, 0.3),
 		"corner_radius" = { "top_left": 4, "top_right": 0, "bottom_right": 0, "bottom_left": 4 },
 		"content_margin" = 4,
-	})
-	right_sidebar_button.focus = _create_style_box_flat({
+	}
+	right_sidebar_button.focus = {
 		"draw_center" = false,
 		"border_width" = { "left": 2, "top": 2, "right": 0, "bottom": 2 },
 		"corner_radius" = { "top_left": 4, "top_right": 0, "bottom_right": 0, "bottom_left": 4 },
 		"expand_margin" = { "left": 2, "top": 2, "right": 0, "bottom": 2 },
 		"content_margin" = 4,
-	})
-	right_sidebar_button.hover = _create_style_box_flat({
+	}
+	right_sidebar_button.hover = {
 		"bg_color" = primary_3,
 		"corner_radius" = { "top_left": 4, "top_right": 0, "bottom_right": 0, "bottom_left": 4 },
 		"content_margin" = 4,
-	})
-	right_sidebar_button.normal = _create_style_box_flat({
+	}
+	right_sidebar_button.normal = {
 		"bg_color" = neutral_3,
 		"corner_radius" = { "top_left": 4, "top_right": 0, "bottom_right": 0, "bottom_left": 4 },
 		"content_margin" = 4,
-	})
-	right_sidebar_button.pressed = _create_style_box_flat({
+	}
+	right_sidebar_button.pressed = {
 		"bg_color" = primary_4,
 		"corner_radius" = { "top_left": 4, "top_right": 0, "bottom_right": 0, "bottom_left": 4 },
 		"content_margin" = 4,
-	})
+	}
 	#endregion
 
 	#region SearchBar
 	var search_bar := theme.create_theme_type("SearchBar", "PanelContainer")
 
-	search_bar.panel = _create_style_box_flat({
+	search_bar.panel = {
 		"bg_color" = neutral_2,
 		"corner_radius" = 5,
 		"content_margin" = { "left": 8, "top": 4, "right": 8, "bottom": 4 },
-	})
+	}
 	#endregion
 
 	#region SearchBar_Focused
 	var search_bar_focused := theme.create_theme_type("SearchBar_Focused", "PanelContainer")
 
-	search_bar_focused.panel = _create_style_box_flat({
+	search_bar_focused.panel = {
 		"bg_color" = neutral_3,
 		"border_width" = 2,
 		"border_color" = primary_4,
 		"corner_radius" = 5,
 		"content_margin" = { "left": 8, "top": 4, "right": 8, "bottom": 4 },
-	})
+	}
 	#endregion
 
 	#region SearchBar_Hover
 	var search_bar_hover := theme.create_theme_type("SearchBar_Hover", "PanelContainer")
 
-	search_bar_hover.panel = _create_style_box_flat({
+	search_bar_hover.panel = {
 		"bg_color" = neutral_3,
 		"border_width" = 1,
 		"border_color" = neutral_5,
 		"corner_radius" = 5,
 		"content_margin" = { "left": 8, "top": 4, "right": 8, "bottom": 4 },
-	})
+	}
 	#endregion
 
 	#region SidePanel
 	var side_panel := theme.create_theme_type("SidePanel", "PanelContainer")
 
-	side_panel.panel = _create_style_box_flat({
+	side_panel.panel = {
 		"bg_color" = neutral_3,
 		"border_width" = { "left": 0, "top": 0, "right": 4, "bottom": 0 },
 		"border_color" = primary_4,
 		"content_margin" = { "left": 8, "top": 8, "right": 12, "bottom": 8 },
-	})
+	}
 	#endregion
 
 	#region SpinBox
@@ -464,107 +468,14 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	#region TooltipPanel
 	var tooltip_panel := theme.create_theme_type("TooltipPanel", "PanelContainer")
 
-	tooltip_panel.panel = _create_style_box_flat({
+	tooltip_panel.panel = {
 		"bg_color" = neutral_4,
 		"corner_radius" = 5,
 		"content_margin" = { "left": 6, "top": 2, "right": 6, "bottom": 2 },
-	})
+	}
 	#endregion
 
 	# NOTE: Inspecting updated themes in Godot won't show the most recent version, see:
 	#   https://github.com/godotengine/godot/issues/30302
 	# If that is required, reload the project via "Project" -> "Reload Current Project".
 	ResourceSaver.save(theme, file_path)
-
-
-func _create_style_box_flat(properties : Dictionary) -> StyleBoxFlat:
-	var style_box := StyleBoxFlat.new()
-
-	for key in properties:
-		var value = properties[key]
-
-		match key:
-			"bg_color":
-				if value is Color:
-					style_box.bg_color = value
-			"draw_center":
-				if value is bool:
-					style_box.draw_center = value
-			"corner_detail":
-				if value is int:
-					style_box.corner_detail = value
-			"border_width":
-				if value is int:
-					style_box.set_border_width_all(value)
-				elif value is Array:
-					style_box.border_width_left = value[0]
-					style_box.border_width_top = value[1]
-					style_box.border_width_right = value[2]
-					style_box.border_width_bottom = value[3]
-				elif value is Dictionary:
-					style_box.border_width_left = value.left
-					style_box.border_width_top = value.top
-					style_box.border_width_right = value.right
-					style_box.border_width_bottom = value.bottom
-			"border_color":
-				if value is Color:
-					style_box.border_color = value
-			"border_blend":
-				if value is bool:
-					style_box.border_blend = value
-			"corner_radius":
-				if value is int:
-					style_box.set_corner_radius_all(value)
-				elif value is Array:
-					style_box.corner_radius_top_left = value[0]
-					style_box.corner_radius_top_right = value[1]
-					style_box.corner_radius_bottom_right = value[2]
-					style_box.corner_radius_bottom_left = value[3]
-				elif value is Dictionary:
-					style_box.corner_radius_top_left = value.top_left
-					style_box.corner_radius_top_right = value.top_right
-					style_box.corner_radius_bottom_right = value.bottom_right
-					style_box.corner_radius_bottom_left = value.bottom_left
-			"expand_margin":
-				if value is int:
-					style_box.set_expand_margin_all(value)
-				elif value is Array:
-					style_box.expand_margin_left = value[0]
-					style_box.expand_margin_top = value[1]
-					style_box.expand_margin_right = value[2]
-					style_box.expand_margin_bottom = value[3]
-				elif value is Dictionary:
-					style_box.expand_margin_left = value.left
-					style_box.expand_margin_top = value.top
-					style_box.expand_margin_right = value.right
-					style_box.expand_margin_bottom = value.bottom
-			"content_margin":
-				if value is int:
-					style_box.set_content_margin_all(value)
-				elif value is Array:
-					style_box.content_margin_left = value[0]
-					style_box.content_margin_top = value[1]
-					style_box.content_margin_right = value[2]
-					style_box.content_margin_bottom = value[3]
-				elif value is Dictionary:
-					style_box.content_margin_left = value.left
-					style_box.content_margin_top = value.top
-					style_box.content_margin_right = value.right
-					style_box.content_margin_bottom = value.bottom
-
-	# Unless it's manually set to a different value, automatically set the value of `corner_detail`
-	# relative to the StyleBox' maximum `corner_radius` (as recommended in Godot's documentation).
-	if not properties.has("corner_detail"):
-		var max_corner_radius : int = max(
-			style_box.corner_radius_top_left,
-			style_box.corner_radius_top_right,
-			style_box.corner_radius_bottom_right,
-			style_box.corner_radius_bottom_left
-		)
-
-		if max_corner_radius < 10:
-			style_box.corner_detail = 5
-		elif max_corner_radius < 30:
-			style_box.corner_detail = 12
-
-	return style_box
