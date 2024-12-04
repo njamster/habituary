@@ -491,38 +491,38 @@ func _add_start_time() -> void:
 	regex1.compile("^[0-9]{2}:[0-9]{2}: ")
 	var regex2 = RegEx.new()
 	regex2.compile("^[0-9]{2}:[0-9]{2}–[0-9]{2}:[0-9]{2}: ")
-	if regex1.search(self.text):
+	if regex1.search(%Edit.text):
 		pass # do nothing
-	elif regex2.search(self.text):
+	elif regex2.search(%Edit.text):
 		pass # do nothing
 	else:
 		# add first time
 		var current_time := Time.get_time_string_from_system().left(5)
-		self.text = current_time + ": " + self.text
+		%Edit.text = current_time + ": " + %Edit.text
 
 
 func _add_end_time() -> void:
 	var regex1 = RegEx.new()
 	regex1.compile("^[0-9]{2}:[0-9]{2}: ")
-	var result1 = regex1.search(self.text)
+	var result1 = regex1.search(%Edit.text)
 	var regex2 = RegEx.new()
 	regex2.compile("^[0-9]{2}:[0-9]{2}–[0-9]{2}:[0-9]{2}: ")
 	if result1:
 		var current_time := Time.get_time_string_from_system().left(5)
 		if result1.get_string(0).left(-2) == current_time:
 			# replace first time
-			self.text = current_time + self.text.right(-5)
+			%Edit.text = current_time + %Edit.text.right(-5)
 		else:
 			# keep first time, add second time
-			self.text = self.text.left(5) + "–" + current_time + self.text.right(-5)
-	elif regex2.search(text):
+			%Edit.text = %Edit.text.left(5) + "–" + current_time + %Edit.text.right(-5)
+	elif regex2.search(%Edit.text):
 		var current_time := Time.get_time_string_from_system().left(5)
 		# keep first time, replace second time
-		self.text = self.text.left(5) + "–" + current_time + self.text.right(-11)
+		%Edit.text = %Edit.text.left(5) + "–" + current_time + %Edit.text.right(-11)
 	else:
 		# add first time
 		var current_time := Time.get_time_string_from_system().left(5)
-		self.text = current_time + ": " + self.text
+		%Edit.text = current_time + ": " + %Edit.text
 
 
 func _apply_formatting() -> void:
