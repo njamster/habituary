@@ -101,8 +101,10 @@ func create_style_box_flat(properties : Dictionary) -> StyleBoxFlat:
 	return style_box
 
 
+
 class ThemeType:
-	var name : StringName
+	var _theme_type : StringName
+	var _base_type : StringName
 	var _theme : Theme
 
 
@@ -111,33 +113,45 @@ class ThemeType:
 		if base_type:
 			theme.set_type_variation(theme_type, base_type)
 
-		self.name = theme_type
+		self._theme_type = theme_type
+		self._base_type = base_type
 		self._theme = theme
 
 
 	func _set(property: StringName, value: Variant) -> bool:
 		if value is Color:
-			_theme.set_color(property, name, value)
+			_theme.set_color(property, self._theme_type, value)
 			return true
 		elif value is Dictionary:
 			var stylebox : StyleBoxFlat = _theme.create_style_box_flat(value)
-			_theme.set_stylebox(property, name, stylebox)
+			_theme.set_stylebox(property, self._theme_type, stylebox)
 			return true
 		elif value is int:
 			if property == "font_size":
-				_theme.set_font_size(property, name, value)
+				_theme.set_font_size(property, self._theme_type, value)
 				return true
 			else:
-				_theme.set_constant(property, name, value)
+				_theme.set_constant(property, self._theme_type, value)
 				return true
 		elif value is Font:
-			_theme.set_font(property, name, value)
+			_theme.set_font(property, self._theme_type, value)
 			return true
 		elif value is Texture2D:
-			_theme.set_icon(property, name, value)
+			_theme.set_icon(property, self._theme_type, value)
 			return true
 		elif value is StyleBox:
-			_theme.set_stylebox(property, name, value)
+			_theme.set_stylebox(property, self._theme_type, value)
 			return true
 
 		return false
+
+
+	func set_default_color(color : Color) -> void:
+		var default_theme := ThemeDB.get_default_theme()
+
+		if self._base_type:
+			for property in default_theme.get_color_list(self._base_type):
+				_theme.set_color(property, self._theme_type, color)
+		else:
+			for property in default_theme.get_color_list(self._theme_type):
+				_theme.set_color(property, self._theme_type, color)
