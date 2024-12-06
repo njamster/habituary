@@ -2,6 +2,13 @@ extends Theme
 class_name ConciseTheme
 
 
+func _init() -> void:
+	# When called from an EditorScript (like generator.gd)...
+	if Engine.is_editor_hint():
+		# ... prepopulate the newly created theme with the values from the default theme
+		self.merge_with(ThemeDB.get_default_theme())
+
+
 func create_theme_type(theme_type: StringName, base_type: StringName = "") -> ThemeType:
 	return ThemeType.new(self, theme_type, base_type)
 
