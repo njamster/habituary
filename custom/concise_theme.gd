@@ -2,33 +2,21 @@ extends Theme
 class_name ConciseTheme
 
 
-func _init() -> void:
-	# When called from an EditorScript (like generator.gd)...
-	if Engine.is_editor_hint():
-		# ... prepopulate the newly created theme with the values from the default theme
-		self.merge_with(ThemeDB.get_default_theme())
-
-
 func create_theme_type(theme_type: StringName, base_type: StringName = "") -> ThemeType:
 	return ThemeType.new(self, theme_type, base_type)
 
 
-func create_style_box_flat(properties : Dictionary) -> StyleBoxFlat:
-	var style_box := StyleBoxFlat.new()
+func update_style_box(name : StringName, theme_type : StringName, properties : Dictionary) -> void:
+	var style_box : StyleBox
+	if self.has_stylebox(name, theme_type):
+		style_box = self.get_stylebox(name, theme_type)
+	else:
+		style_box = StyleBoxFlat.new()  # FIXME: A StyleBoxFlat won't always be the right pick!
 
 	for key in properties:
 		var value = properties[key]
 
 		match key:
-			"bg_color":
-				if value is Color:
-					style_box.bg_color = value
-			"draw_center":
-				if value is bool:
-					style_box.draw_center = value
-			"corner_detail":
-				if value is int:
-					style_box.corner_detail = value
 			"border_width":
 				if value is int:
 					style_box.set_border_width_all(value)
@@ -42,12 +30,6 @@ func create_style_box_flat(properties : Dictionary) -> StyleBoxFlat:
 					style_box.border_width_top = value.top
 					style_box.border_width_right = value.right
 					style_box.border_width_bottom = value.bottom
-			"border_color":
-				if value is Color:
-					style_box.border_color = value
-			"border_blend":
-				if value is bool:
-					style_box.border_blend = value
 			"corner_radius":
 				if value is int:
 					style_box.set_corner_radius_all(value)
@@ -87,6 +69,11 @@ func create_style_box_flat(properties : Dictionary) -> StyleBoxFlat:
 					style_box.content_margin_top = value.top
 					style_box.content_margin_right = value.right
 					style_box.content_margin_bottom = value.bottom
+			_:
+				if style_box.get(key):
+					style_box[key] = properties[key]
+				else:
+					pass  # TODO: print warning
 
 	# Unless it's manually set to a different value, automatically set the value of `corner_detail`
 	# relative to the StyleBox' maximum `corner_radius` (as recommended in Godot's documentation).
@@ -105,8 +92,7 @@ func create_style_box_flat(properties : Dictionary) -> StyleBoxFlat:
 		else:
 			pass # TODO: Which value to use then?
 
-	return style_box
-
+	self.set_stylebox(name, theme_type, style_box)
 
 
 class ThemeType:
@@ -127,38 +113,43 @@ class ThemeType:
 
 	func _set(property: StringName, value: Variant) -> bool:
 		if value is Color:
-			_theme.set_color(property, self._theme_type, value)
-			return true
+			self._theme.set_color(property, self._theme_type, value)
 		elif value is Dictionary:
-			var stylebox : StyleBoxFlat = _theme.create_style_box_flat(value)
-			_theme.set_stylebox(property, self._theme_type, stylebox)
-			return true
+			self._theme.update_style_box(property, self._theme_type, value)
 		elif value is int:
 			if property == "font_size":
-				_theme.set_font_size(property, self._theme_type, value)
-				return true
+				self._theme.set_font_size(property, self._theme_type, value)
 			else:
-				_theme.set_constant(property, self._theme_type, value)
-				return true
+				self._theme.set_constant(property, self._theme_type, value)
 		elif value is Font:
-			_theme.set_font(property, self._theme_type, value)
-			return true
+			self._theme.set_font(property, self._theme_type, value)
 		elif value is Texture2D:
-			_theme.set_icon(property, self._theme_type, value)
-			return true
+			self._theme.set_icon(property, self._theme_type, value)
 		elif value is StyleBox:
-			_theme.set_stylebox(property, self._theme_type, value)
-			return true
+			self._theme.set_stylebox(property, self._theme_type, value)
+		else:
+			return false
 
-		return false
+		return true
 
 
 	func set_default_color(color : Color) -> void:
 		var default_theme := ThemeDB.get_default_theme()
 
 		if self._base_type:
-			for property in default_theme.get_color_list(self._base_type):
-				_theme.set_color(property, self._theme_type, color)
+			for name in default_theme.get_color_list(self._base_type):
+				self._theme.set_color(name, self._theme_type, color)
 		else:
-			for property in default_theme.get_color_list(self._theme_type):
-				_theme.set_color(property, self._theme_type, color)
+			for name in default_theme.get_color_list(self._theme_type):
+				self._theme.set_color(name, self._theme_type, color)
+
+
+	func set_main_style(properties : Dictionary) -> void:
+		var default_theme := ThemeDB.get_default_theme()
+
+		if self._base_type:
+			for name in default_theme.get_stylebox_list(self._base_type):
+				self._theme.update_style_box(name, self._theme_type, properties)
+		else:
+			for name in default_theme.get_stylebox_list(self._theme_type):
+				self._theme.update_style_box(name, self._theme_type, properties)

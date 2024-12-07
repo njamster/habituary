@@ -114,53 +114,45 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	button.font_disabled_color = Color(neutral_7, 0.5)
 	button.icon_disabled_color = Color(neutral_7, 0.5)
 
+	button.set_main_style({
+		"corner_radius" = 3,
+		"content_margin" = 4,
+	})
 	button.focus = {
-		"bg_color" = neutral_6,
 		"draw_center" = false,
 		"border_width" = 2,
-		"corner_radius" = 3,
 		"expand_margin" = 2,
-		"content_margin" = 4,
 	}
 	button.hover = {
 		"bg_color" = neutral_1,
-		"corner_radius" = 3,
-		"content_margin" = 4,
 	}
 	button.normal = {
 		"bg_color" = neutral_2,
-		"corner_radius" = 3,
-		"content_margin" = 4,
 	}
 	button.pressed = {
 		"bg_color" = primary_3,
-		"corner_radius" = 3,
-		"content_margin" = 4,
 	}
+
 	#endregion
 
 	#region CalendarWidget_Button
 	var calendar_widget_button := theme.create_theme_type("CalendarWidget_Button", "Button")
 
-	calendar_widget_button.disabled = {
-		"bg_color" = Color(neutral_4, 0.3),
+	calendar_widget_button.set_main_style({
 		"corner_radius" = 4,
 		"content_margin" = 4,
+	})
+	calendar_widget_button.disabled = {
+		"bg_color" = Color(neutral_4, 0.3),
 	}
 	calendar_widget_button.hover = {
 		"bg_color" = primary_3,
-		"corner_radius" = 4,
-		"content_margin" = 4,
 	}
 	calendar_widget_button.normal = {
 		"bg_color" = neutral_4,
-		"corner_radius" = 4,
-		"content_margin" = 4,
 	}
 	calendar_widget_button.pressed = {
 		"bg_color" = neutral_4,
-		"corner_radius" = 4,
-		"content_margin" = 4,
 	}
 	#endregion
 
@@ -169,80 +161,80 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 
 	calendar_widget_day_button.font_size = 14
 
+	calendar_widget_day_button.set_main_style({
+		"corner_radius" = 45,
+	})
 	calendar_widget_day_button.hover = {
 		"bg_color" = neutral_3,
-		"corner_radius" = 45,
 	}
 	calendar_widget_day_button.normal = {
 		"draw_center" = false,
-		"corner_radius" = 45,
 	}
 	calendar_widget_day_button.pressed = {
 		"bg_color" = primary_3,
-		"corner_radius" = 45,
 	}
 	#endregion
 
 	#region CalendarWidget_DayButton_Selected
-	var calendar_widget_day_button_selected := theme.create_theme_type("CalendarWidget_DayButton_Selected", "CalendarWidget_DayButton")
+	var calendar_widget_day_button_selected := theme.create_theme_type("CalendarWidget_DayButton_Selected", "Button")
 
 	calendar_widget_day_button_selected.font_hover_color = neutral_1
 
 	calendar_widget_day_button_selected.font_size = 14
 
+	calendar_widget_day_button_selected.set_main_style({
+		"corner_radius" = 45,
+	})
 	calendar_widget_day_button_selected.hover = {
 		"bg_color" = neutral_5,
-		"corner_radius" = 45,
 	}
 	calendar_widget_day_button_selected.normal = {
 		"bg_color" = primary_3,
-		"corner_radius" = 45,
 	}
 	calendar_widget_day_button_selected.pressed = {
 		"bg_color" = primary_3,
-		"corner_radius" = 45,
 	}
 	#endregion
 
 	#region CalendarWidget_DayButton_Today
-	var calendar_widget_day_button_today := theme.create_theme_type("CalendarWidget_DayButton_Today", "CalendarWidget_DayButton")
+	var calendar_widget_day_button_today := theme.create_theme_type("CalendarWidget_DayButton_Today", "Button")
 
 	calendar_widget_day_button_today.font_hover_color = neutral_1
 
 	calendar_widget_day_button_today.font_size = 14
 
+	calendar_widget_day_button_today.set_main_style({
+		"corner_radius" = 45,
+	})
 	calendar_widget_day_button_today.hover = {
 		"bg_color" = neutral_5,
-		"corner_radius" = 45,
 	}
 	calendar_widget_day_button_today.normal = {
 		"bg_color" = Color(primary_1, 0.4),
-		"corner_radius" = 45,
 	}
 	calendar_widget_day_button_today.pressed = {
 		"bg_color" = primary_3,
-		"corner_radius" = 45,
 	}
 	#endregion
 
 	#region CalendarWidget_DayButton_WeekendDay
-	var calendar_widget_day_button_weekend_day := theme.create_theme_type("CalendarWidget_DayButton_WeekendDay", "CalendarWidget_DayButton")
+	var calendar_widget_day_button_weekend_day := theme.create_theme_type("CalendarWidget_DayButton_WeekendDay", "Button")
 
 	calendar_widget_day_button_weekend_day.font_color = primary_4
 
 	calendar_widget_day_button_weekend_day.font_size = 14
 
+	calendar_widget_day_button_weekend_day.set_main_style({
+		"corner_radius" = 45,
+	})
 	calendar_widget_day_button_weekend_day.hover = {
 		"bg_color" = primary_4,
-		"corner_radius" = 45,
 	}
 	calendar_widget_day_button_weekend_day.normal = {
 		"draw_center" = false,
-		"corner_radius" = 45,
 	}
 	calendar_widget_day_button_weekend_day.pressed = {
 		"bg_color" = primary_3,
-		"corner_radius" = 45,
 	}
 	#endregion
 
@@ -272,32 +264,26 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	#region LeftSidebarButton
 	var left_sidebar_button := theme.create_theme_type("LeftSidebarButton", "Button")
 
-	left_sidebar_button.disabled = {
-		"bg_color" = Color(neutral_3, 0.3),
+	left_sidebar_button.set_main_style({
 		"corner_radius" = { "top_left": 0, "top_right": 4, "bottom_right": 4, "bottom_left": 0 },
 		"content_margin" = 4,
+	})
+	left_sidebar_button.disabled = {
+		"bg_color" = Color(neutral_3, 0.3),
 	}
 	left_sidebar_button.focus = {
 		"draw_center" = false,
 		"border_width" = { "left": 0, "top": 2, "right": 2, "bottom": 2 },
-		"corner_radius" = { "top_left": 0, "top_right": 4, "bottom_right": 4, "bottom_left": 0 },
 		"expand_margin" = { "left": 0, "top": 2, "right": 2, "bottom": 2 },
-		"content_margin" = 4,
 	}
 	left_sidebar_button.hover = {
 		"bg_color" = primary_3,
-		"corner_radius" = { "top_left": 0, "top_right": 4, "bottom_right": 4, "bottom_left": 0 },
-		"content_margin" = 4,
 	}
 	left_sidebar_button.normal = {
 		"bg_color" = neutral_3,
-		"corner_radius" = { "top_left": 0, "top_right": 4, "bottom_right": 4, "bottom_left": 0 },
-		"content_margin" = 4,
 	}
 	left_sidebar_button.pressed = {
 		"bg_color" = primary_4,
-		"corner_radius" = { "top_left": 0, "top_right": 4, "bottom_right": 4, "bottom_left": 0 },
-		"content_margin" = 4,
 	}
 	#endregion
 
@@ -339,32 +325,26 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	#region RightSidebarButton
 	var right_sidebar_button := theme.create_theme_type("RightSidebarButton", "Button")
 
-	right_sidebar_button.disabled = {
-		"bg_color" = Color(neutral_3, 0.3),
+	right_sidebar_button.set_main_style({
 		"corner_radius" = { "top_left": 4, "top_right": 0, "bottom_right": 0, "bottom_left": 4 },
 		"content_margin" = 4,
+	})
+	right_sidebar_button.disabled = {
+		"bg_color" = Color(neutral_3, 0.3),
 	}
 	right_sidebar_button.focus = {
 		"draw_center" = false,
 		"border_width" = { "left": 2, "top": 2, "right": 0, "bottom": 2 },
-		"corner_radius" = { "top_left": 4, "top_right": 0, "bottom_right": 0, "bottom_left": 4 },
 		"expand_margin" = { "left": 2, "top": 2, "right": 0, "bottom": 2 },
-		"content_margin" = 4,
 	}
 	right_sidebar_button.hover = {
 		"bg_color" = primary_3,
-		"corner_radius" = { "top_left": 4, "top_right": 0, "bottom_right": 0, "bottom_left": 4 },
-		"content_margin" = 4,
 	}
 	right_sidebar_button.normal = {
 		"bg_color" = neutral_3,
-		"corner_radius" = { "top_left": 4, "top_right": 0, "bottom_right": 0, "bottom_left": 4 },
-		"content_margin" = 4,
 	}
 	right_sidebar_button.pressed = {
 		"bg_color" = primary_4,
-		"corner_radius" = { "top_left": 4, "top_right": 0, "bottom_right": 0, "bottom_left": 4 },
-		"content_margin" = 4,
 	}
 	#endregion
 
