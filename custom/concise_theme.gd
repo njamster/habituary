@@ -1,17 +1,58 @@
 extends Theme
 class_name ConciseTheme
 
+const DISTINCT_LINE_PROPERTIES := [
+	"color",
+	"grow_begin",
+	"grow_end",
+	"thickness",
+	"vertical"
+]
+
+const DISTINCT_TEXTURE_PROPERTIES := [
+	"texture",
+	"texture_margin_left",
+	"texture_margin_top",
+	"texture_margin_right",
+	"texture_margin_bottom",
+	"axis_stretch_horizontal",
+	"axis_stretch_vertical",
+	"region_rect",
+	"modulate_color"
+]
+
+const DISTINCT_FLAT_PROPERTIES := [
+	"bg_color",
+	"skew",
+	"corner_detail",
+	"border_width_left",
+	"border_width_top",
+	"border_width_right",
+	"border_width_bottom",
+	"border_color",
+	"border_blend",
+	"corner_radius_top_left",
+	"corner_radius_top_right",
+	"corner_radius_bottom_right",
+	"corner_radius_bottom_left",
+	"shadow_color",
+	"shadow_size",
+	"shadow_offset",
+	"anti_aliasing",
+	"anti_aliasing_size",
+]
+
 
 func create_theme_type(theme_type: StringName, base_type: StringName = "") -> ThemeType:
 	return ThemeType.new(self, theme_type, base_type)
 
 
-func update_style_box(name : StringName, theme_type : StringName, properties : Dictionary) -> void:
+func _update_style_box(name : StringName, theme_type : StringName, properties : Dictionary) -> void:
 	var style_box : StyleBox
 	if self.has_stylebox(name, theme_type):
 		style_box = self.get_stylebox(name, theme_type)
 	else:
-		style_box = StyleBoxFlat.new()  # FIXME: A StyleBoxFlat won't always be the right pick!
+		style_box = _deduce_style_box_type(properties)
 
 	for key in properties:
 		var value = properties[key]
@@ -70,10 +111,12 @@ func update_style_box(name : StringName, theme_type : StringName, properties : D
 					style_box.content_margin_right = value.right
 					style_box.content_margin_bottom = value.bottom
 			_:
-				if style_box.get(key):
+				if style_box.get(key) != null:
 					style_box[key] = properties[key]
 				else:
-					pass  # TODO: print warning
+					push_warning(
+						"Unknown %s property '%s' – will be ignored!" % [style_box.get_class(), key]
+					)
 
 	# Unless it's manually set to a different value, automatically set the value of `corner_detail`
 	# relative to the StyleBox' maximum `corner_radius` (as recommended in Godot's documentation).
@@ -93,6 +136,25 @@ func update_style_box(name : StringName, theme_type : StringName, properties : D
 			pass # TODO: Which value to use then?
 
 	self.set_stylebox(name, theme_type, style_box)
+
+
+func _deduce_style_box_type(properties : Dictionary) -> StyleBox:
+	var is_empty := true
+
+	for key in properties:
+		if key in DISTINCT_LINE_PROPERTIES:
+			return StyleBoxLine.new()
+		elif key in DISTINCT_TEXTURE_PROPERTIES:
+			return StyleBoxTexture.new()
+		elif key in DISTINCT_FLAT_PROPERTIES:
+			return StyleBoxFlat.new()
+		elif is_empty and not key.begins_with("content_margin"):
+			is_empty = false
+
+	if is_empty:
+		return StyleBoxEmpty.new()
+	else:
+		return StyleBoxFlat.new()
 
 
 class ThemeType:
@@ -115,7 +177,7 @@ class ThemeType:
 		if value is Color:
 			self._theme.set_color(property, self._theme_type, value)
 		elif value is Dictionary:
-			self._theme.update_style_box(property, self._theme_type, value)
+			self._theme._update_style_box(property, self._theme_type, value)
 		elif value is int:
 			if property == "font_size":
 				self._theme.set_font_size(property, self._theme_type, value)
@@ -149,7 +211,7 @@ class ThemeType:
 
 		if self._base_type:
 			for name in default_theme.get_stylebox_list(self._base_type):
-				self._theme.update_style_box(name, self._theme_type, properties)
+				self._theme._update_style_box(name, self._theme_type, properties)
 		else:
 			for name in default_theme.get_stylebox_list(self._theme_type):
-				self._theme.update_style_box(name, self._theme_type, properties)
+				self._theme._update_style_box(name, self._theme_type, properties)
