@@ -62,7 +62,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 theme_override_constants/caret_width = 2
-theme_override_font_sizes/font_size = 14
 theme_override_styles/focus = SubResource("StyleBoxEmpty_wbed6")
 theme_override_styles/read_only = SubResource("StyleBoxEmpty_voael")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_oc8vk")

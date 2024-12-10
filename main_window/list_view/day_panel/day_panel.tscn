@@ -47,7 +47,6 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"SubtleLabel"
-theme_override_font_sizes/font_size = 12
 text = "MMM DD, YYYY"
 uppercase = true
 
@@ -55,7 +54,7 @@ uppercase = true
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 24
+theme_type_variation = &"HeaderLarge"
 text = "WEEKDAY"
 uppercase = true
 
@@ -64,7 +63,6 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("2_ttk1a")
-theme_override_font_sizes/font_size = 14
 
 [node name="Tooltip" type="Node" parent="Header"]
 script = ExtResource("2_wbwrx")

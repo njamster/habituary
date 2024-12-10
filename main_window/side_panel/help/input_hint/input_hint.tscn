@@ -1,18 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://cata0rnrvpwj2"]
+[gd_scene load_steps=3 format=3 uid="uid://cata0rnrvpwj2"]
 
 [ext_resource type="Script" path="res://main_window/side_panel/help/input_hint/input_hint.gd" id="1_w586x"]
 [ext_resource type="Texture2D" uid="uid://dvwky1k2js4hn" path="res://main_window/side_panel/help/input_hint/images/dotted_connector.png" id="2_noh0e"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rlewr"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.505882, 0.631373, 0.756863, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
 
 [node name="InputHint" type="HBoxContainer"]
 anchors_preset = 10
@@ -25,7 +14,6 @@ script = ExtResource("1_w586x")
 [node name="Description" type="Label" parent="."]
 layout_mode = 2
 size_flags_vertical = 8
-theme_override_font_sizes/font_size = 14
 text = "Select All"
 
 [node name="ConnectorLine" type="TextureRect" parent="."]
@@ -39,7 +27,6 @@ stretch_mode = 1
 [node name="KeyBinding" type="Label" parent="."]
 custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
-theme_override_styles/normal = SubResource("StyleBoxFlat_rlewr")
+theme_type_variation = &"KeyBindingLabel"
 text = "CTRL+A"
 horizontal_alignment = 1

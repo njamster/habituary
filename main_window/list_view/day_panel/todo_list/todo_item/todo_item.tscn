@@ -204,7 +204,6 @@ layout_mode = 2
 mouse_filter = 1
 theme_override_constants/caret_width = 2
 theme_override_constants/minimum_character_width = 0
-theme_override_font_sizes/font_size = 14
 theme_override_styles/focus = SubResource("StyleBoxEmpty_0pwns")
 theme_override_styles/read_only = SubResource("StyleBoxEmpty_4lcjl")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_3h3so")
@@ -259,8 +258,8 @@ layout_mode = 2
 [node name="FormatLabel" type="Label" parent="EditingOptions/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"SmallText"
 theme_override_colors/font_color = Color(0.92549, 0.937255, 0.956863, 1)
-theme_override_font_sizes/font_size = 12
 text = "Format:"
 
 [node name="Heading" type="Button" parent="EditingOptions/HBox"]

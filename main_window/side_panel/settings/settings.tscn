@@ -16,7 +16,7 @@ script = ExtResource("1_xu2b7")
 
 [node name="Heading" type="Label" parent="."]
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
+theme_type_variation = &"HeaderLarge"
 text = "Settings"
 horizontal_alignment = 1
 
@@ -46,6 +46,7 @@ theme_override_constants/separation = 8
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
+theme_type_variation = &"HeaderSmall"
 text = "Store Path"
 vertical_alignment = 2
 
@@ -53,7 +54,6 @@ vertical_alignment = 2
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 14
 icon = ExtResource("4_bf631")
 
 [node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/StorePath/Setting/Change"]
@@ -64,8 +64,7 @@ popup_position = 5
 [node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/VBox/StorePath"]
 modulate = Color(1, 1, 1, 0.607843)
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 12
-theme_override_font_sizes/bold_font_size = 12
+theme_type_variation = &"Explanation"
 bbcode_enabled = true
 text = "[fill]The path under which Habituary stores your to-dos. [b]It is highly recommended that you keep regular backups of this directory to prevent data loss in case of errors![/b][/fill]"
 fit_content = true
@@ -81,18 +80,19 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
+theme_type_variation = &"HeaderSmall"
 text = "Current Day Position"
 
 [node name="Options" type="OptionButton" parent="ScrollContainer/PaddedScrollbar/VBox/TodayPosition/Setting"]
 layout_mode = 2
 
-[node name="Explanation" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/TodayPosition"]
+[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/VBox/TodayPosition"]
 modulate = Color(1, 1, 1, 0.607843)
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
-text = "After changing dates, the currently selected day will be displayed at the center position of the list view."
-horizontal_alignment = 3
-autowrap_mode = 3
+theme_type_variation = &"Explanation"
+bbcode_enabled = true
+text = "[fill]After changing dates, the currently selected day will be displayed at the center position of the list view.[/fill]"
+fit_content = true
 
 [node name="DayStart" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
 unique_name_in_owner = true
@@ -105,6 +105,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
+theme_type_variation = &"HeaderSmall"
 text = "Start Day At"
 
 [node name="Hours" type="SpinBox" parent="ScrollContainer/PaddedScrollbar/VBox/DayStart/Setting"]
@@ -126,13 +127,13 @@ alignment = 1
 script = ExtResource("5_px7qq")
 format_string = "%02d"
 
-[node name="Explanation" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/DayStart"]
+[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/VBox/DayStart"]
 modulate = Color(1, 1, 1, 0.607843)
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
-text = "After reaching this time of the day, Habituary will automatically move the list view one day forward."
-horizontal_alignment = 3
-autowrap_mode = 3
+theme_type_variation = &"Explanation"
+bbcode_enabled = true
+text = "[fill]After reaching this time of the day, Habituary will automatically move the list view one day forward.[/fill]"
+fit_content = true
 
 [node name="FirstWeekday" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
 unique_name_in_owner = true
@@ -145,6 +146,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
+theme_type_variation = &"HeaderSmall"
 text = "Start Weeks on Monday"
 
 [node name="Options" type="CheckButton" parent="ScrollContainer/PaddedScrollbar/VBox/FirstWeekday/Setting"]
@@ -153,12 +155,13 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 button_pressed = true
 
-[node name="Explanation" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/FirstWeekday"]
+[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/VBox/FirstWeekday"]
 modulate = Color(1, 1, 1, 0.607843)
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
-text = "New weeks in the calendar widget start on Mondays."
-autowrap_mode = 3
+theme_type_variation = &"Explanation"
+bbcode_enabled = true
+text = "[fill]New weeks in the calendar widget start on Mondays.[/fill]"
+fit_content = true
 
 [connection signal="pressed" from="ScrollContainer/PaddedScrollbar/VBox/StorePath/Setting/Change" to="." method="_on_change_store_path_pressed"]
 [connection signal="item_selected" from="ScrollContainer/PaddedScrollbar/VBox/TodayPosition/Setting/Options" to="." method="_on_today_position_item_selected"]

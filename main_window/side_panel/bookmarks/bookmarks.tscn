@@ -14,7 +14,7 @@ script = ExtResource("1_60nsm")
 
 [node name="Heading" type="Label" parent="."]
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
+theme_type_variation = &"HeaderLarge"
 text = "Bookmarks"
 horizontal_alignment = 1
 
@@ -28,7 +28,6 @@ layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 12
 button_pressed = true
 text = "Include Past"
 

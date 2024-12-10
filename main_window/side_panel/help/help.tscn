@@ -20,7 +20,7 @@ script = ExtResource("1_1rhmu")
 
 [node name="Heading" type="Label" parent="."]
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
+theme_type_variation = &"HeaderLarge"
 text = "Help"
 horizontal_alignment = 1
 
@@ -34,14 +34,12 @@ alignment = 1
 
 [node name="Label" type="Label" parent="VBox/Version"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
 text = "Version:"
 
 [node name="ID" type="LineEdit" parent="VBox/Version"]
 layout_mode = 2
 theme_override_colors/font_uneditable_color = Color(0.505882, 0.631373, 0.756863, 1)
 theme_override_constants/minimum_character_width = 0
-theme_override_font_sizes/font_size = 14
 theme_override_styles/focus = SubResource("StyleBoxEmpty_ag0c0")
 theme_override_styles/read_only = SubResource("StyleBoxEmpty_02jsr")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_unkbq")
@@ -54,7 +52,6 @@ select_all_on_focus = true
 
 [node name="ReportIssue" type="RichTextLabel" parent="VBox"]
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 14
 bbcode_enabled = true
 text = "[center][url]Report Issue[/url][/center]"
 fit_content = true
@@ -104,6 +101,7 @@ theme_override_constants/separation = 8
 
 [node name="Heading" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/KeyBindingsBlock5"]
 layout_mode = 2
+theme_type_variation = &"HeaderSmall"
 text = "While Editing A To-Do"
 horizontal_alignment = 1
 uppercase = true
