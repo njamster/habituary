@@ -477,6 +477,25 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
     scroll_button_text.font_size = 12
     #endregion
 
+    # ----------------------------------------
+
+    # Keep UIDs from the previous version of the theme, if there are any. Without this, re-running
+    # this script would assign new UIDs to *all* StyleBoxes, Icons and Fonts in the theme, even if
+    # their properties didn't change at all (which is really annoying for version control).
+    if ResourceLoader.exists(file_path):
+        var previous_version := ResourceLoader.load(file_path)
+
+        for theme_type in theme.get_type_list():
+            for data_type in [
+                Theme.DATA_TYPE_FONT,
+                Theme.DATA_TYPE_ICON,
+                Theme.DATA_TYPE_STYLEBOX,
+            ]:
+                for item_name in theme.get_theme_item_list(data_type, theme_type):
+                    var new = theme.get_theme_item(data_type, item_name, theme_type)
+                    var old = previous_version.get_theme_item(data_type, item_name, theme_type)
+                    new.resource_scene_unique_id = old.resource_scene_unique_id
+
     # NOTE: Inspecting updated themes in Godot won't show the most recent version, see:
     #   https://github.com/godotengine/godot/issues/30302
     # If that is required, reload the project via "Project" -> "Reload Current Project".
