@@ -22,7 +22,7 @@ layout_mode = 2
 [node name="Capture" type="VBoxContainer" parent="."]
 visible = false
 layout_mode = 2
-theme_override_constants/separation = 16
+theme_type_variation = &"MediumSeparation"
 
 [node name="Heading" type="Label" parent="Capture"]
 layout_mode = 2

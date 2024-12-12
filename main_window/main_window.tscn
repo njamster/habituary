@@ -22,7 +22,7 @@ script = ExtResource("1_cqr1i")
 
 [node name="HBox" type="HBoxContainer" parent="."]
 layout_mode = 2
-theme_override_constants/separation = 0
+theme_type_variation = &"NoSeparation"
 
 [node name="SidePanel" parent="HBox" instance=ExtResource("1_rij1k")]
 layout_mode = 2
@@ -38,7 +38,7 @@ script = ExtResource("3_y34bb")
 
 [node name="VBox" type="VBoxContainer" parent="HBox/MainPanel"]
 layout_mode = 2
-theme_override_constants/separation = 16
+theme_type_variation = &"MediumSeparation"
 
 [node name="TopBar" parent="HBox/MainPanel/VBox" instance=ExtResource("2_tkl15")]
 layout_mode = 2
@@ -46,7 +46,7 @@ layout_mode = 2
 [node name="HBox" type="HBoxContainer" parent="HBox/MainPanel/VBox"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/separation = 16
+theme_type_variation = &"MediumSeparation"
 
 [node name="ToolbarLeft" type="VBoxContainer" parent="HBox/MainPanel/VBox/HBox"]
 layout_mode = 2

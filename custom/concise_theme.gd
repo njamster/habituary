@@ -61,55 +61,35 @@ func _update_style_box(name : StringName, theme_type : StringName, properties : 
 			"border_width":
 				if value is int:
 					style_box.set_border_width_all(value)
-				elif value is Array:
-					style_box.border_width_left = value[0]
-					style_box.border_width_top = value[1]
-					style_box.border_width_right = value[2]
-					style_box.border_width_bottom = value[3]
 				elif value is Dictionary:
-					style_box.border_width_left = value.left
-					style_box.border_width_top = value.top
-					style_box.border_width_right = value.right
-					style_box.border_width_bottom = value.bottom
+					style_box.border_width_left = value.get("left", -1)
+					style_box.border_width_top = value.get("top", -1)
+					style_box.border_width_right = value.get("right", -1)
+					style_box.border_width_bottom = value.get("bottom", -1)
 			"corner_radius":
 				if value is int:
 					style_box.set_corner_radius_all(value)
-				elif value is Array:
-					style_box.corner_radius_top_left = value[0]
-					style_box.corner_radius_top_right = value[1]
-					style_box.corner_radius_bottom_right = value[2]
-					style_box.corner_radius_bottom_left = value[3]
 				elif value is Dictionary:
-					style_box.corner_radius_top_left = value.top_left
-					style_box.corner_radius_top_right = value.top_right
-					style_box.corner_radius_bottom_right = value.bottom_right
-					style_box.corner_radius_bottom_left = value.bottom_left
+					style_box.corner_radius_top_left = value.get("top_left", -1)
+					style_box.corner_radius_top_right = value.get("top_right", -1)
+					style_box.corner_radius_bottom_right = value.get("bottom_right", -1)
+					style_box.corner_radius_bottom_left = value.get("bottom_left", -1)
 			"expand_margin":
 				if value is int:
 					style_box.set_expand_margin_all(value)
-				elif value is Array:
-					style_box.expand_margin_left = value[0]
-					style_box.expand_margin_top = value[1]
-					style_box.expand_margin_right = value[2]
-					style_box.expand_margin_bottom = value[3]
 				elif value is Dictionary:
-					style_box.expand_margin_left = value.left
-					style_box.expand_margin_top = value.top
-					style_box.expand_margin_right = value.right
-					style_box.expand_margin_bottom = value.bottom
+					style_box.expand_margin_left = value.get("left", -1)
+					style_box.expand_margin_top = value.get("top", -1)
+					style_box.expand_margin_right = value.get("right", -1)
+					style_box.expand_margin_bottom = value.get("bottom", -1)
 			"content_margin":
 				if value is int:
 					style_box.set_content_margin_all(value)
-				elif value is Array:
-					style_box.content_margin_left = value[0]
-					style_box.content_margin_top = value[1]
-					style_box.content_margin_right = value[2]
-					style_box.content_margin_bottom = value[3]
 				elif value is Dictionary:
-					style_box.content_margin_left = value.left
-					style_box.content_margin_top = value.top
-					style_box.content_margin_right = value.right
-					style_box.content_margin_bottom = value.bottom
+					style_box.content_margin_left = value.get("left", -1)
+					style_box.content_margin_top = value.get("top", -1)
+					style_box.content_margin_right = value.get("right", -1)
+					style_box.content_margin_bottom = value.get("bottom", -1)
 			_:
 				if style_box.get(key) != null:
 					style_box[key] = properties[key]
@@ -120,7 +100,7 @@ func _update_style_box(name : StringName, theme_type : StringName, properties : 
 
 	# Unless it's manually set to a different value, automatically set the value of `corner_detail`
 	# relative to the StyleBox' maximum `corner_radius` (as recommended in Godot's documentation).
-	if not properties.has("corner_detail"):
+	if not style_box is StyleBoxEmpty and not properties.has("corner_detail"):
 		var max_corner_radius : int = max(
 			style_box.corner_radius_top_left,
 			style_box.corner_radius_top_right,

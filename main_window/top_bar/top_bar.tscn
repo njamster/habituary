@@ -21,7 +21,7 @@ events = [SubResource("InputEventAction_lv7wu")]
 [node name="TopBar" type="HBoxContainer"]
 offset_right = 252.0
 offset_bottom = 28.0
-theme_override_constants/separation = 16
+theme_type_variation = &"MediumSeparation"
 script = ExtResource("1_qvgdf")
 
 [node name="Settings" type="Button" parent="."]

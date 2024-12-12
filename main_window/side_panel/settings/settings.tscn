@@ -11,7 +11,7 @@ anchors_preset = 9
 anchor_bottom = 1.0
 offset_right = 337.0
 grow_vertical = 2
-theme_override_constants/separation = 16
+theme_type_variation = &"MediumSeparation"
 script = ExtResource("1_xu2b7")
 
 [node name="Heading" type="Label" parent="."]
@@ -32,7 +32,7 @@ script = ExtResource("2_r5ote")
 
 [node name="VBox" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar"]
 layout_mode = 2
-theme_override_constants/separation = 24
+theme_type_variation = &"MediumSeparation"
 
 [node name="StorePath" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
 unique_name_in_owner = true
@@ -40,7 +40,7 @@ layout_mode = 2
 
 [node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/StorePath"]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_type_variation = &"SmallSeparation"
 
 [node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/StorePath/Setting"]
 layout_mode = 2

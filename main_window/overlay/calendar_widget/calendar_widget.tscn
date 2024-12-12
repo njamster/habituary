@@ -20,7 +20,7 @@ script = ExtResource("1_6ouga")
 
 [node name="VBox" type="VBoxContainer" parent="."]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_type_variation = &"MediumSeparation"
 
 [node name="HBox" type="HBoxContainer" parent="VBox"]
 layout_mode = 2

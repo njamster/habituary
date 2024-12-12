@@ -1,13 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://d15dr447oxpgn"]
+[gd_scene load_steps=3 format=3 uid="uid://d15dr447oxpgn"]
 
 [ext_resource type="Script" path="res://main_window/side_panel/help/help.gd" id="1_1rhmu"]
 [ext_resource type="Script" path="res://custom/padded_scrollbar.gd" id="2_howdl"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ag0c0"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_02jsr"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_unkbq"]
 
 [node name="Help" type="VBoxContainer"]
 anchors_preset = 15
@@ -15,7 +9,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 16
+theme_type_variation = &"MediumSeparation"
 script = ExtResource("1_1rhmu")
 
 [node name="Heading" type="Label" parent="."]
@@ -38,11 +32,7 @@ text = "Version:"
 
 [node name="ID" type="LineEdit" parent="VBox/Version"]
 layout_mode = 2
-theme_override_colors/font_uneditable_color = Color(0.505882, 0.631373, 0.756863, 1)
-theme_override_constants/minimum_character_width = 0
-theme_override_styles/focus = SubResource("StyleBoxEmpty_ag0c0")
-theme_override_styles/read_only = SubResource("StyleBoxEmpty_02jsr")
-theme_override_styles/normal = SubResource("StyleBoxEmpty_unkbq")
+theme_type_variation = &"LineEdit_VersionNumber"
 text = "alpha"
 editable = false
 expand_to_text_length = true
@@ -72,32 +62,32 @@ script = ExtResource("2_howdl")
 [node name="VBox" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 32
+theme_type_variation = &"LargeSeparation"
 
 [node name="KeyBindingsBlock1" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_type_variation = &"SmallSeparation"
 
 [node name="KeyBindingsBlock2" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_type_variation = &"SmallSeparation"
 
 [node name="KeyBindingsBlock3" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_type_variation = &"SmallSeparation"
 
 [node name="KeyBindingsBlock4" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_type_variation = &"SmallSeparation"
 
 [node name="KeyBindingsBlock5" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_type_variation = &"SmallSeparation"
 
 [node name="Heading" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/KeyBindingsBlock5"]
 layout_mode = 2

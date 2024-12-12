@@ -13,18 +13,15 @@ script = ExtResource("1_u5cts")
 
 [node name="OuterMargin" type="MarginContainer" parent="."]
 layout_mode = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 14
+theme_type_variation = &"EntryPoint_OuterMargin"
 
 [node name="VBox" type="VBoxContainer" parent="OuterMargin"]
 layout_mode = 2
-theme_override_constants/separation = 16
+theme_type_variation = &"MediumSeparation"
 
 [node name="Block1" type="VBoxContainer" parent="OuterMargin/VBox"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_type_variation = &"SmallSeparation"
 
 [node name="Logo" type="TextureRect" parent="OuterMargin/VBox/Block1"]
 layout_mode = 2
@@ -34,12 +31,12 @@ texture = ExtResource("2_3fb74")
 [node name="Welcome" type="Label" parent="OuterMargin/VBox/Block1"]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 24
+theme_type_variation = &"HeaderLarge"
 text = "Welcome to Habituary!"
 
 [node name="Block2" type="VBoxContainer" parent="OuterMargin/VBox"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_type_variation = &"SmallSeparation"
 
 [node name="Instruction" type="Label" parent="OuterMargin/VBox/Block2"]
 layout_mode = 2
@@ -48,7 +45,7 @@ text = "Where do you want to store your to-dos?"
 
 [node name="Form" type="VBoxContainer" parent="OuterMargin/VBox/Block2"]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_type_variation = &"SmallSeparation"
 
 [node name="DirectoryPath" type="LineEdit" parent="OuterMargin/VBox/Block2/Form"]
 unique_name_in_owner = true
@@ -62,7 +59,7 @@ select_all_on_focus = true
 
 [node name="Buttons" type="HBoxContainer" parent="OuterMargin/VBox/Block2/Form"]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_type_variation = &"SmallSeparation"
 
 [node name="BrowseFiles" type="Button" parent="OuterMargin/VBox/Block2/Form/Buttons"]
 unique_name_in_owner = true
@@ -79,7 +76,7 @@ text = "Confirm"
 [node name="ErrorMessage" type="Label" parent="OuterMargin/VBox/Block2/Form"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.74902, 0.380392, 0.415686, 1)
+theme_type_variation = &"Label_Error"
 text = "Invalid path! Please choose another one."
 horizontal_alignment = 1
 

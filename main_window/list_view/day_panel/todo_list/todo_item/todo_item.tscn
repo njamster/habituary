@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=3 uid="uid://v8u8oswwmlf3"]
+[gd_scene load_steps=28 format=3 uid="uid://v8u8oswwmlf3"]
 
 [ext_resource type="Texture2D" uid="uid://ci7y27fysy52o" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/unfolded.svg" id="2_2nsse"]
 [ext_resource type="Texture2D" uid="uid://d00v4pleoufwq" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/to_do.svg" id="2_6dyr4"]
@@ -27,88 +27,17 @@ corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 corner_detail = 5
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6e50g"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j40uj"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1ifsp"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ojvrp"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5kfd2"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v8kvh"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l2t5o"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7a281"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qr4c3"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_civ8j"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j6fnp"]
-content_margin_left = 3.0
-content_margin_right = 3.0
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0pwns"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4lcjl"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3h3so"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rn6dn"]
-resource_local_to_scene = true
-content_margin_left = 8.0
-content_margin_right = 8.0
-bg_color = Color(0.560784, 0.737255, 0.733333, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-corner_detail = 5
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mxnlj"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0ga2w"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ll8pp"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vi4l2"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qoi1k"]
-
 [sub_resource type="InputEventAction" id="InputEventAction_cishq"]
 action = &"toggle_heading"
 
 [sub_resource type="Shortcut" id="Shortcut_nnvv7"]
 events = [SubResource("InputEventAction_cishq")]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xrdh6"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_62n5v"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xqpcy"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qx2ft"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dpqet"]
-
 [sub_resource type="InputEventAction" id="InputEventAction_rvq25"]
 action = &"toggle_bold"
 
 [sub_resource type="Shortcut" id="Shortcut_2niux"]
 events = [SubResource("InputEventAction_rvq25")]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hk2kt"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_25qu6"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5bidg"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_713ie"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e50g5"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_q0hmr"]
 action = &"toggle_italic"
@@ -134,7 +63,7 @@ offset_right = 1920.0
 offset_bottom = 27.0
 focus_mode = 2
 mouse_filter = 0
-theme_override_constants/separation = 0
+theme_type_variation = &"NoSeparation"
 script = ExtResource("2_6v2l5")
 
 [node name="MainRow" type="PanelContainer" parent="."]
@@ -145,7 +74,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_fnmjf")
 [node name="HBox" type="HBoxContainer" parent="MainRow"]
 custom_minimum_size = Vector2(0, 27)
 layout_mode = 2
-theme_override_constants/separation = 0
+theme_type_variation = &"NoSeparation"
 
 [node name="Toggle" type="MarginContainer" parent="MainRow/HBox"]
 unique_name_in_owner = true
@@ -159,11 +88,7 @@ layout_mode = 2
 focus_mode = 0
 mouse_filter = 1
 mouse_default_cursor_shape = 2
-theme_override_styles/focus = SubResource("StyleBoxEmpty_6e50g")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_j40uj")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_1ifsp")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_ojvrp")
-theme_override_styles/normal = SubResource("StyleBoxEmpty_5kfd2")
+theme_type_variation = &"FlatButton"
 icon = ExtResource("2_6dyr4")
 flat = true
 
@@ -174,11 +99,7 @@ layout_mode = 2
 focus_mode = 0
 mouse_filter = 1
 mouse_default_cursor_shape = 2
-theme_override_styles/focus = SubResource("StyleBoxEmpty_v8kvh")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_l2t5o")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_7a281")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_qr4c3")
-theme_override_styles/normal = SubResource("StyleBoxEmpty_civ8j")
+theme_type_variation = &"FlatButton"
 toggle_mode = true
 flat = true
 script = ExtResource("2_n5f11")
@@ -188,8 +109,7 @@ icon_toggled_on = ExtResource("4_fnk6y")
 [node name="ExtraInfo" type="Label" parent="MainRow/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 10
-theme_override_styles/normal = SubResource("StyleBoxEmpty_j6fnp")
+theme_type_variation = &"ToDoItem_ExtraInfo"
 
 [node name="Content" type="MarginContainer" parent="MainRow/HBox"]
 unique_name_in_owner = true
@@ -202,11 +122,6 @@ theme_override_constants/margin_right = 6
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
-theme_override_constants/caret_width = 2
-theme_override_constants/minimum_character_width = 0
-theme_override_styles/focus = SubResource("StyleBoxEmpty_0pwns")
-theme_override_styles/read_only = SubResource("StyleBoxEmpty_4lcjl")
-theme_override_styles/normal = SubResource("StyleBoxEmpty_3h3so")
 placeholder_text = "Enter to-do..."
 context_menu_enabled = false
 drag_and_drop_selection_enabled = false
@@ -249,7 +164,7 @@ stretch_mode = 2
 [node name="EditingOptions" type="PanelContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_rn6dn")
+theme_type_variation = &"ToDoItem_EditingOptions"
 
 [node name="HBox" type="HBoxContainer" parent="EditingOptions"]
 custom_minimum_size = Vector2(0, 27)
@@ -259,7 +174,6 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"SmallText"
-theme_override_colors/font_color = Color(0.92549, 0.937255, 0.956863, 1)
 text = "Format:"
 
 [node name="Heading" type="Button" parent="EditingOptions/HBox"]
@@ -267,12 +181,8 @@ unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
+theme_type_variation = &"FlatButton"
 theme_override_colors/icon_pressed_color = Color(0.921569, 0.796078, 0.545098, 1)
-theme_override_styles/focus = SubResource("StyleBoxEmpty_mxnlj")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_0ga2w")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_ll8pp")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_vi4l2")
-theme_override_styles/normal = SubResource("StyleBoxEmpty_qoi1k")
 toggle_mode = true
 shortcut = SubResource("Shortcut_nnvv7")
 shortcut_in_tooltip = false
@@ -291,12 +201,8 @@ unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
+theme_type_variation = &"FlatButton"
 theme_override_colors/icon_pressed_color = Color(0.921569, 0.796078, 0.545098, 1)
-theme_override_styles/focus = SubResource("StyleBoxEmpty_xrdh6")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_62n5v")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_xqpcy")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_qx2ft")
-theme_override_styles/normal = SubResource("StyleBoxEmpty_dpqet")
 toggle_mode = true
 shortcut = SubResource("Shortcut_2niux")
 shortcut_in_tooltip = false
@@ -315,12 +221,8 @@ unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
+theme_type_variation = &"FlatButton"
 theme_override_colors/icon_pressed_color = Color(0.921569, 0.796078, 0.545098, 1)
-theme_override_styles/focus = SubResource("StyleBoxEmpty_hk2kt")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_25qu6")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_5bidg")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_713ie")
-theme_override_styles/normal = SubResource("StyleBoxEmpty_e50g5")
 toggle_mode = true
 shortcut = SubResource("Shortcut_hrpfk")
 shortcut_in_tooltip = false

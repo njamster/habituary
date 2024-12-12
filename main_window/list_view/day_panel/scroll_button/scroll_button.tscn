@@ -27,7 +27,7 @@ offset_right = 42.5
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 0
+theme_type_variation = &"NoSeparation"
 
 [node name="Text" type="Label" parent="VBox"]
 unique_name_in_owner = true

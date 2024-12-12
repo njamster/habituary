@@ -1,9 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://cmdy32v105kli"]
+[gd_scene load_steps=7 format=3 uid="uid://cmdy32v105kli"]
 
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/day_panel.gd" id="1_a2phy"]
 [ext_resource type="PackedScene" uid="uid://ofa44bt1yn4u" path="res://main_window/list_view/day_panel/scroll_button/scroll_button.tscn" id="2_4oqj4"]
 [ext_resource type="PackedScene" uid="uid://dw8mvf72vw7qk" path="res://main_window/list_view/day_panel/todo_list/todo_list.tscn" id="2_66ttt"]
-[ext_resource type="FontFile" uid="uid://bv1lbje08ni7s" path="res://theme/fonts/OpenSans-MediumItalic.ttf" id="2_ttk1a"]
 [ext_resource type="Script" path="res://custom/tooltip.gd" id="2_wbwrx"]
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/scroll_container.gd" id="4_t4q73"]
 
@@ -31,7 +30,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 0
 mouse_default_cursor_shape = 2
-theme_override_constants/separation = 0
+theme_type_variation = &"NoSeparation"
 script = ExtResource("1_a2phy")
 
 [node name="Header" type="PanelContainer" parent="."]
@@ -62,7 +61,7 @@ uppercase = true
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_fonts/font = ExtResource("2_ttk1a")
+theme_type_variation = &"Label_Italic"
 
 [node name="Tooltip" type="Node" parent="Header"]
 script = ExtResource("2_wbwrx")
