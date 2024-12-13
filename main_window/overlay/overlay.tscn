@@ -19,9 +19,7 @@ color = Color(0, 0, 0, 0.7)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
-theme_override_constants/margin_left = 40
-theme_override_constants/margin_top = 87
-theme_override_constants/margin_right = 40
+theme_type_variation = &"Calendar_ExtraPadding"
 
 [node name="CalendarWidget" parent="ExtraPadding1" instance=ExtResource("2_4rb6r")]
 unique_name_in_owner = true

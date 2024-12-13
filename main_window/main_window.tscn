@@ -50,7 +50,7 @@ theme_type_variation = &"MediumSeparation"
 
 [node name="ToolbarLeft" type="VBoxContainer" parent="HBox/MainPanel/VBox/HBox"]
 layout_mode = 2
-theme_override_constants/separation = 34
+theme_type_variation = &"LargeSeparation"
 
 [node name="NavigationBarLeft" parent="HBox/MainPanel/VBox/HBox/ToolbarLeft" instance=ExtResource("2_l73p5")]
 layout_mode = 2
@@ -63,7 +63,7 @@ layout_mode = 2
 
 [node name="ToolbarRight" type="VBoxContainer" parent="HBox/MainPanel/VBox/HBox"]
 layout_mode = 2
-theme_override_constants/separation = 34
+theme_type_variation = &"LargeSeparation"
 
 [node name="NavigationBarRight" parent="HBox/MainPanel/VBox/HBox/ToolbarRight" instance=ExtResource("5_s2ne8")]
 layout_mode = 2

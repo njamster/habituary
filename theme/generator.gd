@@ -287,12 +287,17 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	line_edit.caret_color = primary_3
 
 	line_edit.caret_width = 2
-	line_edit.minimum_character_width = 0
 
 	line_edit.font_color = neutral_7
 	line_edit.font_placeholder_color = Color(neutral_7, 0.6)
+	#endregion
 
-	line_edit.set_main_style({
+	#region LineEdit_Minimal
+	var line_edit_minimal := theme.create_theme_type("LineEdit_Minimal", "LineEdit")
+
+	line_edit_minimal.minimum_character_width = 0
+
+	line_edit_minimal.set_main_style({
 		# StyleBoxEmpty
 	})
 	#endregion
@@ -579,6 +584,60 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	line_edit_version_number.font_uneditable_color = FROST_3
 	#endregion
 
+	#region Calendar_ExtraPadding
+	var calendar_extra_padding := theme.create_theme_type("Calendar_ExtraPadding", "MarginContainer")
+
+	calendar_extra_padding.margin_left = 40
+	calendar_extra_padding.margin_top = 87
+	calendar_extra_padding.margin_right = 40
+	#endregion
+
+	#region ToDoList_VerticalPadding
+	var to_do_list_vertical_padding := theme.create_theme_type("ToDoList_VerticalPadding", "MarginContainer")
+
+	to_do_list_vertical_padding.margin_top = 6
+	to_do_list_vertical_padding.margin_bottom = 7
+	#endregion
+
+	#region ToDoItem_TogglePadding
+	var to_do_item_toggle_padding := theme.create_theme_type("ToDoItem_TogglePadding", "MarginContainer")
+
+	to_do_item_toggle_padding.margin_left = 6
+	to_do_item_toggle_padding.margin_right = 6
+	#endregion
+
+	#region ToDoItem_ContentPadding
+	var to_do_item_content_padding := theme.create_theme_type("ToDoItem_ContentPadding", "MarginContainer")
+
+	to_do_item_content_padding.margin_right = 6
+	#endregion
+
+	#region ToDoItem_BookmarkButton
+	var to_do_item_bookmark_button := theme.create_theme_type("ToDoItem_BookmarkButton", "Button")
+
+	to_do_item_bookmark_button.font_size = 12
+	#endregion
+
+	#region ToDoItem_DeleteButton
+	var to_do_item_delete_button := theme.create_theme_type("ToDoItem_DeleteButton", "Button")
+
+	to_do_item_delete_button.font_hover_color = AURORA_1
+	to_do_item_delete_button.icon_hover_color = AURORA_1
+	to_do_item_delete_button.font_pressed_color = AURORA_2
+	to_do_item_delete_button.icon_pressed_color = AURORA_2
+
+	to_do_item_delete_button.font_size = 12
+	#endregion
+
+	#region ToDoItem_EditingOption
+	var to_do_item_editing_option := theme.create_theme_type("ToDoItem_EditingOption", "Button")
+
+	to_do_item_editing_option.icon_pressed_color = AURORA_3
+
+	to_do_item_editing_option.set_main_style({
+		# StyleBoxEmpty
+	})
+	#endregion
 	# ----------------------------------------
 
 	# Keep UIDs from the previous version of the theme, if there are any. Without this, re-running

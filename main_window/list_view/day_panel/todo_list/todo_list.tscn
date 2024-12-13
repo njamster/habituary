@@ -31,8 +31,7 @@ color = Color(0.505882, 0.631373, 0.756863, 1)
 
 [node name="VerticalPadding" type="MarginContainer" parent="."]
 layout_mode = 2
-theme_override_constants/margin_top = 6
-theme_override_constants/margin_bottom = 7
+theme_type_variation = &"ToDoList_VerticalPadding"
 
 [node name="Items" type="VBoxContainer" parent="VerticalPadding"]
 unique_name_in_owner = true

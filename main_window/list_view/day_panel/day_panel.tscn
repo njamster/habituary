@@ -39,7 +39,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_8t3rb")
 
 [node name="VBox" type="VBoxContainer" parent="Header"]
 layout_mode = 2
-theme_override_constants/separation = 2
+theme_type_variation = &"NoSeparation"
 
 [node name="Date" type="Label" parent="Header/VBox"]
 unique_name_in_owner = true

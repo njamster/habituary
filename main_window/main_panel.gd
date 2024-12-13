@@ -19,7 +19,7 @@ func _ready() -> void:
 func _on_window_size_changed() -> void:
 	const TODO_ITEM_HEIGHT := 40
 
-	var todo_list_height := get_window().size.y - 28 - 16 - 2 * minimum_vertical_margin - 81 - 8
+	var todo_list_height := get_window().size.y - 28 - 16 - 2 * minimum_vertical_margin - 77 - 8
 
 	var total_vertical_margin = 2 * minimum_vertical_margin + todo_list_height % TODO_ITEM_HEIGHT
 	add_theme_constant_override("margin_top", floor(0.5 * total_vertical_margin))

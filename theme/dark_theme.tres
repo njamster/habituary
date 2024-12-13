@@ -1,4 +1,4 @@
-[gd_resource type="Theme" script_class="ConciseTheme" load_steps=75 format=3 uid="uid://ccwu2q5gv825w"]
+[gd_resource type="Theme" script_class="ConciseTheme" load_steps=80 format=3 uid="uid://ccwu2q5gv825w"]
 
 [ext_resource type="FontFile" uid="uid://clgk36lj6qey" path="res://theme/fonts/OpenSans-ExtraBold.ttf" id="1_dk6dp"]
 [ext_resource type="Script" path="res://custom/concise_theme.gd" id="1_jlir6"]
@@ -394,11 +394,11 @@ corner_radius_bottom_right = 4
 corner_radius_bottom_left = -1
 corner_detail = 5
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7urvc"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_45bpa"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a66gq"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qeex1"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_txsrk"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_frusv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rdj05"]
 content_margin_left = 12.0
@@ -601,6 +601,16 @@ border_width_bottom = -1
 border_color = Color(0.368627, 0.505882, 0.67451, 1)
 corner_detail = 5
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lp2pp"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t4nfx"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bodry"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xvyrf"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hwsac"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x1ye8"]
 content_margin_left = 8.0
 content_margin_right = 8.0
@@ -683,6 +693,10 @@ CalendarWidget_DayButton_WeekendDay/styles/focus = SubResource("StyleBoxFlat_0gt
 CalendarWidget_DayButton_WeekendDay/styles/hover = SubResource("StyleBoxFlat_twtyo")
 CalendarWidget_DayButton_WeekendDay/styles/normal = SubResource("StyleBoxFlat_6uwbe")
 CalendarWidget_DayButton_WeekendDay/styles/pressed = SubResource("StyleBoxFlat_8sxdw")
+Calendar_ExtraPadding/base_type = &"MarginContainer"
+Calendar_ExtraPadding/constants/margin_left = 40
+Calendar_ExtraPadding/constants/margin_right = 40
+Calendar_ExtraPadding/constants/margin_top = 87
 CheckButton/styles/disabled = SubResource("StyleBoxEmpty_1crkj")
 CheckButton/styles/focus = SubResource("StyleBoxEmpty_lrwts")
 CheckButton/styles/hover = SubResource("StyleBoxEmpty_00ggh")
@@ -731,10 +745,11 @@ LineEdit/colors/caret_color = Color(0.505882, 0.631373, 0.756863, 1)
 LineEdit/colors/font_color = Color(0.92549, 0.937255, 0.956863, 1)
 LineEdit/colors/font_placeholder_color = Color(0.92549, 0.937255, 0.956863, 0.6)
 LineEdit/constants/caret_width = 2
-LineEdit/constants/minimum_character_width = 0
-LineEdit/styles/focus = SubResource("StyleBoxEmpty_7urvc")
-LineEdit/styles/normal = SubResource("StyleBoxEmpty_a66gq")
-LineEdit/styles/read_only = SubResource("StyleBoxEmpty_txsrk")
+LineEdit_Minimal/base_type = &"LineEdit"
+LineEdit_Minimal/constants/minimum_character_width = 0
+LineEdit_Minimal/styles/focus = SubResource("StyleBoxEmpty_45bpa")
+LineEdit_Minimal/styles/normal = SubResource("StyleBoxEmpty_qeex1")
+LineEdit_Minimal/styles/read_only = SubResource("StyleBoxEmpty_frusv")
 LineEdit_VersionNumber/base_type = &"LineEdit"
 LineEdit_VersionNumber/colors/font_uneditable_color = Color(0.505882, 0.631373, 0.756863, 1)
 MediumSeparation/base_type = &"BoxContainer"
@@ -791,11 +806,34 @@ SmallText/font_sizes/font_size = 12
 SubtleLabel/base_type = &"Label"
 SubtleLabel/colors/font_color = Color(0.847059, 0.870588, 0.913725, 1)
 SubtleLabel/font_sizes/font_size = 12
+ToDoItem_BookmarkButton/base_type = &"Button"
+ToDoItem_BookmarkButton/font_sizes/font_size = 12
+ToDoItem_ContentPadding/base_type = &"MarginContainer"
+ToDoItem_ContentPadding/constants/margin_right = 6
+ToDoItem_DeleteButton/base_type = &"Button"
+ToDoItem_DeleteButton/colors/font_hover_color = Color(0.74902, 0.380392, 0.415686, 1)
+ToDoItem_DeleteButton/colors/font_pressed_color = Color(0.815686, 0.529412, 0.439216, 1)
+ToDoItem_DeleteButton/colors/icon_hover_color = Color(0.74902, 0.380392, 0.415686, 1)
+ToDoItem_DeleteButton/colors/icon_pressed_color = Color(0.815686, 0.529412, 0.439216, 1)
+ToDoItem_DeleteButton/font_sizes/font_size = 12
+ToDoItem_EditingOption/base_type = &"Button"
+ToDoItem_EditingOption/colors/icon_pressed_color = Color(0.921569, 0.796078, 0.545098, 1)
+ToDoItem_EditingOption/styles/disabled = SubResource("StyleBoxEmpty_lp2pp")
+ToDoItem_EditingOption/styles/focus = SubResource("StyleBoxEmpty_t4nfx")
+ToDoItem_EditingOption/styles/hover = SubResource("StyleBoxEmpty_bodry")
+ToDoItem_EditingOption/styles/normal = SubResource("StyleBoxEmpty_xvyrf")
+ToDoItem_EditingOption/styles/pressed = SubResource("StyleBoxEmpty_hwsac")
 ToDoItem_EditingOptions/base_type = &"PanelContainer"
 ToDoItem_EditingOptions/styles/panel = SubResource("StyleBoxFlat_x1ye8")
 ToDoItem_ExtraInfo/base_type = &"Label"
 ToDoItem_ExtraInfo/font_sizes/font_size = 10
 ToDoItem_ExtraInfo/styles/normal = SubResource("StyleBoxEmpty_aunhw")
+ToDoItem_TogglePadding/base_type = &"MarginContainer"
+ToDoItem_TogglePadding/constants/margin_left = 6
+ToDoItem_TogglePadding/constants/margin_right = 6
+ToDoList_VerticalPadding/base_type = &"MarginContainer"
+ToDoList_VerticalPadding/constants/margin_bottom = 7
+ToDoList_VerticalPadding/constants/margin_top = 6
 TodayCountLabel/base_type = &"Label"
 TodayCountLabel/font_sizes/font_size = 9
 TooltipLabel/font_sizes/font_size = 13
