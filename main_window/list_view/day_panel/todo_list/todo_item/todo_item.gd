@@ -9,6 +9,9 @@ signal list_save_requested
 signal folded
 signal unfolded
 
+signal moved_up
+signal moved_down
+
 @onready var last_index := get_index()
 
 # used to avoid emitting `list_save_requested` too early
@@ -470,6 +473,12 @@ func _input(event: InputEvent):
 			if index < get_parent().get_child_count() - 1:
 				get_parent().get_child(get_parent().get_child_count() - 1).edit()
 				accept_event()
+		elif event.is_action_pressed("move_item_up"):
+			moved_up.emit()
+			accept_event()
+		elif event.is_action_pressed("move_item_down"):
+			moved_down.emit()
+			accept_event()
 
 
 func _on_check_box_gui_input(event: InputEvent) -> void:

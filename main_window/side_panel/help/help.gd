@@ -33,6 +33,8 @@ var descriptions := {
 	"next_todo": "Select Next To-Do",
 	"first_todo": "Select First To-Do",
 	"last_todo": "Select Last To-Do",
+	"move_item_up": "Move To-Do Up",
+	"move_item_down": "Move To-Do Down",
 }
 
 
@@ -100,6 +102,8 @@ func _ready() -> void:
 		"next_todo",
 		"first_todo",
 		"last_todo",
+		"move_item_up",
+		"move_item_down",
 	]:
 		var hint = preload("input_hint/input_hint.tscn").instantiate()
 		hint.description = descriptions[action]

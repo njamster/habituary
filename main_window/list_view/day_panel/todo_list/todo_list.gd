@@ -51,6 +51,12 @@ func connect_todo_signals(todo_item : Control) -> void:
 	todo_item.unfolded.connect(func():
 		fold_heading(todo_item.get_index(), true)
 	)
+	todo_item.moved_up.connect(func():
+		move_to_do(todo_item, -1)
+	)
+	todo_item.moved_down.connect(func():
+		move_to_do(todo_item, +1)
+	)
 
 
 func disconnect_todo_signals(todo_item : Control) -> void:
@@ -60,12 +66,18 @@ func disconnect_todo_signals(todo_item : Control) -> void:
 		"predecessor_requested",
 		"successor_requested",
 		"folded",
-		"unfolded"
+		"unfolded",
+		"moved_up",
+		"moved_down",
 	]
 	for signal_name in signal_names:
 		for sig in todo_item.get_signal_connection_list(signal_name):
 			for dict2 in sig.signal.get_connections():
 				sig.signal.disconnect(dict2.callable)
+
+
+func move_to_do(item, offset : int) -> void:
+	%Items.move_child(item, clamp(item.get_index() + offset, 0, %Items.get_child_count()))
 
 
 func find_item_pos(at_position : Vector2) -> int:
