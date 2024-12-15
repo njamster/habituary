@@ -58,7 +58,7 @@ func _search_for_bookmarks() -> void:
 
 
 func _add_bookmark(date : Date, line_number : int, todo_text : String, is_done := false) -> void:
-	var bookmark := preload("bookmark/bookmark.tscn").instantiate()
+	var bookmark := preload("bookmark/main.tscn").instantiate()
 	bookmark.date = date
 	bookmark.line_number = line_number
 	bookmark.text = todo_text

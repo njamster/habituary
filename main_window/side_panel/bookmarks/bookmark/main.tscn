@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://clk7mchfrgbnh"]
 
-[ext_resource type="Script" path="res://main_window/side_panel/bookmarks/bookmark/bookmark.gd" id="1_cjbqa"]
+[ext_resource type="Script" path="res://main_window/side_panel/bookmarks/bookmark/main.gd" id="1_cjbqa"]
 [ext_resource type="Script" path="res://custom/tooltip.gd" id="2_ufj5y"]
 [ext_resource type="Texture2D" uid="uid://fwaqgbwuue6c" path="res://main_window/side_panel/bookmarks/bookmark/images/jump_to_todo.svg" id="3_qdkvd"]
 

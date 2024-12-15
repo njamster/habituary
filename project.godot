@@ -12,12 +12,12 @@ config_version=5
 
 config/name="Habituary"
 config/version="alpha"
-run/main_scene="res://entry_point/entry_point.tscn"
+run/main_scene="res://entry_point/main.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 run/low_processor_mode=true
 boot_splash/show_image=false
 config/icon="res://icon.svg"
-run/main_scene.editor="res://main_window/main_window.tscn"
+run/main_scene.editor="res://main_window/main.tscn"
 
 [autoload]
 

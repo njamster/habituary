@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://h7so45kbcg12"]
 
-[ext_resource type="Script" path="res://entry_point/entry_point.gd" id="1_u5cts"]
-[ext_resource type="Texture2D" uid="uid://dvka68ounxvou" path="res://icon.svg" id="2_3fb74"]
+[ext_resource type="Script" path="res://entry_point/main.gd" id="1_2u8hd"]
+[ext_resource type="Texture2D" uid="uid://dvka68ounxvou" path="res://icon.svg" id="2_4vfht"]
 
 [node name="EntryPoint" type="CenterContainer"]
 anchors_preset = 15
@@ -9,7 +9,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_u5cts")
+script = ExtResource("1_2u8hd")
 
 [node name="OuterMargin" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -26,7 +26,7 @@ theme_type_variation = &"SmallSeparation"
 [node name="Logo" type="TextureRect" parent="OuterMargin/VBox/Block1"]
 layout_mode = 2
 size_flags_horizontal = 4
-texture = ExtResource("2_3fb74")
+texture = ExtResource("2_4vfht")
 
 [node name="Welcome" type="Label" parent="OuterMargin/VBox/Block1"]
 layout_mode = 2

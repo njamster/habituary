@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://dgxug4yl0qg3x"]
 
-[ext_resource type="Script" path="res://main_window/appearance_widget/appearance_widget.gd" id="1_1o2da"]
+[ext_resource type="Script" path="res://main_window/appearance_widget/main.gd" id="1_1o2da"]
 [ext_resource type="Script" path="res://custom/tooltip.gd" id="2_4x6jm"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_43ver"]

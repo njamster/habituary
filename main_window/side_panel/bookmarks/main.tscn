@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://ba4ne2kctshba"]
 
-[ext_resource type="Script" path="res://main_window/side_panel/bookmarks/bookmarks.gd" id="1_60nsm"]
+[ext_resource type="Script" path="res://main_window/side_panel/bookmarks/main.gd" id="1_60nsm"]
 [ext_resource type="Script" path="res://custom/padded_scrollbar.gd" id="2_d7bib"]
 
 [node name="Bookmarks" type="VBoxContainer"]

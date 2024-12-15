@@ -2,7 +2,7 @@ extends MarginContainer
 
 signal list_save_requested
 
-const TODO_ITEM := preload("todo_item/todo_item.tscn")
+const TODO_ITEM := preload("todo_item/main.tscn")
 
 var pending_save := false
 

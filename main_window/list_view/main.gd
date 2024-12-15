@@ -1,6 +1,6 @@
 extends HBoxContainer
 
-const DAY_PANEL := preload("day_panel/day_panel.tscn")
+const DAY_PANEL := preload("day_panel/main.tscn")
 
 @onready var drag_cache := Node.new()
 

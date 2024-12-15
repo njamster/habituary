@@ -1,5 +1,6 @@
 extends VBoxContainer
 
+const INPUT_HINT_SCENE := preload("input_hint/main.tscn")
 
 var descriptions := {
 	"view_mode_1": "Change View To Show 1 Day",
@@ -51,7 +52,7 @@ func _ready() -> void:
 		"view_mode_3",
 		"view_mode_4",
 	]:
-		var hint = preload("input_hint/input_hint.tscn").instantiate()
+		var hint = INPUT_HINT_SCENE.instantiate()
 		hint.description = descriptions[action]
 		hint.key_binding = InputMap.action_get_events(action)[0]
 		%KeyBindingsBlock1.add_child(hint)
@@ -63,7 +64,7 @@ func _ready() -> void:
 		"next_day",
 		"shift_view_forward",
 	]:
-		var hint = preload("input_hint/input_hint.tscn").instantiate()
+		var hint = INPUT_HINT_SCENE.instantiate()
 		hint.description = descriptions[action]
 		hint.key_binding = InputMap.action_get_events(action)[0]
 		%KeyBindingsBlock2.add_child(hint)
@@ -71,7 +72,7 @@ func _ready() -> void:
 	for action in [
 		"search_screen",
 	]:
-		var hint = preload("input_hint/input_hint.tscn").instantiate()
+		var hint = INPUT_HINT_SCENE.instantiate()
 		hint.description = descriptions[action]
 		hint.key_binding = InputMap.action_get_events(action)[0]
 		%KeyBindingsBlock3.add_child(hint)
@@ -85,7 +86,7 @@ func _ready() -> void:
 		"toggle_fullscreen",
 		"toggle_dark_mode",
 	]:
-		var hint = preload("input_hint/input_hint.tscn").instantiate()
+		var hint = INPUT_HINT_SCENE.instantiate()
 		hint.description = descriptions[action]
 		hint.key_binding = InputMap.action_get_events(action)[0]
 		%KeyBindingsBlock4.add_child(hint)
@@ -105,7 +106,7 @@ func _ready() -> void:
 		"move_item_up",
 		"move_item_down",
 	]:
-		var hint = preload("input_hint/input_hint.tscn").instantiate()
+		var hint = INPUT_HINT_SCENE.instantiate()
 		hint.description = descriptions[action]
 		hint.key_binding = InputMap.action_get_events(action)[0]
 		%KeyBindingsBlock5.add_child(hint)
