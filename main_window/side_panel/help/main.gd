@@ -25,6 +25,8 @@ var descriptions := {
 
 	"toggle_todo": "Toggle Done State",
 	"cancel_todo": "Toggle Canceled State",
+	"indent_todo": "Indent To-Do",
+	"unindent_todo": "Unindent To-Do",
 	"toggle_heading": "Set/Unset As Foldable Heading",
 	"toggle_bold": "Add/Remove Bold Formatting",
 	"toggle_italic": "Add/Remove Italic Formatting",
@@ -34,8 +36,8 @@ var descriptions := {
 	"next_todo": "Select Next To-Do",
 	"first_todo": "Select First To-Do",
 	"last_todo": "Select Last To-Do",
-	"move_item_up": "Move To-Do Up",
-	"move_item_down": "Move To-Do Down",
+	"move_todo_up": "Move To-Do Up",
+	"move_todo_down": "Move To-Do Down",
 }
 
 
@@ -94,6 +96,8 @@ func _ready() -> void:
 	for action in [
 		"toggle_todo",
 		"cancel_todo",
+		"indent_todo",
+		"unindent_todo",
 		"toggle_heading",
 		"toggle_bold",
 		"toggle_italic",
@@ -103,8 +107,8 @@ func _ready() -> void:
 		"next_todo",
 		"first_todo",
 		"last_todo",
-		"move_item_up",
-		"move_item_down",
+		"move_todo_up",
+		"move_todo_down",
 	]:
 		var hint = INPUT_HINT_SCENE.instantiate()
 		hint.description = descriptions[action]

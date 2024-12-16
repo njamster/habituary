@@ -171,6 +171,29 @@ var is_bookmarked := false:
 			if _initialization_finished and self.text:
 				list_save_requested.emit()
 
+var indentation_level := 0:
+	set(value):
+		var max_indentation_level = 3
+
+		var index = self.get_index()
+		if index > 0:
+			var predecessor := self.get_parent().get_child(index - 1)
+			max_indentation_level = min(
+				predecessor.indentation_level + 1,
+				max_indentation_level
+			)
+		else:
+			max_indentation_level = 0
+
+		indentation_level = clamp(value, 0, max_indentation_level)
+
+		if is_inside_tree():
+			$MainRow.get("theme_override_styles/panel").content_margin_left = \
+				indentation_level * 20
+
+			if _initialization_finished:
+				list_save_requested.emit()
+
 
 func _ready() -> void:
 	$Triangle.hide()
@@ -303,6 +326,10 @@ func save_to_disk(file : FileAccess) -> void:
 
 	var string := ""
 
+	if self.indentation_level > 0:
+		for i in self.indentation_level:
+			string += "  "
+
 	if is_heading:
 		if is_folded:
 			string += "> "
@@ -332,6 +359,10 @@ func save_to_disk(file : FileAccess) -> void:
 
 
 func load_from_disk(line : String) -> void:
+	while line.begins_with("  "):
+		line = line.right(-2)
+		self.indentation_level += 1
+
 	if line.begins_with("# ") or line.begins_with("v "):
 		line = line.right(-2)
 		self.is_heading = true
@@ -473,11 +504,17 @@ func _input(event: InputEvent):
 			if index < get_parent().get_child_count() - 1:
 				get_parent().get_child(get_parent().get_child_count() - 1).edit()
 				accept_event()
-		elif event.is_action_pressed("move_item_up"):
+		elif event.is_action_pressed("move_todo_up"):
 			moved_up.emit()
 			accept_event()
-		elif event.is_action_pressed("move_item_down"):
+		elif event.is_action_pressed("move_todo_down"):
 			moved_down.emit()
+			accept_event()
+		elif event.is_action_pressed("indent_todo", true, true):
+			self.indentation_level += 1
+			accept_event()
+		elif event.is_action_pressed("unindent_todo", true, true):
+			self.indentation_level -= 1
 			accept_event()
 
 
