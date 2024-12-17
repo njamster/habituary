@@ -145,13 +145,26 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 		for i in data.size():
 			var entry = data[i]
 
+			var old_index = entry.get_index()
+			var old_parent = entry.get_parent()
+
+			# Before actually moving the entry, gather its sub items, that is, all items that come
+			# after it in the list and have a higher indentation_level than the entry itself.
+			var sub_item_to_reindent := []
+			for j in range(old_index + 1, old_parent.get_child_count()):
+				var item = old_parent.get_child(j)
+				if item.indentation_level > entry.indentation_level:
+					sub_item_to_reindent.append(item)
+				else:
+					break
+
+			# Now, move the entry to its new loation.
 			if entry.get_parent() != %Items:
 				# item moved from one list to another
 				var old_list = entry.get_parent().get_parent().get_parent()
 				disconnect_todo_signals(entry)
 				if entry.is_bookmarked:
 					var old_date = entry.date
-					var old_index = entry.get_index()
 					entry.last_index = base_position + i
 					entry.reparent(%Items)
 					EventBus.bookmark_changed.emit(entry, old_date, old_index)
@@ -162,16 +175,21 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 				old_list._start_debounce_timer()
 			else:
 				# item changed its position inside the list
-				if base_position >= entry.get_index() - i and \
-					base_position <= entry.get_index() + data.size() - i:
+				if base_position >= old_index - i and \
+					base_position <= old_index + data.size() - i:
 						# new position _is_ the previous position
 						continue
-				elif entry.get_index() < base_position:
+				elif old_index < base_position:
 					# new position is _below_ the previous position
 					%Items.move_child(entry, base_position - 1)
 				else:
 					# new position is _above_ the previous position
 					%Items.move_child(entry, min(%Items.get_child_count(), base_position + i))
+
+			# Then, adjust the indentation levels of the entry and its (previous) sub items.
+			entry.indentation_level = entry.indentation_level
+			for item in sub_item_to_reindent:
+				item.indentation_level -= 1
 
 			self._start_debounce_timer()
 
