@@ -40,10 +40,12 @@ func connect_todo_signals(todo_item : Control) -> void:
 	todo_item.editing_started.connect(hide_line_highlight)
 	todo_item.list_save_requested.connect(_start_debounce_timer)
 	todo_item.predecessor_requested.connect(func():
-		add_todo(self.global_position + todo_item.position - Vector2(0, 32))
+		var predecessor := add_todo(self.global_position + todo_item.position - Vector2(0, 32))
+		predecessor.indentation_level = todo_item.indentation_level
 	)
 	todo_item.successor_requested.connect(func():
-		add_todo(self.global_position + todo_item.position + Vector2(0, 32))
+		var successor := add_todo(self.global_position + todo_item.position + Vector2(0, 32))
+		successor.indentation_level = todo_item.indentation_level
 	)
 	todo_item.folded.connect(func():
 		fold_heading(todo_item.get_index(), false)
