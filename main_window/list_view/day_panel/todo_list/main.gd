@@ -79,7 +79,65 @@ func disconnect_todo_signals(todo_item : Control) -> void:
 
 
 func move_to_do(item, offset : int) -> void:
-	%Items.move_child(item, clamp(item.get_index() + offset, 0, %Items.get_child_count()))
+	if offset == 0:
+		return
+
+	var MOVED_DOWN := (offset > 0)
+	var MOVED_UP := not MOVED_DOWN
+
+	var old_index = item.get_index()
+	var PREDECESSOR_IDS := range(old_index - 1, -1, -1)
+	var SUCCESSOR_IDS := range(old_index + 1, %Items.get_child_count())
+
+	var new_index := -1
+	if MOVED_DOWN:
+		for successor_id in SUCCESSOR_IDS:
+			var successor = %Items.get_child(successor_id)
+			if successor.indentation_level == item.indentation_level:
+				if offset:
+					new_index = successor_id
+					offset -= 1
+				else:
+					break
+			elif successor.indentation_level > item.indentation_level:
+				if offset == 0:
+					# successor is a sub item of this item's successor
+					new_index += 1
+				continue
+			else:
+				break  # end of scope reached
+	elif MOVED_UP:
+		for predecessor_id in PREDECESSOR_IDS:
+			var predecessor = %Items.get_child(predecessor_id)
+			if predecessor.indentation_level == item.indentation_level:
+				if offset:
+					new_index = predecessor_id
+					offset += 1
+				else:
+					break
+			elif predecessor.indentation_level > item.indentation_level:
+				# predecessor is a sub item of this item's predecessor
+				continue
+			else:
+				break  # start of scope reached
+
+	if new_index != -1:
+		var sub_item_count := 0
+		for successor_id in SUCCESSOR_IDS:
+			var successor = %Items.get_child(successor_id)
+			if successor.indentation_level > item.indentation_level:
+				sub_item_count += 1
+			else:
+				break
+
+		%Items.move_child(item, new_index)
+
+		if MOVED_DOWN:
+			for i in sub_item_count:
+				%Items.move_child(%Items.get_child(old_index), new_index)
+		elif MOVED_UP:
+			for i in sub_item_count:
+				%Items.move_child(%Items.get_child(old_index + i + 1), new_index + i + 1)
 
 
 func find_item_pos(at_position : Vector2) -> int:
