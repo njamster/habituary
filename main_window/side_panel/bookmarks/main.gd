@@ -22,6 +22,11 @@ func _search_for_bookmarks() -> void:
 				var line_number := -1
 				while file.get_position() < file.get_length():
 					var line := file.get_line()
+
+					# ignore indentation levels
+					while line.begins_with("  "):
+						line = line.right(-2)
+
 					if line.begins_with("# ") or line.begins_with("v ") or line.begins_with("> ") \
 						or line.begins_with("[ ] ") or line.begins_with("[x] ") or line.begins_with("[-] "):
 							line_number += 1
