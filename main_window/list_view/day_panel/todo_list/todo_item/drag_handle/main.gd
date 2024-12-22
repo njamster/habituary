@@ -1,6 +1,6 @@
 extends TextureRect
 
-@onready var host := get_parent().get_parent().get_parent()
+@onready var host := get_node("../../..")
 
 var nodes_to_move := []
 
@@ -19,7 +19,17 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 
 	nodes_to_move = [host]
 	if host.is_heading:
-		nodes_to_move += host.get_parent().get_parent().get_parent().get_subordinate_items(host.get_index())
+		nodes_to_move += host.get_node("../../..").get_subordinate_items(host.get_index())
+	else:
+		var todo_list := host.get_parent()
+
+		var SUCCESSOR_IDS := range(host.get_index() + 1, todo_list.get_child_count())
+		for successor_id in SUCCESSOR_IDS:
+			var successor = todo_list.get_child(successor_id)
+			if successor.indentation_level > host.indentation_level:
+				nodes_to_move.append(successor)
+			else:
+				break  # end of scope reached
 
 	for node in nodes_to_move:
 		if node.is_in_edit_mode():

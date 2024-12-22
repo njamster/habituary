@@ -192,36 +192,24 @@ var indentation_level := 0:
 
 		var old_indentation_level := indentation_level
 		indentation_level = clamp(value, 0, max_indentation_level)
+		var change := indentation_level - old_indentation_level
 
-		if self.text: # skip this step for newly created to-dos that haven't been saved yet
-			var change := indentation_level - old_indentation_level
+		if is_inside_tree() and change:
+			if self.text: # skip this step for newly created to-dos that haven't been saved yet
+				var successors_to_adjust := []
 
-			if change:
 				var SUCCESSOR_IDS := range(index + 1, todo_list.get_child_count())
-
-				#if change > 0:
-					#for successor_id in SUCCESSOR_IDS:
-						#var successor = todo_list.get_child(successor_id)
-						#if successor.indentation_level == self.indentation_level:
-							#successor.indentation_level += change
-						#elif successor.indentation_level < self.indentation_level:
-							#break  # end of scope reached
-				#elif change < 0:
-				var successors_to_change := []
-
 				for successor_id in SUCCESSOR_IDS:
 					var successor = todo_list.get_child(successor_id)
 					if successor.indentation_level == old_indentation_level + 1:
-						successors_to_change.append(successor)
+						successors_to_adjust.append(successor)
 					elif successor.indentation_level <= old_indentation_level:
 						break  # end of scope reached
 
-				for successor in successors_to_change:
+				for successor in successors_to_adjust:
 					successor.indentation_level += change
 
-		if is_inside_tree():
-			$MainRow.get("theme_override_styles/panel").content_margin_left = \
-				indentation_level * 20
+			$MainRow.get("theme_override_styles/panel").content_margin_left = indentation_level * 20
 
 			if _initialization_finished:
 				list_save_requested.emit()
