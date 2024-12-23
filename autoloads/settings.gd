@@ -33,6 +33,14 @@ enum SidePanelState {
 	SETTINGS
 }
 
+var to_do_text_colors := [
+	Color("#BF616A"),
+	Color("#D08770"),
+	Color("#EBCB8B"),
+	Color("#A3BE8C"),
+	Color("#B48EAD"),
+]
+
 var DEFAULT_STORE_PATH : String:
 	get():
 		if OS.has_feature("editor"):

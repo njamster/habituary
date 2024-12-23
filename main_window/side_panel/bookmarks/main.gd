@@ -30,6 +30,13 @@ func _search_for_bookmarks() -> void:
 					if line.begins_with("# ") or line.begins_with("v ") or line.begins_with("> ") \
 						or line.begins_with("[ ] ") or line.begins_with("[x] ") or line.begins_with("[-] "):
 							line_number += 1
+
+					var reg_ex := RegEx.new()
+					reg_ex.compile(" \\[COLOR(?<digit>[1-5])\\]$")
+					var reg_ex_match := reg_ex.search(line)
+					if reg_ex_match:
+						line = line.substr(0, line.length() - 9)
+
 					if line.ends_with( " [BOOKMARK]"):
 						# remove the "[BOOKMARK]" tag
 						line = line.substr(0, line.length() - 11)

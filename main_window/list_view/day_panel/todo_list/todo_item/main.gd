@@ -131,7 +131,6 @@ enum States { TO_DO, DONE, FAILED }
 			if _initialization_finished and self.text:
 				list_save_requested.emit()
 
-
 var _contains_mouse_cursor := false
 
 var is_folded := false:
@@ -213,6 +212,23 @@ var indentation_level := 0:
 
 			if _initialization_finished:
 				list_save_requested.emit()
+
+
+var text_color := 0:
+	set(value):
+		text_color = wrapi(value, 0, Settings.to_do_text_colors.size() + 1)
+
+		if text_color != 0:
+			var color = Settings.to_do_text_colors[text_color - 1]
+			%TextColor.get("theme_override_styles/panel").bg_color = color
+			%TextColor.get("theme_override_styles/panel").draw_center = true
+			%Edit.add_theme_color_override("font_color", color)
+		else:
+			%TextColor.get("theme_override_styles/panel").draw_center = false
+			%Edit.remove_theme_color_override("font_color")
+
+		if _initialization_finished and self.text:
+			list_save_requested.emit()
 
 
 func _ready() -> void:
@@ -375,6 +391,9 @@ func save_to_disk(file : FileAccess) -> void:
 	if is_bookmarked:
 		string += " [BOOKMARK]"
 
+	if text_color != 0:
+		string += " [COLOR%d]" % text_color
+
 	file.store_line(string)
 
 
@@ -401,6 +420,13 @@ func load_from_disk(line : String) -> void:
 		line = line.right(-4)
 	else:
 		push_warning("Unknown format for line \"%s\" (will be automatically converted into a todo)" % line)
+
+	var reg_ex := RegEx.new()
+	reg_ex.compile(" \\[COLOR(?<digit>[1-5])\\]$")
+	var reg_ex_match := reg_ex.search(line)
+	if reg_ex_match:
+		line = line.substr(0, line.length() - 9)
+		text_color = int(reg_ex_match.get_string("digit"))
 
 	if line.ends_with(" [BOOKMARK]"):
 		line = line.substr(0, line.length() - 11)
@@ -647,7 +673,7 @@ func _on_editing_options_resized() -> void:
 
 func _check_for_search_query_match() -> void:
 	if not Settings.search_query:
-		%Edit.remove_theme_color_override("font_color")
+		text_color = text_color
 		%Edit.remove_theme_color_override("font_uneditable_color")
 		%Edit.modulate.a = 1.0
 	elif %Edit.text.contains(Settings.search_query):
@@ -678,3 +704,12 @@ func _on_bookmark_indicator_gui_input(event: InputEvent) -> void:
 func _on_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		release_focus()
+
+
+func _on_text_color_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.is_pressed():
+		match event.button_index:
+			MOUSE_BUTTON_LEFT, MOUSE_BUTTON_WHEEL_UP:
+				text_color += 1
+			MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_WHEEL_DOWN:
+				text_color -= 1

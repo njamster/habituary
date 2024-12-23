@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://v8u8oswwmlf3"]
+[gd_scene load_steps=29 format=3 uid="uid://v8u8oswwmlf3"]
 
 [ext_resource type="Texture2D" uid="uid://ci7y27fysy52o" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/unfolded.svg" id="2_2nsse"]
 [ext_resource type="Texture2D" uid="uid://d00v4pleoufwq" path="res://main_window/list_view/day_panel/todo_list/todo_item/images/to_do.svg" id="2_6dyr4"]
@@ -44,6 +44,19 @@ action = &"toggle_italic"
 
 [sub_resource type="Shortcut" id="Shortcut_hrpfk"]
 events = [SubResource("InputEventAction_q0hmr")]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sg8j5"]
+resource_local_to_scene = true
+content_margin_left = 4.0
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [sub_resource type="InputEventAction" id="InputEventAction_i0vg5"]
 action = &"toggle_bookmark"
@@ -233,6 +246,20 @@ popup_delay = 1.2
 popup_position = 3
 gap_width = 4
 
+[node name="TextColor" type="Panel" parent="EditingOptions/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sg8j5")
+
+[node name="Tooltip" type="Node" parent="EditingOptions/HBox/TextColor"]
+script = ExtResource("3_oduck")
+text = "Change Text Color"
+popup_position = 3
+
 [node name="Bookmark" type="Button" parent="EditingOptions/HBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(27, 0)
@@ -295,5 +322,6 @@ gap_width = 0
 [connection signal="toggled" from="EditingOptions/HBox/Heading" to="." method="_on_heading_toggled"]
 [connection signal="toggled" from="EditingOptions/HBox/Bold" to="." method="_on_bold_toggled"]
 [connection signal="toggled" from="EditingOptions/HBox/Italic" to="." method="_on_italic_toggled"]
+[connection signal="gui_input" from="EditingOptions/HBox/TextColor" to="." method="_on_text_color_gui_input"]
 [connection signal="pressed" from="EditingOptions/HBox/Bookmark" to="." method="_on_bookmark_pressed"]
 [connection signal="pressed" from="EditingOptions/HBox/Delete" to="." method="delete"]
