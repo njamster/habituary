@@ -222,9 +222,11 @@ var text_color := 0:
 			var color = Settings.to_do_text_colors[text_color - 1]
 			%TextColor.get("theme_override_styles/panel").bg_color = color
 			%TextColor.get("theme_override_styles/panel").draw_center = true
+			%Edit.add_theme_color_override("font_placeholder_color", Color(color, 0.7))
 			%Edit.add_theme_color_override("font_color", color)
 		else:
 			%TextColor.get("theme_override_styles/panel").draw_center = false
+			%Edit.remove_theme_color_override("font_placeholder_color")
 			%Edit.remove_theme_color_override("font_color")
 
 		if _initialization_finished and self.text:
@@ -530,11 +532,6 @@ func _input(event: InputEvent):
 		elif event.is_action_pressed("cancel_todo", false, true):
 			self.state = States.FAILED if self.state != States.FAILED else States.TO_DO
 			accept_event()
-		elif event.is_action_pressed("first_todo", false, true):
-			var index := get_index()
-			if index:
-				get_parent().get_child(0).edit()
-				accept_event()
 		elif event.is_action_pressed("previous_todo", true, true):
 			var index := get_index()
 			if index:
@@ -545,21 +542,16 @@ func _input(event: InputEvent):
 			if index < get_parent().get_child_count() - 1:
 				get_parent().get_child(index + 1).edit()
 				accept_event()
-		elif event.is_action_pressed("last_todo", false, true):
-			var index := get_index()
-			if index < get_parent().get_child_count() - 1:
-				get_parent().get_child(get_parent().get_child_count() - 1).edit()
-				accept_event()
-		elif event.is_action_pressed("move_todo_up"):
+		elif event.is_action_pressed("move_todo_up", true, true):
 			moved_up.emit()
 			accept_event()
-		elif event.is_action_pressed("move_todo_down"):
+		elif event.is_action_pressed("move_todo_down", true, true):
 			moved_down.emit()
 			accept_event()
-		elif event.is_action_pressed("indent_todo", true, true):
+		elif event.is_action_pressed("indent_todo", false, true):
 			self.indentation_level += 1
 			accept_event()
-		elif event.is_action_pressed("unindent_todo", true, true):
+		elif event.is_action_pressed("unindent_todo", false, true):
 			if self.text: # skip this step for newly created to-dos that haven't been saved yet
 				# Move the to-do & all its sub items to the end of its current scope. This matters
 				# if it has siblings, which would become sub items after deindentation otherwise!
@@ -567,6 +559,10 @@ func _input(event: InputEvent):
 				self.get_node("../../..").move_to_do(self, 999_999_999)
 			self.indentation_level -= 1
 			accept_event()
+		elif event.is_action_pressed("next_text_color", false, true):
+			text_color += 1
+		elif event.is_action_pressed("previous_text_color", false, true):
+			text_color -= 1
 
 
 func _on_check_box_gui_input(event: InputEvent) -> void:
