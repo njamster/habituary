@@ -709,3 +709,10 @@ func _on_text_color_gui_input(event: InputEvent) -> void:
 				text_color += 1
 			MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_WHEEL_DOWN:
 				text_color -= 1
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		# submit any yet unsubmitted changes
+		if %Edit.text != self.text:
+			self.text = %Edit.text
