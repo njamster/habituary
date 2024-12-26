@@ -17,6 +17,12 @@ func _search_for_bookmarks() -> void:
 	var directory := DirAccess.open(Settings.store_path)
 	if directory:
 		for file_name in directory.get_files():
+			var file_name_reg_ex := RegEx.new()
+			file_name_reg_ex.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}.txt")
+			var file_name_reg_ex_match := file_name_reg_ex.search(file_name)
+			if not file_name_reg_ex_match:
+				continue # with next file
+
 			var file = FileAccess.open(Settings.store_path.path_join(file_name), FileAccess.READ)
 			if file:
 				var line_number := -1
@@ -31,10 +37,10 @@ func _search_for_bookmarks() -> void:
 						or line.begins_with("[ ] ") or line.begins_with("[x] ") or line.begins_with("[-] "):
 							line_number += 1
 
-					var reg_ex := RegEx.new()
-					reg_ex.compile(" \\[COLOR(?<digit>[1-5])\\]$")
-					var reg_ex_match := reg_ex.search(line)
-					if reg_ex_match:
+					var color_tag_reg_ex := RegEx.new()
+					color_tag_reg_ex.compile(" \\[COLOR[1-5]\\]$")
+					var color_tag_reg_ex_match := color_tag_reg_ex.search(line)
+					if color_tag_reg_ex_match:
 						line = line.substr(0, line.length() - 9)
 
 					if line.ends_with( " [BOOKMARK]"):
