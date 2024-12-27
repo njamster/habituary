@@ -214,12 +214,13 @@ var indentation_level := 0:
 				list_save_requested.emit()
 
 
-var text_color := 0:
+var text_color_id := 0:
 	set(value):
-		text_color = wrapi(value, 0, Settings.to_do_text_colors.size() + 1)
+		var old_value = value
+		text_color_id = wrapi(value, 0, Settings.to_do_text_colors.size() + 1)
 
-		if text_color != 0:
-			var color = Settings.to_do_text_colors[text_color - 1]
+		if text_color_id:
+			var color = Settings.to_do_text_colors[text_color_id - 1]
 			%TextColor.get("theme_override_styles/panel").bg_color = color
 			%TextColor.get("theme_override_styles/panel").draw_center = true
 			%Edit.add_theme_color_override("font_placeholder_color", Color(color, 0.7))
@@ -229,8 +230,9 @@ var text_color := 0:
 			%Edit.remove_theme_color_override("font_placeholder_color")
 			%Edit.remove_theme_color_override("font_color")
 
-		if _initialization_finished and self.text:
-			list_save_requested.emit()
+		if old_value != value:
+			if _initialization_finished and self.text:
+				list_save_requested.emit()
 
 
 func _ready() -> void:
@@ -393,8 +395,8 @@ func save_to_disk(file : FileAccess) -> void:
 	if is_bookmarked:
 		string += " [BOOKMARK]"
 
-	if text_color != 0:
-		string += " [COLOR%d]" % text_color
+	if text_color_id:
+		string += " [COLOR%d]" % text_color_id
 
 	file.store_line(string)
 
@@ -428,7 +430,7 @@ func load_from_disk(line : String) -> void:
 	var reg_ex_match := reg_ex.search(line)
 	if reg_ex_match:
 		line = line.substr(0, line.length() - 9)
-		text_color = int(reg_ex_match.get_string("digit"))
+		text_color_id = int(reg_ex_match.get_string("digit"))
 
 	if line.ends_with(" [BOOKMARK]"):
 		line = line.substr(0, line.length() - 11)
@@ -560,9 +562,9 @@ func _input(event: InputEvent):
 			self.indentation_level -= 1
 			accept_event()
 		elif event.is_action_pressed("next_text_color", false, true):
-			text_color += 1
+			text_color_id += 1
 		elif event.is_action_pressed("previous_text_color", false, true):
-			text_color -= 1
+			text_color_id -= 1
 
 
 func _on_check_box_gui_input(event: InputEvent) -> void:
@@ -669,7 +671,7 @@ func _on_editing_options_resized() -> void:
 
 func _check_for_search_query_match() -> void:
 	if not Settings.search_query:
-		text_color = text_color
+		text_color_id = text_color_id
 		%Edit.remove_theme_color_override("font_uneditable_color")
 		%Edit.modulate.a = 1.0
 	elif %Edit.text.contains(Settings.search_query):
@@ -706,13 +708,16 @@ func _on_text_color_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed():
 		match event.button_index:
 			MOUSE_BUTTON_LEFT, MOUSE_BUTTON_WHEEL_UP:
-				text_color += 1
+				text_color_id += 1
 			MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_WHEEL_DOWN:
-				text_color -= 1
+				text_color_id -= 1
 
 
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+# NOTE: `tree_exiting` will be emitted both when this panel is about to be removed from the tree
+# because the user scrolled the list' view, as well as on a NOTIFICATION_WM_CLOSE_REQUEST, but also
+# when an item is deleted (which is why we check if it's queded for deletion first).
+func _on_tree_exiting() -> void:
+	if not is_queued_for_deletion():
 		# submit any yet unsubmitted changes
 		if %Edit.text != self.text:
 			self.text = %Edit.text

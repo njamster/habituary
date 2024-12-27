@@ -33,7 +33,11 @@ func _start_debounce_timer():
 	if OS.is_debug_build():
 		print("[DEBUG] List Save Requested: (Re)Starting DebounceTimer...")
 	pending_save = true
-	$DebounceTimer.start()
+	# If the DebounceTimer at this point is not inside the tree anymore, then this list is about to
+	# exit the tree and starting this timer wouldn't work, as it's no longer part of the scene tree.
+	# The parent day panel will issue a save anyway, though, as long as pending_save is true.
+	if $DebounceTimer.is_inside_tree():
+		$DebounceTimer.start()
 
 
 func connect_todo_signals(todo_item : Control) -> void:

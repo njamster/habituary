@@ -310,6 +310,7 @@ gap_width = 0
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
 [connection signal="gui_input" from="MainRow/HBox/Toggle/CheckBox" to="." method="_on_check_box_gui_input"]
 [connection signal="toggled" from="MainRow/HBox/Toggle/FoldHeading" to="." method="_on_fold_heading_toggled"]
 [connection signal="gui_input" from="MainRow/HBox/Content" to="." method="_on_content_gui_input"]
