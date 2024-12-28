@@ -4,13 +4,6 @@ extends PanelContainer
 func _ready() -> void:
 	%ShortcutHint.text = InputMap.action_get_events("search_screen")[0].as_text().to_upper().replace("+", " + ")
 
-	EventBus.current_day_changed.connect(func(_current_day):
-		EventBus.search_query_changed.emit.call_deferred()
-	)
-	EventBus.view_mode_changed.connect(func(_view_mode):
-		EventBus.search_query_changed.emit.call_deferred()
-	)
-
 	EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
 	_on_dark_mode_changed(Settings.dark_mode)
 

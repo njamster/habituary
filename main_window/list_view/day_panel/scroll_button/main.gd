@@ -12,10 +12,10 @@ var items_out_of_view := 0
 func _ready() -> void:
 	self.hide()
 
-	SCROLL_CONTAINER.resized.connect(_update_button)
-	SCROLL_CONTAINER_CONTENT.resized.connect(_update_button)
+	SCROLL_CONTAINER.resized.connect.call_deferred(_update_button)
+	SCROLL_CONTAINER_CONTENT.resized.connect.call_deferred(_update_button)
 
-	SCROLL_CONTAINER.scrolled.connect(_update_button)
+	SCROLL_CONTAINER.scrolled.connect.call_deferred(_update_button)
 
 	_update_button.call_deferred()
 

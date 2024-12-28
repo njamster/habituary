@@ -216,7 +216,7 @@ var indentation_level := 0:
 
 var text_color_id := 0:
 	set(value):
-		var old_value = value
+		var old_value = text_color_id
 		text_color_id = wrapi(value, 0, Settings.to_do_text_colors.size() + 1)
 
 		if text_color_id:
@@ -245,6 +245,7 @@ func _ready() -> void:
 	_on_dark_mode_changed(Settings.dark_mode)
 
 	EventBus.search_query_changed.connect(_check_for_search_query_match)
+	_check_for_search_query_match.call_deferred() # deferred, in case this item is loaded from disk
 
 	EventBus.bookmark_jump_requested.connect(func(bookmarked_date, bookmarked_line_number):
 		if self.is_bookmarked and date.day_difference_to(bookmarked_date) == 0 \
