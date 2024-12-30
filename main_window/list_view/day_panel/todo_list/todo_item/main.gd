@@ -289,16 +289,17 @@ func delete() -> void:
 		EventBus.bookmark_removed.emit(self)
 	self.unfolded.emit()
 
-	var to_do_list := get_parent()
-	var items_in_list := to_do_list.get_child_count()
-	if items_in_list > 1:
-		var position_in_list := self.get_index()
-		if items_in_list == position_in_list + 1:
-			# The deleted item is the last in the list: select its predecessor!
-			to_do_list.get_child(position_in_list - 1).edit()
-		else:
-			# The deleted item is *not* the last in the list: select its successor!
-			to_do_list.get_child(position_in_list + 1).edit()
+	if %Edit.text:
+		var to_do_list := get_parent()
+		var items_in_list := to_do_list.get_child_count()
+		if items_in_list > 1:
+			var position_in_list := self.get_index()
+			if items_in_list == position_in_list + 1:
+				# The deleted item is the last in the list: select its predecessor!
+				to_do_list.get_child(position_in_list - 1).edit()
+			else:
+				# The deleted item is *not* the last in the list: select its successor!
+				to_do_list.get_child(position_in_list + 1).edit()
 
 	queue_free()
 	if self.text:
