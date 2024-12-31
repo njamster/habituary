@@ -541,33 +541,26 @@ func set_extra_info(num_done : int , num_items : int) -> void:
 	%ExtraInfo.text = "%d/%d" % [num_done, num_items]
 
 
-func _input(event: InputEvent):
+func _input(event: InputEvent) -> void:
 	if is_in_edit_mode():
 		if event.is_action_pressed("toggle_todo", false, true):
 			self.state = States.DONE if self.state != States.DONE else States.TO_DO
-			accept_event()
 		elif event.is_action_pressed("cancel_todo", false, true):
 			self.state = States.FAILED if self.state != States.FAILED else States.TO_DO
-			accept_event()
 		elif event.is_action_pressed("previous_todo", true, true):
 			var index := get_index()
 			if index:
 				get_parent().get_child(index - 1).edit()
-				accept_event()
 		elif event.is_action_pressed("next_todo", true, true):
 			var index := get_index()
 			if index < get_parent().get_child_count() - 1:
 				get_parent().get_child(index + 1).edit()
-				accept_event()
 		elif event.is_action_pressed("move_todo_up", true, true):
 			moved_up.emit()
-			accept_event()
 		elif event.is_action_pressed("move_todo_down", true, true):
 			moved_down.emit()
-			accept_event()
 		elif event.is_action_pressed("indent_todo", false, true):
 			self.indentation_level += 1
-			accept_event()
 		elif event.is_action_pressed("unindent_todo", false, true):
 			if self.text: # skip this step for newly created to-dos that haven't been saved yet
 				# Move the to-do & all its sub items to the end of its current scope. This matters
@@ -575,11 +568,14 @@ func _input(event: InputEvent):
 				# FIXME: That is a rather hacky way to achieve this...
 				self.get_node("../../..").move_to_do(self, 999_999_999)
 			self.indentation_level -= 1
-			accept_event()
 		elif event.is_action_pressed("next_text_color", false, true):
 			text_color_id += 1
 		elif event.is_action_pressed("previous_text_color", false, true):
 			text_color_id -= 1
+		else:
+			return # early, i.e. ignore the input
+
+		accept_event()
 
 
 func _on_check_box_gui_input(event: InputEvent) -> void:
@@ -710,7 +706,7 @@ func _on_bookmark_pressed() -> void:
 
 func _on_bookmark_indicator_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
-		%BookmarkIndicator.get_node("Tooltip").hide_tooltip()
+		%BookmarkIndicator/Tooltip.hide_tooltip()
 		edit()
 
 
@@ -726,6 +722,11 @@ func _on_text_color_gui_input(event: InputEvent) -> void:
 				text_color_id += 1
 			MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_WHEEL_DOWN:
 				text_color_id -= 1
+			_:
+				return # early, i.e. ignore the input
+
+		get_viewport().set_input_as_handled()
+		%TextColor/Tooltip.hide_tooltip()
 
 
 # NOTE: `tree_exiting` will be emitted both when this panel is about to be removed from the tree
