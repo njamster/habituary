@@ -319,7 +319,7 @@ gap_width = 0
 [connection signal="text_changed" from="MainRow/HBox/Content/Edit" to="." method="_on_edit_text_changed"]
 [connection signal="text_submitted" from="MainRow/HBox/Content/Edit" to="." method="_on_edit_text_submitted"]
 [connection signal="gui_input" from="MainRow/HBox/BookmarkIndicator" to="." method="_on_bookmark_indicator_gui_input"]
-[connection signal="resized" from="EditingOptions" to="." method="_on_editing_options_resized"]
+[connection signal="resized" from="EditingOptions" to="." method="_on_editing_options_resized" flags=3]
 [connection signal="toggled" from="EditingOptions/HBox/Heading" to="." method="_on_heading_toggled"]
 [connection signal="toggled" from="EditingOptions/HBox/Bold" to="." method="_on_bold_toggled"]
 [connection signal="toggled" from="EditingOptions/HBox/Italic" to="." method="_on_italic_toggled"]

@@ -234,6 +234,8 @@ var text_color_id := 0:
 			if _initialization_finished and self.text:
 				list_save_requested.emit()
 
+var _editing_options_shrink_threshold : int
+
 
 func _ready() -> void:
 	$Triangle.hide()
@@ -252,6 +254,14 @@ func _ready() -> void:
 			and get_index() == bookmarked_line_number:
 				edit()
 	)
+
+	# Briefly switch to the longer version of the button label:
+	%Bookmark.text = %Bookmark.text.replace("Add", "Remove")
+	# Measure the minimum size of the editing options (i.e. *with* labels), this will serve as the
+	# threshold width value at which all labels in the editing options will be hidden:
+	_editing_options_shrink_threshold = %EditingOptions.get_combined_minimum_size().x
+	# Then switch back to the original button label again:
+	%Bookmark.text = %Bookmark.text.replace("Remove", "Add")
 
 	set_deferred("_initialization_finished", true) # deferred, in case this item is loaded from disk
 
@@ -662,7 +672,7 @@ func _on_italic_toggled(toggled_on: bool) -> void:
 
 
 func _on_editing_options_resized() -> void:
-	if %EditingOptions.size.x < 370:
+	if %EditingOptions.size.x <= _editing_options_shrink_threshold:
 		%FormatLabel.hide()
 
 		%Delete.clip_text = true
