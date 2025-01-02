@@ -38,6 +38,16 @@ func _ready() -> void:
 		_on_view_mode_changed(Settings.view_mode)
 		EventBus.today_changed.connect(_update_date_offset)
 
+		EventBus.current_day_changed.connect(_update_stretch_ratio)
+		_update_stretch_ratio(Settings.current_day)
+
+
+func _update_stretch_ratio(current_day : Date) -> void:
+	if date.as_dict() == current_day.as_dict():
+		size_flags_stretch_ratio = 1.5
+	else:
+		size_flags_stretch_ratio = 1.0
+
 
 func _update_header() -> void:
 	if date:
