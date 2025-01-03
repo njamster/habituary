@@ -101,3 +101,4 @@ one_shot = true
 [connection signal="mouse_entered" from="Header" to="." method="_on_header_mouse_entered"]
 [connection signal="mouse_exited" from="Header" to="." method="_on_header_mouse_exited"]
 [connection signal="gui_input" from="ScrollContainer" to="ScrollContainer" method="_on_gui_input"]
+[connection signal="scrolled" from="ScrollContainer" to="ScrollContainer/TodoList" method="_start_debounce_timer"]
