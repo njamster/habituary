@@ -263,7 +263,18 @@ func _ready() -> void:
 	# Then switch back to the original button label again:
 	%Bookmark.text = %Bookmark.text.replace("Remove", "Add")
 
+	%EditingOptions.resized.connect(_on_editing_options_resized)
+
 	set_deferred("_initialization_finished", true) # deferred, in case this item is loaded from disk
+
+	await get_tree().process_frame # i.e. until _initialization_finished == true
+
+	if not self.text: # i.e. it's a newly created to-do (not restored from disk)
+		var predecessor = self.get_parent().get_child(self.get_index() - 1)
+		if predecessor.text.ends_with(":"):
+			self.indentation_level = predecessor.indentation_level + 1
+		else:
+			self.indentation_level = predecessor.indentation_level
 
 
 func is_in_edit_mode() -> bool:
