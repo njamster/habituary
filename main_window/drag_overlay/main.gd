@@ -43,3 +43,11 @@ func _process(_delta: float) -> void:
 	var left_padding = $LeftBorder["theme_override_constants/margin_left"]
 	$LeftBorder.visible = (get_parent().get_global_mouse_position().x < left_padding + TRIGGER_ZONE_WIDTH)
 	$RightBorder.visible = (get_parent().get_global_mouse_position().x > window_size - TRIGGER_ZONE_WIDTH)
+
+
+func _on_left_border_drag_hover_trigger_triggered() -> void:
+	Settings.current_day = Settings.current_day.add_days(-1)
+
+
+func _on_right_border_drag_hover_trigger_triggered() -> void:
+	Settings.current_day = Settings.current_day.add_days(+1)

@@ -58,12 +58,20 @@ func _update_button() -> void:
 	_on_search_query_changed()
 
 
+func _on_scroll_button_pressed() -> void:
+	if mode == Modes.UP:
+		SCROLL_CONTAINER._scroll_one_item_up()
+	else:
+		SCROLL_CONTAINER._scroll_one_item_down()
+
+
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
-		if mode == Modes.UP:
-			SCROLL_CONTAINER._scroll_one_item_up()
-		else:
-			SCROLL_CONTAINER._scroll_one_item_down()
+		_on_scroll_button_pressed()
+
+
+func _on_drag_hover_trigger_triggered() -> void:
+	_on_scroll_button_pressed()
 
 
 func _on_search_query_changed() -> void:

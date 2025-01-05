@@ -194,19 +194,18 @@ var indentation_level := 0:
 		var change := indentation_level - old_indentation_level
 
 		if is_inside_tree() and change:
-			if self.text: # skip this step for newly created to-dos that haven't been saved yet
-				var successors_to_adjust := []
+			var successors_to_adjust := []
 
-				var SUCCESSOR_IDS := range(index + 1, todo_list.get_child_count())
-				for successor_id in SUCCESSOR_IDS:
-					var successor = todo_list.get_child(successor_id)
-					if successor.indentation_level == old_indentation_level + 1:
-						successors_to_adjust.append(successor)
-					elif successor.indentation_level <= old_indentation_level:
-						break  # end of scope reached
+			var SUCCESSOR_IDS := range(index + 1, todo_list.get_child_count())
+			for successor_id in SUCCESSOR_IDS:
+				var successor = todo_list.get_child(successor_id)
+				if successor.indentation_level == old_indentation_level + 1:
+					successors_to_adjust.append(successor)
+				elif successor.indentation_level <= old_indentation_level:
+					break  # end of scope reached
 
-				for successor in successors_to_adjust:
-					successor.indentation_level += change
+			for successor in successors_to_adjust:
+				successor.indentation_level += change
 
 			$MainRow.get("theme_override_styles/panel").content_margin_left = indentation_level * 20
 
@@ -270,11 +269,12 @@ func _ready() -> void:
 	await get_tree().process_frame # i.e. until _initialization_finished == true
 
 	if not self.text: # i.e. it's a newly created to-do (not restored from disk)
-		var predecessor = self.get_parent().get_child(self.get_index() - 1)
-		if predecessor.text.ends_with(":"):
-			self.indentation_level = predecessor.indentation_level + 1
-		else:
-			self.indentation_level = predecessor.indentation_level
+		if self.get_index() > 0:
+			var predecessor = self.get_parent().get_child(self.get_index() - 1)
+			if predecessor.text.ends_with(":"):
+				self.indentation_level = predecessor.indentation_level + 1
+			else:
+				self.indentation_level = predecessor.indentation_level
 
 
 func is_in_edit_mode() -> bool:

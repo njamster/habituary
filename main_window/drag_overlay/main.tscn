@@ -1,8 +1,8 @@
 [gd_scene load_steps=9 format=3 uid="uid://cih6c2f3oxfl0"]
 
 [ext_resource type="Script" path="res://main_window/drag_overlay/main.gd" id="1_0aom8"]
-[ext_resource type="Script" path="res://main_window/drag_overlay/drag_border/main.gd" id="2_wtf54"]
 [ext_resource type="Texture2D" uid="uid://bx431ihwuqyf1" path="res://main_window/drag_overlay/images/arrow_left.svg" id="3_ndai4"]
+[ext_resource type="Script" path="res://custom/drag_hover_trigger.gd" id="4_hhxuo"]
 [ext_resource type="Texture2D" uid="uid://do8ihkyyxxd77" path="res://main_window/drag_overlay/images/arrow_right.svg" id="4_rppmn"]
 
 [sub_resource type="Gradient" id="Gradient_r1vji"]
@@ -34,8 +34,6 @@ script = ExtResource("1_0aom8")
 [node name="LeftBorder" type="MarginContainer" parent="."]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
-script = ExtResource("2_wtf54")
-day_offset = -1
 
 [node name="Gradient" type="TextureRect" parent="LeftBorder"]
 layout_mode = 2
@@ -53,12 +51,13 @@ grow_vertical = 2
 texture = ExtResource("3_ndai4")
 stretch_mode = 3
 
+[node name="DragHoverTrigger" type="Timer" parent="LeftBorder"]
+script = ExtResource("4_hhxuo")
+
 [node name="RightBorder" type="MarginContainer" parent="."]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_horizontal = 10
-script = ExtResource("2_wtf54")
-day_offset = 1
 
 [node name="Gradient" type="TextureRect" parent="RightBorder"]
 layout_mode = 2
@@ -79,7 +78,8 @@ grow_vertical = 2
 texture = ExtResource("4_rppmn")
 stretch_mode = 3
 
-[connection signal="mouse_entered" from="LeftBorder" to="LeftBorder" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="LeftBorder" to="LeftBorder" method="_on_mouse_exited"]
-[connection signal="mouse_entered" from="RightBorder" to="RightBorder" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="RightBorder" to="RightBorder" method="_on_mouse_exited"]
+[node name="DragHoverTrigger" type="Timer" parent="RightBorder"]
+script = ExtResource("4_hhxuo")
+
+[connection signal="triggered" from="LeftBorder/DragHoverTrigger" to="." method="_on_left_border_drag_hover_trigger_triggered"]
+[connection signal="triggered" from="RightBorder/DragHoverTrigger" to="." method="_on_right_border_drag_hover_trigger_triggered"]
