@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://cid0gwgt0yh1p"]
+[gd_scene load_steps=7 format=3 uid="uid://cid0gwgt0yh1p"]
 
 [ext_resource type="Script" path="res://main_window/side_panel/settings/main.gd" id="1_xu2b7"]
 [ext_resource type="Script" path="res://custom/padded_scrollbar.gd" id="2_r5ote"]
 [ext_resource type="Script" path="res://custom/tooltip.gd" id="4_70x8g"]
 [ext_resource type="Texture2D" uid="uid://c4185sydmovdc" path="res://main_window/side_panel/settings/images/open.svg" id="4_bf631"]
 [ext_resource type="Script" path="res://custom/formatted_spin_box.gd" id="5_px7qq"]
+[ext_resource type="FontFile" uid="uid://c7b83cfl74of8" path="res://theme/fonts/OpenSans-ExtraBoldItalic.ttf" id="7_fjnu2"]
 
 [node name="Settings" type="VBoxContainer"]
 anchors_preset = 9
@@ -163,8 +164,62 @@ bbcode_enabled = true
 text = "[fill]New weeks in the calendar widget start on Mondays.[/fill]"
 fit_content = true
 
+[node name="FadeTickedOffTodos" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/FadeTickedOffTodos"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/FadeTickedOffTodos/Setting"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme_type_variation = &"HeaderSmall"
+text = "Fade Ticked Off To-Dos"
+
+[node name="Options" type="CheckButton" parent="ScrollContainer/PaddedScrollbar/VBox/FadeTickedOffTodos/Setting"]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_pressed = true
+
+[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/VBox/FadeTickedOffTodos"]
+modulate = Color(1, 1, 1, 0.607843)
+layout_mode = 2
+theme_type_variation = &"Explanation"
+bbcode_enabled = true
+fit_content = true
+
+[node name="FadeNonTodayDates" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/FadeNonTodayDates"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/FadeNonTodayDates/Setting"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme_type_variation = &"HeaderSmall"
+text = "Fade Non-Today Dates"
+
+[node name="Options" type="OptionButton" parent="ScrollContainer/PaddedScrollbar/VBox/FadeNonTodayDates/Setting"]
+layout_mode = 2
+
+[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/VBox/FadeNonTodayDates"]
+modulate = Color(1, 1, 1, 0.607843)
+layout_mode = 2
+theme_type_variation = &"Explanation"
+theme_override_fonts/bold_italics_font = ExtResource("7_fjnu2")
+bbcode_enabled = true
+fit_content = true
+
 [connection signal="pressed" from="ScrollContainer/PaddedScrollbar/VBox/StorePath/Setting/Change" to="." method="_on_change_store_path_pressed"]
 [connection signal="item_selected" from="ScrollContainer/PaddedScrollbar/VBox/TodayPosition/Setting/Options" to="." method="_on_today_position_item_selected"]
 [connection signal="value_changed" from="ScrollContainer/PaddedScrollbar/VBox/DayStart/Setting/Hours" to="." method="_on_day_start_hours_value_changed"]
 [connection signal="value_changed" from="ScrollContainer/PaddedScrollbar/VBox/DayStart/Setting/Minutes" to="." method="_on_day_start_minutes_value_changed"]
 [connection signal="toggled" from="ScrollContainer/PaddedScrollbar/VBox/FirstWeekday/Setting/Options" to="." method="_on_first_weekday_toggled"]
+[connection signal="toggled" from="ScrollContainer/PaddedScrollbar/VBox/FadeTickedOffTodos/Setting/Options" to="." method="_on_fade_ticked_off_todos_options_toggled"]
+[connection signal="item_selected" from="ScrollContainer/PaddedScrollbar/VBox/FadeNonTodayDates/Setting/Options" to="." method="_on_fade_non_today_dates_options_item_selected"]

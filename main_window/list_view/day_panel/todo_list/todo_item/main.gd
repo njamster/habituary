@@ -66,12 +66,7 @@ enum States { TO_DO, DONE, FAILED }
 					toggle.set("theme_override_colors/icon_hover_color", icon_color)
 					toggle.set("theme_override_colors/icon_pressed_color", icon_color)
 
-			if state == States.TO_DO:
-				%CheckBox.modulate.a = 1.0
-				%Content.modulate.a = 1.0
-			else:
-				%CheckBox.modulate.a = 0.5
-				%Content.modulate.a = 0.5
+			_apply_state_relative_formating()
 
 			EventBus.bookmark_changed.emit(self, date, get_index())
 
@@ -275,6 +270,8 @@ func _ready() -> void:
 				self.indentation_level = predecessor.indentation_level + 1
 			else:
 				self.indentation_level = predecessor.indentation_level
+
+	EventBus.fade_ticked_off_todos_changed.connect(_apply_state_relative_formating)
 
 
 func is_in_edit_mode() -> bool:
@@ -758,3 +755,16 @@ func _on_tree_exiting() -> void:
 		# submit any yet unsubmitted changes
 		if %Edit.text != self.text:
 			self.text = %Edit.text
+
+
+func _apply_state_relative_formating() -> void:
+	if Settings.fade_ticked_off_todos:
+		if state != States.TO_DO:
+			%CheckBox.modulate.a = 0.5
+			%Content.modulate.a = 0.5
+		else:
+			%CheckBox.modulate.a = 1.0
+			%Content.modulate.a = 1.0
+	else:
+		%CheckBox.modulate.a = 1.0
+		%Content.modulate.a = 1.0

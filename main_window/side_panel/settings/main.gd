@@ -13,6 +13,16 @@ func _ready() -> void:
 	$%DayStart/Setting/Hours.value = Settings.day_start_hour_offset
 	$%DayStart/Setting/Minutes.value = Settings.day_start_minute_offset
 
+	%FadeTickedOffTodos/Setting/Options.set_pressed_no_signal(Settings.fade_ticked_off_todos)
+	_on_fade_ticked_off_todos_options_toggled(Settings.fade_ticked_off_todos)
+
+	for option_name in Settings.FadeNonTodayDates:
+		var option_id : int = Settings.FadeNonTodayDates[option_name]
+		%FadeNonTodayDates/Setting/Options.add_item(option_name.capitalize(), option_id)
+		if option_id == Settings.fade_non_today_dates:
+			%FadeNonTodayDates/Setting/Options.select(option_id)
+	_on_fade_non_today_dates_options_item_selected(Settings.fade_non_today_dates)
+
 
 func _on_change_store_path_pressed() -> void:
 	OS.shell_show_in_file_manager(Settings.store_path)
@@ -50,3 +60,40 @@ func _on_day_start_hours_value_changed(value: float) -> void:
 
 func _on_day_start_minutes_value_changed(value: float) -> void:
 	Settings.day_start_minute_offset = int(value)
+
+
+func _on_fade_ticked_off_todos_options_toggled(toggled_on: bool) -> void:
+	Settings.fade_ticked_off_todos = toggled_on
+
+	if toggled_on:
+		%FadeTickedOffTodos/Explanation.text = "[fill]To-Dos that have been \
+		marked as done or canceled will appear dimmed.[/fill]"
+	else:
+		%FadeTickedOffTodos/Explanation.text = "[fill]To-Dos that have been \
+		marked as done or canceled will [u]not[/u] appear dimmed.[/fill]"
+
+
+func _on_fade_non_today_dates_options_item_selected(index: int) -> void:
+	Settings.fade_non_today_dates = Settings.FadeNonTodayDates[
+		Settings.FadeNonTodayDates.keys()[index]
+	]
+
+	match index:
+		Settings.FadeNonTodayDates.NONE:
+			%FadeNonTodayDates/Explanation.text = "[fill]List view columns \
+			that correspond to a date in the past or future will [u]not[/u] \
+			appear dimmed.[/fill]"
+		Settings.FadeNonTodayDates.PAST:
+			%FadeNonTodayDates/Explanation.text = "[fill]List view columns \
+			that correspond to a date in the [b][i]past[/i][/b] will appear \
+			dimmed.[/fill]"
+		Settings.FadeNonTodayDates.FUTURE:
+			%FadeNonTodayDates/Explanation.text = "[fill]List view columns \
+			that correspond to a date in the [b][i]future[/i][/b] will appear \
+			dimmed.[/fill]"
+		Settings.FadeNonTodayDates.PAST_AND_FUTURE:
+			%FadeNonTodayDates/Explanation.text = "[fill]List view columns \
+			that correspond to a date in the [b][i]past or future[/i][/b] will \
+			appear dimmed.[/fill]"
+		_:
+			%FadeNonTodayDates/Explanation.text = "" # this shouldn't happen

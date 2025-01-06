@@ -25,6 +25,13 @@ enum TodayPosition {
 	CENTERED
 }
 
+enum FadeNonTodayDates {
+	NONE,
+	PAST,
+	FUTURE,
+	PAST_AND_FUTURE
+}
+
 enum SidePanelState {
 	HIDDEN,
 	HELP,
@@ -157,6 +164,24 @@ var show_bookmarks_from_the_past := true:
 				print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
 			debounce_timer.start()
 
+var fade_ticked_off_todos := true:
+	set(value):
+		fade_ticked_off_todos = value
+		EventBus.fade_ticked_off_todos_changed.emit()
+		if is_node_ready():
+			if OS.is_debug_build():
+				print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
+			debounce_timer.start()
+
+var fade_non_today_dates := FadeNonTodayDates.PAST:
+	set(value):
+		fade_non_today_dates = value
+		EventBus.fade_non_today_dates_changed.emit()
+		if is_node_ready():
+			if OS.is_debug_build():
+				print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
+			debounce_timer.start()
+
 var bookmarks_due_today := 0:
 	set(value):
 		bookmarks_due_today = value
@@ -204,6 +229,8 @@ func save_to_disk() -> void:
 	config.set_value("AppState", "day_start_minute_offset", day_start_minute_offset)
 	config.set_value("AppState", "side_panel", side_panel)
 	config.set_value("AppState", "show_bookmarks_from_the_past", show_bookmarks_from_the_past)
+	config.set_value("AppState", "fade_ticked_off_todos", fade_ticked_off_todos)
+	config.set_value("AppState", "fade_non_today_dates", fade_non_today_dates)
 	config.save(settings_path)
 
 	if OS.is_debug_build():
@@ -222,3 +249,5 @@ func load_from_disk() -> void:
 		day_start_minute_offset = config.get_value("AppState", "day_start_minute_offset", day_start_minute_offset)
 		side_panel = config.get_value("AppState", "side_panel", side_panel)
 		show_bookmarks_from_the_past = config.get_value("AppState", "show_bookmarks_from_the_past", show_bookmarks_from_the_past)
+		fade_ticked_off_todos = config.get_value("AppState", "fade_ticked_off_todos", fade_ticked_off_todos)
+		fade_non_today_dates = config.get_value("AppState", "fade_non_today_dates", fade_non_today_dates)

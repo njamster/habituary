@@ -15,6 +15,10 @@ signal current_day_changed(current_day)
 signal day_start_changed()
 @warning_ignore("unused_signal")
 signal show_bookmarks_from_the_past_changed
+@warning_ignore("unused_signal")
+signal fade_ticked_off_todos_changed
+@warning_ignore("unused_signal")
+signal fade_non_today_dates_changed
 
 @warning_ignore("unused_signal")
 signal calendar_button_pressed

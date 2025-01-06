@@ -41,6 +41,8 @@ func _ready() -> void:
 		EventBus.current_day_changed.connect(_update_stretch_ratio)
 		_update_stretch_ratio(Settings.current_day)
 
+		EventBus.fade_non_today_dates_changed.connect(_apply_date_relative_formating)
+
 
 func _update_stretch_ratio(current_day : Date) -> void:
 	if date.as_dict() == current_day.as_dict():
@@ -89,7 +91,11 @@ func _apply_date_relative_formating() -> void:
 
 		if day_difference < 0:
 			# date is in the past
-			modulate.a = 0.4
+			if Settings.fade_non_today_dates == Settings.FadeNonTodayDates.PAST or \
+				Settings.fade_non_today_dates == Settings.FadeNonTodayDates.PAST_AND_FUTURE:
+					modulate.a = 0.4
+			else:
+				modulate.a = 1.0
 			%Weekday.remove_theme_color_override("font_color")
 		elif day_difference == 0:
 			# date is today
@@ -97,7 +103,11 @@ func _apply_date_relative_formating() -> void:
 			%Weekday.add_theme_color_override("font_color", Settings.NORD_09)
 		else:
 			# date is in the future
-			modulate.a = 1.0
+			if Settings.fade_non_today_dates == Settings.FadeNonTodayDates.FUTURE or \
+				Settings.fade_non_today_dates == Settings.FadeNonTodayDates.PAST_AND_FUTURE:
+					modulate.a = 0.4
+			else:
+				modulate.a = 1.0
 			%Weekday.remove_theme_color_override("font_color")
 	else:
 		# reset formatting
