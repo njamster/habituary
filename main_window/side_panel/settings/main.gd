@@ -65,12 +65,16 @@ func _on_day_start_minutes_value_changed(value: float) -> void:
 func _on_fade_ticked_off_todos_options_toggled(toggled_on: bool) -> void:
 	Settings.fade_ticked_off_todos = toggled_on
 
+	var explanation_text := "[fill]To-Dos that have been marked as done or " \
+	+ "canceled {0} appear dimmed.[/fill]"
 	if toggled_on:
-		%FadeTickedOffTodos/Explanation.text = "[fill]To-Dos that have been \
-		marked as done or canceled will appear dimmed.[/fill]"
+		%FadeTickedOffTodos/Explanation.text = explanation_text.format([
+			"will [u]not[/u]",
+		])
 	else:
-		%FadeTickedOffTodos/Explanation.text = "[fill]To-Dos that have been \
-		marked as done or canceled will [u]not[/u] appear dimmed.[/fill]"
+		%FadeTickedOffTodos/Explanation.text = explanation_text.format([
+			"will",
+		])
 
 
 func _on_fade_non_today_dates_options_item_selected(index: int) -> void:
@@ -78,22 +82,28 @@ func _on_fade_non_today_dates_options_item_selected(index: int) -> void:
 		Settings.FadeNonTodayDates.keys()[index]
 	]
 
+	var explanation_text := "[fill]List view columns that correspond to a " \
+	+ "date in the {0} {1} appear dimmed.[/fill]"
 	match index:
 		Settings.FadeNonTodayDates.NONE:
-			%FadeNonTodayDates/Explanation.text = "[fill]List view columns \
-			that correspond to a date in the past or future will [u]not[/u] \
-			appear dimmed.[/fill]"
+			%FadeNonTodayDates/Explanation.text = explanation_text.format([
+				"past or future",
+				"will [u]not[/u]",
+			])
 		Settings.FadeNonTodayDates.PAST:
-			%FadeNonTodayDates/Explanation.text = "[fill]List view columns \
-			that correspond to a date in the [b][i]past[/i][/b] will appear \
-			dimmed.[/fill]"
+			%FadeNonTodayDates/Explanation.text = explanation_text.format([
+				"[b][i]past[/i][/b]",
+				"will",
+			])
 		Settings.FadeNonTodayDates.FUTURE:
-			%FadeNonTodayDates/Explanation.text = "[fill]List view columns \
-			that correspond to a date in the [b][i]future[/i][/b] will appear \
-			dimmed.[/fill]"
+			%FadeNonTodayDates/Explanation.text = explanation_text.format([
+				"[b][i]future[/i][/b]",
+				"will",
+			])
 		Settings.FadeNonTodayDates.PAST_AND_FUTURE:
-			%FadeNonTodayDates/Explanation.text = "[fill]List view columns \
-			that correspond to a date in the [b][i]past or future[/i][/b] will \
-			appear dimmed.[/fill]"
+			%FadeNonTodayDates/Explanation.text = explanation_text.format([
+				"[b][i]past or future [/i][/b]",
+				"will",
+			])
 		_:
 			%FadeNonTodayDates/Explanation.text = "" # this shouldn't happen
