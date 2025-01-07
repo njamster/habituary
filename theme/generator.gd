@@ -539,7 +539,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	to_do_item_editing_options.set_main_style({
 		"bg_color" = FROST_1,
 		"corner_radius" = 6,
-		"content_margin" = { "left": 8, "right": 8 }
+		"content_margin" = { "left": 6, "right": 6 }
 	})
 	#endregion
 
@@ -616,6 +616,10 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	var to_do_item_bookmark_button := theme.create_theme_type("ToDoItem_BookmarkButton", "Button")
 
 	to_do_item_bookmark_button.font_size = 12
+
+	to_do_item_bookmark_button.set_main_style({
+		# StyleBoxEmpty
+	})
 	#endregion
 
 	#region ToDoItem_DeleteButton
@@ -627,6 +631,10 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	to_do_item_delete_button.icon_pressed_color = AURORA_2
 
 	to_do_item_delete_button.font_size = 12
+
+	to_do_item_delete_button.set_main_style({
+		# StyleBoxEmpty
+	})
 	#endregion
 
 	#region ToDoItem_EditingOption

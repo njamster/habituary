@@ -258,6 +258,7 @@ func _ready() -> void:
 	%Bookmark.text = %Bookmark.text.replace("Remove", "Add")
 
 	%EditingOptions.resized.connect(_on_editing_options_resized)
+	_on_editing_options_resized()
 
 	set_deferred("_initialization_finished", true) # deferred, in case this item is loaded from disk
 

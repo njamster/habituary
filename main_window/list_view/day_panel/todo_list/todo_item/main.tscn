@@ -47,7 +47,6 @@ events = [SubResource("InputEventAction_q0hmr")]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sg8j5"]
 resource_local_to_scene = true
-content_margin_left = 4.0
 draw_center = false
 border_width_left = 2
 border_width_top = 2
@@ -182,6 +181,7 @@ theme_type_variation = &"ToDoItem_EditingOptions"
 [node name="HBox" type="HBoxContainer" parent="EditingOptions"]
 custom_minimum_size = Vector2(0, 27)
 layout_mode = 2
+theme_type_variation = &"NoSeparation"
 
 [node name="FormatLabel" type="Label" parent="EditingOptions/HBox"]
 unique_name_in_owner = true
@@ -246,6 +246,10 @@ popup_delay = 1.2
 popup_position = 3
 gap_width = 4
 
+[node name="Spacer1" type="Control" parent="EditingOptions/HBox"]
+custom_minimum_size = Vector2(4, 0)
+layout_mode = 2
+
 [node name="TextColor" type="Panel" parent="EditingOptions/HBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(16, 16)
@@ -262,7 +266,6 @@ popup_position = 3
 
 [node name="Bookmark" type="Button" parent="EditingOptions/HBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(27, 0)
 layout_mode = 2
 size_flags_horizontal = 10
 focus_mode = 0
@@ -272,7 +275,6 @@ theme_type_variation = &"ToDoItem_BookmarkButton"
 shortcut = SubResource("Shortcut_lnt4s")
 shortcut_in_tooltip = false
 text = "Add Bookmark"
-flat = true
 script = ExtResource("2_n5f11")
 icon_toggled_off = ExtResource("12_5svov")
 icon_toggled_on = ExtResource("13_itt7w")
@@ -284,9 +286,12 @@ is_dense = true
 popup_position = 5
 gap_width = 0
 
+[node name="Spacer2" type="Control" parent="EditingOptions/HBox"]
+custom_minimum_size = Vector2(4, 0)
+layout_mode = 2
+
 [node name="Delete" type="Button" parent="EditingOptions/HBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(27, 0)
 layout_mode = 2
 size_flags_horizontal = 8
 focus_mode = 0
@@ -297,7 +302,6 @@ shortcut = SubResource("Shortcut_3nsuj")
 shortcut_in_tooltip = false
 text = "Delete To-Do"
 icon = ExtResource("3_nsj7w")
-flat = true
 
 [node name="Tooltip" type="Node" parent="EditingOptions/HBox/Delete"]
 script = ExtResource("3_oduck")

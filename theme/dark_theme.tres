@@ -1,4 +1,4 @@
-[gd_resource type="Theme" script_class="ConciseTheme" load_steps=80 format=3 uid="uid://ccwu2q5gv825w"]
+[gd_resource type="Theme" script_class="ConciseTheme" load_steps=90 format=3 uid="uid://ccwu2q5gv825w"]
 
 [ext_resource type="FontFile" uid="uid://clgk36lj6qey" path="res://theme/fonts/OpenSans-ExtraBold.ttf" id="1_dk6dp"]
 [ext_resource type="Script" path="res://custom/concise_theme.gd" id="1_jlir6"]
@@ -601,6 +601,26 @@ border_width_bottom = -1
 border_color = Color(0.368627, 0.505882, 0.67451, 1)
 corner_detail = 5
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sib84"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kx51u"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nhfrw"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l8rj2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g7b0j"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tjn2l"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_f7s5d"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_11frg"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w1thi"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6j3cl"]
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lp2pp"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t4nfx"]
@@ -612,8 +632,8 @@ corner_detail = 5
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hwsac"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x1ye8"]
-content_margin_left = 8.0
-content_margin_right = 8.0
+content_margin_left = 6.0
+content_margin_right = 6.0
 bg_color = Color(0.560784, 0.737255, 0.733333, 1)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
@@ -808,6 +828,11 @@ SubtleLabel/colors/font_color = Color(0.847059, 0.870588, 0.913725, 1)
 SubtleLabel/font_sizes/font_size = 12
 ToDoItem_BookmarkButton/base_type = &"Button"
 ToDoItem_BookmarkButton/font_sizes/font_size = 12
+ToDoItem_BookmarkButton/styles/disabled = SubResource("StyleBoxEmpty_sib84")
+ToDoItem_BookmarkButton/styles/focus = SubResource("StyleBoxEmpty_kx51u")
+ToDoItem_BookmarkButton/styles/hover = SubResource("StyleBoxEmpty_nhfrw")
+ToDoItem_BookmarkButton/styles/normal = SubResource("StyleBoxEmpty_l8rj2")
+ToDoItem_BookmarkButton/styles/pressed = SubResource("StyleBoxEmpty_g7b0j")
 ToDoItem_ContentPadding/base_type = &"MarginContainer"
 ToDoItem_ContentPadding/constants/margin_right = 6
 ToDoItem_DeleteButton/base_type = &"Button"
@@ -816,6 +841,11 @@ ToDoItem_DeleteButton/colors/font_pressed_color = Color(0.815686, 0.529412, 0.43
 ToDoItem_DeleteButton/colors/icon_hover_color = Color(0.74902, 0.380392, 0.415686, 1)
 ToDoItem_DeleteButton/colors/icon_pressed_color = Color(0.815686, 0.529412, 0.439216, 1)
 ToDoItem_DeleteButton/font_sizes/font_size = 12
+ToDoItem_DeleteButton/styles/disabled = SubResource("StyleBoxEmpty_tjn2l")
+ToDoItem_DeleteButton/styles/focus = SubResource("StyleBoxEmpty_f7s5d")
+ToDoItem_DeleteButton/styles/hover = SubResource("StyleBoxEmpty_11frg")
+ToDoItem_DeleteButton/styles/normal = SubResource("StyleBoxEmpty_w1thi")
+ToDoItem_DeleteButton/styles/pressed = SubResource("StyleBoxEmpty_6j3cl")
 ToDoItem_EditingOption/base_type = &"Button"
 ToDoItem_EditingOption/colors/icon_pressed_color = Color(0.921569, 0.796078, 0.545098, 1)
 ToDoItem_EditingOption/styles/disabled = SubResource("StyleBoxEmpty_lp2pp")
