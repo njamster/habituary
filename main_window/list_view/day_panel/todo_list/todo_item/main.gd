@@ -188,21 +188,22 @@ var indentation_level := 0:
 		indentation_level = clamp(value, 0, max_indentation_level)
 		var change := indentation_level - old_indentation_level
 
-		if is_inside_tree() and change:
-			var successors_to_adjust := []
+		$MainRow.get("theme_override_styles/panel").content_margin_left = indentation_level * 20
 
-			var SUCCESSOR_IDS := range(index + 1, todo_list.get_child_count())
-			for successor_id in SUCCESSOR_IDS:
-				var successor = todo_list.get_child(successor_id)
-				if successor.indentation_level == old_indentation_level + 1:
-					successors_to_adjust.append(successor)
-				elif successor.indentation_level <= old_indentation_level:
-					break  # end of scope reached
+		if self.text: # skip this step for newly created to-dos that haven't been saved yet
+			if is_inside_tree() and change:
+				var successors_to_adjust := []
 
-			for successor in successors_to_adjust:
-				successor.indentation_level += change
+				var SUCCESSOR_IDS := range(index + 1, todo_list.get_child_count())
+				for successor_id in SUCCESSOR_IDS:
+					var successor = todo_list.get_child(successor_id)
+					if successor.indentation_level == old_indentation_level + 1:
+						successors_to_adjust.append(successor)
+					elif successor.indentation_level <= old_indentation_level:
+						break  # end of scope reached
 
-			$MainRow.get("theme_override_styles/panel").content_margin_left = indentation_level * 20
+				for successor in successors_to_adjust:
+					successor.indentation_level += change
 
 			if _initialization_finished:
 				list_save_requested.emit()
@@ -265,10 +266,16 @@ func _ready() -> void:
 	await get_tree().process_frame # i.e. until _initialization_finished == true
 
 	if not self.text: # i.e. it's a newly created to-do (not restored from disk)
-		if self.get_index() > 0:
-			var predecessor = self.get_parent().get_child(self.get_index() - 1)
-			if predecessor.text.ends_with(":"):
-				self.indentation_level = predecessor.indentation_level + 1
+		var index = self.get_index()
+		if index > 0:
+			var todo_list := self.get_parent()
+			var predecessor = todo_list.get_child(index - 1)
+			var successor
+			if index < todo_list.get_child_count() - 1:
+				successor = todo_list.get_child(index + 1)
+			if predecessor.text.ends_with(":") or (successor and \
+				successor.indentation_level == predecessor.indentation_level + 1):
+					self.indentation_level = predecessor.indentation_level + 1
 			else:
 				self.indentation_level = predecessor.indentation_level
 
