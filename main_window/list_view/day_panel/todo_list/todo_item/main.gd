@@ -192,18 +192,7 @@ var indentation_level := 0:
 
 		if self.text: # skip this step for newly created to-dos that haven't been saved yet
 			if is_inside_tree() and change:
-				var successors_to_adjust := []
-
-				var SUCCESSOR_IDS := range(index + 1, todo_list.get_child_count())
-				for successor_id in SUCCESSOR_IDS:
-					var successor = todo_list.get_child(successor_id)
-					if successor.indentation_level == old_indentation_level + 1:
-						successors_to_adjust.append(successor)
-					elif successor.indentation_level <= old_indentation_level:
-						break  # end of scope reached
-
-				for successor in successors_to_adjust:
-					successor.indentation_level += change
+				_reindent_sub_todos(change, old_indentation_level)
 
 			if _initialization_finished:
 				list_save_requested.emit()
@@ -315,6 +304,8 @@ func delete() -> void:
 		EventBus.bookmark_removed.emit(self)
 	self.unfolded.emit()
 
+	_reindent_sub_todos(-1)
+
 	if %Edit.text:
 		var to_do_list := get_parent()
 		var items_in_list := to_do_list.get_child_count()
@@ -332,6 +323,23 @@ func delete() -> void:
 		await tree_exited
 		list_save_requested.emit()
 
+
+func _reindent_sub_todos(change : int, threshold := indentation_level) -> void:
+	if change == 0 or threshold < 0:
+		return
+
+	var sub_todos := []
+
+	var SUCCESSOR_IDS := range(get_index() + 1, get_parent().get_child_count())
+	for successor_id in SUCCESSOR_IDS:
+		var successor = get_parent().get_child(successor_id)
+		if successor.indentation_level == threshold + 1:
+			sub_todos.append(successor)
+		elif successor.indentation_level <= threshold:
+			break # end of scope reached
+
+	for sub_todo in sub_todos:
+		sub_todo.indentation_level += change
 
 
 func _on_edit_text_changed(_new_text: String) -> void:
