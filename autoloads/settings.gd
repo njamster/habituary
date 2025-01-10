@@ -65,6 +65,9 @@ var date_format_save := "YYYY-MM-DD"
 
 var today_position := TodayPosition.CENTERED:
 	set(value):
+		if today_position == value:
+			return
+
 		today_position = value
 		EventBus.current_day_changed.emit(current_day)
 		if is_node_ready():
@@ -76,6 +79,9 @@ var previous_view_mode
 
 var view_mode := 3:
 	set(value):
+		if view_mode == value:
+			return
+
 		if previous_view_mode != view_mode:
 			previous_view_mode = null
 		view_mode = value
@@ -89,14 +95,19 @@ var previous_day
 
 var current_day := DayTimer.today:
 	set(value):
-		if current_day.day_difference_to(value) != 0:
-			if previous_day != current_day:
-				previous_day = null
-			current_day = value
-			EventBus.current_day_changed.emit(current_day)
+		if current_day.day_difference_to(value) == 0:
+			return
+
+		if previous_day != current_day:
+			previous_day = null
+		current_day = value
+		EventBus.current_day_changed.emit(current_day)
 
 var start_week_on_monday := true:
 	set(value):
+		if start_week_on_monday == value:
+			return
+
 		start_week_on_monday = value
 		if is_node_ready():
 			if OS.is_debug_build():
@@ -105,26 +116,33 @@ var start_week_on_monday := true:
 
 var day_start_hour_offset := 0:
 	set(value):
-		if value != day_start_hour_offset:
-			day_start_hour_offset = value
-			EventBus.day_start_changed.emit()
-			if is_node_ready():
-				if OS.is_debug_build():
-					print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
-				debounce_timer.start()
+		if day_start_hour_offset == value:
+			return
+
+		day_start_hour_offset = value
+		EventBus.day_start_changed.emit()
+		if is_node_ready():
+			if OS.is_debug_build():
+				print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
+			debounce_timer.start()
 
 var day_start_minute_offset := 0:
 	set(value):
-		if value != day_start_minute_offset:
-			day_start_minute_offset = value
-			EventBus.day_start_changed.emit()
-			if is_node_ready():
-				if OS.is_debug_build():
-					print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
-				debounce_timer.start()
+		if day_start_minute_offset == value:
+			return
+
+		day_start_minute_offset = value
+		EventBus.day_start_changed.emit()
+		if is_node_ready():
+			if OS.is_debug_build():
+				print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
+			debounce_timer.start()
 
 var dark_mode := true:
 	set(value):
+		if dark_mode == value:
+			return
+
 		dark_mode = value
 
 		if dark_mode:
@@ -143,11 +161,17 @@ var dark_mode := true:
 
 var search_query := "":
 	set(value):
+		if search_query == value:
+			return
+
 		search_query = value
 		EventBus.search_query_changed.emit()
 
 var side_panel := SidePanelState.HIDDEN:
 	set(value):
+		if side_panel == value:
+			return
+
 		side_panel = value
 		EventBus.side_panel_changed.emit()
 		if is_node_ready():
@@ -157,6 +181,9 @@ var side_panel := SidePanelState.HIDDEN:
 
 var show_bookmarks_from_the_past := true:
 	set(value):
+		if show_bookmarks_from_the_past == value:
+			return
+
 		show_bookmarks_from_the_past = value
 		EventBus.show_bookmarks_from_the_past_changed.emit()
 		if is_node_ready():
@@ -166,6 +193,9 @@ var show_bookmarks_from_the_past := true:
 
 var fade_ticked_off_todos := true:
 	set(value):
+		if fade_ticked_off_todos == value:
+			return
+
 		fade_ticked_off_todos = value
 		EventBus.fade_ticked_off_todos_changed.emit()
 		if is_node_ready():
@@ -175,6 +205,9 @@ var fade_ticked_off_todos := true:
 
 var fade_non_today_dates := FadeNonTodayDates.PAST:
 	set(value):
+		if fade_non_today_dates == value:
+			return
+
 		fade_non_today_dates = value
 		EventBus.fade_non_today_dates_changed.emit()
 		if is_node_ready():
@@ -184,6 +217,9 @@ var fade_non_today_dates := FadeNonTodayDates.PAST:
 
 var bookmarks_due_today := 0:
 	set(value):
+		if bookmarks_due_today == value:
+			return
+
 		bookmarks_due_today = value
 		EventBus.bookmarks_due_today_changed.emit()
 
