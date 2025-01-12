@@ -446,7 +446,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	key_binding_label.font_size = 12
 
 	key_binding_label.normal = {
-		"bg_color" = FROST_3,
+		"bg_color" = primary_3,
 		"corner_radius" = 5,
 		"content_margin" = 4
 	}
@@ -486,7 +486,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	#region ScrollButtonText
 	var scroll_button_text := theme.create_theme_type("ScrollButtonText", "Label")
 
-	scroll_button_text.font_color = FROST_1
+	scroll_button_text.font_color = primary_1
 
 	scroll_button_text.font_size = 12
 	#endregion
@@ -537,7 +537,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	var to_do_item_editing_options := theme.create_theme_type("ToDoItem_EditingOptions", "PanelContainer")
 
 	to_do_item_editing_options.set_main_style({
-		"bg_color" = FROST_1,
+		"bg_color" = primary_1,
 		"corner_radius" = 6,
 		"content_margin" = { "left": 6, "right": 6 }
 	})
@@ -546,12 +546,12 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	#region SearchBar_ShortcutHint
 	var search_bar_shortcut_hint := theme.create_theme_type("SearchBar_ShortcutHint", "Button")
 
-	search_bar_shortcut_hint.set_default_color(FROST_1)
+	search_bar_shortcut_hint.set_default_color(primary_1)
 
 	search_bar_shortcut_hint.font_size = 11
 
 	search_bar_shortcut_hint.set_main_style({
-		"bg_color" = NEUTRAL_4,
+		"bg_color" = neutral_4,
 		"corner_radius" = 3,
 		"content_margin" = { "left": 4, "right": 4 }
 	})
@@ -560,7 +560,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	#region Label_Error
 	var label_error := theme.create_theme_type("Label_Error", "Label")
 
-	label_error.font_color = AURORA_1
+	label_error.font_color = secondary_1
 	#endregion
 
 	#region EntryPoint_OuterMargin
@@ -581,7 +581,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	#region LineEdit_VersionNumber
 	var line_edit_version_number := theme.create_theme_type("LineEdit_VersionNumber", "LineEdit")
 
-	line_edit_version_number.font_uneditable_color = FROST_3
+	line_edit_version_number.font_uneditable_color = primary_3
 	#endregion
 
 	#region Calendar_ExtraPadding
@@ -625,10 +625,10 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	#region ToDoItem_DeleteButton
 	var to_do_item_delete_button := theme.create_theme_type("ToDoItem_DeleteButton", "Button")
 
-	to_do_item_delete_button.font_hover_color = AURORA_1
-	to_do_item_delete_button.icon_hover_color = AURORA_1
-	to_do_item_delete_button.font_pressed_color = AURORA_2
-	to_do_item_delete_button.icon_pressed_color = AURORA_2
+	to_do_item_delete_button.font_hover_color = secondary_1
+	to_do_item_delete_button.icon_hover_color = secondary_1
+	to_do_item_delete_button.font_pressed_color = secondary_2
+	to_do_item_delete_button.icon_pressed_color = secondary_2
 
 	to_do_item_delete_button.font_size = 12
 
@@ -640,10 +640,21 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	#region ToDoItem_EditingOption
 	var to_do_item_editing_option := theme.create_theme_type("ToDoItem_EditingOption", "Button")
 
-	to_do_item_editing_option.icon_pressed_color = AURORA_3
+	to_do_item_editing_option.icon_pressed_color = secondary_3
 
 	to_do_item_editing_option.set_main_style({
 		# StyleBoxEmpty
+	})
+	#endregion
+
+	#region PopupMenu
+	var popup_menu := theme.create_theme_type("PopupMenu")
+
+	popup_menu.font_color = neutral_5
+	popup_menu.font_hover_color = primary_1
+
+	popup_menu.set_main_style({
+		"bg_color": neutral_3,
 	})
 	#endregion
 	# ----------------------------------------

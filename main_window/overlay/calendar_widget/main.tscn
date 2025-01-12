@@ -1,10 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://l4kyh6xqycoy"]
+[gd_scene load_steps=7 format=3 uid="uid://l4kyh6xqycoy"]
 
 [ext_resource type="Script" path="res://main_window/overlay/calendar_widget/main.gd" id="1_6ouga"]
 [ext_resource type="Texture2D" uid="uid://kpsxfahirjkd" path="res://main_window/navigation_bar_left/images/arrow_left.svg" id="2_3qe07"]
 [ext_resource type="Script" path="res://custom/tooltip.gd" id="2_yxtut"]
 [ext_resource type="Texture2D" uid="uid://dg16vv3p66p28" path="res://main_window/navigation_bar_left/images/today.svg" id="4_w73ku"]
 [ext_resource type="Texture2D" uid="uid://5x5oa7kf2q8s" path="res://main_window/navigation_bar_right/images/arrow_right.svg" id="5_kngd2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jfnkl"]
+content_margin_left = 13.0
 
 [node name="CalendarWidget" type="PanelContainer"]
 anchors_preset = 1
@@ -25,12 +28,62 @@ theme_type_variation = &"MediumSeparation"
 [node name="HBox" type="HBoxContainer" parent="VBox"]
 layout_mode = 2
 
-[node name="MonthName" type="Label" parent="VBox/HBox"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 0)
+[node name="Title" type="HBoxContainer" parent="VBox/HBox"]
+custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "SEPTEMBER 2024"
+
+[node name="Month" type="MenuButton" parent="VBox/HBox/Title"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "SEPTEMBER"
+flat = false
+item_count = 12
+popup/item_0/text = "    JANUARY"
+popup/item_0/id = 1
+popup/item_1/text = "   FEBRUARY"
+popup/item_1/id = 2
+popup/item_2/text = "      MARCH"
+popup/item_2/id = 3
+popup/item_3/text = "       APRIL"
+popup/item_3/id = 4
+popup/item_4/text = "        MAY"
+popup/item_4/id = 5
+popup/item_5/text = "        JUNE"
+popup/item_5/id = 6
+popup/item_6/text = "        JULY"
+popup/item_6/id = 7
+popup/item_7/text = "     AUGUST"
+popup/item_7/id = 8
+popup/item_8/text = "  SEPTEMBER"
+popup/item_8/id = 9
+popup/item_9/text = "    OCTOBER"
+popup/item_9/id = 10
+popup/item_10/text = "   NOVEMBER"
+popup/item_10/id = 11
+popup/item_11/text = "   DECEMBER"
+popup/item_11/id = 12
+
+[node name="YearLabel" type="Label" parent="VBox/HBox/Title"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_jfnkl")
+text = "2024"
+
+[node name="YearSpinBox" type="SpinBox" parent="VBox/HBox/Title"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+max_value = 9999.0
+value = 2024.0
+allow_greater = true
+allow_lesser = true
+alignment = 1
 
 [node name="PreviousMonth" type="Button" parent="VBox/HBox"]
 layout_mode = 2
@@ -74,6 +127,12 @@ columns = 7
 
 [connection signal="item_rect_changed" from="." to="." method="_on_item_rect_changed"]
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="mouse_entered" from="VBox/HBox/Title/Month" to="." method="_on_month_mouse_entered"]
+[connection signal="mouse_exited" from="VBox/HBox/Title/Month" to="." method="_on_month_mouse_exited"]
+[connection signal="toggled" from="VBox/HBox/Title/Month" to="." method="_on_month_toggled"]
+[connection signal="gui_input" from="VBox/HBox/Title/YearLabel" to="." method="_on_year_label_gui_input"]
+[connection signal="mouse_exited" from="VBox/HBox/Title/YearSpinBox" to="." method="_on_year_spin_box_mouse_exited"]
+[connection signal="value_changed" from="VBox/HBox/Title/YearSpinBox" to="." method="_on_year_spin_box_value_changed"]
 [connection signal="pressed" from="VBox/HBox/PreviousMonth" to="." method="_on_previous_month_pressed"]
 [connection signal="pressed" from="VBox/HBox/Today" to="." method="_on_today_pressed"]
 [connection signal="pressed" from="VBox/HBox/NextMonth" to="." method="_on_next_month_pressed"]

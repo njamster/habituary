@@ -1,4 +1,4 @@
-[gd_resource type="Theme" script_class="ConciseTheme" load_steps=90 format=3 uid="uid://ccwu2q5gv825w"]
+[gd_resource type="Theme" script_class="ConciseTheme" load_steps=95 format=3 uid="uid://ccwu2q5gv825w"]
 
 [ext_resource type="FontFile" uid="uid://clgk36lj6qey" path="res://theme/fonts/OpenSans-ExtraBold.ttf" id="1_dk6dp"]
 [ext_resource type="Script" path="res://custom/concise_theme.gd" id="1_jlir6"]
@@ -424,6 +424,26 @@ corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 corner_detail = 5
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lgap3"]
+bg_color = Color(0.298039, 0.337255, 0.415686, 1)
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_44s66"]
+bg_color = Color(0.298039, 0.337255, 0.415686, 1)
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_22mjk"]
+bg_color = Color(0.298039, 0.337255, 0.415686, 1)
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3c5wy"]
+bg_color = Color(0.298039, 0.337255, 0.415686, 1)
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cpo0t"]
+bg_color = Color(0.298039, 0.337255, 0.415686, 1)
+corner_detail = 5
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bvke3"]
 content_margin_left = 4.0
 content_margin_top = 4.0
@@ -779,6 +799,13 @@ NoSeparation/constants/separation = 0
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_rdj05")
 PanelContainer_Popup/base_type = &"PanelContainer"
 PanelContainer_Popup/styles/panel = SubResource("StyleBoxFlat_434ra")
+PopupMenu/colors/font_color = Color(0.847059, 0.870588, 0.913725, 1)
+PopupMenu/colors/font_hover_color = Color(0.560784, 0.737255, 0.733333, 1)
+PopupMenu/styles/hover = SubResource("StyleBoxFlat_lgap3")
+PopupMenu/styles/labeled_separator_left = SubResource("StyleBoxFlat_44s66")
+PopupMenu/styles/labeled_separator_right = SubResource("StyleBoxFlat_22mjk")
+PopupMenu/styles/panel = SubResource("StyleBoxFlat_3c5wy")
+PopupMenu/styles/separator = SubResource("StyleBoxFlat_cpo0t")
 RichTextLabel/colors/default_color = Color(0.92549, 0.937255, 0.956863, 1)
 RightSidebarButton/base_type = &"Button"
 RightSidebarButton/font_sizes/font_size = 12

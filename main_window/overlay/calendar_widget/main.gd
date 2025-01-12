@@ -3,6 +3,15 @@ extends PanelContainer
 var anchor_date : Date
 
 
+func _ready() -> void:
+	%Month.show()
+	%YearLabel.show()
+
+	var popup_menu : PopupMenu = %Month.get_popup()
+	popup_menu.id_pressed.connect(_on_month_selected)
+	popup_menu.mouse_exited.connect(popup_menu.hide)
+
+
 func _on_visibility_changed() -> void:
 	if visible:
 		anchor_date = Date.new(Settings.current_day.as_dict())
@@ -57,10 +66,8 @@ func update_day() -> void:
 
 func update_month() -> void:
 	# update the title
-	%MonthName.text = "%s %d" % [
-		Date._MONTH_NAMES[anchor_date.month - 1].to_upper(),
-		 anchor_date.year
-	]
+	%Month.text = Date._MONTH_NAMES[anchor_date.month - 1].to_upper()
+	%YearLabel.text = str(anchor_date.year)
 
 	# remove old children
 	for child in $VBox/GridContainer.get_children():
@@ -116,7 +123,7 @@ func update_month() -> void:
 		date = date.add_days(1)
 
 	# disable today button if we're already in the correct month (button wouldn't do anything)
-	if anchor_date.month == DayTimer.today.month:
+	if anchor_date.year == DayTimer.today.year and anchor_date.month == DayTimer.today.month:
 		$VBox/HBox/Today.disabled = true
 		$VBox/HBox/Today.mouse_default_cursor_shape = CURSOR_FORBIDDEN
 	else:
@@ -159,3 +166,28 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 			$VBox/HBox/PreviousMonth/Tooltip.text = "Previous Month"
 			$VBox/HBox/NextMonth/Tooltip.text = "Next Month"
+
+
+func _on_month_selected(selected_id : int) -> void:
+	var change := selected_id - anchor_date.month
+	anchor_date = anchor_date.add_months(change)
+	update_month()
+
+
+func _on_year_label_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
+		%YearLabel.hide()
+		%YearSpinBox.show()
+		%YearSpinBox.value = int(%YearLabel.text)
+		%YearSpinBox.get_line_edit().grab_focus()
+
+
+func _on_year_spin_box_mouse_exited() -> void:
+	%YearSpinBox.hide()
+	%YearLabel.show()
+
+
+func _on_year_spin_box_value_changed(value: float) -> void:
+	var change := int(value) - anchor_date.year
+	anchor_date = anchor_date.add_months(change * 12)
+	update_month()
