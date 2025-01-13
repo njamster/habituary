@@ -167,28 +167,12 @@ var is_bookmarked := false:
 
 var indentation_level := 0:
 	set(value):
-		var max_indentation_level := 5
-
-		var todo_list := self.get_parent()
-		var index := self.get_index()
-
-		if index > 0:
-			# The maximum indentation level of an to-do is determined by the indentation level of
-			# its predecessor plus one, unless that would be higher than the allowed maximum.
-			var predecessor := todo_list.get_child(index - 1)
-			max_indentation_level = min(
-				predecessor.indentation_level + 1,
-				max_indentation_level
-			)
-		else:
-			# The first item in a list is not allowed to be indented!
-			max_indentation_level = 0
-
 		var old_indentation_level := indentation_level
-		indentation_level = clamp(value, 0, max_indentation_level)
+		indentation_level = clamp(value, 0, get_maximum_indentation_level())
 		var change := indentation_level - old_indentation_level
 
 		$MainRow.get("theme_override_styles/panel").content_margin_left = indentation_level * 20
+		$Triangle.custom_minimum_size.x = 22 + indentation_level * 40
 
 		if self.text: # skip this step for newly created to-dos that haven't been saved yet
 			if is_inside_tree() and change:
@@ -342,9 +326,14 @@ func _reindent_sub_todos(change : int, threshold := indentation_level) -> void:
 		sub_todo.indentation_level += change
 
 
-func _on_edit_text_changed(_new_text: String) -> void:
-	EventBus.bookmark_changed.emit(self, date, get_index())
-	_check_for_search_query_match()
+func _on_edit_text_changed(new_text: String) -> void:
+	if new_text.begins_with("- ") and \
+		self.indentation_level < get_maximum_indentation_level():
+			self.indentation_level += 1
+			%Edit.text = new_text.right(-2).strip_edges()
+	else:
+		EventBus.bookmark_changed.emit(self, date, get_index())
+		_check_for_search_query_match()
 
 
 func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
@@ -784,3 +773,28 @@ func _apply_state_relative_formating() -> void:
 	else:
 		%CheckBox.modulate.a = 1.0
 		%Content.modulate.a = 1.0
+
+
+func get_maximum_indentation_level() -> int:
+	var max_indentation_level := 3
+
+	if self.get_index() > 0:
+		# The maximum indentation level of a to-do is equal to the indentation
+		# level of its predecessor plus one, unless that value would be higher
+		# than the overall allowed maximum specified above.
+		var predecessor := self.get_parent().get_child(self.get_index() - 1)
+		max_indentation_level = min(
+			predecessor.indentation_level + 1,
+			max_indentation_level
+		)
+	else:
+		# The first item in a list is not allowed to be indented!
+		max_indentation_level = 0
+
+	return max_indentation_level
+
+
+func _on_edit_gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_text_backspace"):
+		if %Edit.text == "" and self.indentation_level > 0:
+			self.indentation_level -= 1

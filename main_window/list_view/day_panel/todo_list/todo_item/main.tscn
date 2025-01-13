@@ -169,9 +169,10 @@ text = "Bookmarked To-Do"
 [node name="Triangle" type="TextureRect" parent="."]
 modulate = Color(0.560784, 0.737255, 0.733333, 1)
 layout_mode = 2
+size_flags_horizontal = 0
 mouse_filter = 0
 texture = ExtResource("8_5rkws")
-stretch_mode = 2
+stretch_mode = 3
 
 [node name="EditingOptions" type="PanelContainer" parent="."]
 unique_name_in_owner = true
@@ -320,6 +321,7 @@ gap_width = 0
 [connection signal="gui_input" from="MainRow/HBox/Content" to="." method="_on_content_gui_input"]
 [connection signal="focus_entered" from="MainRow/HBox/Content/Edit" to="." method="edit"]
 [connection signal="focus_exited" from="MainRow/HBox/Content/Edit" to="." method="_on_edit_focus_exited"]
+[connection signal="gui_input" from="MainRow/HBox/Content/Edit" to="." method="_on_edit_gui_input"]
 [connection signal="text_changed" from="MainRow/HBox/Content/Edit" to="." method="_on_edit_text_changed"]
 [connection signal="text_submitted" from="MainRow/HBox/Content/Edit" to="." method="_on_edit_text_submitted"]
 [connection signal="gui_input" from="MainRow/HBox/BookmarkIndicator" to="." method="_on_bookmark_indicator_gui_input"]
