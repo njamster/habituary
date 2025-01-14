@@ -326,6 +326,35 @@ func _reindent_sub_todos(change : int, threshold := indentation_level) -> void:
 		sub_todo.indentation_level += change
 
 
+func _on_edit_resized() -> void:
+	var font : Font = %Edit.get_theme_font("font")
+	var font_size : int = %Edit.get_theme_font_size("font")
+
+	const SHORT_PLACEHOLDER := "Enter To-Do"
+	var short_placeholder_width := font.get_string_size(
+		SHORT_PLACEHOLDER,
+		HORIZONTAL_ALIGNMENT_LEFT,
+		-1,
+		font_size,
+	).x
+
+	const LONG_PLACEHOLDER := SHORT_PLACEHOLDER + " (or Press ESC to Cancel)"
+	var long_placeholder_width := font.get_string_size(
+		LONG_PLACEHOLDER,
+		HORIZONTAL_ALIGNMENT_LEFT,
+		-1,
+		font_size,
+	).x
+
+	var available_width : int = %Edit.size.x
+	if available_width >= long_placeholder_width:
+		%Edit.placeholder_text = LONG_PLACEHOLDER
+	elif available_width >= short_placeholder_width:
+		%Edit.placeholder_text = SHORT_PLACEHOLDER
+	else:
+		%Edit.placeholder_text = ""
+
+
 func _on_edit_text_changed(new_text: String) -> void:
 	if new_text.begins_with("- ") and \
 		self.indentation_level < get_maximum_indentation_level():
