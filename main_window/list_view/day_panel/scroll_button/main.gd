@@ -16,6 +16,7 @@ func _ready() -> void:
 	SCROLL_CONTAINER_CONTENT.resized.connect.call_deferred(_update_button)
 
 	SCROLL_CONTAINER.scrolled.connect.call_deferred(_update_button)
+	SCROLL_CONTAINER.auto_scrolled.connect.call_deferred(_update_button)
 
 	_update_button.call_deferred()
 

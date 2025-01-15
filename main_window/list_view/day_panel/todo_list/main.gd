@@ -16,6 +16,15 @@ func _ready() -> void:
 		list_save_requested.emit()
 	)
 
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	if get_parent().has_signal("scrolled"):
+		get_parent().scrolled.connect(
+			_start_debounce_timer.bind("list scrolled")
+		)
+
 
 func add_todo(at_position := Vector2.ZERO) -> Control:
 	var new_item := TODO_ITEM.instantiate()
@@ -29,9 +38,9 @@ func add_todo(at_position := Vector2.ZERO) -> Control:
 	return new_item
 
 
-func _start_debounce_timer():
+func _start_debounce_timer(reason := "Unknown"):
 	if OS.is_debug_build():
-		print("[DEBUG] List Save Requested: (Re)Starting DebounceTimer...")
+		print("[DEBUG] List Save Requested: (Re)Starting DebounceTimer... (Reason: %s)" % reason)
 	pending_save = true
 	# If the DebounceTimer at this point is not inside the tree anymore, then this list is about to
 	# exit the tree and starting this timer wouldn't work, as it's no longer part of the scene tree.
@@ -143,7 +152,7 @@ func move_to_do(item, offset : int) -> void:
 			for i in sub_item_count:
 				%Items.move_child(%Items.get_child(old_index + i + 1), new_index + i + 1)
 
-	self._start_debounce_timer()
+	self._start_debounce_timer("to-do moved")
 
 
 func find_item_pos(at_position : Vector2) -> int:
@@ -227,7 +236,7 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 					entry.reparent(%Items)
 				connect_todo_signals(entry)
 				%Items.move_child(entry, base_position + i)
-				old_list._start_debounce_timer()
+				old_list._start_debounce_timer("to-do dragged to another list")
 			else:
 				# item changed its position inside the list
 				if base_position >= old_index - i and \
@@ -244,7 +253,7 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 		# Re-trigger the setter of the first entries indentation_level to adjust it if necessary.
 		data[0].indentation_level = data[0].indentation_level
 
-		self._start_debounce_timer()
+		self._start_debounce_timer("to-do dropped")
 
 
 func has_items() -> bool:
@@ -272,7 +281,6 @@ func load_from_disk(file : FileAccess) -> void:
 			await get_tree().process_frame
 			await get_tree().process_frame
 			get_node("..").set("scroll_vertical", scroll_offset)
-			get_node("..").scrolled.emit.call_deferred()
 		else:
 			var restored_item := add_todo()
 			restored_item.load_from_disk(next_line)

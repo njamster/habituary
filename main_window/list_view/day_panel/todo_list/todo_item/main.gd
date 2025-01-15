@@ -4,7 +4,7 @@ signal predecessor_requested
 signal successor_requested
 
 signal editing_started
-signal list_save_requested
+signal list_save_requested(reason)
 
 signal folded
 signal unfolded
@@ -32,7 +32,7 @@ var date : Date:
 				EventBus.bookmark_changed.emit(self, date, get_index())
 
 				if _initialization_finished:
-					list_save_requested.emit()
+					list_save_requested.emit("text changed")
 
 enum States { TO_DO, DONE, FAILED }
 @export var state := States.TO_DO:
@@ -71,7 +71,7 @@ enum States { TO_DO, DONE, FAILED }
 			EventBus.bookmark_changed.emit(self, date, get_index())
 
 			if _initialization_finished and self.text:
-				list_save_requested.emit()
+				list_save_requested.emit("state changed")
 
 @export var is_heading := false:
 	set(value):
@@ -96,7 +96,7 @@ enum States { TO_DO, DONE, FAILED }
 			%Heading.button_pressed = is_heading
 
 			if _initialization_finished and self.text:
-				list_save_requested.emit()
+				list_save_requested.emit("is_heading changed")
 
 @export var is_bold := false:
 	set(value):
@@ -110,7 +110,7 @@ enum States { TO_DO, DONE, FAILED }
 			%Bold.button_pressed = is_bold
 
 			if _initialization_finished and self.text:
-				list_save_requested.emit()
+				list_save_requested.emit("is_bold changed")
 
 @export var is_italic := false:
 	set(value):
@@ -124,7 +124,7 @@ enum States { TO_DO, DONE, FAILED }
 			%Italic.button_pressed = is_italic
 
 			if _initialization_finished and self.text:
-				list_save_requested.emit()
+				list_save_requested.emit("is_italic changed")
 
 var _contains_mouse_cursor := false
 
@@ -145,7 +145,7 @@ var is_folded := false:
 			%ExtraInfo.hide()
 
 		if _initialization_finished and self.text:
-			list_save_requested.emit()
+			list_save_requested.emit("is_folded changed")
 
 
 var is_bookmarked := false:
@@ -163,7 +163,7 @@ var is_bookmarked := false:
 			%Bookmark.button_pressed = is_bookmarked
 
 			if _initialization_finished and self.text:
-				list_save_requested.emit()
+				list_save_requested.emit("is_bookmarked changed")
 
 var indentation_level := 0:
 	set(value):
@@ -179,7 +179,7 @@ var indentation_level := 0:
 				_reindent_sub_todos(change, old_indentation_level)
 
 			if _initialization_finished:
-				list_save_requested.emit()
+				list_save_requested.emit("indentation_level changed")
 
 
 var text_color_id := 0:
@@ -200,7 +200,7 @@ var text_color_id := 0:
 
 		if old_value != value:
 			if _initialization_finished and self.text:
-				list_save_requested.emit()
+				list_save_requested.emit("text_color_id changed")
 
 var _editing_options_shrink_threshold : int
 
@@ -276,8 +276,6 @@ func edit() -> void:
 		scroll_container.scroll_vertical += (
 			row_height - scroll_container.scroll_vertical % row_height
 		)
-	# emit scrolled signal for the ScrollButtons to update
-	scroll_container.scrolled.emit.call_deferred()
 	#endregion
 
 	editing_started.emit()
@@ -305,7 +303,7 @@ func delete() -> void:
 	queue_free()
 	if self.text:
 		await tree_exited
-		list_save_requested.emit()
+		list_save_requested.emit("to-do deleted")
 
 
 func _reindent_sub_todos(change : int, threshold := indentation_level) -> void:

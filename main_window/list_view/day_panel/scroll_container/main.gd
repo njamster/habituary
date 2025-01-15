@@ -1,6 +1,7 @@
 extends ScrollContainer
 
 signal scrolled
+signal auto_scrolled
 
 const TODO_ITEM_HEIGHT := 40 # pixels
 
@@ -24,12 +25,26 @@ func _on_gui_input(event: InputEvent) -> void:
 
 
 func _scroll_one_item_down(emit_scrolled_signal := true) -> void:
-	self.scroll_vertical += TODO_ITEM_HEIGHT
+	var previous_value := scroll_vertical
+	scroll_vertical += TODO_ITEM_HEIGHT
 	if emit_scrolled_signal:
-		scrolled.emit.call_deferred()
+		if scroll_vertical != previous_value:
+			scrolled.emit.call_deferred()
 
 
 func _scroll_one_item_up(emit_scrolled_signal := true) -> void:
-	self.scroll_vertical -= TODO_ITEM_HEIGHT
+	var previous_value := scroll_vertical
+	scroll_vertical -= TODO_ITEM_HEIGHT
 	if emit_scrolled_signal:
-		scrolled.emit.call_deferred()
+		if scroll_vertical != previous_value:
+			scrolled.emit.call_deferred()
+
+
+func _set(property: StringName, value: Variant) -> bool:
+	if property == "scroll_vertical":
+		if scroll_vertical != value:
+			scroll_vertical = value
+			auto_scrolled.emit.call_deferred()
+		return true
+
+	return false
