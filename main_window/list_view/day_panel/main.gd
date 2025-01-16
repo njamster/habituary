@@ -1,5 +1,5 @@
 @tool
-extends VBoxContainer
+extends PanelContainer
 
 @export var date : Date:
 	set(value):
@@ -30,7 +30,6 @@ func _ready() -> void:
 		# NOTE: `tree_exited` will be emitted both when this panel is removed from the tree because
 		# the user scrolled the list'view, as well as on a NOTIFICATION_WM_CLOSE_REQUEST.
 		self.tree_exited.connect(save_to_disk)
-
 		EventBus.today_changed.connect(_apply_date_relative_formating)
 		_on_dark_mode_changed(Settings.dark_mode)
 		EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
@@ -42,6 +41,12 @@ func _ready() -> void:
 		_update_stretch_ratio(Settings.current_day)
 
 		EventBus.fade_non_today_dates_changed.connect(_apply_date_relative_formating)
+
+		EventBus.current_day_changed.connect(_on_current_day_changed)
+		EventBus.view_mode_changed.connect(func(_x):
+			_on_current_day_changed(Settings.current_day)
+		)
+		_on_current_day_changed(Settings.current_day)
 
 
 func _update_stretch_ratio(current_day : Date) -> void:
@@ -127,7 +132,7 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
-	%TodoList._drop_data(at_position - $ScrollContainer.position, data)
+	%TodoList._drop_data(at_position - %ScrollContainer.position, data)
 
 
 func _on_header_gui_input(event: InputEvent) -> void:
@@ -187,25 +192,40 @@ func _on_mouse_exited() -> void:
 
 func _on_header_mouse_entered() -> void:
 	if Settings.view_mode != 1:
-		$Header.get("theme_override_styles/panel").draw_center = true
-		$Header.mouse_default_cursor_shape = CURSOR_POINTING_HAND
+		%Header.get("theme_override_styles/panel").draw_center = true
+		%Header.mouse_default_cursor_shape = CURSOR_POINTING_HAND
 
 
 func _on_header_mouse_exited() -> void:
-	$Header.get("theme_override_styles/panel").draw_center = false
-	$Header.mouse_default_cursor_shape = CURSOR_ARROW
+	%Header.get("theme_override_styles/panel").draw_center = false
+	%Header.mouse_default_cursor_shape = CURSOR_ARROW
 
 
 func _on_dark_mode_changed(dark_mode : bool) -> void:
 	if dark_mode:
-		$Header.get("theme_override_styles/panel").bg_color = Settings.NORD_02
+		%Header.get("theme_override_styles/panel").bg_color = Settings.NORD_02
 	else:
-		$Header.get("theme_override_styles/panel").bg_color = Settings.NORD_04
+		%Header.get("theme_override_styles/panel").bg_color = Settings.NORD_04
 
 
 func _on_view_mode_changed(view_mode : int) -> void:
 	if view_mode == 1:
-		$Header/Tooltip.disabled = true
-		$Header/Tooltip.hide_tooltip()
+		%Header/Tooltip.disabled = true
+		%Header/Tooltip.hide_tooltip()
 	else:
-		$Header/Tooltip.disabled = false
+		%Header/Tooltip.disabled = false
+
+
+func _on_current_day_changed(current_day: Date) -> void:
+	if Settings.view_mode != 1 and date.as_dict() == current_day.as_dict():
+		get_theme_stylebox("panel").draw_center = true
+		get_theme_stylebox("panel").border_width_left = 3
+		get_theme_stylebox("panel").border_width_top = 3
+		get_theme_stylebox("panel").border_width_right = 3
+		#get_theme_stylebox("panel").border_width_bottom = 3
+	else:
+		get_theme_stylebox("panel").draw_center = false
+		get_theme_stylebox("panel").border_width_left = 0
+		get_theme_stylebox("panel").border_width_top = 0
+		get_theme_stylebox("panel").border_width_right = 0
+		#get_theme_stylebox("panel").border_width_bottom = 0

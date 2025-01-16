@@ -20,7 +20,7 @@ var _initialization_finished := false
 var date : Date:
 	get():
 		# FIXME: avoid using a relative path that involves parent nodes
-		return Date.new(get_node("../../../../..").date.as_dict())
+		return Date.new(get_node("../../../../../..").date.as_dict())
 
 @export var text := "":
 	set(value):

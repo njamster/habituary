@@ -51,7 +51,7 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 	# everywhere but here, where it should happen as soon as the user is starting to drag.
 	EventBus.todo_list_clicked.emit()
 
-	host.get_node("../../../../..").is_dragged = true
+	host.get_node("../../../../../..").is_dragged = true
 
 	return nodes_to_move
 
@@ -60,4 +60,4 @@ func _notification(what: int) -> void:
 	if what == Node.NOTIFICATION_DRAG_END:
 		for node in nodes_to_move:
 			node.modulate.a = 1.0
-		host.get_node("../../../../..").is_dragged = false
+		host.get_node("../../../../../..").is_dragged = false

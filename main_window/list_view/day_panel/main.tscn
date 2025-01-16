@@ -1,10 +1,29 @@
-[gd_scene load_steps=7 format=3 uid="uid://cmdy32v105kli"]
+[gd_scene load_steps=8 format=3 uid="uid://cmdy32v105kli"]
 
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/main.gd" id="1_a2phy"]
 [ext_resource type="PackedScene" uid="uid://ofa44bt1yn4u" path="res://main_window/list_view/day_panel/scroll_button/main.tscn" id="2_4oqj4"]
 [ext_resource type="PackedScene" uid="uid://dw8mvf72vw7qk" path="res://main_window/list_view/day_panel/todo_list/main.tscn" id="2_66ttt"]
 [ext_resource type="Script" path="res://custom/tooltip.gd" id="2_wbwrx"]
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/scroll_container/main.gd" id="4_t4q73"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dgmey"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.368627, 0.505882, 0.67451, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+expand_margin_left = 14.0
+expand_margin_top = 8.0
+expand_margin_right = 14.0
+expand_margin_bottom = 30.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8t3rb"]
 resource_local_to_scene = true
@@ -20,28 +39,31 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 corner_detail = 5
 
-[node name="DayPanel" type="VBoxContainer"]
+[node name="DayPanel" type="PanelContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
-mouse_filter = 0
-mouse_default_cursor_shape = 2
-theme_type_variation = &"NoSeparation"
+theme_override_styles/panel = SubResource("StyleBoxFlat_dgmey")
 script = ExtResource("1_a2phy")
 
-[node name="Header" type="PanelContainer" parent="."]
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_8t3rb")
-
-[node name="VBox" type="VBoxContainer" parent="Header"]
+[node name="VBox" type="VBoxContainer" parent="."]
 layout_mode = 2
 theme_type_variation = &"NoSeparation"
 
-[node name="Date" type="Label" parent="Header/VBox"]
+[node name="Header" type="PanelContainer" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_8t3rb")
+
+[node name="VBox" type="VBoxContainer" parent="VBox/Header"]
+layout_mode = 2
+theme_type_variation = &"NoSeparation"
+
+[node name="Date" type="Label" parent="VBox/Header/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -49,7 +71,7 @@ theme_type_variation = &"SubtleLabel"
 text = "MMM DD, YYYY"
 uppercase = true
 
-[node name="Weekday" type="Label" parent="Header/VBox"]
+[node name="Weekday" type="Label" parent="VBox/Header/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -57,36 +79,37 @@ theme_type_variation = &"HeaderLarge"
 text = "WEEKDAY"
 uppercase = true
 
-[node name="DayOffset" type="Label" parent="Header/VBox"]
+[node name="DayOffset" type="Label" parent="VBox/Header/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"Label_Italic"
 
-[node name="Tooltip" type="Node" parent="Header"]
+[node name="Tooltip" type="Node" parent="VBox/Header"]
 script = ExtResource("2_wbwrx")
 text = "Double-Click To Zoom In"
 popup_position = 4
 
-[node name="Spacer" type="Control" parent="."]
+[node name="Spacer" type="Control" parent="VBox"]
 custom_minimum_size = Vector2(0, 8)
 layout_mode = 2
 
-[node name="ScrollUpButton" parent="." instance=ExtResource("2_4oqj4")]
+[node name="ScrollUpButton" parent="VBox" instance=ExtResource("2_4oqj4")]
 layout_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBox"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 3
 script = ExtResource("4_t4q73")
 
-[node name="TodoList" parent="ScrollContainer" instance=ExtResource("2_66ttt")]
+[node name="TodoList" parent="VBox/ScrollContainer" instance=ExtResource("2_66ttt")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ScrollDownButton" parent="." instance=ExtResource("2_4oqj4")]
+[node name="ScrollDownButton" parent="VBox" instance=ExtResource("2_4oqj4")]
 layout_mode = 2
 mode = 1
 
@@ -97,7 +120,7 @@ one_shot = true
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
-[connection signal="gui_input" from="Header" to="." method="_on_header_gui_input"]
-[connection signal="mouse_entered" from="Header" to="." method="_on_header_mouse_entered"]
-[connection signal="mouse_exited" from="Header" to="." method="_on_header_mouse_exited"]
-[connection signal="gui_input" from="ScrollContainer" to="ScrollContainer" method="_on_gui_input"]
+[connection signal="gui_input" from="VBox/Header" to="." method="_on_header_gui_input"]
+[connection signal="mouse_entered" from="VBox/Header" to="." method="_on_header_mouse_entered"]
+[connection signal="mouse_exited" from="VBox/Header" to="." method="_on_header_mouse_exited"]
+[connection signal="gui_input" from="VBox/ScrollContainer" to="VBox/ScrollContainer" method="_on_gui_input"]
