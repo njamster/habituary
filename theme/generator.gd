@@ -657,6 +657,25 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 		"bg_color": neutral_3,
 	})
 	#endregion
+
+	#region DayPanel
+	var day_panel := theme.create_theme_type("DayPanel", "PanelContainer")
+
+	day_panel.set_main_style({
+		"content_margin" = 0,
+	})
+	#endregion
+
+	#region DayPanel_CurrentDay
+	var day_panel_current_day := theme.create_theme_type("DayPanel_CurrentDay", "PanelContainer")
+
+	day_panel_current_day.set_main_style({
+		"bg_color" = neutral_2,
+		"corner_radius" = { "top_left": 16, "top_right": 16 },
+		"expand_margin" = { "left": 8, "top": 8, "right": 8, "bottom": 30 },
+		"content_margin" = 0,
+	})
+	#endregion
 	# ----------------------------------------
 
 	# Keep UIDs from the previous version of the theme, if there are any. Without this, re-running

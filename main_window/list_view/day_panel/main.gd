@@ -98,21 +98,21 @@ func _apply_date_relative_formating() -> void:
 			# date is in the past
 			if Settings.fade_non_today_dates == Settings.FadeNonTodayDates.PAST or \
 				Settings.fade_non_today_dates == Settings.FadeNonTodayDates.PAST_AND_FUTURE:
-					modulate.a = 0.4
+					$VBox.modulate.a = 0.4
 			else:
-				modulate.a = 1.0
+				$VBox.modulate.a = 1.0
 			%Weekday.remove_theme_color_override("font_color")
 		elif day_difference == 0:
 			# date is today
-			modulate.a = 1.0
+			$VBox.modulate.a = 1.0
 			%Weekday.add_theme_color_override("font_color", Settings.NORD_09)
 		else:
 			# date is in the future
 			if Settings.fade_non_today_dates == Settings.FadeNonTodayDates.FUTURE or \
 				Settings.fade_non_today_dates == Settings.FadeNonTodayDates.PAST_AND_FUTURE:
-					modulate.a = 0.4
+					$VBox.modulate.a = 0.4
 			else:
-				modulate.a = 1.0
+				$VBox.modulate.a = 1.0
 			%Weekday.remove_theme_color_override("font_color")
 	else:
 		# reset formatting
@@ -218,14 +218,6 @@ func _on_view_mode_changed(view_mode : int) -> void:
 
 func _on_current_day_changed(current_day: Date) -> void:
 	if Settings.view_mode != 1 and date.as_dict() == current_day.as_dict():
-		get_theme_stylebox("panel").draw_center = true
-		get_theme_stylebox("panel").border_width_left = 3
-		get_theme_stylebox("panel").border_width_top = 3
-		get_theme_stylebox("panel").border_width_right = 3
-		#get_theme_stylebox("panel").border_width_bottom = 3
+		theme_type_variation = "DayPanel_CurrentDay"
 	else:
-		get_theme_stylebox("panel").draw_center = false
-		get_theme_stylebox("panel").border_width_left = 0
-		get_theme_stylebox("panel").border_width_top = 0
-		get_theme_stylebox("panel").border_width_right = 0
-		#get_theme_stylebox("panel").border_width_bottom = 0
+		theme_type_variation = "DayPanel"

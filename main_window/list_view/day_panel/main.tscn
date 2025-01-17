@@ -1,29 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://cmdy32v105kli"]
+[gd_scene load_steps=7 format=3 uid="uid://cmdy32v105kli"]
 
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/main.gd" id="1_a2phy"]
 [ext_resource type="PackedScene" uid="uid://ofa44bt1yn4u" path="res://main_window/list_view/day_panel/scroll_button/main.tscn" id="2_4oqj4"]
 [ext_resource type="PackedScene" uid="uid://dw8mvf72vw7qk" path="res://main_window/list_view/day_panel/todo_list/main.tscn" id="2_66ttt"]
 [ext_resource type="Script" path="res://custom/tooltip.gd" id="2_wbwrx"]
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/scroll_container/main.gd" id="4_t4q73"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dgmey"]
-resource_local_to_scene = true
-content_margin_left = 0.0
-content_margin_top = 0.0
-content_margin_right = 0.0
-content_margin_bottom = 0.0
-bg_color = Color(0.368627, 0.505882, 0.67451, 1)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-expand_margin_left = 14.0
-expand_margin_top = 8.0
-expand_margin_right = 14.0
-expand_margin_bottom = 30.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8t3rb"]
 resource_local_to_scene = true
@@ -46,7 +27,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_dgmey")
 script = ExtResource("1_a2phy")
 
 [node name="VBox" type="VBoxContainer" parent="."]
