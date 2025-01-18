@@ -2,6 +2,11 @@ extends VBoxContainer
 
 
 func _ready() -> void:
+	_connect_signals()
+
+
+func _connect_signals() -> void:
+	#region Global Signals
 	EventBus.side_panel_changed.connect(_on_side_panel_changed)
 	_on_side_panel_changed()
 
@@ -10,6 +15,17 @@ func _ready() -> void:
 
 	EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
 	_on_dark_mode_changed(Settings.dark_mode)
+	#endregion
+
+	#region Local Signals
+	$Capture.toggled.connect(_on_capture_toggled)
+
+	$Bookmarks.toggled.connect(_on_bookmarks_toggled)
+	$Bookmarks.mouse_entered.connect(_on_bookmarks_mouse_entered)
+	$Bookmarks.mouse_exited.connect(_on_bookmarks_mouse_exited)
+
+	$Help.toggled.connect(_on_help_toggled)
+	#endregion
 
 
 func _on_dark_mode_changed(dark_mode) -> void:

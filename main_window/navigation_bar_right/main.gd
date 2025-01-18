@@ -2,8 +2,23 @@ extends VBoxContainer
 
 
 func _ready() -> void:
+	_connect_signals()
+
+
+func _connect_signals() -> void:
+	#region Global Signals
 	EventBus.view_mode_changed.connect(_on_view_mode_changed)
+
 	EventBus.overlay_closed.connect(_on_overlay_closed)
+	#endregion
+
+	#region Local Signals
+	$NextDay.pressed.connect(_on_next_day_pressed)
+
+	$ShiftViewForward.pressed.connect(_on_shift_view_forward_pressed)
+
+	$Calendar.toggled.connect(_on_calendar_toggled)
+	#endregion
 
 
 func _on_next_day_pressed() -> void:

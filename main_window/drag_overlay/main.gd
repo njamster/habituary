@@ -4,10 +4,21 @@ const TRIGGER_ZONE_WIDTH := 44  # pixels
 
 
 func _ready() -> void:
+	_connect_signals()
 	deactivate()
 
+
+func _connect_signals() -> void:
+	#region Global Signals
 	EventBus.side_panel_changed.connect(_on_side_panel_changed)
 	_on_side_panel_changed()
+	#endregion
+
+	#region Local Signals
+	$LeftBorder/DragHoverTrigger.triggered.connect(_on_left_border_drag_hover_trigger_triggered)
+
+	$RightBorder/DragHoverTrigger.triggered.connect(_on_right_border_drag_hover_trigger_triggered)
+	#endregion
 
 
 func activate() -> void:

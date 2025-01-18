@@ -8,6 +8,8 @@ var pending_save := false
 
 
 func _ready() -> void:
+	_connect_signals()
+
 	$LineHighlight.modulate.a = 0.0
 
 	$DebounceTimer.timeout.connect(func():
@@ -24,6 +26,18 @@ func _ready() -> void:
 		get_parent().scrolled.connect(
 			_start_debounce_timer.bind("list scrolled")
 		)
+
+
+func _connect_signals() -> void:
+	#region Parent Signals
+	# TODO
+	#endregion
+
+	#region Local Signals
+	$LineHighlight.item_rect_changed.connect(_on_line_highlight_item_rect_changed)
+
+	%Items.child_order_changed.connect(_on_items_child_order_changed)
+	#endregion
 
 
 func add_todo(at_position := Vector2.ZERO) -> Control:

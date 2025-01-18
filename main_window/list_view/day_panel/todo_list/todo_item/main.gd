@@ -206,6 +206,8 @@ var _editing_options_shrink_threshold : int
 
 
 func _ready() -> void:
+	_connect_signals()
+
 	$Triangle.hide()
 	%EditingOptions.hide()
 	%BookmarkIndicator.hide()
@@ -253,6 +255,47 @@ func _ready() -> void:
 				self.indentation_level = predecessor.indentation_level
 
 	EventBus.fade_ticked_off_todos_changed.connect(_apply_state_relative_formating)
+
+
+func _connect_signals() -> void:
+	#region Global Signals
+	# TODO
+	#endregion
+
+	#region Local Signals
+	focus_exited.connect(_on_focus_exited)
+	gui_input.connect(_on_gui_input)
+	mouse_entered.connect(_on_mouse_entered)
+	mouse_exited.connect(_on_mouse_exited)
+	tree_exiting.connect(_on_tree_exiting)
+
+	%CheckBox.gui_input.connect(_on_check_box_gui_input)
+
+	%FoldHeading.toggled.connect(_on_fold_heading_toggled)
+
+	%Content.gui_input.connect(_on_gui_input)
+
+	%Edit.text_changed.connect(_on_edit_text_changed)
+	%Edit.text_submitted.connect(_on_edit_text_submitted)
+	%Edit.focus_entered.connect(edit)
+	%Edit.focus_exited.connect(_on_edit_focus_exited)
+	%Edit.gui_input.connect(_on_edit_gui_input)
+	%Edit.resized.connect(_on_edit_resized)
+
+	%BookmarkIndicator.gui_input.connect(_on_bookmark_indicator_gui_input)
+
+	%Heading.toggled.connect(_on_heading_toggled)
+
+	%Bold.toggled.connect(_on_bold_toggled)
+
+	%Italic.toggled.connect(_on_italic_toggled)
+
+	%TextColor.gui_input.connect(_on_text_color_gui_input)
+
+	%Bookmark.pressed.connect(_on_bookmark_pressed)
+
+	%Delete.pressed.connect(delete)
+	#endregion
 
 
 func is_in_edit_mode() -> bool:

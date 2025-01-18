@@ -8,10 +8,16 @@ const DAY_PANEL := preload("day_panel/main.tscn")
 func _ready() -> void:
 	add_child(drag_cache, false, Node.INTERNAL_MODE_FRONT)
 
+	_connect_signals()
+
+
+func _connect_signals() -> void:
+	#region Global Signals
+	EventBus.view_mode_changed.connect(_update_list_view)
 	_update_list_view(Settings.view_mode)
 
-	EventBus.view_mode_changed.connect(_update_list_view)
 	EventBus.current_day_changed.connect(_shift_list_view)
+	#endregion
 
 
 func _update_list_view(view_mode : int) -> void:

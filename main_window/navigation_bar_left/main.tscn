@@ -71,7 +71,3 @@ icon = ExtResource("3_vrbxd")
 [node name="Tooltip" type="Node" parent="Today"]
 script = ExtResource("3_6cgsb")
 text = "Jump To Today"
-
-[connection signal="pressed" from="PreviousDay" to="." method="_on_previous_day_pressed"]
-[connection signal="pressed" from="ShiftViewBackward" to="." method="_on_shift_view_backward_pressed"]
-[connection signal="pressed" from="Today" to="." method="_on_today_pressed"]

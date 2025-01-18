@@ -2,10 +2,24 @@ extends VBoxContainer
 
 
 func _ready() -> void:
-	_on_current_day_changed(Settings.current_day)
+	_connect_signals()
 
+
+func _connect_signals() -> void:
+	#region Global Signals
 	EventBus.view_mode_changed.connect(_on_view_mode_changed)
+
 	EventBus.current_day_changed.connect(_on_current_day_changed)
+	_on_current_day_changed(Settings.current_day)
+	#endregion
+
+	#region Local Signals
+	$PreviousDay.pressed.connect(_on_previous_day_pressed)
+
+	$ShiftViewBackward.pressed.connect(_on_shift_view_backward_pressed)
+
+	$Today.pressed.connect(_on_today_pressed)
+	#endregion
 
 
 func _on_previous_day_pressed() -> void:

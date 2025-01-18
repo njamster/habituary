@@ -41,4 +41,3 @@ uppercase = true
 script = ExtResource("3_bvify")
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
-[connection signal="triggered" from="DragHoverTrigger" to="." method="_on_drag_hover_trigger_triggered"]

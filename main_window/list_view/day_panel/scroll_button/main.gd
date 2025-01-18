@@ -10,8 +10,16 @@ var items_out_of_view := 0
 
 
 func _ready() -> void:
+	_connect_signals()
 	self.hide()
 
+
+func _connect_signals() -> void:
+	#region Global Signals
+	EventBus.search_query_changed.connect(_on_search_query_changed)
+	#endregion
+
+	#region Parent Signals
 	SCROLL_CONTAINER.resized.connect.call_deferred(_update_button)
 	SCROLL_CONTAINER_CONTENT.resized.connect.call_deferred(_update_button)
 
@@ -19,8 +27,11 @@ func _ready() -> void:
 	SCROLL_CONTAINER.auto_scrolled.connect.call_deferred(_update_button)
 
 	_update_button.call_deferred()
+	#endregion
 
-	EventBus.search_query_changed.connect(_on_search_query_changed)
+	#region Local Signals
+	$DragHoverTrigger.triggered.connect(_on_drag_hover_trigger_triggered)
+	#endregion
 
 
 func _update_button() -> void:

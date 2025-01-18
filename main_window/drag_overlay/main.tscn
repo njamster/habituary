@@ -80,6 +80,3 @@ stretch_mode = 3
 
 [node name="DragHoverTrigger" type="Timer" parent="RightBorder"]
 script = ExtResource("4_hhxuo")
-
-[connection signal="triggered" from="LeftBorder/DragHoverTrigger" to="." method="_on_left_border_drag_hover_trigger_triggered"]
-[connection signal="triggered" from="RightBorder/DragHoverTrigger" to="." method="_on_right_border_drag_hover_trigger_triggered"]

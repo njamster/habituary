@@ -6,6 +6,8 @@ extends CenterContainer
 
 
 func _ready() -> void:
+	_connect_signals()
+
 	$FileDialog.hide()
 	%ErrorMessage.visible_ratio = 0.0
 
@@ -30,6 +32,16 @@ func _ready() -> void:
 
 	%DirectoryPath.text = Settings.store_path
 	%BrowseFiles.grab_focus()
+
+
+func _connect_signals() -> void:
+	#region Local Signals
+	%BrowseFiles.pressed.connect(_on_browse_files_pressed)
+
+	%Confirm.pressed.connect(_on_confirm_pressed)
+
+	$FileDialog.dir_selected.connect(_on_file_dialog_dir_selected)
+	#endregion
 
 
 func _on_browse_files_pressed() -> void:
