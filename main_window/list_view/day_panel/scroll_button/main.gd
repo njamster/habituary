@@ -30,6 +30,8 @@ func _connect_signals() -> void:
 	#endregion
 
 	#region Local Signals
+	gui_input.connect(_on_gui_input)
+
 	$DragHoverTrigger.triggered.connect(_on_drag_hover_trigger_triggered)
 	#endregion
 

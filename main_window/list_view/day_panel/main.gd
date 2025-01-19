@@ -26,27 +26,50 @@ func _ready() -> void:
 		_update_store_path()
 		load_from_disk()
 
-		%TodoList.list_save_requested.connect(save_to_disk)
-		# NOTE: `tree_exited` will be emitted both when this panel is removed from the tree because
-		# the user scrolled the list'view, as well as on a NOTIFICATION_WM_CLOSE_REQUEST.
-		self.tree_exited.connect(save_to_disk)
-		EventBus.today_changed.connect(_apply_date_relative_formating)
-		_on_dark_mode_changed(Settings.dark_mode)
-		EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
-		EventBus.view_mode_changed.connect(_on_view_mode_changed)
-		_on_view_mode_changed(Settings.view_mode)
-		EventBus.today_changed.connect(_update_date_offset)
+		_connect_signals()
 
-		EventBus.current_day_changed.connect(_update_stretch_ratio)
-		_update_stretch_ratio(Settings.current_day)
 
-		EventBus.fade_non_today_dates_changed.connect(_apply_date_relative_formating)
+func _connect_signals() -> void:
+	#region Global Signals
+	EventBus.today_changed.connect(_apply_date_relative_formating)
+	_on_dark_mode_changed(Settings.dark_mode)
 
-		EventBus.current_day_changed.connect(_on_current_day_changed)
-		EventBus.view_mode_changed.connect(func(_x):
-			_on_current_day_changed(Settings.current_day)
-		)
+	EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
+
+	EventBus.view_mode_changed.connect(_on_view_mode_changed)
+	_on_view_mode_changed(Settings.view_mode)
+
+	EventBus.today_changed.connect(_update_date_offset)
+
+	EventBus.current_day_changed.connect(_update_stretch_ratio)
+	_update_stretch_ratio(Settings.current_day)
+
+	EventBus.fade_non_today_dates_changed.connect(_apply_date_relative_formating)
+
+	EventBus.current_day_changed.connect(_on_current_day_changed)
+	_on_current_day_changed(Settings.current_day)
+
+	EventBus.view_mode_changed.connect(func(_x):
 		_on_current_day_changed(Settings.current_day)
+	)
+	#endregion
+
+	#region Local Signals
+	# NOTE: `tree_exited` will be emitted both when this panel is removed from the tree because
+	# the user scrolled the list'view, as well as on a NOTIFICATION_WM_CLOSE_REQUEST.
+	tree_exited.connect(save_to_disk)
+	gui_input.connect(_on_gui_input)
+	mouse_entered.connect(_on_mouse_entered)
+	mouse_exited.connect(_on_mouse_exited)
+
+	%Header.gui_input.connect(_on_header_gui_input)
+	%Header.mouse_entered.connect(_on_header_mouse_entered)
+	%Header.mouse_exited.connect(_on_header_mouse_exited)
+
+	%ScrollContainer.gui_input.connect(_on_gui_input)
+
+	%TodoList.list_save_requested.connect(save_to_disk)
+	#endregion
 
 
 func _update_stretch_ratio(current_day : Date) -> void:

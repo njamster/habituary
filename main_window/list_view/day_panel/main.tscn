@@ -96,11 +96,3 @@ mode = 1
 [node name="HoverTimer" type="Timer" parent="."]
 wait_time = 0.1
 one_shot = true
-
-[connection signal="gui_input" from="." to="." method="_on_gui_input"]
-[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
-[connection signal="gui_input" from="VBox/Header" to="." method="_on_header_gui_input"]
-[connection signal="mouse_entered" from="VBox/Header" to="." method="_on_header_mouse_entered"]
-[connection signal="mouse_exited" from="VBox/Header" to="." method="_on_header_mouse_exited"]
-[connection signal="gui_input" from="VBox/ScrollContainer" to="VBox/ScrollContainer" method="_on_gui_input"]

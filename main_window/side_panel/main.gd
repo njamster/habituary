@@ -2,11 +2,15 @@ extends PanelContainer
 
 
 func _ready() -> void:
+	_connect_signals()
+
 	self.hide()
 
 	for panel in [$Settings, $Capture, $Bookmarks, $Help]:
 		panel.hide()
 
+
+func _connect_signals() -> void:
 	EventBus.side_panel_changed.connect(_on_side_panel_changed)
 	_on_side_panel_changed()
 

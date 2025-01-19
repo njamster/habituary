@@ -47,5 +47,3 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"SmallSeparation"
-
-[connection signal="toggled" from="IncludePast" to="." method="_on_include_past_toggled"]

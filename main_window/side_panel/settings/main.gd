@@ -2,6 +2,8 @@ extends VBoxContainer
 
 
 func _ready() -> void:
+	_connect_signals()
+
 	for option_name in Settings.TodayPosition:
 		var option_id : int = Settings.TodayPosition[option_name]
 		%TodayPosition/Setting/Options.add_item(option_name.capitalize(), option_id)
@@ -22,6 +24,23 @@ func _ready() -> void:
 		if option_id == Settings.fade_non_today_dates:
 			%FadeNonTodayDates/Setting/Options.select(option_id)
 	_on_fade_non_today_dates_options_item_selected(Settings.fade_non_today_dates)
+
+
+func _connect_signals() -> void:
+	#region Local Signals
+	%StorePath/Setting/Change.pressed.connect(_on_change_store_path_pressed)
+
+	%TodayPosition/Setting/Options.item_selected.connect(_on_today_position_item_selected)
+
+	%DayStart/Setting/Hours.value_changed.connect(_on_day_start_hours_value_changed)
+	%DayStart/Setting/Minutes.value_changed.connect(_on_day_start_minutes_value_changed)
+
+	%FirstWeekday/Setting/Options.toggled.connect(_on_first_weekday_toggled)
+
+	%FadeTickedOffTodos/Setting/Options.toggled.connect(_on_fade_ticked_off_todos_options_toggled)
+
+	%FadeNonTodayDates/Setting/Options.item_selected.connect(_on_fade_non_today_dates_options_item_selected)
+	#endregion
 
 
 func _on_change_store_path_pressed() -> void:

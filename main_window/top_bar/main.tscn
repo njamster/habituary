@@ -53,6 +53,3 @@ icon = ExtResource("5_jyq3k")
 [node name="Tooltip" type="Node" parent="Mode"]
 script = ExtResource("3_sm771")
 text = "Switch To Light Mode"
-
-[connection signal="toggled" from="Settings" to="." method="_on_settings_toggled"]
-[connection signal="pressed" from="Mode" to="." method="_on_mode_pressed"]

@@ -57,6 +57,3 @@ size_flags_horizontal = 3
 theme_type_variation = &"HeaderSmall"
 text = "Super Important To-Do"
 text_overrun_behavior = 3
-
-[connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
-[connection signal="pressed" from="VBox/Row1/JumpTo" to="." method="_on_jump_to_pressed"]

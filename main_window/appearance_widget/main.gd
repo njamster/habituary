@@ -19,11 +19,6 @@ func _connect_signals() -> void:
 	#endregion
 
 
-func _on_view_mode_changed(view_mode : int) -> void:
-	for button in get_children():
-		button.button_pressed = (int(button.text) == Settings.view_mode)
-
-
 func _on_window_size_changed() -> void:
 	var window_width := DisplayServer.window_get_size().x
 	var todolist_width := 160
@@ -68,3 +63,8 @@ func _on_window_size_changed() -> void:
 		$SevenDays.mouse_default_cursor_shape = CURSOR_FORBIDDEN
 		if Settings.view_mode > 1:
 			Settings.view_mode = 1
+
+
+func _on_view_mode_changed(view_mode : int) -> void:
+	for button in get_children():
+		button.button_pressed = (int(button.text) == Settings.view_mode)

@@ -41,6 +41,7 @@ flat = true
 select_all_on_focus = true
 
 [node name="ReportIssue" type="RichTextLabel" parent="VBox"]
+unique_name_in_owner = true
 layout_mode = 2
 bbcode_enabled = true
 text = "[center][url]Report Issue[/url][/center]"
@@ -95,5 +96,3 @@ theme_type_variation = &"HeaderSmall"
 text = "While Editing A To-Do"
 horizontal_alignment = 1
 uppercase = true
-
-[connection signal="meta_clicked" from="VBox/ReportIssue" to="." method="_on_report_issue_meta_clicked"]

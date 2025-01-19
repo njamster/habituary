@@ -2,10 +2,32 @@ extends PanelContainer
 
 
 func _ready() -> void:
+	_connect_signals()
+
 	%ShortcutHint.text = InputMap.action_get_events("search_screen")[0].as_text().to_upper().replace("+", " + ")
 
+
+func _connect_signals() -> void:
+	#region Global Signals
 	EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
 	_on_dark_mode_changed(Settings.dark_mode)
+	#endregion
+
+	#region Local Signals
+	gui_input.connect(_on_gui_input)
+	mouse_entered.connect(_on_mouse_entered)
+	mouse_exited.connect(_on_mouse_exited)
+
+	%Icon.pressed.connect(_on_icon_pressed)
+
+	%SearchQuery.text_changed.connect(_on_search_query_text_changed)
+	%SearchQuery.text_submitted.connect(_on_search_query_text_submitted)
+	%SearchQuery.focus_entered.connect(_on_search_query_focus_entered)
+	%SearchQuery.focus_exited.connect(_on_search_query_focus_exited)
+	%SearchQuery.gui_input.connect(_on_search_query_gui_input)
+
+	%ShortcutHint.pressed.connect(_on_shortcut_hint_pressed)
+	#endregion
 
 
 func _on_dark_mode_changed(dark_mode):

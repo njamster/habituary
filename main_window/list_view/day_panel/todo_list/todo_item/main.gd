@@ -206,25 +206,6 @@ var _editing_options_shrink_threshold : int
 
 
 func _ready() -> void:
-	_connect_signals()
-
-	$Triangle.hide()
-	%EditingOptions.hide()
-	%BookmarkIndicator.hide()
-	%DragHandle.visible = false
-
-	EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
-	_on_dark_mode_changed(Settings.dark_mode)
-
-	EventBus.search_query_changed.connect(_check_for_search_query_match)
-	_check_for_search_query_match.call_deferred() # deferred, in case this item is loaded from disk
-
-	EventBus.bookmark_jump_requested.connect(func(bookmarked_date, bookmarked_line_number):
-		if self.is_bookmarked and date.day_difference_to(bookmarked_date) == 0 \
-			and get_index() == bookmarked_line_number:
-				edit()
-	)
-
 	# Briefly switch to the longer version of the button label:
 	%Bookmark.text = %Bookmark.text.replace("Add", "Remove")
 	# Measure the minimum size of the editing options (i.e. *with* labels), this will serve as the
@@ -233,8 +214,12 @@ func _ready() -> void:
 	# Then switch back to the original button label again:
 	%Bookmark.text = %Bookmark.text.replace("Remove", "Add")
 
-	%EditingOptions.resized.connect(_on_editing_options_resized)
-	_on_editing_options_resized()
+	_connect_signals()
+
+	$Triangle.hide()
+	%EditingOptions.hide()
+	%BookmarkIndicator.hide()
+	%DragHandle.visible = false
 
 	set_deferred("_initialization_finished", true) # deferred, in case this item is loaded from disk
 
@@ -259,7 +244,17 @@ func _ready() -> void:
 
 func _connect_signals() -> void:
 	#region Global Signals
-	# TODO
+	EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
+	_on_dark_mode_changed(Settings.dark_mode)
+
+	EventBus.search_query_changed.connect(_check_for_search_query_match)
+	_check_for_search_query_match.call_deferred() # deferred, in case this item is loaded from disk
+
+	EventBus.bookmark_jump_requested.connect(func(bookmarked_date, bookmarked_line_number):
+		if self.is_bookmarked and date.day_difference_to(bookmarked_date) == 0 \
+			and get_index() == bookmarked_line_number:
+				edit()
+	)
 	#endregion
 
 	#region Local Signals
@@ -283,6 +278,9 @@ func _connect_signals() -> void:
 	%Edit.resized.connect(_on_edit_resized)
 
 	%BookmarkIndicator.gui_input.connect(_on_bookmark_indicator_gui_input)
+
+	%EditingOptions.resized.connect(_on_editing_options_resized)
+	_on_editing_options_resized()
 
 	%Heading.toggled.connect(_on_heading_toggled)
 

@@ -52,6 +52,11 @@ var is_done := false:
 
 
 func _ready() -> void:
+	_connect_signals()
+
+
+func _connect_signals() -> void:
+	#region Global Signals
 	EventBus.today_changed.connect(func():
 		self.date = self.date
 		self.is_done = self.is_done
@@ -63,6 +68,13 @@ func _ready() -> void:
 
 	EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
 	_on_dark_mode_changed(Settings.dark_mode)
+	#endregion
+
+	#region Local Signals
+	tree_exited.connect(_on_tree_exited)
+
+	%JumpTo.pressed.connect(_on_jump_to_pressed)
+	#endregion
 
 
 func _on_dark_mode_changed(dark_mode) -> void:

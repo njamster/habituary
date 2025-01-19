@@ -4,12 +4,32 @@ var anchor_date : Date
 
 
 func _ready() -> void:
+	_connect_signals()
+
 	%Month.show()
 	%YearLabel.show()
 
 	var popup_menu : PopupMenu = %Month.get_popup()
 	popup_menu.id_pressed.connect(_on_month_selected)
 	popup_menu.mouse_exited.connect(popup_menu.hide)
+
+
+func _connect_signals() -> void:
+	#region Local Signals
+	item_rect_changed.connect(_on_item_rect_changed)
+	visibility_changed.connect(_on_visibility_changed)
+
+	%YearLabel.gui_input.connect(_on_year_label_gui_input)
+
+	%YearSpinBox.value_changed.connect(_on_year_spin_box_value_changed)
+	%YearSpinBox.mouse_exited.connect(_on_year_spin_box_mouse_exited)
+
+	%PreviousMonth.pressed.connect(_on_previous_month_pressed)
+
+	%Today.pressed.connect(_on_today_pressed)
+
+	%NextMonth.pressed.connect(_on_next_month_pressed)
+	#endregion
 
 
 func _on_visibility_changed() -> void:

@@ -12,31 +12,25 @@ func _ready() -> void:
 
 	$LineHighlight.modulate.a = 0.0
 
-	$DebounceTimer.timeout.connect(func():
-		if OS.is_debug_build():
-			print("[DEBUG] DebounceTimer Timed Out: Saving List...")
-		list_save_requested.emit()
-	)
 
-	await get_tree().process_frame
-	await get_tree().process_frame
-	await get_tree().process_frame
-
+func _connect_signals() -> void:
+	#region Parent Signals
 	if get_parent().has_signal("scrolled"):
 		get_parent().scrolled.connect(
 			_start_debounce_timer.bind("list scrolled")
 		)
-
-
-func _connect_signals() -> void:
-	#region Parent Signals
-	# TODO
 	#endregion
 
 	#region Local Signals
 	$LineHighlight.item_rect_changed.connect(_on_line_highlight_item_rect_changed)
 
 	%Items.child_order_changed.connect(_on_items_child_order_changed)
+
+	$DebounceTimer.timeout.connect(func():
+		if OS.is_debug_build():
+			print("[DEBUG] DebounceTimer Timed Out: Saving List...")
+		list_save_requested.emit()
+	)
 	#endregion
 
 

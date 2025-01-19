@@ -2,11 +2,23 @@ extends HBoxContainer
 
 
 func _ready() -> void:
-	_on_dark_mode_changed(Settings.dark_mode)
+	_connect_signals()
+
+
+func _connect_signals() -> void:
+	#region Global Signals
 	EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
+	_on_dark_mode_changed(Settings.dark_mode)
 
 	EventBus.side_panel_changed.connect(_on_side_panel_changed)
 	_on_side_panel_changed()
+	#endregion
+
+	#region Local Signals
+	$Settings.toggled.connect(_on_settings_toggled)
+
+	$Mode.pressed.connect(_on_mode_pressed)
+	#endregion
 
 
 func _on_side_panel_changed() -> void:

@@ -4,10 +4,15 @@ const DIMMED_ALPHA := 0.7
 
 
 func _ready() -> void:
+	_connect_signals()
+
 	for component in [%CalendarWidget]:
 		component.hide()
 	self.hide()
 
+
+func _connect_signals() -> void:
+	#region Global Signals
 	EventBus.calendar_button_pressed.connect(
 		func():
 			if not %CalendarWidget.visible:
@@ -17,6 +22,11 @@ func _ready() -> void:
 	)
 
 	EventBus.todo_list_clicked.connect(close_overlay)
+	#endregion
+
+	#region Local Signals
+	$Background.gui_input.connect(_on_background_gui_input)
+	#endregion
 
 
 func open_component(component : Control, dimmed_background : bool) -> void:

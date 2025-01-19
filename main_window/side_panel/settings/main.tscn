@@ -215,11 +215,3 @@ theme_type_variation = &"Explanation"
 theme_override_fonts/bold_italics_font = ExtResource("7_fjnu2")
 bbcode_enabled = true
 fit_content = true
-
-[connection signal="pressed" from="ScrollContainer/PaddedScrollbar/VBox/StorePath/Setting/Change" to="." method="_on_change_store_path_pressed"]
-[connection signal="item_selected" from="ScrollContainer/PaddedScrollbar/VBox/TodayPosition/Setting/Options" to="." method="_on_today_position_item_selected"]
-[connection signal="value_changed" from="ScrollContainer/PaddedScrollbar/VBox/DayStart/Setting/Hours" to="." method="_on_day_start_hours_value_changed"]
-[connection signal="value_changed" from="ScrollContainer/PaddedScrollbar/VBox/DayStart/Setting/Minutes" to="." method="_on_day_start_minutes_value_changed"]
-[connection signal="toggled" from="ScrollContainer/PaddedScrollbar/VBox/FirstWeekday/Setting/Options" to="." method="_on_first_weekday_toggled"]
-[connection signal="toggled" from="ScrollContainer/PaddedScrollbar/VBox/FadeTickedOffTodos/Setting/Options" to="." method="_on_fade_ticked_off_todos_options_toggled"]
-[connection signal="item_selected" from="ScrollContainer/PaddedScrollbar/VBox/FadeNonTodayDates/Setting/Options" to="." method="_on_fade_non_today_dates_options_item_selected"]

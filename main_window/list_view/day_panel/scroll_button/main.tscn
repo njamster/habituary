@@ -39,5 +39,3 @@ uppercase = true
 
 [node name="DragHoverTrigger" type="Timer" parent="."]
 script = ExtResource("3_bvify")
-
-[connection signal="gui_input" from="." to="." method="_on_gui_input"]

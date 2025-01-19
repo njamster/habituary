@@ -42,6 +42,8 @@ var descriptions := {
 
 
 func _ready() -> void:
+	_connect_signals()
+
 	var app_version : String = ProjectSettings.get("application/config/version")
 	if app_version:
 		%Version/ID.text = app_version
@@ -114,6 +116,12 @@ func _ready() -> void:
 		hint.description = descriptions[action]
 		hint.key_binding = InputMap.action_get_events(action)[0]
 		%KeyBindingsBlock5.add_child(hint)
+
+
+func _connect_signals() -> void:
+	#region Local Signals
+	%ReportIssue.meta_clicked.connect(_on_report_issue_meta_clicked)
+	#endregion
 
 
 func _on_report_issue_meta_clicked(_meta: Variant) -> void:

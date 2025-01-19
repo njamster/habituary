@@ -86,6 +86,7 @@ allow_lesser = true
 alignment = 1
 
 [node name="PreviousMonth" type="Button" parent="VBox/HBox"]
+unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
@@ -98,6 +99,7 @@ text = "Previous Month"
 popup_position = 2
 
 [node name="Today" type="Button" parent="VBox/HBox"]
+unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
@@ -110,6 +112,7 @@ text = "Jump To Today"
 popup_position = 2
 
 [node name="NextMonth" type="Button" parent="VBox/HBox"]
+unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
@@ -124,15 +127,3 @@ popup_position = 2
 [node name="GridContainer" type="GridContainer" parent="VBox"]
 layout_mode = 2
 columns = 7
-
-[connection signal="item_rect_changed" from="." to="." method="_on_item_rect_changed"]
-[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
-[connection signal="mouse_entered" from="VBox/HBox/Title/Month" to="." method="_on_month_mouse_entered"]
-[connection signal="mouse_exited" from="VBox/HBox/Title/Month" to="." method="_on_month_mouse_exited"]
-[connection signal="toggled" from="VBox/HBox/Title/Month" to="." method="_on_month_toggled"]
-[connection signal="gui_input" from="VBox/HBox/Title/YearLabel" to="." method="_on_year_label_gui_input"]
-[connection signal="mouse_exited" from="VBox/HBox/Title/YearSpinBox" to="." method="_on_year_spin_box_mouse_exited"]
-[connection signal="value_changed" from="VBox/HBox/Title/YearSpinBox" to="." method="_on_year_spin_box_value_changed"]
-[connection signal="pressed" from="VBox/HBox/PreviousMonth" to="." method="_on_previous_month_pressed"]
-[connection signal="pressed" from="VBox/HBox/Today" to="." method="_on_today_pressed"]
-[connection signal="pressed" from="VBox/HBox/NextMonth" to="." method="_on_next_month_pressed"]

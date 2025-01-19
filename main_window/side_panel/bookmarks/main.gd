@@ -2,15 +2,27 @@ extends VBoxContainer
 
 
 func _ready() -> void:
+	_connect_signals()
+
 	$NoneSet.show()
 	$IncludePast.hide()
 	$IncludePast.set_pressed_no_signal(Settings.show_bookmarks_from_the_past)
 
 	_search_for_bookmarks()
 
+
+func _connect_signals() -> void:
+	#region Global Signals
 	EventBus.bookmark_added.connect(_on_bookmark_added)
+
 	EventBus.bookmark_changed.connect(_on_bookmark_changed)
+
 	EventBus.bookmark_removed.connect(_on_bookmark_removed)
+	#endregion
+
+	#region Local Signals
+	$IncludePast.toggled.connect(_on_include_past_toggled)
+	#endregion
 
 
 func _search_for_bookmarks() -> void:
