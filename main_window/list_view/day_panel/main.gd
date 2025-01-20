@@ -1,53 +1,41 @@
-@tool
 extends PanelContainer
 
-@export var date : Date:
+var date : Date:
 	set(value):
-		date = value
-		_update_store_path()
-		if is_inside_tree():
-			_update_header()
-			if value:
-				date.changed.connect(_update_header)
-				date.changed.connect(_update_store_path)
+		if date != null:  # once set, date becomes immutable
+			return
 
-var store_path := ""
+		date = value
+
+var store_path := ""  # set via _update_store_path() in _set_initial_state()
 
 var is_dragged := false
 
 
 func _ready() -> void:
-	if not Engine.is_editor_hint():
-		assert(date != null, "You must provide a date in order for this node to work!")
+	assert(date != null, "You must provide a date in order for this node to work!")
 
-	_update_header()
+	_set_initial_state()
+	_connect_signals()
 
-	if not Engine.is_editor_hint():
-		_update_store_path()
-		load_from_disk()
-
-		_connect_signals()
+	load_from_disk()
 
 
 func _connect_signals() -> void:
 	#region Global Signals
 	EventBus.today_changed.connect(_apply_date_relative_formating)
-	_on_dark_mode_changed(Settings.dark_mode)
 
 	EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
 
 	EventBus.view_mode_changed.connect(_on_view_mode_changed)
-	_on_view_mode_changed(Settings.view_mode)
 
 	EventBus.today_changed.connect(_update_date_offset)
 
 	EventBus.current_day_changed.connect(_update_stretch_ratio)
-	_update_stretch_ratio(Settings.current_day)
 
 	EventBus.fade_non_today_dates_changed.connect(_apply_date_relative_formating)
 
 	EventBus.current_day_changed.connect(_on_current_day_changed)
-	_on_current_day_changed(Settings.current_day)
 
 	EventBus.view_mode_changed.connect(func(_x):
 		_on_current_day_changed(Settings.current_day)
@@ -55,6 +43,9 @@ func _connect_signals() -> void:
 	#endregion
 
 	#region Local Signals
+	date.changed.connect(_update_store_path)
+	date.changed.connect(_update_header)
+
 	# NOTE: `tree_exited` will be emitted both when this panel is removed from the tree because
 	# the user scrolled the list'view, as well as on a NOTIFICATION_WM_CLOSE_REQUEST.
 	tree_exited.connect(save_to_disk)
@@ -70,6 +61,16 @@ func _connect_signals() -> void:
 
 	%TodoList.list_save_requested.connect(save_to_disk)
 	#endregion
+
+
+func _set_initial_state() -> void:
+	_on_dark_mode_changed(Settings.dark_mode)
+	_on_view_mode_changed(Settings.view_mode)
+	_update_stretch_ratio(Settings.current_day)
+	_on_current_day_changed(Settings.current_day)
+
+	_update_store_path()
+	_update_header()
 
 
 func _update_stretch_ratio(current_day : Date) -> void:
@@ -141,13 +142,6 @@ func _apply_date_relative_formating() -> void:
 		# reset formatting
 		modulate.a = 1.0
 		%Weekday.remove_theme_color_override("font_color")
-
-
-func _get_configuration_warnings() -> PackedStringArray:
-	var warnings = []
-	if not date:
-		warnings.append("You must provide a date in order for this node to work!")
-	return warnings
 
 
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
