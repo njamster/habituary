@@ -17,7 +17,6 @@ config/features=PackedStringArray("4.3", "GL Compatibility")
 run/low_processor_mode=true
 boot_splash/show_image=false
 config/icon="res://icon.svg"
-run/main_scene.editor="res://main_window/main.tscn"
 
 [autoload]
 

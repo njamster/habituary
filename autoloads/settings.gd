@@ -57,7 +57,18 @@ var DEFAULT_STORE_PATH : String:
 		else:
 			return OS.get_environment("HOME") + "/habituary/"
 
-var store_path := DEFAULT_STORE_PATH
+var store_path: String:
+	set(value):
+		if store_path == value:
+			return
+
+		store_path = value
+
+		if is_node_ready():
+			if OS.is_debug_build():
+				print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
+			debounce_timer.start()
+
 
 var settings_path : String
 
@@ -257,6 +268,9 @@ func _notification(what: int) -> void:
 func save_to_disk() -> void:
 	var config = ConfigFile.new()
 	config.load(settings_path) # keep existing settings (if there are any)
+
+	config.set_value("Settings", "store_path", store_path)
+
 	config.set_value("AppState", "dark_mode", dark_mode)
 	config.set_value("AppState", "today_position", today_position)
 	config.set_value("AppState", "view_mode", view_mode)
@@ -277,6 +291,8 @@ func load_from_disk() -> void:
 	var config := ConfigFile.new()
 	var error := config.load(settings_path)
 	if not error:
+		store_path = config.get_value("Settings", "store_path", store_path)
+
 		dark_mode = config.get_value("AppState", "dark_mode", dark_mode)
 		today_position = config.get_value("AppState", "today_position", today_position)
 		view_mode = config.get_value("AppState", "view_mode", view_mode)

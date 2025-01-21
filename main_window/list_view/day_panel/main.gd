@@ -21,6 +21,16 @@ func _ready() -> void:
 	load_from_disk()
 
 
+func _set_initial_state() -> void:
+	_on_dark_mode_changed(Settings.dark_mode)
+	_on_view_mode_changed(Settings.view_mode)
+	_update_stretch_ratio(Settings.current_day)
+	_on_current_day_changed(Settings.current_day)
+
+	_update_store_path()
+	_update_header()
+
+
 func _connect_signals() -> void:
 	#region Global Signals
 	EventBus.today_changed.connect(_apply_date_relative_formating)
@@ -61,16 +71,6 @@ func _connect_signals() -> void:
 
 	%TodoList.list_save_requested.connect(save_to_disk)
 	#endregion
-
-
-func _set_initial_state() -> void:
-	_on_dark_mode_changed(Settings.dark_mode)
-	_on_view_mode_changed(Settings.view_mode)
-	_update_stretch_ratio(Settings.current_day)
-	_on_current_day_changed(Settings.current_day)
-
-	_update_store_path()
-	_update_header()
 
 
 func _update_stretch_ratio(current_day : Date) -> void:
