@@ -63,12 +63,7 @@ var store_path: String:
 			return
 
 		store_path = value
-
-		if is_node_ready():
-			if OS.is_debug_build():
-				print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
-			debounce_timer.start()
-
+		_start_debounce_timer()
 
 var settings_path : String
 
@@ -80,11 +75,9 @@ var today_position := TodayPosition.CENTERED:
 			return
 
 		today_position = value
+		_start_debounce_timer()
+
 		EventBus.current_day_changed.emit(current_day)
-		if is_node_ready():
-			if OS.is_debug_build():
-				print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
-			debounce_timer.start()
 
 var previous_view_mode
 
@@ -95,12 +88,11 @@ var view_mode := 3:
 
 		if previous_view_mode != view_mode:
 			previous_view_mode = null
+
 		view_mode = value
+		_start_debounce_timer()
+
 		EventBus.view_mode_changed.emit(view_mode)
-		if is_node_ready():
-			if OS.is_debug_build():
-				print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
-			debounce_timer.start()
 
 var previous_day
 
@@ -111,7 +103,9 @@ var current_day := DayTimer.today:
 
 		if previous_day != current_day:
 			previous_day = null
+
 		current_day = value
+
 		EventBus.current_day_changed.emit(current_day)
 
 var start_week_on_monday := true:
@@ -120,10 +114,7 @@ var start_week_on_monday := true:
 			return
 
 		start_week_on_monday = value
-		if is_node_ready():
-			if OS.is_debug_build():
-				print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
-			debounce_timer.start()
+		_start_debounce_timer()
 
 var day_start_hour_offset := 0:
 	set(value):
@@ -131,11 +122,9 @@ var day_start_hour_offset := 0:
 			return
 
 		day_start_hour_offset = value
+		_start_debounce_timer()
+
 		EventBus.day_start_changed.emit()
-		if is_node_ready():
-			if OS.is_debug_build():
-				print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
-			debounce_timer.start()
 
 var day_start_minute_offset := 0:
 	set(value):
@@ -143,11 +132,9 @@ var day_start_minute_offset := 0:
 			return
 
 		day_start_minute_offset = value
+		_start_debounce_timer()
+
 		EventBus.day_start_changed.emit()
-		if is_node_ready():
-			if OS.is_debug_build():
-				print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
-			debounce_timer.start()
 
 var dark_mode := true:
 	set(value):
@@ -155,6 +142,7 @@ var dark_mode := true:
 			return
 
 		dark_mode = value
+		_start_debounce_timer()
 
 		if dark_mode:
 			RenderingServer.set_default_clear_color("#2E3440")
@@ -165,17 +153,13 @@ var dark_mode := true:
 
 		EventBus.dark_mode_changed.emit(dark_mode)
 
-		if is_node_ready():
-			if OS.is_debug_build():
-				print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
-			debounce_timer.start()
-
 var search_query := "":
 	set(value):
 		if search_query == value:
 			return
 
 		search_query = value
+
 		EventBus.search_query_changed.emit()
 
 var side_panel := SidePanelState.HIDDEN:
@@ -184,11 +168,9 @@ var side_panel := SidePanelState.HIDDEN:
 			return
 
 		side_panel = value
+		_start_debounce_timer()
+
 		EventBus.side_panel_changed.emit()
-		if is_node_ready():
-			if OS.is_debug_build():
-				print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
-			debounce_timer.start()
 
 var show_bookmarks_from_the_past := true:
 	set(value):
@@ -196,11 +178,9 @@ var show_bookmarks_from_the_past := true:
 			return
 
 		show_bookmarks_from_the_past = value
+		_start_debounce_timer()
+
 		EventBus.show_bookmarks_from_the_past_changed.emit()
-		if is_node_ready():
-			if OS.is_debug_build():
-				print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
-			debounce_timer.start()
 
 var fade_ticked_off_todos := true:
 	set(value):
@@ -208,11 +188,9 @@ var fade_ticked_off_todos := true:
 			return
 
 		fade_ticked_off_todos = value
+		_start_debounce_timer()
+
 		EventBus.fade_ticked_off_todos_changed.emit()
-		if is_node_ready():
-			if OS.is_debug_build():
-				print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
-			debounce_timer.start()
 
 var fade_non_today_dates := FadeNonTodayDates.PAST:
 	set(value):
@@ -220,11 +198,9 @@ var fade_non_today_dates := FadeNonTodayDates.PAST:
 			return
 
 		fade_non_today_dates = value
+		_start_debounce_timer()
+
 		EventBus.fade_non_today_dates_changed.emit()
-		if is_node_ready():
-			if OS.is_debug_build():
-				print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
-			debounce_timer.start()
 
 var bookmarks_due_today := 0:
 	set(value):
@@ -232,13 +208,13 @@ var bookmarks_due_today := 0:
 			return
 
 		bookmarks_due_today = value
-		EventBus.bookmarks_due_today_changed.emit()
+		_start_debounce_timer()
 
-@onready var debounce_timer := Timer.new()
+		EventBus.bookmarks_due_today_changed.emit()
 
 
 func _enter_tree() -> void:
-	get_window().wrap_controls = true # Sadly, there is no ProjectSetting to enable this by default
+	get_window().wrap_controls = true  # Sadly, there is no ProjectSetting to enable this by default
 
 	if OS.has_feature("editor"):
 		settings_path = ProjectSettings.globalize_path("user://debug_settings.cfg")
@@ -249,15 +225,28 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
+	var debounce_timer := Timer.new()
+	debounce_timer.name = "DebounceTimer"
 	debounce_timer.wait_time = 6.0  # seconds
 	debounce_timer.one_shot = true
 	add_child(debounce_timer)
 
-	debounce_timer.timeout.connect(func():
+	_connect_signals()
+
+
+func _connect_signals() -> void:
+	$DebounceTimer.timeout.connect(func():
 		if OS.is_debug_build():
 			print("[DEBUG] DebounceTimer Timed Out: Saving Settings...")
 		save_to_disk()
 	)
+
+
+func _start_debounce_timer() -> void:
+	if is_node_ready():
+		if OS.is_debug_build():
+			print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
+		$DebounceTimer.start()
 
 
 func _notification(what: int) -> void:
@@ -266,10 +255,8 @@ func _notification(what: int) -> void:
 
 
 func save_to_disk() -> void:
-	var config = ConfigFile.new()
-	config.load(settings_path) # keep existing settings (if there are any)
-
-	config.set_value("Settings", "store_path", store_path)
+	var config := ConfigFile.new()
+	config.load(settings_path)  # keep existing settings (if there are any)
 
 	config.set_value("AppState", "dark_mode", dark_mode)
 	config.set_value("AppState", "today_position", today_position)
@@ -281,6 +268,9 @@ func save_to_disk() -> void:
 	config.set_value("AppState", "show_bookmarks_from_the_past", show_bookmarks_from_the_past)
 	config.set_value("AppState", "fade_ticked_off_todos", fade_ticked_off_todos)
 	config.set_value("AppState", "fade_non_today_dates", fade_non_today_dates)
+
+	config.set_value("Settings", "store_path", store_path)
+
 	config.save(settings_path)
 
 	if OS.is_debug_build():
@@ -291,8 +281,6 @@ func load_from_disk() -> void:
 	var config := ConfigFile.new()
 	var error := config.load(settings_path)
 	if not error:
-		store_path = config.get_value("Settings", "store_path", store_path)
-
 		dark_mode = config.get_value("AppState", "dark_mode", dark_mode)
 		today_position = config.get_value("AppState", "today_position", today_position)
 		view_mode = config.get_value("AppState", "view_mode", view_mode)
@@ -303,3 +291,5 @@ func load_from_disk() -> void:
 		show_bookmarks_from_the_past = config.get_value("AppState", "show_bookmarks_from_the_past", show_bookmarks_from_the_past)
 		fade_ticked_off_todos = config.get_value("AppState", "fade_ticked_off_todos", fade_ticked_off_todos)
 		fade_non_today_dates = config.get_value("AppState", "fade_non_today_dates", fade_non_today_dates)
+
+		store_path = config.get_value("Settings", "store_path", store_path)
