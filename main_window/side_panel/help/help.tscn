@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://d15dr447oxpgn"]
 
-[ext_resource type="Script" path="res://main_window/side_panel/help/main.gd" id="1_1rhmu"]
+[ext_resource type="Script" path="res://main_window/side_panel/help/help.gd" id="1_1rhmu"]
 [ext_resource type="Script" path="res://custom/padded_scrollbar.gd" id="2_howdl"]
 
 [node name="Help" type="VBoxContainer"]

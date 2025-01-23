@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cata0rnrvpwj2"]
 
-[ext_resource type="Script" path="res://main_window/side_panel/help/input_hint/main.gd" id="1_w586x"]
+[ext_resource type="Script" path="res://main_window/side_panel/help/input_hint/input_hint.gd" id="1_w586x"]
 [ext_resource type="Texture2D" uid="uid://dvwky1k2js4hn" path="res://main_window/side_panel/help/input_hint/images/dotted_connector.png" id="2_noh0e"]
 
 [node name="InputHint" type="HBoxContainer"]

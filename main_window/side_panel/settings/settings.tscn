@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://cid0gwgt0yh1p"]
 
-[ext_resource type="Script" path="res://main_window/side_panel/settings/main.gd" id="1_xu2b7"]
+[ext_resource type="Script" path="res://main_window/side_panel/settings/settings.gd" id="1_xu2b7"]
 [ext_resource type="Script" path="res://custom/padded_scrollbar.gd" id="2_r5ote"]
 [ext_resource type="Script" path="res://custom/tooltip.gd" id="4_70x8g"]
 [ext_resource type="Texture2D" uid="uid://c4185sydmovdc" path="res://main_window/side_panel/settings/images/open.svg" id="4_bf631"]

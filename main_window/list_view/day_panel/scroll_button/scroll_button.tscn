@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://ofa44bt1yn4u"]
 
 [ext_resource type="Texture2D" uid="uid://mvrb0206nsy5" path="res://main_window/list_view/day_panel/images/line.png" id="2_6ekag"]
-[ext_resource type="Script" path="res://main_window/list_view/day_panel/scroll_button/main.gd" id="2_gh5kw"]
+[ext_resource type="Script" path="res://main_window/list_view/day_panel/scroll_button/scroll_button.gd" id="2_gh5kw"]
 [ext_resource type="Script" path="res://custom/drag_hover_trigger.gd" id="3_bvify"]
 
 [node name="ScrollButton" type="TextureRect"]

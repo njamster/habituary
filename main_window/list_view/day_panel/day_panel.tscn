@@ -1,10 +1,10 @@
 [gd_scene load_steps=7 format=3 uid="uid://cmdy32v105kli"]
 
-[ext_resource type="Script" path="res://main_window/list_view/day_panel/main.gd" id="1_a2phy"]
-[ext_resource type="PackedScene" uid="uid://ofa44bt1yn4u" path="res://main_window/list_view/day_panel/scroll_button/main.tscn" id="2_4oqj4"]
-[ext_resource type="PackedScene" uid="uid://dw8mvf72vw7qk" path="res://main_window/list_view/day_panel/todo_list/main.tscn" id="2_66ttt"]
+[ext_resource type="Script" path="res://main_window/list_view/day_panel/day_panel.gd" id="1_a2phy"]
+[ext_resource type="PackedScene" uid="uid://ofa44bt1yn4u" path="res://main_window/list_view/day_panel/scroll_button/scroll_button.tscn" id="2_4oqj4"]
+[ext_resource type="PackedScene" uid="uid://dw8mvf72vw7qk" path="res://main_window/list_view/day_panel/todo_list/todo_list.tscn" id="2_66ttt"]
 [ext_resource type="Script" path="res://custom/tooltip.gd" id="2_wbwrx"]
-[ext_resource type="Script" path="res://main_window/list_view/day_panel/scroll_container/main.gd" id="4_t4q73"]
+[ext_resource type="Script" path="res://main_window/list_view/day_panel/scroll_container/scroll_container.gd" id="4_t4q73"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8t3rb"]
 resource_local_to_scene = true

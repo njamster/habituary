@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://c0f0h24u7wfrh"]
 
 [ext_resource type="Texture2D" uid="uid://b8a1xfqe1gfp5" path="res://main_window/top_bar/search_bar/images/search.svg" id="1_1sgf3"]
-[ext_resource type="Script" path="res://main_window/top_bar/search_bar/main.gd" id="1_6r0fp"]
+[ext_resource type="Script" path="res://main_window/top_bar/search_bar/search_bar.gd" id="1_6r0fp"]
 [ext_resource type="Script" path="res://custom/tooltip.gd" id="3_s4ac0"]
 
 [node name="SearchBar" type="PanelContainer"]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://brgpa340xc1dn"]
 
-[ext_resource type="Script" path="res://main_window/overlay/main.gd" id="1_ippme"]
-[ext_resource type="PackedScene" uid="uid://l4kyh6xqycoy" path="res://main_window/overlay/calendar_widget/main.tscn" id="2_4rb6r"]
+[ext_resource type="Script" path="res://main_window/overlay/overlay.gd" id="1_ippme"]
+[ext_resource type="PackedScene" uid="uid://l4kyh6xqycoy" path="res://main_window/overlay/calendar_widget/calendar_widget.tscn" id="2_4rb6r"]
 
 [node name="Overlay" type="MarginContainer"]
 anchors_preset = 15

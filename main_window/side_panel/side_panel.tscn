@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://bbv588umdv0q4"]
 
-[ext_resource type="Script" path="res://main_window/side_panel/main.gd" id="1_mcu5f"]
-[ext_resource type="PackedScene" uid="uid://cid0gwgt0yh1p" path="res://main_window/side_panel/settings/main.tscn" id="2_rvfgn"]
-[ext_resource type="PackedScene" uid="uid://ba4ne2kctshba" path="res://main_window/side_panel/bookmarks/main.tscn" id="2_wylvk"]
-[ext_resource type="PackedScene" uid="uid://d15dr447oxpgn" path="res://main_window/side_panel/help/main.tscn" id="3_kejmd"]
+[ext_resource type="Script" path="res://main_window/side_panel/side_panel.gd" id="1_mcu5f"]
+[ext_resource type="PackedScene" uid="uid://cid0gwgt0yh1p" path="res://main_window/side_panel/settings/settings.tscn" id="2_rvfgn"]
+[ext_resource type="PackedScene" uid="uid://ba4ne2kctshba" path="res://main_window/side_panel/bookmarks/bookmarks.tscn" id="2_wylvk"]
+[ext_resource type="PackedScene" uid="uid://d15dr447oxpgn" path="res://main_window/side_panel/help/help.tscn" id="3_kejmd"]
 
 [node name="SidePanel" type="PanelContainer"]
 custom_minimum_size = Vector2(360, 0)
