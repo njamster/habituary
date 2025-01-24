@@ -2,8 +2,11 @@ extends PanelContainer
 
 
 func _ready() -> void:
+	_set_initial_state()
 	_connect_signals()
 
+
+func _set_initial_state() -> void:
 	self.hide()
 
 	for panel in [$Settings, $Capture, $Bookmarks, $Help]:

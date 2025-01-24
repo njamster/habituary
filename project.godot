@@ -23,6 +23,7 @@ config/icon="res://icon.svg"
 DayTimer="*res://autoloads/day_timer.gd"
 Settings="*res://autoloads/settings.gd"
 EventBus="*res://autoloads/event_bus.gd"
+Utils="*res://autoloads/utils.gd"
 
 [display]
 

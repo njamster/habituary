@@ -57,7 +57,8 @@ var DEFAULT_STORE_PATH : String:
 		else:
 			return OS.get_environment("HOME") + "/habituary/"
 
-var store_path: String:
+@export_group("Settings")
+@export var store_path: String:
 	set(value):
 		if store_path == value:
 			return
@@ -69,7 +70,8 @@ var settings_path : String
 
 var date_format_save := "YYYY-MM-DD"
 
-var today_position := TodayPosition.CENTERED:
+@export_group("AppState")
+@export var today_position := TodayPosition.CENTERED:
 	set(value):
 		if today_position == value:
 			return
@@ -81,7 +83,7 @@ var today_position := TodayPosition.CENTERED:
 
 var previous_view_mode
 
-var view_mode := 3:
+@export var view_mode := 3:
 	set(value):
 		if view_mode == value:
 			return
@@ -108,7 +110,7 @@ var current_day := DayTimer.today:
 
 		EventBus.current_day_changed.emit(current_day)
 
-var start_week_on_monday := true:
+@export var start_week_on_monday := true:
 	set(value):
 		if start_week_on_monday == value:
 			return
@@ -116,7 +118,7 @@ var start_week_on_monday := true:
 		start_week_on_monday = value
 		_start_debounce_timer()
 
-var day_start_hour_offset := 0:
+@export var day_start_hour_offset := 0:
 	set(value):
 		if day_start_hour_offset == value:
 			return
@@ -126,7 +128,7 @@ var day_start_hour_offset := 0:
 
 		EventBus.day_start_changed.emit()
 
-var day_start_minute_offset := 0:
+@export var day_start_minute_offset := 0:
 	set(value):
 		if day_start_minute_offset == value:
 			return
@@ -136,7 +138,7 @@ var day_start_minute_offset := 0:
 
 		EventBus.day_start_changed.emit()
 
-var dark_mode := true:
+@export var dark_mode := true:
 	set(value):
 		if dark_mode == value:
 			return
@@ -146,10 +148,10 @@ var dark_mode := true:
 
 		if dark_mode:
 			RenderingServer.set_default_clear_color("#2E3440")
-			get_tree().current_scene.theme = preload("res://theme/dark_theme.tres")
+			get_tree().get_root().theme = preload("res://theme/dark_theme.tres")
 		else:
 			RenderingServer.set_default_clear_color("#F5F5F5")
-			get_tree().current_scene.theme = preload("res://theme/light_theme.tres")
+			get_tree().get_root().theme = preload("res://theme/light_theme.tres")
 
 		EventBus.dark_mode_changed.emit(dark_mode)
 
@@ -162,7 +164,7 @@ var search_query := "":
 
 		EventBus.search_query_changed.emit()
 
-var side_panel := SidePanelState.HIDDEN:
+@export var side_panel := SidePanelState.HIDDEN:
 	set(value):
 		if side_panel == value:
 			return
@@ -172,7 +174,7 @@ var side_panel := SidePanelState.HIDDEN:
 
 		EventBus.side_panel_changed.emit()
 
-var show_bookmarks_from_the_past := true:
+@export var show_bookmarks_from_the_past := true:
 	set(value):
 		if show_bookmarks_from_the_past == value:
 			return
@@ -182,7 +184,7 @@ var show_bookmarks_from_the_past := true:
 
 		EventBus.show_bookmarks_from_the_past_changed.emit()
 
-var fade_ticked_off_todos := true:
+@export var fade_ticked_off_todos := true:
 	set(value):
 		if fade_ticked_off_todos == value:
 			return
@@ -192,7 +194,7 @@ var fade_ticked_off_todos := true:
 
 		EventBus.fade_ticked_off_todos_changed.emit()
 
-var fade_non_today_dates := FadeNonTodayDates.PAST:
+@export var fade_non_today_dates := FadeNonTodayDates.PAST:
 	set(value):
 		if fade_non_today_dates == value:
 			return
@@ -225,13 +227,16 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
+	_set_initial_state()
+	_connect_signals()
+
+
+func _set_initial_state() -> void:
 	var debounce_timer := Timer.new()
 	debounce_timer.name = "DebounceTimer"
 	debounce_timer.wait_time = 6.0  # seconds
 	debounce_timer.one_shot = true
 	add_child(debounce_timer)
-
-	_connect_signals()
 
 
 func _connect_signals() -> void:
@@ -256,20 +261,13 @@ func _notification(what: int) -> void:
 
 func save_to_disk() -> void:
 	var config := ConfigFile.new()
+
 	config.load(settings_path)  # keep existing settings (if there are any)
 
-	config.set_value("AppState", "dark_mode", dark_mode)
-	config.set_value("AppState", "today_position", today_position)
-	config.set_value("AppState", "view_mode", view_mode)
-	config.set_value("AppState", "start_week_on_monday", start_week_on_monday)
-	config.set_value("AppState", "day_start_hour_offset", day_start_hour_offset)
-	config.set_value("AppState", "day_start_minute_offset", day_start_minute_offset)
-	config.set_value("AppState", "side_panel", side_panel)
-	config.set_value("AppState", "show_bookmarks_from_the_past", show_bookmarks_from_the_past)
-	config.set_value("AppState", "fade_ticked_off_todos", fade_ticked_off_todos)
-	config.set_value("AppState", "fade_non_today_dates", fade_non_today_dates)
-
-	config.set_value("Settings", "store_path", store_path)
+	var exported_properties := Utils.get_exported_properties(self)
+	for group in exported_properties:
+		for property in exported_properties[group]:
+			config.set_value(group, property, get(property))
 
 	config.save(settings_path)
 
@@ -281,15 +279,10 @@ func load_from_disk() -> void:
 	var config := ConfigFile.new()
 	var error := config.load(settings_path)
 	if not error:
-		dark_mode = config.get_value("AppState", "dark_mode", dark_mode)
-		today_position = config.get_value("AppState", "today_position", today_position)
-		view_mode = config.get_value("AppState", "view_mode", view_mode)
-		start_week_on_monday = config.get_value("AppState", "start_week_on_monday", start_week_on_monday)
-		day_start_hour_offset = config.get_value("AppState", "day_start_hour_offset", day_start_hour_offset)
-		day_start_minute_offset = config.get_value("AppState", "day_start_minute_offset", day_start_minute_offset)
-		side_panel = config.get_value("AppState", "side_panel", side_panel)
-		show_bookmarks_from_the_past = config.get_value("AppState", "show_bookmarks_from_the_past", show_bookmarks_from_the_past)
-		fade_ticked_off_todos = config.get_value("AppState", "fade_ticked_off_todos", fade_ticked_off_todos)
-		fade_non_today_dates = config.get_value("AppState", "fade_non_today_dates", fade_non_today_dates)
+		var exported_properties := Utils.get_exported_properties(self)
+		for group in exported_properties:
+			for property in exported_properties[group]:
+				set(property, config.get_value(group, property, get(property)))
 
-		store_path = config.get_value("Settings", "store_path", store_path)
+	if OS.is_debug_build():
+		print("[DEBUG] Settings Restored From Disk!")
