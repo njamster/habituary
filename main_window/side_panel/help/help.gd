@@ -1,6 +1,6 @@
 extends VBoxContainer
 
-const INPUT_HINT_SCENE := preload("input_hint/main.tscn")
+const INPUT_HINT_SCENE := preload("input_hint/input_hint.tscn")
 
 var descriptions := {
 	"view_mode_1": "Change View To Show 1 Day",

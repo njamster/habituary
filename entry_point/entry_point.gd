@@ -70,7 +70,7 @@ func _try_changing_to_main_scene() -> void:
 	if DirAccess.dir_exists_absolute(%DirectoryPath.text):
 		Settings.store_path = %DirectoryPath.text
 		get_tree().change_scene_to_file.call_deferred(
-			"res://main_window/main.tscn"
+			"res://main_window/main_window.tscn"
 		)
 	else:
 		_show_error_message()
