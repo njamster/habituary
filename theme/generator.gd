@@ -14,14 +14,14 @@ const NEUTRAL_8 := Color("#F5F5F5")  # NOTE: added by me, not officially part of
 
 # primary colors
 const FROST_1 := Color("#8FBCBB")
-const FROST_2 := Color("#88C0D0")  # NOTE: unused, so far
+const FROST_2 := Color("#88C0D0")
 const FROST_3 := Color("#81A1C1")
 const FROST_4 := Color("#5E81AC")
 
 # secondary colors
-const AURORA_1 := Color("#BF616A")  # NOTE: unused, so far
-const AURORA_2 := Color("#D08770")  # NOTE: unused, so far
-const AURORA_3 := Color("#EBCB8B")  # NOTE: unused, so far
+const AURORA_1 := Color("#BF616A")
+const AURORA_2 := Color("#D08770")
+const AURORA_3 := Color("#EBCB8B")
 const AURORA_4 := Color("#A3BE8C")
 const AURORA_5 := Color("#B48EAD")  # NOTE: unused, so far
 #endregion
@@ -258,6 +258,8 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	#region LeftSidebarButton
 	var left_sidebar_button := theme.create_theme_type("LeftSidebarButton", "Button")
 
+	left_sidebar_button.font_hover_color = neutral_1
+
 	left_sidebar_button.set_main_style({
 		"corner_radius" = { "top_right": 4, "bottom_right": 4 },
 		"content_margin" = 4,
@@ -298,6 +300,18 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	line_edit_minimal.minimum_character_width = 0
 
 	line_edit_minimal.set_main_style({
+		# StyleBoxEmpty
+	})
+	#endregion
+
+	#region LineEdit_SearchMatch
+	var line_edit_search_match := theme.create_theme_type("LineEdit_SearchMatch", "LineEdit")
+
+	line_edit_search_match.font_color = primary_2
+
+	line_edit_search_match.minimum_character_width = 0
+
+	line_edit_search_match.set_main_style({
 		# StyleBoxEmpty
 	})
 	#endregion
@@ -437,6 +451,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	#region TodayCountLabel
 	var today_count_label := theme.create_theme_type("TodayCountLabel", "Label")
 
+	today_count_label.font_color = neutral_1
 	today_count_label.font_size = 9
 	#endregion
 
@@ -491,6 +506,14 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	scroll_button_text.font_size = 12
 	#endregion
 
+	#region ScrollButtonText_SearchMatch
+	var scroll_button_text_search_match := theme.create_theme_type("ScrollButtonText_SearchMatch", "Label")
+
+	scroll_button_text_search_match.font_color = primary_2
+
+	scroll_button_text_search_match.font_size = 12
+	#endregion
+
 	#region LargeSeparation
 	var large_separation := theme.create_theme_type("LargeSeparation", "BoxContainer")
 
@@ -501,6 +524,12 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	var medium_separation := theme.create_theme_type("MediumSeparation", "BoxContainer")
 
 	medium_separation.separation = 16
+	#endregion
+
+	#region TodoList_ItemSeparation
+	var todo_list_item_separation := theme.create_theme_type("TodoList_ItemSeparation", "BoxContainer")
+
+	todo_list_item_separation.separation = 13
 	#endregion
 
 	#region SmallSeparation
@@ -676,6 +705,85 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 		"content_margin" = 0,
 	})
 	#endregion
+
+	#region DayPanel_Header_Selected
+	var day_panel_header_selected := theme.create_theme_type("DayPanel_Header_Selected", "PanelContainer")
+
+	day_panel_header_selected.set_main_style({
+		"bg_color" = neutral_3,
+		"draw_center" = true,
+		"corner_radius" = 8,
+		"content_margin" = { "left": 4, "top": 4, "right": 4, "bottom": 2 },
+	})
+	#endregion
+
+	#region DayPanel_Header
+	var day_panel_header := theme.create_theme_type("DayPanel_Header", "PanelContainer")
+
+	day_panel_header.set_main_style({
+		"draw_center" = false,
+		"content_margin" = { "left": 4, "top": 4, "right": 4, "bottom": 2 },
+	})
+	#endregion
+
+	#region ToDoItem
+	var to_do_item := theme.create_theme_type("ToDoItem", "Button")
+
+	to_do_item.set_default_color(neutral_6)
+
+	to_do_item.set_main_style({
+		# StyleBoxEmpty
+	})
+	#endregion
+
+	#region ToDoItem_Focused
+	var to_do_item_focused := theme.create_theme_type("ToDoItem_Focused", "Button")
+
+	to_do_item_focused.set_default_color(primary_4)
+
+	to_do_item_focused.set_main_style({
+		# StyleBoxEmpty
+	})
+	#endregion
+
+	#region ToDoItem_Done
+	var to_do_item_done := theme.create_theme_type("ToDoItem_Done", "Button")
+
+	to_do_item_done.set_default_color(secondary_4)
+
+	to_do_item_done.set_main_style({
+		# StyleBoxEmpty
+	})
+	#endregion
+
+	#region ToDoItem_Failed
+	var to_do_item_failed := theme.create_theme_type("ToDoItem_Failed", "Button")
+
+	to_do_item_failed.set_default_color(secondary_1)
+
+	to_do_item_failed.set_main_style({
+		# StyleBoxEmpty
+	})
+	#endregion
+
+	#region ToDoItem_NoHeading
+	var to_do_item_no_heading := theme.create_theme_type("ToDoItem_NoHeading", "PanelContainer")
+
+	to_do_item_no_heading.set_main_style({
+		"draw_center" = false,
+	})
+	#endregion
+
+	#region ToDoItem_Heading
+	var to_do_item_heading := theme.create_theme_type("ToDoItem_Heading", "PanelContainer")
+
+	to_do_item_heading.set_main_style({
+		"bg_color" = neutral_3,
+		"corner_radius" = 6,
+		"resource_local_to_scene" = true
+	})
+	#endregion
+
 	# ----------------------------------------
 
 	# Keep UIDs from the previous version of the theme, if there are any. Without this, re-running

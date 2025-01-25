@@ -12,27 +12,15 @@ func _connect_signals() -> void:
 
 	EventBus.bookmarks_due_today_changed.connect(_update_today_count)
 	_update_today_count()
-
-	EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
-	_on_dark_mode_changed(Settings.dark_mode)
 	#endregion
 
 	#region Local Signals
 	$Capture.toggled.connect(_on_capture_toggled)
 
 	$Bookmarks.toggled.connect(_on_bookmarks_toggled)
-	$Bookmarks.mouse_entered.connect(_on_bookmarks_mouse_entered)
-	$Bookmarks.mouse_exited.connect(_on_bookmarks_mouse_exited)
 
 	$Help.toggled.connect(_on_help_toggled)
 	#endregion
-
-
-func _on_dark_mode_changed(dark_mode) -> void:
-		if dark_mode:
-			%TodayCount.add_theme_color_override("font_color", Settings.NORD_00)
-		else:
-			%TodayCount.add_theme_color_override("font_color", Settings.NORD_06)
 
 
 func _update_today_count() -> void:
@@ -99,13 +87,3 @@ func _on_help_toggled(toggled_on: bool) -> void:
 		Settings.side_panel = Settings.SidePanelState.HELP
 	else:
 		Settings.side_panel = Settings.SidePanelState.HIDDEN
-
-
-func _on_bookmarks_mouse_entered() -> void:
-	if not Settings.dark_mode:
-		%TodayCount.add_theme_color_override("font_color", Settings.NORD_00)
-
-
-func _on_bookmarks_mouse_exited() -> void:
-	if not Settings.dark_mode:
-		%TodayCount.add_theme_color_override("font_color", Settings.NORD_06)

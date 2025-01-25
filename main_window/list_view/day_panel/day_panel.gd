@@ -22,7 +22,6 @@ func _ready() -> void:
 
 
 func _set_initial_state() -> void:
-	_on_dark_mode_changed(Settings.dark_mode)
 	_on_view_mode_changed(Settings.view_mode)
 	_update_stretch_ratio(Settings.current_day)
 	_on_current_day_changed(Settings.current_day)
@@ -34,8 +33,6 @@ func _set_initial_state() -> void:
 func _connect_signals() -> void:
 	#region Global Signals
 	EventBus.today_changed.connect(_apply_date_relative_formating)
-
-	EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
 
 	EventBus.view_mode_changed.connect(_on_view_mode_changed)
 
@@ -125,11 +122,9 @@ func _apply_date_relative_formating() -> void:
 					$VBox.modulate.a = 0.4
 			else:
 				$VBox.modulate.a = 1.0
-			%Weekday.remove_theme_color_override("font_color")
 		elif day_difference == 0:
 			# date is today
 			$VBox.modulate.a = 1.0
-			%Weekday.add_theme_color_override("font_color", Settings.NORD_09)
 		else:
 			# date is in the future
 			if Settings.fade_non_today_dates == Settings.FadeNonTodayDates.FUTURE or \
@@ -137,11 +132,9 @@ func _apply_date_relative_formating() -> void:
 					$VBox.modulate.a = 0.4
 			else:
 				$VBox.modulate.a = 1.0
-			%Weekday.remove_theme_color_override("font_color")
 	else:
 		# reset formatting
 		modulate.a = 1.0
-		%Weekday.remove_theme_color_override("font_color")
 
 
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
@@ -209,20 +202,13 @@ func _on_mouse_exited() -> void:
 
 func _on_header_mouse_entered() -> void:
 	if Settings.view_mode != 1:
-		%Header.get("theme_override_styles/panel").draw_center = true
+		%Header.theme_type_variation = "DayPanel_Header_Selected"
 		%Header.mouse_default_cursor_shape = CURSOR_POINTING_HAND
 
 
 func _on_header_mouse_exited() -> void:
-	%Header.get("theme_override_styles/panel").draw_center = false
+	%Header.theme_type_variation = "DayPanel_Header"
 	%Header.mouse_default_cursor_shape = CURSOR_ARROW
-
-
-func _on_dark_mode_changed(dark_mode : bool) -> void:
-	if dark_mode:
-		%Header.get("theme_override_styles/panel").bg_color = Settings.NORD_02
-	else:
-		%Header.get("theme_override_styles/panel").bg_color = Settings.NORD_04
 
 
 func _on_view_mode_changed(view_mode : int) -> void:

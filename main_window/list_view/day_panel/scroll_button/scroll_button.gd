@@ -94,7 +94,7 @@ func _on_search_query_changed() -> void:
 			%Text.text = "%d more to-dos above" % items_out_of_view
 		else:
 			%Text.text = "%d more to-dos below" % items_out_of_view
-		%Text.add_theme_color_override("font_color", Color("#8fbcbb"))
+		%Text.theme_type_variation = "ScrollButtonText"
 		%Text.modulate.a = 1.0
 	else:
 		var matches_outside_view := 0
@@ -117,12 +117,12 @@ func _on_search_query_changed() -> void:
 				%Text.text += " above"
 			else:
 				%Text.text += " below"
-			%Text.add_theme_color_override("font_color", Color("#88c0d0"))
+			%Text.theme_type_variation = "ScrollButtonText_SearchMatch"
 			%Text.modulate.a = 1.0
 		else:
 			if mode == Modes.UP:
 				%Text.text = "%d more to-dos above" % items_out_of_view
 			else:
 				%Text.text = "%d more to-dos below" % items_out_of_view
-			%Text.remove_theme_color_override("font_color")
+			%Text.theme_type_variation = "ScrollButtonText"
 			%Text.modulate.a = 0.1

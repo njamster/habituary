@@ -302,7 +302,7 @@ func show_line_highlight(mouse_position : Vector2) -> void:
 	for i in range(%Items.get_child_count() - 1, -1, -1):
 		var child := %Items.get_child(i)
 		if child.visible:
-			y_position = child.global_position.y + child.size.y + %Items.get("theme_override_constants/separation")
+			y_position = child.global_position.y + child.size.y + %Items.get_theme_constant("separation")
 			break
 
 	# if the mouse cursor is above that last visible item, find the item that is closest to the
@@ -314,7 +314,7 @@ func show_line_highlight(mouse_position : Vector2) -> void:
 			break
 
 	$LineHighlight.global_position.y = y_position - \
-		0.5 * %Items.get("theme_override_constants/separation")
+		0.5 * %Items.get_theme_constant("separation")
 	if y_position == %Items.global_position.y:
 		$LineHighlight.position.y += 0.5 * $LineHighlight.custom_minimum_size.y
 	else:

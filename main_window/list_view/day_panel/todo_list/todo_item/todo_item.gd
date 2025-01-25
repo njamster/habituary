@@ -55,16 +55,12 @@ enum States { TO_DO, DONE, FAILED }
 			%CheckBox.button_pressed = (state != States.TO_DO)
 
 			if not _contains_mouse_cursor:
-				var icon_color := Settings.NORD_06 if Settings.dark_mode else Settings.NORD_00
 				if self.state == States.DONE:
-					icon_color = Color("#A3BE8C")
+					%CheckBox.theme_type_variation = "ToDoItem_Done"
 				elif self.state == States.FAILED:
-					icon_color = Color("#BF616A")
-
-				for toggle in [%CheckBox, %FoldHeading]:
-					toggle.set("theme_override_colors/icon_normal_color", icon_color)
-					toggle.set("theme_override_colors/icon_hover_color", icon_color)
-					toggle.set("theme_override_colors/icon_pressed_color", icon_color)
+					%CheckBox.theme_type_variation = "ToDoItem_Failed"
+				else:
+					%CheckBox.theme_type_variation = "ToDoItem"
 
 			_apply_state_relative_formating()
 
@@ -78,7 +74,7 @@ enum States { TO_DO, DONE, FAILED }
 		is_heading = value
 		if is_inside_tree():
 			if is_heading:
-				$MainRow.get("theme_override_styles/panel").draw_center = true
+				$MainRow.theme_type_variation = "ToDoItem_Heading"
 				%Heading.get_node("Tooltip").text = "Undo Heading"
 				%Delete.text = "Delete Heading"
 				%FoldHeading.show()
@@ -86,7 +82,7 @@ enum States { TO_DO, DONE, FAILED }
 			else:
 				if is_folded:
 					is_folded = false
-				$MainRow.get("theme_override_styles/panel").draw_center = false
+				$MainRow.theme_type_variation = "ToDoItem_NoHeading"
 				%Heading.get_node("Tooltip").text = "Make Heading"
 				%Delete.text = "Delete To-Do"
 				%FoldHeading.hide()
@@ -171,7 +167,7 @@ var indentation_level := 0:
 		indentation_level = clamp(value, 0, get_maximum_indentation_level())
 		var change := indentation_level - old_indentation_level
 
-		$MainRow.get("theme_override_styles/panel").content_margin_left = indentation_level * 20
+		%Indentation.custom_minimum_size.x = indentation_level * 20
 		$Triangle.custom_minimum_size.x = 22 + indentation_level * 40
 
 		if self.text: # skip this step for newly created to-dos that haven't been saved yet
@@ -244,9 +240,6 @@ func _ready() -> void:
 
 func _connect_signals() -> void:
 	#region Global Signals
-	EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
-	_on_dark_mode_changed(Settings.dark_mode)
-
 	EventBus.search_query_changed.connect(_check_for_search_query_match)
 	_check_for_search_query_match.call_deferred() # deferred, in case this item is loaded from disk
 
@@ -554,15 +547,8 @@ func load_from_disk(line : String) -> void:
 
 func _on_mouse_entered() -> void:
 	_contains_mouse_cursor = true
-	%ExtraInfo.set("theme_override_colors/font_color", Settings.NORD_09)
-	%CheckBox.set("theme_override_colors/icon_normal_color", Settings.NORD_09)
-	%CheckBox.set("theme_override_colors/icon_hover_color", Settings.NORD_09)
-	%CheckBox.set("theme_override_colors/icon_pressed_color", Settings.NORD_10)
-	%CheckBox.set("theme_override_colors/icon_disabled_color", Settings.NORD_10)
-	%FoldHeading.set("theme_override_colors/icon_normal_color", Settings.NORD_09)
-	%FoldHeading.set("theme_override_colors/icon_hover_color", Settings.NORD_09)
-	%FoldHeading.set("theme_override_colors/icon_pressed_color", Settings.NORD_10)
-	%FoldHeading.set("theme_override_colors/icon_disabled_color", Settings.NORD_10)
+	%CheckBox.theme_type_variation = "ToDoItem_Focused"
+	%FoldHeading.theme_type_variation = "ToDoItem_Focused"
 	if not get_viewport().gui_is_dragging():
 		%DragHandle.show()
 
@@ -573,55 +559,14 @@ func _on_mouse_exited() -> void:
 		if not is_in_edit_mode():
 			%DragHandle.hide()
 
-		var icon_color := Settings.NORD_06 if Settings.dark_mode else Settings.NORD_00
 		if self.state == States.DONE:
-			icon_color = Color("#A3BE8C")
+			%CheckBox.theme_type_variation = "ToDoItem_Done"
 		elif self.state == States.FAILED:
-			icon_color = Color("#BF616A")
-
-		if Settings.dark_mode:
-			%ExtraInfo.set("theme_override_colors/font_color", Settings.NORD_06)
-			for toggle in [%CheckBox, %FoldHeading]:
-				toggle.set("theme_override_colors/icon_normal_color", icon_color)
-				toggle.set("theme_override_colors/icon_hover_color", icon_color)
-				toggle.set("theme_override_colors/icon_pressed_color", icon_color)
-				toggle.set("theme_override_colors/icon_disabled_color", icon_color)
+			%CheckBox.theme_type_variation = "ToDoItem_Failed"
 		else:
-			%ExtraInfo.set("theme_override_colors/font_color", Settings.NORD_00)
-			for toggle in [%CheckBox, %FoldHeading]:
-				toggle.set("theme_override_colors/icon_normal_color", icon_color)
-				toggle.set("theme_override_colors/icon_hover_color", icon_color)
-				toggle.set("theme_override_colors/icon_pressed_color", icon_color)
-				toggle.set("theme_override_colors/icon_disabled_color", icon_color)
+			%CheckBox.theme_type_variation = "ToDoItem"
 
-
-func _on_dark_mode_changed(dark_mode : bool) -> void:
-	var icon_color := Settings.NORD_06 if Settings.dark_mode else Settings.NORD_00
-	if self.state == States.DONE:
-		icon_color = Color("#A3BE8C")
-	elif self.state == States.FAILED:
-		icon_color = Color("#BF616A")
-
-	if dark_mode:
-		$MainRow.get("theme_override_styles/panel").bg_color = Settings.NORD_02
-		%ExtraInfo.set("theme_override_colors/font_color", Settings.NORD_06)
-		%Edit.set("theme_override_colors/font_uneditable_color", Settings.NORD_06)
-		for toggle in [%CheckBox, %FoldHeading]:
-			toggle.set("theme_override_colors/icon_normal_color", icon_color)
-			toggle.set("theme_override_colors/icon_hover_color", icon_color)
-			toggle.set("theme_override_colors/icon_pressed_color", icon_color)
-			toggle.set("theme_override_colors/icon_disabled_color", icon_color)
-		%DragHandle.modulate = Settings.NORD_06
-	else:
-		$MainRow.get("theme_override_styles/panel").bg_color = Settings.NORD_04
-		%ExtraInfo.set("theme_override_colors/font_color", Settings.NORD_00)
-		%Edit.set("theme_override_colors/font_uneditable_color", Settings.NORD_00)
-		for toggle in [%CheckBox, %FoldHeading]:
-			toggle.set("theme_override_colors/icon_normal_color", icon_color)
-			toggle.set("theme_override_colors/icon_hover_color", icon_color)
-			toggle.set("theme_override_colors/icon_pressed_color", icon_color)
-			toggle.set("theme_override_colors/icon_disabled_color", icon_color)
-		%DragHandle.modulate = Settings.NORD_00
+		%FoldHeading.theme_type_variation = "ToDoItem"
 
 
 func _on_fold_heading_toggled(toggled_on: bool) -> void:
@@ -774,15 +719,13 @@ func _on_editing_options_resized() -> void:
 func _check_for_search_query_match() -> void:
 	if not Settings.search_query:
 		text_color_id = text_color_id
-		%Edit.remove_theme_color_override("font_uneditable_color")
+		%Edit.theme_type_variation = "LineEdit_Minimal"
 		%Edit.modulate.a = 1.0
 	elif %Edit.text.contains(Settings.search_query):
-		%Edit.add_theme_color_override("font_color", Color("#88c0d0"))
-		%Edit.add_theme_color_override("font_uneditable_color", Color("#88c0d0"))
+		%Edit.theme_type_variation = "LineEdit_SearchMatch"
 		%Edit.modulate.a = 1.0
 	else:
-		%Edit.remove_theme_color_override("font_color")
-		%Edit.remove_theme_color_override("font_uneditable_color")
+		%Edit.theme_type_variation = "LineEdit_Minimal"
 		%Edit.modulate.a = 0.1
 
 

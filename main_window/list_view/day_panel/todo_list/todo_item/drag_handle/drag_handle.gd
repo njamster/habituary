@@ -1,4 +1,4 @@
-extends TextureRect
+extends Button
 
 @onready var host := get_node("../../..")
 

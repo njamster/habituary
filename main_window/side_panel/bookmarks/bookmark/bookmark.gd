@@ -65,9 +65,6 @@ func _connect_signals() -> void:
 
 	EventBus.show_bookmarks_from_the_past_changed.connect(_on_show_bookmarks_from_the_past_changed)
 	_on_show_bookmarks_from_the_past_changed()
-
-	EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
-	_on_dark_mode_changed(Settings.dark_mode)
 	#endregion
 
 	#region Local Signals
@@ -75,15 +72,6 @@ func _connect_signals() -> void:
 
 	%JumpTo.pressed.connect(_on_jump_to_pressed)
 	#endregion
-
-
-func _on_dark_mode_changed(dark_mode) -> void:
-		if dark_mode:
-			%JumpTo.remove_theme_color_override("icon_normal_color")
-			%JumpTo.remove_theme_color_override("icon_hover_color")
-		else:
-			%JumpTo.add_theme_color_override("icon_normal_color", Settings.NORD_00)
-			%JumpTo.add_theme_color_override("icon_hover_color", Settings.NORD_00)
 
 
 func _apply_date_relative_formating() -> void:

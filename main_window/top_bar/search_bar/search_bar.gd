@@ -8,11 +8,6 @@ func _ready() -> void:
 
 
 func _connect_signals() -> void:
-	#region Global Signals
-	EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
-	_on_dark_mode_changed(Settings.dark_mode)
-	#endregion
-
 	#region Local Signals
 	gui_input.connect(_on_gui_input)
 	mouse_entered.connect(_on_mouse_entered)
@@ -28,21 +23,6 @@ func _connect_signals() -> void:
 
 	%ShortcutHint.pressed.connect(_on_shortcut_hint_pressed)
 	#endregion
-
-
-func _on_dark_mode_changed(dark_mode):
-		if dark_mode:
-			%Icon.self_modulate = Settings.NORD_06
-			var stylebox = %ShortcutHint.get_theme_stylebox("normal")
-			stylebox.bg_color = Settings.NORD_03
-			for style in ["normal", "hover", "pressed"]:
-				%ShortcutHint.add_theme_stylebox_override(style, stylebox)
-		else:
-			%Icon.self_modulate = Settings.NORD_00
-			var stylebox = %ShortcutHint.get_theme_stylebox("normal")
-			stylebox.bg_color = Settings.NORD_06
-			for style in ["normal", "hover", "pressed"]:
-				%ShortcutHint.add_theme_stylebox_override(style, stylebox)
 
 
 func _input(_event: InputEvent) -> void:
