@@ -1,6 +1,13 @@
 extends MarginContainer
 
 
+func _enter_tree() -> void:
+	if not Settings.store_path:
+		get_tree().change_scene_to_file.call_deferred(
+			"res://welcome_screen/welcome_screen.tscn"
+		)
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
 		var focus_owner = get_viewport().gui_get_focus_owner()

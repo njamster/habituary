@@ -5,9 +5,6 @@ func _ready() -> void:
 	_set_initial_state()
 	_connect_signals()
 
-	if Settings.store_path:
-		_try_changing_to_main_scene()
-
 
 func _set_initial_state() -> void:
 	$FileDialog.hide()
