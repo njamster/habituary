@@ -129,11 +129,23 @@ var current_day := DayTimer.today:
 		_start_debounce_timer()
 
 		if dark_mode:
-			RenderingServer.set_default_clear_color("#2E3440")
-			get_window().theme = load("res://theme/dark_theme.tres")
+			# NOTE: CACHE_MODE_IGNORE *must* be used here, as this is set as the
+			# custom theme in the Project Settings. Without it, the custom theme
+			# is reused and the setters of its export variables won't run.
+			get_window().theme = ResourceLoader.load(
+				"res://theme/dark_theme.tres",
+				"",
+				ResourceLoader.CACHE_MODE_IGNORE
+			)
 		else:
-			RenderingServer.set_default_clear_color("#F5F5F5")
-			get_window().theme = load("res://theme/light_theme.tres")
+			# NOTE: Since the light variant isn't used as the custom theme (see
+			# note above), it could technically apply CACHE_MODE_REUSE. However,
+			# due to this, it should not be present in the cache anyway!
+			get_window().theme = ResourceLoader.load(
+				"res://theme/light_theme.tres",
+				"",
+				ResourceLoader.CACHE_MODE_IGNORE
+			)
 
 		EventBus.dark_mode_changed.emit(dark_mode)
 

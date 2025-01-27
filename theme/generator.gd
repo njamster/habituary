@@ -84,6 +84,8 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 
 	var theme := ConciseTheme.new()
 
+	theme.background_color = neutral_1
+
 	theme.default_font_size = 14
 
 	#region AcceptDialog

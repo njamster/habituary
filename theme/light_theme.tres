@@ -1099,3 +1099,4 @@ TooltipLabel/font_sizes/font_size = 13
 TooltipPanel/base_type = &"PanelContainer"
 TooltipPanel/styles/panel = SubResource("StyleBoxFlat_5n5an")
 script = ExtResource("1_366r7")
+background_color = Color(0.960784, 0.960784, 0.960784, 1)

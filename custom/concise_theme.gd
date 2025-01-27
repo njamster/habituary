@@ -1,6 +1,7 @@
 extends Theme
 class_name ConciseTheme
 
+
 const DISTINCT_LINE_PROPERTIES := [
 	"color",
 	"grow_begin",
@@ -41,6 +42,12 @@ const DISTINCT_FLAT_PROPERTIES := [
 	"anti_aliasing",
 	"anti_aliasing_size",
 ]
+
+
+@export var background_color: Color:
+	set(value):
+		background_color = value
+		RenderingServer.set_default_clear_color(background_color)
 
 
 func create_theme_type(theme_type: StringName, base_type: StringName = "") -> ThemeType:
