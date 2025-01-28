@@ -19,6 +19,8 @@ signal show_bookmarks_from_the_past_changed
 signal fade_ticked_off_todos_changed
 @warning_ignore("unused_signal")
 signal fade_non_today_dates_changed
+@warning_ignore("unused_signal")
+signal to_do_text_colors_changed
 
 @warning_ignore("unused_signal")
 signal calendar_button_pressed

@@ -215,3 +215,96 @@ theme_type_variation = &"Explanation"
 theme_override_fonts/bold_italics_font = ExtResource("7_fjnu2")
 bbcode_enabled = true
 fit_content = true
+
+[node name="ToDoColors" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Color1" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color1"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme_type_variation = &"HeaderSmall"
+text = "To-Do Color #1"
+
+[node name="ColorPicker" type="ColorPickerButton" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color1"]
+custom_minimum_size = Vector2(23, 23)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+edit_alpha = false
+
+[node name="Color2" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme_type_variation = &"HeaderSmall"
+text = "To-Do Color #2"
+
+[node name="ColorPicker" type="ColorPickerButton" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color2"]
+custom_minimum_size = Vector2(23, 23)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+edit_alpha = false
+
+[node name="Color3" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color3"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme_type_variation = &"HeaderSmall"
+text = "To-Do Color #3"
+
+[node name="ColorPicker" type="ColorPickerButton" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color3"]
+custom_minimum_size = Vector2(23, 23)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+edit_alpha = false
+
+[node name="Color4" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color4"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme_type_variation = &"HeaderSmall"
+text = "To-Do Color #4"
+
+[node name="ColorPicker" type="ColorPickerButton" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color4"]
+custom_minimum_size = Vector2(23, 23)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+edit_alpha = false
+
+[node name="Color5" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color5"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme_type_variation = &"HeaderSmall"
+text = "To-Do Color #5"
+
+[node name="ColorPicker" type="ColorPickerButton" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color5"]
+custom_minimum_size = Vector2(23, 23)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+edit_alpha = false
+
+[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors"]
+modulate = Color(1, 1, 1, 0.607843)
+layout_mode = 2
+theme_type_variation = &"Explanation"
+theme_override_fonts/bold_italics_font = ExtResource("7_fjnu2")
+bbcode_enabled = true
+text = "[fill]The set of colors that can be assigned to a to-do's text in the formatting options while editing it. Changing this [u]will[/u] affect existing colored to-dos![/fill]"
+fit_content = true

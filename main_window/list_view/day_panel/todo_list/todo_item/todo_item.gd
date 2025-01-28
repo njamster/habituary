@@ -248,6 +248,15 @@ func _connect_signals() -> void:
 			and get_index() == bookmarked_line_number:
 				edit()
 	)
+
+	EventBus.to_do_text_colors_changed.connect(func():
+		if text_color_id:
+			var color = Settings.to_do_text_colors[text_color_id - 1]
+			%TextColor.get("theme_override_styles/panel").bg_color = color
+			%TextColor.get("theme_override_styles/panel").draw_center = true
+			%Edit.add_theme_color_override("font_placeholder_color", Color(color, 0.7))
+			%Edit.add_theme_color_override("font_color", color)
+	)
 	#endregion
 
 	#region Local Signals

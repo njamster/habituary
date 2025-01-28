@@ -22,13 +22,23 @@ enum SidePanelState {
 	SETTINGS
 }
 
-var to_do_text_colors := [
-	Color("#BF616A"),
-	Color("#D08770"),
-	Color("#EBCB8B"),
-	Color("#A3BE8C"),
-	Color("#B48EAD"),
+var DEFAULT_TO_DO_TEXT_COLORS := [
+	"#A3BE8C",
+	"#EBCB8B",
+	"#D08770",
+	"#B48EAD",
+	"#BF616A",
 ]
+
+@export var to_do_text_colors := DEFAULT_TO_DO_TEXT_COLORS:
+	set(value):
+		if to_do_text_colors == value or value.size() != 5:
+			return
+
+		to_do_text_colors = value
+		_start_debounce_timer()
+
+		EventBus.to_do_text_colors_changed.emit()
 
 var DEFAULT_STORE_PATH : String:
 	get():

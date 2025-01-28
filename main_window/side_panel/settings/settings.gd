@@ -2,6 +2,7 @@ extends VBoxContainer
 
 
 func _ready() -> void:
+	_set_initial_state()
 	_connect_signals()
 
 	for option_name in Settings.TodayPosition:
@@ -26,6 +27,12 @@ func _ready() -> void:
 	_on_fade_non_today_dates_options_item_selected(Settings.fade_non_today_dates)
 
 
+func _set_initial_state() -> void:
+	for i in range(5):
+		%ToDoColors.get_node("Color%d/ColorPicker" % (i+1)).color = \
+			Settings.to_do_text_colors[i]
+
+
 func _connect_signals() -> void:
 	#region Local Signals
 	%StorePath/Setting/Change.pressed.connect(_on_change_store_path_pressed)
@@ -40,6 +47,9 @@ func _connect_signals() -> void:
 	%FadeTickedOffTodos/Setting/Options.toggled.connect(_on_fade_ticked_off_todos_options_toggled)
 
 	%FadeNonTodayDates/Setting/Options.item_selected.connect(_on_fade_non_today_dates_options_item_selected)
+
+	for i in range(5):
+		%ToDoColors.get_node("Color%d/ColorPicker" % (i+1)).color_changed.connect(_on_todo_color_changed.bind(i))
 	#endregion
 
 
@@ -126,3 +136,9 @@ func _on_fade_non_today_dates_options_item_selected(index: int) -> void:
 			])
 		_:
 			%FadeNonTodayDates/Explanation.text = "" # this shouldn't happen
+
+
+func _on_todo_color_changed(color: Color, id: int) -> void:
+	var new_colors = Settings.to_do_text_colors.duplicate()
+	new_colors[id] = "#" + color.to_html(false).to_upper()
+	Settings.to_do_text_colors = new_colors
