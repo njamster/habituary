@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://cid0gwgt0yh1p"]
+[gd_scene load_steps=8 format=3 uid="uid://cid0gwgt0yh1p"]
 
 [ext_resource type="Script" path="res://main_window/side_panel/settings/settings.gd" id="1_xu2b7"]
 [ext_resource type="Script" path="res://custom/padded_scrollbar.gd" id="2_r5ote"]
 [ext_resource type="Script" path="res://custom/tooltip.gd" id="4_70x8g"]
 [ext_resource type="Texture2D" uid="uid://c4185sydmovdc" path="res://main_window/side_panel/settings/images/open.svg" id="4_bf631"]
 [ext_resource type="Script" path="res://custom/formatted_spin_box.gd" id="5_px7qq"]
+[ext_resource type="Texture2D" uid="uid://cgn2tyjgkapl2" path="res://main_window/side_panel/settings/images/reset.svg" id="7_amjql"]
 [ext_resource type="FontFile" uid="uid://c7b83cfl74of8" path="res://theme/fonts/OpenSans-ExtraBoldItalic.ttf" id="7_fjnu2"]
 
 [node name="Settings" type="VBoxContainer"]
@@ -230,8 +231,18 @@ size_flags_vertical = 8
 theme_type_variation = &"HeaderSmall"
 text = "To-Do Color #1"
 
+[node name="Reset" type="Button" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color1"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+icon = ExtResource("7_amjql")
+
+[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color1/Reset"]
+script = ExtResource("4_70x8g")
+text = "Reset to Default"
+popup_position = 5
+
 [node name="ColorPicker" type="ColorPickerButton" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color1"]
-custom_minimum_size = Vector2(23, 23)
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 edit_alpha = false
@@ -246,8 +257,18 @@ size_flags_vertical = 8
 theme_type_variation = &"HeaderSmall"
 text = "To-Do Color #2"
 
+[node name="Reset" type="Button" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color2"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+icon = ExtResource("7_amjql")
+
+[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color2/Reset"]
+script = ExtResource("4_70x8g")
+text = "Reset to Default"
+popup_position = 5
+
 [node name="ColorPicker" type="ColorPickerButton" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color2"]
-custom_minimum_size = Vector2(23, 23)
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 edit_alpha = false
@@ -262,8 +283,18 @@ size_flags_vertical = 8
 theme_type_variation = &"HeaderSmall"
 text = "To-Do Color #3"
 
+[node name="Reset" type="Button" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color3"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+icon = ExtResource("7_amjql")
+
+[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color3/Reset"]
+script = ExtResource("4_70x8g")
+text = "Reset to Default"
+popup_position = 5
+
 [node name="ColorPicker" type="ColorPickerButton" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color3"]
-custom_minimum_size = Vector2(23, 23)
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 edit_alpha = false
@@ -278,8 +309,18 @@ size_flags_vertical = 8
 theme_type_variation = &"HeaderSmall"
 text = "To-Do Color #4"
 
+[node name="Reset" type="Button" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color4"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+icon = ExtResource("7_amjql")
+
+[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color4/Reset"]
+script = ExtResource("4_70x8g")
+text = "Reset to Default"
+popup_position = 5
+
 [node name="ColorPicker" type="ColorPickerButton" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color4"]
-custom_minimum_size = Vector2(23, 23)
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 edit_alpha = false
@@ -294,8 +335,18 @@ size_flags_vertical = 8
 theme_type_variation = &"HeaderSmall"
 text = "To-Do Color #5"
 
+[node name="Reset" type="Button" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color5"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+icon = ExtResource("7_amjql")
+
+[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color5/Reset"]
+script = ExtResource("4_70x8g")
+text = "Reset to Default"
+popup_position = 5
+
 [node name="ColorPicker" type="ColorPickerButton" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color5"]
-custom_minimum_size = Vector2(23, 23)
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 edit_alpha = false

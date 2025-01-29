@@ -28,12 +28,23 @@ func _ready() -> void:
 
 
 func _set_initial_state() -> void:
+	_set_text_colors()
+
+
+func _set_text_colors() -> void:
 	for i in range(5):
+		var current_color = Settings.to_do_text_colors[i]
 		%ToDoColors.get_node("Color%d/ColorPicker" % (i+1)).color = \
-			Settings.to_do_text_colors[i]
+			current_color
+		%ToDoColors.get_node("Color%d/Reset" % (i+1)).visible = \
+			(current_color != Settings.DEFAULT_TO_DO_TEXT_COLORS[i])
 
 
 func _connect_signals() -> void:
+	#region Global Signals
+	EventBus.to_do_text_colors_changed.connect(_set_text_colors)
+	#endregion
+
 	#region Local Signals
 	%StorePath/Setting/Change.pressed.connect(_on_change_store_path_pressed)
 
@@ -50,6 +61,7 @@ func _connect_signals() -> void:
 
 	for i in range(5):
 		%ToDoColors.get_node("Color%d/ColorPicker" % (i+1)).color_changed.connect(_on_todo_color_changed.bind(i))
+		%ToDoColors.get_node("Color%d/Reset" % (i+1)).pressed.connect(_on_todo_color_reset.bind(i))
 	#endregion
 
 
@@ -141,4 +153,10 @@ func _on_fade_non_today_dates_options_item_selected(index: int) -> void:
 func _on_todo_color_changed(color: Color, id: int) -> void:
 	var new_colors = Settings.to_do_text_colors.duplicate()
 	new_colors[id] = "#" + color.to_html(false).to_upper()
+	Settings.to_do_text_colors = new_colors
+
+
+func _on_todo_color_reset(id: int) -> void:
+	var new_colors = Settings.to_do_text_colors.duplicate()
+	new_colors[id] = Settings.DEFAULT_TO_DO_TEXT_COLORS[id]
 	Settings.to_do_text_colors = new_colors
