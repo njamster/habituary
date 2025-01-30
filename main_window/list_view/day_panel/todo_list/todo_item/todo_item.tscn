@@ -258,6 +258,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_sg8j5")
 [node name="Tooltip" type="Node" parent="EditingOptions/HBox/TextColor"]
 script = ExtResource("3_oduck")
 text = "Change Text Color"
+input_action = "next_text_color,previous_text_color"
 popup_position = 3
 
 [node name="Bookmark" type="Button" parent="EditingOptions/HBox"]

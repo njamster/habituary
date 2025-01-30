@@ -9,7 +9,11 @@ class_name Tooltip
 			_tooltip_panel.size = Vector2.ZERO # shrink to content
 			_position_tooltip()
 
+@export var hide_text := false
+
 @export var input_action : String
+
+@export var hide_input_action := false
 
 ## When enabled, [member text] and [member input_action] are printed in one line, not two.
 @export var is_dense := false
@@ -60,7 +64,7 @@ func _ready() -> void:
 func show_tooltip() -> void:
 	_contains_mouse_cursor = true
 
-	if disabled or not text:
+	if disabled or (not text and not input_action):
 		return
 
 	if get_parent() is BaseButton and get_parent().disabled and not show_on_disabled_buttons:
@@ -93,30 +97,38 @@ func _spawn_panel() -> void:
 	container.vertical = not is_dense
 
 	# step 3: add tooltip label
-	_tooltip_label = Label.new()
-	container.add_child(_tooltip_label)
+	if not hide_text:
+		_tooltip_label = Label.new()
+		container.add_child(_tooltip_label)
 
-	_tooltip_label.theme_type_variation = "TooltipLabel"
+		_tooltip_label.theme_type_variation = "TooltipLabel"
 
-	_tooltip_label.text = text
-	_tooltip_label.horizontal_alignment = self.text_alignment
+		_tooltip_label.text = text
+		_tooltip_label.horizontal_alignment = self.text_alignment
 
 	# step 4: add shortcut hint (optional)
-	if self.input_action:
-		if InputMap.has_action(self.input_action):
-			var events := InputMap.action_get_events(self.input_action)
-			if events:
-				var _shortcut_hint = Label.new()
-				container.add_child(_shortcut_hint)
+	if not hide_input_action:
+		if self.input_action:
+			for action in self.input_action.split(","):
+				if InputMap.has_action(action):
+					var events := InputMap.action_get_events(action)
+					if events:
+						if container.has_node("ShortcutHint"):
+							container.get_node("ShortcutHint").text += " / " + \
+								events[0].as_text().to_upper().replace("+", " + ")
+						else:
+							var _shortcut_hint = Label.new()
+							_shortcut_hint.name = "ShortcutHint"
+							container.add_child(_shortcut_hint)
 
-				_shortcut_hint.theme_type_variation = "TooltipLabel"
-				_shortcut_hint.add_theme_font_size_override("font_size", 11)
-				_shortcut_hint.modulate.a = 0.5
+							_shortcut_hint.theme_type_variation = "TooltipLabel"
+							_shortcut_hint.add_theme_font_size_override("font_size", 11)
+							_shortcut_hint.modulate.a = 0.5
 
-				_shortcut_hint.text = events[0].as_text().to_upper().replace("+", " + ")
-				_shortcut_hint.horizontal_alignment = self.text_alignment
-		else:
-			push_warning("Unknown input action: '%s'" % self.input_action)
+							_shortcut_hint.text = events[0].as_text().to_upper().replace("+", " + ")
+							_shortcut_hint.horizontal_alignment = self.text_alignment
+				else:
+					push_warning("Unknown input action: '%s'" % action)
 
 	# step 5: position tooltip
 	_position_tooltip()

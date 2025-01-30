@@ -711,18 +711,18 @@ func _on_editing_options_resized() -> void:
 		%FormatLabel.hide()
 
 		%Delete.clip_text = true
-		%Delete.get_node("Tooltip").disabled = false
+		%Delete.get_node("Tooltip").hide_text = false
 
 		%Bookmark.clip_text = true
-		%Bookmark.get_node("Tooltip").disabled = false
+		%Bookmark.get_node("Tooltip").hide_text = false
 	else:
 		%FormatLabel.show()
 
 		%Delete.clip_text = false
-		%Delete.get_node("Tooltip").disabled = true
+		%Delete.get_node("Tooltip").hide_text = true
 
 		%Bookmark.clip_text = false
-		%Bookmark.get_node("Tooltip").disabled = true
+		%Bookmark.get_node("Tooltip").hide_text = true
 
 
 func _check_for_search_query_match() -> void:

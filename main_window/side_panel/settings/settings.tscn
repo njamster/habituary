@@ -247,6 +247,11 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 edit_alpha = false
 
+[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color1/ColorPicker"]
+script = ExtResource("4_70x8g")
+text = "Click to Choose Color"
+popup_position = 5
+
 [node name="Color2" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors"]
 layout_mode = 2
 
@@ -272,6 +277,11 @@ custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 edit_alpha = false
+
+[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color2/ColorPicker"]
+script = ExtResource("4_70x8g")
+text = "Click to Choose Color"
+popup_position = 5
 
 [node name="Color3" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors"]
 layout_mode = 2
@@ -299,6 +309,11 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 edit_alpha = false
 
+[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color3/ColorPicker"]
+script = ExtResource("4_70x8g")
+text = "Click to Choose Color"
+popup_position = 5
+
 [node name="Color4" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors"]
 layout_mode = 2
 
@@ -325,6 +340,11 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 edit_alpha = false
 
+[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color4/ColorPicker"]
+script = ExtResource("4_70x8g")
+text = "Click to Choose Color"
+popup_position = 5
+
 [node name="Color5" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors"]
 layout_mode = 2
 
@@ -350,6 +370,11 @@ custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 edit_alpha = false
+
+[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color5/ColorPicker"]
+script = ExtResource("4_70x8g")
+text = "Click to Choose Color"
+popup_position = 5
 
 [node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors"]
 modulate = Color(1, 1, 1, 0.607843)
