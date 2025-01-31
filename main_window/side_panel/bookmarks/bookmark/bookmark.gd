@@ -63,7 +63,7 @@ func _connect_signals() -> void:
 		_apply_date_relative_formating()
 	)
 
-	EventBus.show_bookmarks_from_the_past_changed.connect(_on_show_bookmarks_from_the_past_changed)
+	Settings.show_bookmarks_from_the_past_changed.connect(_on_show_bookmarks_from_the_past_changed)
 	_on_show_bookmarks_from_the_past_changed()
 	#endregion
 

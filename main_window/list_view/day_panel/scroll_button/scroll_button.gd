@@ -16,7 +16,7 @@ func _ready() -> void:
 
 func _connect_signals() -> void:
 	#region Global Signals
-	EventBus.search_query_changed.connect(_on_search_query_changed)
+	Settings.search_query_changed.connect(_on_search_query_changed)
 	#endregion
 
 	#region Parent Signals

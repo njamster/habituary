@@ -35,14 +35,15 @@ func _connect_signals() -> void:
 func _on_visibility_changed() -> void:
 	if visible:
 		anchor_date = Date.new(Settings.current_day.as_dict())
-		EventBus.current_day_changed.connect(_on_current_day_changed)
+		Settings.current_day_changed.connect(_on_current_day_changed)
 		update_month()
 	else:
-		if EventBus.current_day_changed.is_connected(_on_current_day_changed):
-			EventBus.current_day_changed.disconnect(_on_current_day_changed)
+		if Settings.current_day_changed.is_connected(_on_current_day_changed):
+			Settings.current_day_changed.disconnect(_on_current_day_changed)
 
 
-func _on_current_day_changed(current_day : Date) -> void:
+func _on_current_day_changed() -> void:
+	var current_day := Settings.current_day
 	if current_day.year != anchor_date.year or current_day.month != anchor_date.month:
 		# jump to the correct year and month in the calendar widget
 		anchor_date.year = current_day.year

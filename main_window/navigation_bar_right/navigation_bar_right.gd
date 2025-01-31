@@ -7,7 +7,7 @@ func _ready() -> void:
 
 func _connect_signals() -> void:
 	#region Global Signals
-	EventBus.view_mode_changed.connect(_on_view_mode_changed)
+	Settings.view_mode_changed.connect(_on_view_mode_changed)
 
 	EventBus.overlay_closed.connect(_on_overlay_closed)
 	#endregion
@@ -29,11 +29,11 @@ func _on_shift_view_forward_pressed() -> void:
 	Settings.current_day = Settings.current_day.add_days(Settings.view_mode)
 
 
-func _on_view_mode_changed(view_mode : int) -> void:
-	if view_mode == 1:
-		$ShiftViewForward/Tooltip.text = "Move %d Day Forward" % view_mode
+func _on_view_mode_changed() -> void:
+	if Settings.view_mode == 1:
+		$ShiftViewForward/Tooltip.text = "Move %d Day Forward" % Settings.view_mode
 	else:
-		$ShiftViewForward/Tooltip.text = "Move %d Days Forward" % view_mode
+		$ShiftViewForward/Tooltip.text = "Move %d Days Forward" % Settings.view_mode
 
 
 func _on_calendar_toggled(toggled_on: bool) -> void:

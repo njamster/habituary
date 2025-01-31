@@ -14,7 +14,7 @@ func _set_initial_state() -> void:
 
 
 func _connect_signals() -> void:
-	EventBus.side_panel_changed.connect(_on_side_panel_changed)
+	Settings.side_panel_changed.connect(_on_side_panel_changed)
 	_on_side_panel_changed()
 
 

@@ -7,10 +7,10 @@ func _ready() -> void:
 
 func _connect_signals() -> void:
 	#region Global Signals
-	EventBus.dark_mode_changed.connect(_on_dark_mode_changed)
-	_on_dark_mode_changed(Settings.dark_mode)
+	Settings.dark_mode_changed.connect(_on_dark_mode_changed)
+	_on_dark_mode_changed()
 
-	EventBus.side_panel_changed.connect(_on_side_panel_changed)
+	Settings.side_panel_changed.connect(_on_side_panel_changed)
 	_on_side_panel_changed()
 	#endregion
 
@@ -44,8 +44,8 @@ func _on_mode_pressed() -> void:
 	Settings.dark_mode = not Settings.dark_mode
 
 
-func _on_dark_mode_changed(dark_mode) -> void:
-	if dark_mode:
+func _on_dark_mode_changed() -> void:
+	if Settings.dark_mode:
 		$Mode.icon = preload("images/mode_light.svg")
 		$Mode/Tooltip.text = "Switch To Light Mode"
 	else:

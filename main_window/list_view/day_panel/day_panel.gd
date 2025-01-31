@@ -22,9 +22,9 @@ func _ready() -> void:
 
 
 func _set_initial_state() -> void:
-	_on_view_mode_changed(Settings.view_mode)
-	_update_stretch_ratio(Settings.current_day)
-	_on_current_day_changed(Settings.current_day)
+	_on_view_mode_changed()
+	_update_stretch_ratio()
+	_on_current_day_changed()
 
 	_update_store_path()
 	_update_header()
@@ -34,18 +34,18 @@ func _connect_signals() -> void:
 	#region Global Signals
 	EventBus.today_changed.connect(_apply_date_relative_formating)
 
-	EventBus.view_mode_changed.connect(_on_view_mode_changed)
+	Settings.view_mode_changed.connect(_on_view_mode_changed)
 
 	EventBus.today_changed.connect(_update_date_offset)
 
-	EventBus.current_day_changed.connect(_update_stretch_ratio)
+	Settings.current_day_changed.connect(_update_stretch_ratio)
 
-	EventBus.fade_non_today_dates_changed.connect(_apply_date_relative_formating)
+	Settings.fade_non_today_dates_changed.connect(_apply_date_relative_formating)
 
-	EventBus.current_day_changed.connect(_on_current_day_changed)
+	Settings.current_day_changed.connect(_on_current_day_changed)
 
-	EventBus.view_mode_changed.connect(func(_x):
-		_on_current_day_changed(Settings.current_day)
+	Settings.view_mode_changed.connect(func():
+		_on_current_day_changed()
 	)
 	#endregion
 
@@ -70,8 +70,8 @@ func _connect_signals() -> void:
 	#endregion
 
 
-func _update_stretch_ratio(current_day : Date) -> void:
-	if date.as_dict() == current_day.as_dict():
+func _update_stretch_ratio() -> void:
+	if date.as_dict() == Settings.current_day.as_dict():
 		size_flags_stretch_ratio = 1.5
 	else:
 		size_flags_stretch_ratio = 1.0
@@ -211,16 +211,16 @@ func _on_header_mouse_exited() -> void:
 	%Header.mouse_default_cursor_shape = CURSOR_ARROW
 
 
-func _on_view_mode_changed(view_mode : int) -> void:
-	if view_mode == 1:
+func _on_view_mode_changed() -> void:
+	if Settings.view_mode == 1:
 		%Header/Tooltip.disabled = true
 		%Header/Tooltip.hide_tooltip()
 	else:
 		%Header/Tooltip.disabled = false
 
 
-func _on_current_day_changed(current_day: Date) -> void:
-	if Settings.view_mode != 1 and date.as_dict() == current_day.as_dict():
+func _on_current_day_changed() -> void:
+	if Settings.view_mode != 1 and date.as_dict() == Settings.current_day.as_dict():
 		theme_type_variation = "DayPanel_CurrentDay"
 	else:
 		theme_type_variation = "DayPanel"

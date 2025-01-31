@@ -1,6 +1,19 @@
 extends Node
 
 
+signal to_do_text_colors_changed
+signal current_day_changed
+signal view_mode_changed
+signal day_start_changed
+signal dark_mode_changed
+signal search_query_changed
+signal side_panel_changed
+signal show_bookmarks_from_the_past_changed
+signal fade_ticked_off_todos_changed
+signal fade_non_today_dates_changed
+signal bookmarks_due_today_changed
+
+
 enum TodayPosition {
 	LEFTMOST,
 	SECOND_PLACE,
@@ -38,7 +51,7 @@ var DEFAULT_TO_DO_TEXT_COLORS := [
 		to_do_text_colors = value
 		_start_debounce_timer()
 
-		EventBus.to_do_text_colors_changed.emit()
+		to_do_text_colors_changed.emit()
 
 var DEFAULT_STORE_PATH : String:
 	get():
@@ -71,7 +84,7 @@ var date_format_save := "YYYY-MM-DD"
 		today_position = value
 		_start_debounce_timer()
 
-		EventBus.current_day_changed.emit(current_day)
+		current_day_changed.emit()
 
 var previous_view_mode
 
@@ -86,7 +99,7 @@ var previous_view_mode
 		view_mode = value
 		_start_debounce_timer()
 
-		EventBus.view_mode_changed.emit(view_mode)
+		view_mode_changed.emit()
 
 var previous_day
 
@@ -100,7 +113,7 @@ var current_day := DayTimer.today:
 
 		current_day = value
 
-		EventBus.current_day_changed.emit(current_day)
+		current_day_changed.emit()
 
 @export var start_week_on_monday := true:
 	set(value):
@@ -118,7 +131,7 @@ var current_day := DayTimer.today:
 		day_start_hour_offset = value
 		_start_debounce_timer()
 
-		EventBus.day_start_changed.emit()
+		day_start_changed.emit()
 
 @export var day_start_minute_offset := 0:
 	set(value):
@@ -128,7 +141,7 @@ var current_day := DayTimer.today:
 		day_start_minute_offset = value
 		_start_debounce_timer()
 
-		EventBus.day_start_changed.emit()
+		day_start_changed.emit()
 
 @export var dark_mode := true:
 	set(value):
@@ -157,7 +170,7 @@ var current_day := DayTimer.today:
 				ResourceLoader.CACHE_MODE_IGNORE
 			)
 
-		EventBus.dark_mode_changed.emit(dark_mode)
+		dark_mode_changed.emit()
 
 var search_query := "":
 	set(value):
@@ -166,7 +179,7 @@ var search_query := "":
 
 		search_query = value
 
-		EventBus.search_query_changed.emit()
+		search_query_changed.emit()
 
 @export var side_panel := SidePanelState.HIDDEN:
 	set(value):
@@ -176,7 +189,7 @@ var search_query := "":
 		side_panel = value
 		_start_debounce_timer()
 
-		EventBus.side_panel_changed.emit()
+		side_panel_changed.emit()
 
 @export var show_bookmarks_from_the_past := true:
 	set(value):
@@ -186,7 +199,7 @@ var search_query := "":
 		show_bookmarks_from_the_past = value
 		_start_debounce_timer()
 
-		EventBus.show_bookmarks_from_the_past_changed.emit()
+		show_bookmarks_from_the_past_changed.emit()
 
 @export var fade_ticked_off_todos := true:
 	set(value):
@@ -196,7 +209,7 @@ var search_query := "":
 		fade_ticked_off_todos = value
 		_start_debounce_timer()
 
-		EventBus.fade_ticked_off_todos_changed.emit()
+		fade_ticked_off_todos_changed.emit()
 
 @export var fade_non_today_dates := FadeNonTodayDates.PAST:
 	set(value):
@@ -206,7 +219,7 @@ var search_query := "":
 		fade_non_today_dates = value
 		_start_debounce_timer()
 
-		EventBus.fade_non_today_dates_changed.emit()
+		fade_non_today_dates_changed.emit()
 
 var bookmarks_due_today := 0:
 	set(value):
@@ -216,7 +229,7 @@ var bookmarks_due_today := 0:
 		bookmarks_due_today = value
 		_start_debounce_timer()
 
-		EventBus.bookmarks_due_today_changed.emit()
+		bookmarks_due_today_changed.emit()
 
 
 func _enter_tree() -> void:

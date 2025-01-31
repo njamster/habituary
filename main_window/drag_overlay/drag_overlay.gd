@@ -10,7 +10,7 @@ func _ready() -> void:
 
 func _connect_signals() -> void:
 	#region Global Signals
-	EventBus.side_panel_changed.connect(_on_side_panel_changed)
+	Settings.side_panel_changed.connect(_on_side_panel_changed)
 	_on_side_panel_changed()
 	#endregion
 

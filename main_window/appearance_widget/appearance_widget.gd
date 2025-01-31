@@ -9,8 +9,8 @@ func _connect_signals() -> void:
 	#region Global Signals
 	get_tree().get_root().size_changed.connect(_on_window_size_changed)
 
-	EventBus.view_mode_changed.connect(_on_view_mode_changed)
-	_on_view_mode_changed(Settings.view_mode)
+	Settings.view_mode_changed.connect(_on_view_mode_changed)
+	_on_view_mode_changed()
 	#endregion
 
 	#region Local Signals
@@ -65,6 +65,6 @@ func _on_window_size_changed() -> void:
 			Settings.view_mode = 1
 
 
-func _on_view_mode_changed(view_mode : int) -> void:
+func _on_view_mode_changed() -> void:
 	for button in get_children():
 		button.button_pressed = (int(button.text) == Settings.view_mode)

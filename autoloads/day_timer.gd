@@ -22,7 +22,7 @@ func _ready() -> void:
 
 	timeout.connect(_on_new_day)
 
-	EventBus.day_start_changed.connect(_on_day_start_changed)
+	Settings.day_start_changed.connect(_on_day_start_changed)
 
 	_on_day_start_changed(true)
 

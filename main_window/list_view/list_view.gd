@@ -13,26 +13,26 @@ func _ready() -> void:
 
 func _connect_signals() -> void:
 	#region Global Signals
-	EventBus.view_mode_changed.connect(_update_list_view)
-	_update_list_view(Settings.view_mode)
+	Settings.view_mode_changed.connect(_update_list_view)
+	_update_list_view()
 
-	EventBus.current_day_changed.connect(_shift_list_view)
+	Settings.current_day_changed.connect(_shift_list_view)
 	#endregion
 
 
-func _update_list_view(view_mode : int) -> void:
+func _update_list_view() -> void:
 	var child_count := get_child_count()
 
 	# remove superfluous panels (if there are any)
-	for i in range(view_mode, child_count):
+	for i in range(Settings.view_mode, child_count):
 		match Settings.today_position:
 			Settings.TodayPosition.LEFTMOST:
-				remove_day_panel(view_mode)
+				remove_day_panel(Settings.view_mode)
 			Settings.TodayPosition.SECOND_PLACE:
 				if i == 1:
 					remove_day_panel(0)
 				else:
-					remove_day_panel(view_mode)
+					remove_day_panel(Settings.view_mode)
 			Settings.TodayPosition.CENTERED:
 				if i % 2 == 0:
 					remove_day_panel(0)
@@ -40,7 +40,7 @@ func _update_list_view(view_mode : int) -> void:
 					remove_day_panel(get_child_count() - 1)
 
 	# add additonal panels (if it's necessary)
-	for i in range(child_count, view_mode):
+	for i in range(child_count, Settings.view_mode):
 		match Settings.today_position:
 			Settings.TodayPosition.LEFTMOST:
 				add_day_panel(i)
@@ -56,7 +56,7 @@ func _update_list_view(view_mode : int) -> void:
 					add_day_panel(ceil(0.5 * i))
 
 
-func _shift_list_view(current_day : Date) -> void:
+func _shift_list_view() -> void:
 	var today_offset := 0
 	match Settings.today_position:
 		Settings.TodayPosition.SECOND_PLACE:
@@ -65,7 +65,7 @@ func _shift_list_view(current_day : Date) -> void:
 		Settings.TodayPosition.CENTERED:
 			today_offset = floor(0.5 * Settings.view_mode)
 
-	var offset = current_day.day_difference_to(get_child(today_offset).date)
+	var offset = Settings.current_day.day_difference_to(get_child(today_offset).date)
 	offset = sign(offset) * min(abs(offset), Settings.view_mode)
 
 	for i in abs(offset):

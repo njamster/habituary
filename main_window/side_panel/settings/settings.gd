@@ -42,7 +42,7 @@ func _set_text_colors() -> void:
 
 func _connect_signals() -> void:
 	#region Global Signals
-	EventBus.to_do_text_colors_changed.connect(_set_text_colors)
+	Settings.to_do_text_colors_changed.connect(_set_text_colors)
 	#endregion
 
 	#region Local Signals

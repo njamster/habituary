@@ -235,12 +235,12 @@ func _ready() -> void:
 			else:
 				self.indentation_level = predecessor.indentation_level
 
-	EventBus.fade_ticked_off_todos_changed.connect(_apply_state_relative_formating)
+	Settings.fade_ticked_off_todos_changed.connect(_apply_state_relative_formating)
 
 
 func _connect_signals() -> void:
 	#region Global Signals
-	EventBus.search_query_changed.connect(_check_for_search_query_match)
+	Settings.search_query_changed.connect(_check_for_search_query_match)
 	_check_for_search_query_match.call_deferred() # deferred, in case this item is loaded from disk
 
 	EventBus.bookmark_jump_requested.connect(func(bookmarked_date, bookmarked_line_number):
@@ -249,7 +249,7 @@ func _connect_signals() -> void:
 				edit()
 	)
 
-	EventBus.to_do_text_colors_changed.connect(func():
+	Settings.to_do_text_colors_changed.connect(func():
 		if text_color_id:
 			var color = Settings.to_do_text_colors[text_color_id - 1]
 			%TextColor.get("theme_override_styles/panel").bg_color = color
