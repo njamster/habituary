@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://6im7rq1y7co6"
-path="res://.godot/imported/folded.svg-4c7869df8f108c9a1506c74f13f494ba.ctex"
+uid="uid://dr7xg2ji33j32"
+path="res://.godot/imported/bold.svg-65d6e13d0ad57c82232fb9a369148db9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://main_window/list_view/day_panel/todo_list/todo_item/images/folded.svg"
-dest_files=["res://.godot/imported/folded.svg-4c7869df8f108c9a1506c74f13f494ba.ctex"]
+source_file="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/bold.svg"
+dest_files=["res://.godot/imported/bold.svg-65d6e13d0ad57c82232fb9a369148db9.ctex"]
 
 [params]
 

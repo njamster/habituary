@@ -6,6 +6,14 @@ signal auto_scrolled
 const TODO_ITEM_HEIGHT := 40 # pixels
 
 
+func _ready() -> void:
+	_connect_signals()
+
+
+func _connect_signals() -> void:
+	gui_input.connect(_on_gui_input)
+
+
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:

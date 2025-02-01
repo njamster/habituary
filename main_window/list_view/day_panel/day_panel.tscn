@@ -1,10 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://cmdy32v105kli"]
+[gd_scene load_steps=4 format=3 uid="uid://cmdy32v105kli"]
 
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/day_panel.gd" id="1_a2phy"]
-[ext_resource type="PackedScene" uid="uid://ofa44bt1yn4u" path="res://main_window/list_view/day_panel/scroll_button/scroll_button.tscn" id="2_4oqj4"]
-[ext_resource type="PackedScene" uid="uid://dw8mvf72vw7qk" path="res://main_window/list_view/day_panel/todo_list/todo_list.tscn" id="2_66ttt"]
 [ext_resource type="Script" path="res://custom/tooltip.gd" id="2_wbwrx"]
-[ext_resource type="Script" path="res://main_window/list_view/day_panel/scroll_container/scroll_container.gd" id="4_t4q73"]
+[ext_resource type="PackedScene" uid="uid://be8ue76y7g22d" path="res://main_window/list_view/day_panel/scrollable_todo_list/scrollable_todo_list.tscn" id="3_db22u"]
 
 [node name="DayPanel" type="PanelContainer"]
 anchors_preset = 15
@@ -60,25 +58,6 @@ popup_position = 4
 custom_minimum_size = Vector2(0, 8)
 layout_mode = 2
 
-[node name="ScrollUpButton" parent="VBox" instance=ExtResource("2_4oqj4")]
-layout_mode = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="VBox"]
+[node name="ScrollableTodoList" parent="VBox" instance=ExtResource("3_db22u")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 3
-horizontal_scroll_mode = 0
-vertical_scroll_mode = 3
-script = ExtResource("4_t4q73")
-
-[node name="TodoList" parent="VBox/ScrollContainer" instance=ExtResource("2_66ttt")]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="ScrollDownButton" parent="VBox" instance=ExtResource("2_4oqj4")]
-layout_mode = 2
-mode = 1
-
-[node name="HoverTimer" type="Timer" parent="."]
-wait_time = 0.1
-one_shot = true

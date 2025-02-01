@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dkggv455u3otk"
-path="res://.godot/imported/remove_bookmark.svg-506a96940c5e65f99a1300b7b0c0ab11.ctex"
+uid="uid://6im7rq1y7co6"
+path="res://.godot/imported/folded.svg-652a52adb0c0820aa5fc47454ebe6759.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://main_window/list_view/day_panel/todo_list/todo_item/images/remove_bookmark.svg"
-dest_files=["res://.godot/imported/remove_bookmark.svg-506a96940c5e65f99a1300b7b0c0ab11.ctex"]
+source_file="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/folded.svg"
+dest_files=["res://.godot/imported/folded.svg-652a52adb0c0820aa5fc47454ebe6759.ctex"]
 
 [params]
 

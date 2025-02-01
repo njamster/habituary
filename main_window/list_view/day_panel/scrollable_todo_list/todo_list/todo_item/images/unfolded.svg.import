@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ci7y27fysy52o"
-path="res://.godot/imported/unfolded.svg-5ac236d5a261ea8f2efd0f38b16088d2.ctex"
+path="res://.godot/imported/unfolded.svg-6b3b121a94eb8b52b004352392982ad3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://main_window/list_view/day_panel/todo_list/todo_item/images/unfolded.svg"
-dest_files=["res://.godot/imported/unfolded.svg-5ac236d5a261ea8f2efd0f38b16088d2.ctex"]
+source_file="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/unfolded.svg"
+dest_files=["res://.godot/imported/unfolded.svg-6b3b121a94eb8b52b004352392982ad3.ctex"]
 
 [params]
 

@@ -780,7 +780,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	var to_do_item_heading := theme.create_theme_type("ToDoItem_Heading", "PanelContainer")
 
 	to_do_item_heading.set_main_style({
-		"bg_color" = neutral_3,
+		"bg_color" = neutral_4,
 		"corner_radius" = 6,
 		"resource_local_to_scene" = true
 	})

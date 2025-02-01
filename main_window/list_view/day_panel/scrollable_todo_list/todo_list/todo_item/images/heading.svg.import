@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://4eakbxkw2dmx"
-path="res://.godot/imported/delete.svg-5b9631e3e7a54e9dd3add309456a9ba6.ctex"
+uid="uid://gy7qpfsq4aaa"
+path="res://.godot/imported/heading.svg-5af46b5391a4752760eef3fd0fcf8e4f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://main_window/list_view/day_panel/todo_list/todo_item/images/delete.svg"
-dest_files=["res://.godot/imported/delete.svg-5b9631e3e7a54e9dd3add309456a9ba6.ctex"]
+source_file="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/heading.svg"
+dest_files=["res://.godot/imported/heading.svg-5af46b5391a4752760eef3fd0fcf8e4f.ctex"]
 
 [params]
 

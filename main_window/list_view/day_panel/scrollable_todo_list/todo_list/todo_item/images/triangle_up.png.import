@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dr7xg2ji33j32"
-path="res://.godot/imported/bold.svg-302fb08ef05f0c709d6bed7d1dce53f8.ctex"
+uid="uid://d2xrq4e5mb2sv"
+path="res://.godot/imported/triangle_up.png-184d77415bac08da0e977abf449cb9ff.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://main_window/list_view/day_panel/todo_list/todo_item/images/bold.svg"
-dest_files=["res://.godot/imported/bold.svg-302fb08ef05f0c709d6bed7d1dce53f8.ctex"]
+source_file="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/triangle_up.png"
+dest_files=["res://.godot/imported/triangle_up.png-184d77415bac08da0e977abf449cb9ff.ctex"]
 
 [params]
 
@@ -32,6 +32,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

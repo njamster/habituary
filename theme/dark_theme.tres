@@ -755,7 +755,7 @@ content_margin_right = 3.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_if6j6"]
 resource_local_to_scene = true
-bg_color = Color(0.262745, 0.298039, 0.368627, 1)
+bg_color = Color(0.298039, 0.337255, 0.415686, 1)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6

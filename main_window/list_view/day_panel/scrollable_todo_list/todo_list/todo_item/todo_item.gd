@@ -20,7 +20,10 @@ var _initialization_finished := false
 var date : Date:
 	get():
 		# FIXME: avoid using a relative path that involves parent nodes
-		return Date.new(get_node("../../../../../..").date.as_dict())
+		if "date" in get_node("../../../../../../.."):
+			return Date.new(get_node("../../../../../../..").date.as_dict())
+		else:
+			return null
 
 @export var text := "":
 	set(value):
@@ -29,7 +32,8 @@ var date : Date:
 			if is_inside_tree():
 				%Edit.text = text
 
-				EventBus.bookmark_changed.emit(self, date, get_index())
+				if date:
+					EventBus.bookmark_changed.emit(self, date, get_index())
 
 				if _initialization_finished:
 					list_save_requested.emit("text changed")
@@ -41,15 +45,15 @@ enum States { TO_DO, DONE, FAILED }
 		if is_inside_tree():
 			if state == States.TO_DO:
 				%CheckBox.icon = preload(
-					"res://main_window/list_view/day_panel/todo_list/todo_item/images/to_do.svg"
+					"images/to_do.svg"
 				)
 			elif state == States.DONE:
 				%CheckBox.icon = preload(
-					"res://main_window/list_view/day_panel/todo_list/todo_item/images/done.svg"
+					"images/done.svg"
 				)
 			elif state == States.FAILED:
 				%CheckBox.icon = preload(
-					"res://main_window/list_view/day_panel/todo_list/todo_item/images/failed.svg"
+					"images/failed.svg"
 				)
 
 			%CheckBox.button_pressed = (state != States.TO_DO)
@@ -64,7 +68,8 @@ enum States { TO_DO, DONE, FAILED }
 
 			_apply_state_relative_formating()
 
-			EventBus.bookmark_changed.emit(self, date, get_index())
+			if date:
+				EventBus.bookmark_changed.emit(self, date, get_index())
 
 			if _initialization_finished and self.text:
 				list_save_requested.emit("state changed")
@@ -210,6 +215,7 @@ func _ready() -> void:
 	# Then switch back to the original button label again:
 	%Bookmark.text = %Bookmark.text.replace("Remove", "Add")
 
+	_set_initial_state()
 	_connect_signals()
 
 	$Triangle.hide()
@@ -238,15 +244,23 @@ func _ready() -> void:
 	Settings.fade_ticked_off_todos_changed.connect(_apply_state_relative_formating)
 
 
+func _set_initial_state() -> void:
+	# FIXME: temporary band-aid fix until it's possible to bookmark to-dos in the capture panel, too
+	if not date:
+		%Bookmark.hide()
+		%Delete.size_flags_horizontal += SIZE_EXPAND
+
+
 func _connect_signals() -> void:
 	#region Global Signals
 	Settings.search_query_changed.connect(_check_for_search_query_match)
 	_check_for_search_query_match.call_deferred() # deferred, in case this item is loaded from disk
 
 	EventBus.bookmark_jump_requested.connect(func(bookmarked_date, bookmarked_line_number):
-		if self.is_bookmarked and date.day_difference_to(bookmarked_date) == 0 \
-			and get_index() == bookmarked_line_number:
-				edit()
+		if date:
+			if self.is_bookmarked and date.day_difference_to(bookmarked_date) == 0 \
+				and get_index() == bookmarked_line_number:
+					edit()
 	)
 
 	Settings.to_do_text_colors_changed.connect(func():
@@ -402,7 +416,8 @@ func _on_edit_text_changed(new_text: String) -> void:
 			self.indentation_level += 1
 			%Edit.text = new_text.right(-2).strip_edges()
 	else:
-		EventBus.bookmark_changed.emit(self, date, get_index())
+		if date:
+			EventBus.bookmark_changed.emit(self, date, get_index())
 		_check_for_search_query_match()
 
 

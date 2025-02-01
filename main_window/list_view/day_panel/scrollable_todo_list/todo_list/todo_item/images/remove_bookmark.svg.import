@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d3680rdohsf6p"
-path="res://.godot/imported/failed.svg-3350a03195b7b1509e51546dd0a2291d.ctex"
+uid="uid://dkggv455u3otk"
+path="res://.godot/imported/remove_bookmark.svg-055e47c9be4501b0139e9cc99713ed19.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://main_window/list_view/day_panel/todo_list/todo_item/images/failed.svg"
-dest_files=["res://.godot/imported/failed.svg-3350a03195b7b1509e51546dd0a2291d.ctex"]
+source_file="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/remove_bookmark.svg"
+dest_files=["res://.godot/imported/remove_bookmark.svg-055e47c9be4501b0139e9cc99713ed19.ctex"]
 
 [params]
 
