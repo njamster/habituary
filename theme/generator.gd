@@ -128,13 +128,16 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 		"expand_margin" = 2,
 	}
 	button.hover = {
-		"bg_color" = neutral_1,
+		"bg_color" = primary_3,
 	}
 	button.normal = {
 		"bg_color" = neutral_2,
 	}
+	button.disabled = {
+		"bg_color" = Color(neutral_2, 0.2),
+	}
 	button.pressed = {
-		"bg_color" = primary_3,
+		"bg_color" = primary_4,
 	}
 
 	#endregion
@@ -156,7 +159,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 		"bg_color" = neutral_4,
 	}
 	calendar_widget_button.pressed = {
-		"bg_color" = neutral_4,
+		"bg_color" = primary_4,
 	}
 	#endregion
 

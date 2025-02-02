@@ -2,7 +2,7 @@ extends MarginContainer
 
 
 func _enter_tree() -> void:
-	if not Settings.store_path:
+	if not Settings.store_path or not DirAccess.dir_exists_absolute(Settings.store_path):
 		get_tree().change_scene_to_file.call_deferred(
 			"res://welcome_screen/welcome_screen.tscn"
 		)

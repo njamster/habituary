@@ -48,6 +48,7 @@ func _update_directory_path(path: String) -> void:
 func _show_error_message() -> void:
 	%ErrorMessage.visible_ratio = 1.0
 
+	%Confirm.mouse_default_cursor_shape = CURSOR_FORBIDDEN
 	%Confirm.focus_mode = FOCUS_NONE
 	%Confirm.disabled = true
 
@@ -57,6 +58,7 @@ func _show_error_message() -> void:
 func _hide_error_message() -> void:
 	%ErrorMessage.visible_ratio = 0.0
 
+	%Confirm.mouse_default_cursor_shape = CURSOR_POINTING_HAND
 	%Confirm.focus_mode = FOCUS_ALL
 	%Confirm.disabled = false
 
