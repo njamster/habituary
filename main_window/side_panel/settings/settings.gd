@@ -28,6 +28,10 @@ func _ready() -> void:
 
 
 func _set_initial_state() -> void:
+	%UIScale/Setting/ScaleFactor.min_value = Settings.MIN_UI_SCALE_FACTOR
+	%UIScale/Setting/ScaleFactor.max_value = Settings.MAX_UI_SCALE_FACTOR
+	%UIScale/Setting/ScaleFactor.value = Settings.ui_scale_factor
+
 	_set_text_colors()
 
 
@@ -62,6 +66,10 @@ func _connect_signals() -> void:
 	for i in range(5):
 		%ToDoColors.get_node("Color%d/ColorPicker" % (i+1)).color_changed.connect(_on_todo_color_changed.bind(i))
 		%ToDoColors.get_node("Color%d/Reset" % (i+1)).pressed.connect(_on_todo_color_reset.bind(i))
+
+	%UIScale/Setting/ScaleFactor.value_changed.connect(func(value):
+		Settings.ui_scale_factor = value
+	)
 	#endregion
 
 

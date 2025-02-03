@@ -71,6 +71,36 @@ bbcode_enabled = true
 text = "[fill]The path under which Habituary stores your to-dos. [b]It is highly recommended that you keep regular backups of this directory to prevent data loss in case of errors![/b][/fill]"
 fit_content = true
 
+[node name="UIScale" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/UIScale"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/UIScale/Setting"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme_type_variation = &"HeaderSmall"
+text = "UI Scale Factor"
+
+[node name="ScaleFactor" type="SpinBox" parent="ScrollContainer/PaddedScrollbar/VBox/UIScale/Setting"]
+layout_mode = 2
+step = 0.01
+alignment = 1
+script = ExtResource("5_px7qq")
+format_string = "%0.2f"
+
+[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/VBox/UIScale"]
+modulate = Color(1, 1, 1, 0.607843)
+layout_mode = 2
+theme_type_variation = &"Explanation"
+theme_override_fonts/bold_italics_font = ExtResource("7_fjnu2")
+bbcode_enabled = true
+text = "[fill]All interface elements of this app will be scaled by this factor. If you use a HiDPI display, and Habituary appears too small, try a higher value.[/fill]"
+fit_content = true
+
 [node name="TodayPosition" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
 unique_name_in_owner = true
 layout_mode = 2

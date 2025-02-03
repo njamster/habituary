@@ -12,6 +12,7 @@ signal show_bookmarks_from_the_past_changed
 signal fade_ticked_off_todos_changed
 signal fade_non_today_dates_changed
 signal bookmarks_due_today_changed
+signal ui_scale_factor_changed
 
 
 enum TodayPosition {
@@ -34,6 +35,11 @@ enum SidePanelState {
 	CAPTURE,
 	SETTINGS
 }
+
+
+const MIN_UI_SCALE_FACTOR := 0.75
+const MAX_UI_SCALE_FACTOR := 3.00
+
 
 var DEFAULT_TO_DO_TEXT_COLORS := [
 	"#A3BE8C",
@@ -230,6 +236,22 @@ var bookmarks_due_today := 0:
 		_start_debounce_timer()
 
 		bookmarks_due_today_changed.emit()
+
+@export var ui_scale_factor := 1.0:
+	set(value):
+		if ui_scale_factor == value:
+			return
+
+		ui_scale_factor = clampf(
+			snappedf(value, 0.01),
+			MIN_UI_SCALE_FACTOR,
+			MAX_UI_SCALE_FACTOR
+		)
+		_start_debounce_timer()
+
+		ui_scale_factor_changed.emit()
+
+		get_window().content_scale_factor = ui_scale_factor
 
 
 func _enter_tree() -> void:
