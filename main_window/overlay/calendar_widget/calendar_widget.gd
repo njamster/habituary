@@ -19,6 +19,8 @@ func _connect_signals() -> void:
 	item_rect_changed.connect(_on_item_rect_changed)
 	visibility_changed.connect(_on_visibility_changed)
 
+	%Month.mouse_exited.connect(_on_month_mouse_exited)
+
 	%YearLabel.gui_input.connect(_on_year_label_gui_input)
 
 	%YearSpinBox.value_changed.connect(_on_year_spin_box_value_changed)
@@ -212,3 +214,10 @@ func _on_year_spin_box_value_changed(value: float) -> void:
 	var change := int(value) - anchor_date.year
 	anchor_date = anchor_date.add_months(change * 12)
 	update_month()
+
+
+func _on_month_mouse_exited() -> void:
+	if %Month.get_popup().visible:
+		await get_tree().process_frame
+		if %Month.get_popup().get_focused_item() == -1:
+			%Month.get_popup().hide()
