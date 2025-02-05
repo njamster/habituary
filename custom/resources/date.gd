@@ -62,7 +62,6 @@ var weekday : int = 3:
 		var unix_time = Time.get_unix_time_from_datetime_dict(self.as_dict())
 		weekday = Time.get_date_dict_from_unix_time(unix_time).weekday
 
-var _tokens := {}
 var _regex := RegEx.new()
 
 
@@ -86,28 +85,6 @@ func _init(dict := Time.get_date_dict_from_system()) -> void:
 	month = dict.month
 	day = dict.day
 	weekday = dict.weekday
-
-	_tokens = {
-		# Year:
-		"YY":    func(): return str(year).right(2),
-		"YYYY":  func(): return "%04d" % year,
-		# Month:
-		"M":     func(): return str(month),
-		"Mo":    func(): return Date._to_ordinal(month),
-		"MM":    func(): return "%02d" % month,
-		"MMM":   func(): return _MONTH_NAMES[month - 1].left(3),
-		"MMMM":  func(): return _MONTH_NAMES[month - 1],
-		# Day of Month:
-		"D":     func(): return str(day),
-		"Do":    func(): return Date._to_ordinal(day),
-		"DD":    func(): return "%02d" % day,
-		# Day of Week:
-		"d":     func(): return weekday,
-		"do":    func(): return Date._to_ordinal(weekday),
-		"dd":    func(): return _DAY_NAMES[weekday - 1].left(2),
-		"ddd":   func(): return _DAY_NAMES[weekday - 1].left(3),
-		"dddd":  func(): return _DAY_NAMES[weekday - 1],
-	}
 
 	_regex.compile("(\\[[^\\[]*\\])|(\\\\)?(Mo|MM?M?M?|Do|DD|ddd?d?|do?|YYYY|YY|.)")
 
@@ -215,11 +192,43 @@ func format(format_string: String) -> String:
 	var output := ""
 
 	for unit in _regex.search_all(format_string):
-		var string := unit.get_string()
-		if string in _tokens:
-			output += _tokens[string].call()
-		else:
-			output += string
+		match unit.get_string():
+			# Year:
+			"YY":
+				output += str(year).right(2)
+			"YYYY":
+				output += "%04d" % year
+			# Month:
+			"M":
+				output += str(month)
+			"Mo":
+				output += Date._to_ordinal(month)
+			"MM":
+				output += "%02d" % month
+			"MMM":
+				output += _MONTH_NAMES[month - 1].left(3)
+			"MMMM":
+				output += _MONTH_NAMES[month - 1]
+			# Day of Month:
+			"D":
+				output += str(day)
+			"Do":
+				output += Date._to_ordinal(day)
+			"DD":
+				output += "%02d" % day
+			# Day of Week:
+			"d":
+				output += str(weekday)
+			"do":
+				output += Date._to_ordinal(weekday)
+			"dd":
+				output += _DAY_NAMES[weekday - 1].left(2)
+			"ddd":
+				output += _DAY_NAMES[weekday - 1].left(3)
+			"dddd":
+				output += _DAY_NAMES[weekday - 1]
+			_:
+				output += unit.get_string()
 
 	return output
 
