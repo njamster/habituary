@@ -253,6 +253,36 @@ var bookmarks_due_today := 0:
 
 		get_window().content_scale_factor = ui_scale_factor
 
+@export var is_maximized: bool:
+	set(value):
+		if is_maximized == value:
+			return
+
+		if value == true:
+			get_window().mode = Window.MODE_MAXIMIZED
+		else:
+			get_window().mode = Window.MODE_WINDOWED
+
+		_start_debounce_timer()
+	get():
+		return get_window().mode == Window.MODE_MAXIMIZED
+
+
+@export var is_fullscreen: bool:
+	set(value):
+		if is_fullscreen == value:
+			return
+
+		if value == true:
+			get_window().mode = Window.MODE_FULLSCREEN
+		else:
+			get_window().mode = Window.MODE_WINDOWED
+
+		_start_debounce_timer()
+	get():
+		return get_window().mode == Window.MODE_FULLSCREEN || \
+			get_window().mode == Window.MODE_EXCLUSIVE_FULLSCREEN
+
 
 func _enter_tree() -> void:
 	get_window().wrap_controls = true  # Sadly, there is no ProjectSetting to enable this by default

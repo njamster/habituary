@@ -17,11 +17,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if $Overlay.visible:
 			$Overlay.close_overlay()
 	elif event.is_action_pressed("toggle_fullscreen"):
-		match DisplayServer.window_get_mode():
-			DisplayServer.WINDOW_MODE_FULLSCREEN, DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN:
-				DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-			_:
-				DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+		Settings.is_fullscreen = not Settings.is_fullscreen
 	elif event.is_action_pressed("ui_cancel"):
 		if Settings.previous_day and Settings.previous_view_mode:
 			# restore previous values
