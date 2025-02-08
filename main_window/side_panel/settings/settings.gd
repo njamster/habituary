@@ -32,6 +32,9 @@ func _set_initial_state() -> void:
 	%UIScale/Setting/ScaleFactor.max_value = Settings.MAX_UI_SCALE_FACTOR
 	%UIScale/Setting/ScaleFactor.value = Settings.ui_scale_factor
 
+	%HideTickedOffTodos/Setting/Options.set_pressed_no_signal(Settings.hide_ticked_off_todos)
+	_on_hide_ticked_off_todos_options_toggled(Settings.hide_ticked_off_todos)
+
 	_set_text_colors()
 
 
@@ -58,6 +61,8 @@ func _connect_signals() -> void:
 	%DayStart/Setting/Minutes.value_changed.connect(_on_day_start_minutes_value_changed)
 
 	%FirstWeekday/Setting/Options.toggled.connect(_on_first_weekday_toggled)
+
+	%HideTickedOffTodos/Setting/Options.toggled.connect(_on_hide_ticked_off_todos_options_toggled)
 
 	%FadeTickedOffTodos/Setting/Options.toggled.connect(_on_fade_ticked_off_todos_options_toggled)
 
@@ -111,18 +116,34 @@ func _on_day_start_minutes_value_changed(value: float) -> void:
 	Settings.day_start_minute_offset = int(value)
 
 
+func _on_hide_ticked_off_todos_options_toggled(toggled_on: bool) -> void:
+	Settings.hide_ticked_off_todos = toggled_on
+
+	if toggled_on:
+		%HideTickedOffTodos/Explanation.text = "[fill]After marking a to-do " \
+		+ "as done or failed, it will slowly fade out and eventually " \
+		+ "disappear (unless it has sub items that are still unticked). " \
+		+ "Toggling the item's checkbox back will stop the process.[/fill]"
+		%FadeTickedOffTodos.hide()
+	else:
+		%HideTickedOffTodos/Explanation.text = "[fill]To-Dos marked as done " \
+		+ "or failed won't disappear.[/fill]"
+		%FadeTickedOffTodos.show()
+
+
 func _on_fade_ticked_off_todos_options_toggled(toggled_on: bool) -> void:
 	Settings.fade_ticked_off_todos = toggled_on
 
 	var explanation_text := "[fill]To-Dos that have been marked as done or " \
-	+ "canceled {0} appear dimmed.[/fill]"
+	+ "failed {0} appear dimmed. (Only available while \"Hide Ticked Off " \
+	+ "To-Dos\" is disabled)[/fill]"
 	if toggled_on:
 		%FadeTickedOffTodos/Explanation.text = explanation_text.format([
-			"will [u]not[/u]",
+			"will",
 		])
 	else:
 		%FadeTickedOffTodos/Explanation.text = explanation_text.format([
-			"will",
+			"will [u]not[/u]",
 		])
 
 

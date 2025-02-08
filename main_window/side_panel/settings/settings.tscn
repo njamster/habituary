@@ -195,6 +195,34 @@ bbcode_enabled = true
 text = "[fill]New weeks in the calendar widget start on Mondays.[/fill]"
 fit_content = true
 
+[node name="HideTickedOffTodos" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/HideTickedOffTodos"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/HideTickedOffTodos/Setting"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme_type_variation = &"HeaderSmall"
+text = "Hide Ticked Off To-Dos"
+
+[node name="Options" type="CheckButton" parent="ScrollContainer/PaddedScrollbar/VBox/HideTickedOffTodos/Setting"]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_pressed = true
+
+[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/VBox/HideTickedOffTodos"]
+modulate = Color(1, 1, 1, 0.607843)
+layout_mode = 2
+theme_type_variation = &"Explanation"
+theme_override_fonts/bold_italics_font = ExtResource("7_fjnu2")
+bbcode_enabled = true
+fit_content = true
+
 [node name="FadeTickedOffTodos" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
 unique_name_in_owner = true
 layout_mode = 2

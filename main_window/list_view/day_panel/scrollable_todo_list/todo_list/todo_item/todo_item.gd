@@ -66,7 +66,7 @@ enum States { TO_DO, DONE, FAILED }
 				else:
 					%CheckBox.theme_type_variation = "ToDoItem"
 
-			_apply_state_relative_formating()
+			_apply_state_relative_formating.call_deferred()
 
 			if date:
 				EventBus.bookmark_changed.emit(self, date, get_index())
@@ -205,6 +205,8 @@ var text_color_id := 0:
 
 var _editing_options_shrink_threshold : int
 
+var hide_tween: Tween
+
 
 func _ready() -> void:
 	# Briefly switch to the longer version of the button label:
@@ -255,6 +257,8 @@ func _connect_signals() -> void:
 	#region Global Signals
 	Settings.search_query_changed.connect(_check_for_search_query_match)
 	_check_for_search_query_match.call_deferred() # deferred, in case this item is loaded from disk
+
+	Settings.hide_ticked_off_todos_changed.connect(_apply_state_relative_formating)
 
 	EventBus.bookmark_jump_requested.connect(func(bookmarked_date, bookmarked_line_number):
 		if date:
@@ -798,16 +802,40 @@ func _on_tree_exiting() -> void:
 
 
 func _apply_state_relative_formating() -> void:
-	if Settings.fade_ticked_off_todos:
+	if Settings.hide_ticked_off_todos:
 		if state != States.TO_DO:
-			%CheckBox.modulate.a = 0.5
-			%Content.modulate.a = 0.5
+			if not _has_unticked_sub_todos():
+				if hide_tween:
+					hide_tween.kill()
+				modulate.a = 1.0
+				hide_tween = create_tween()
+				hide_tween.tween_property(self, "modulate:a", 0.0, 1.5)
+				await hide_tween.finished
+				self.hide()
+
+				var parent_todo := get_parent_todo()
+				if parent_todo and parent_todo.state != States.TO_DO:
+					parent_todo._apply_state_relative_formating()
+		else:
+			if hide_tween:
+				hide_tween.kill()
+				modulate.a = 1.0
+	else:
+		if hide_tween:
+			hide_tween.kill()
+		modulate.a = 1.0
+		self.show()
+
+		if Settings.fade_ticked_off_todos:
+			if state != States.TO_DO:
+				%CheckBox.modulate.a = 0.5
+				%Content.modulate.a = 0.5
+			else:
+				%CheckBox.modulate.a = 1.0
+				%Content.modulate.a = 1.0
 		else:
 			%CheckBox.modulate.a = 1.0
 			%Content.modulate.a = 1.0
-	else:
-		%CheckBox.modulate.a = 1.0
-		%Content.modulate.a = 1.0
 
 
 func get_maximum_indentation_level() -> int:
@@ -833,3 +861,26 @@ func _on_edit_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_text_backspace"):
 		if %Edit.text == "" and self.indentation_level > 0:
 			self.indentation_level -= 1
+
+
+func _has_unticked_sub_todos() -> bool:
+	var SUCCESSOR_IDS := range(get_index() + 1, get_parent().get_child_count())
+	for successor_id in SUCCESSOR_IDS:
+		var successor = get_parent().get_child(successor_id)
+		if successor.indentation_level <= indentation_level:
+			break # end of scope reached
+		if successor.state == States.TO_DO:
+			return true
+
+	return false
+
+
+func get_parent_todo() -> Control:
+	if indentation_level:
+		var PREDECESSOR_IDS := range(get_index() - 1, 0, -1)
+		for predecessor_id in PREDECESSOR_IDS:
+			var predecessor = get_parent().get_child(predecessor_id)
+			if predecessor.indentation_level < indentation_level:
+				return predecessor
+
+	return null

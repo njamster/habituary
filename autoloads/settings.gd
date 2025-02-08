@@ -9,6 +9,7 @@ signal dark_mode_changed
 signal search_query_changed
 signal side_panel_changed
 signal show_bookmarks_from_the_past_changed
+signal hide_ticked_off_todos_changed
 signal fade_ticked_off_todos_changed
 signal fade_non_today_dates_changed
 signal bookmarks_due_today_changed
@@ -206,6 +207,16 @@ var search_query := "":
 		_start_debounce_timer()
 
 		show_bookmarks_from_the_past_changed.emit()
+
+@export var hide_ticked_off_todos := false:
+	set(value):
+		if hide_ticked_off_todos == value:
+			return
+
+		hide_ticked_off_todos = value
+		_start_debounce_timer()
+
+		hide_ticked_off_todos_changed.emit()
 
 @export var fade_ticked_off_todos := true:
 	set(value):
