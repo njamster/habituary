@@ -168,6 +168,8 @@ func find_item_pos(at_position : Vector2) -> int:
 	var inside_folded_heading := false
 	for i in %Items.get_child_count():
 		var child := %Items.get_child(i)
+		if not child.visible:
+			continue
 		if child.is_heading:
 			inside_folded_heading = false
 		if child.global_position.y > at_position.y:
@@ -201,7 +203,15 @@ func fold_heading(item_index : int, unfold := false) -> void:
 			heading.set_extra_info(num_done, num_items)
 			return
 		else:
-			child.visible = unfold
+			if unfold:
+				if Settings.hide_ticked_off_todos:
+					if child.state == child.States.TO_DO or \
+						child._has_unticked_sub_todos():
+							child.show()
+				else:
+					child.show()
+			else:
+				child.hide()
 			num_items += 1
 			if child.state != child.States.TO_DO:
 				num_done += 1
@@ -309,7 +319,7 @@ func show_line_highlight(mouse_position : Vector2) -> void:
 	# current mouse cursor position and put the line there
 	for i in %Items.get_child_count():
 		var child := %Items.get_child(i)
-		if child.global_position.y > mouse_position.y:
+		if child.visible and child.global_position.y > mouse_position.y:
 			y_position = child.global_position.y
 			break
 
@@ -356,3 +366,21 @@ func _on_items_child_order_changed() -> void:
 			if item.is_bookmarked:
 				EventBus.bookmark_changed.emit.call_deferred(item, item.date, item.last_index)
 				item.last_index = item.get_index()
+
+
+func get_nearest_visible_predecessor(index: int) -> Control:
+	for i in range(index - 1, -1, -1):
+		var predecessor := %Items.get_child(i)
+		if predecessor.visible:
+			return predecessor
+
+	return null
+
+
+func get_nearest_visible_successor(index: int) -> Control:
+	for i in range(index + 1, %Items.get_child_count()):
+		var successor := %Items.get_child(i)
+		if successor.visible:
+			return successor
+
+	return null

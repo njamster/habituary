@@ -66,7 +66,8 @@ enum States { TO_DO, DONE, FAILED }
 				else:
 					%CheckBox.theme_type_variation = "ToDoItem"
 
-			_apply_state_relative_formating.call_deferred()
+			if _initialization_finished:
+				_apply_state_relative_formatting()
 
 			if date:
 				EventBus.bookmark_changed.emit(self, date, get_index())
@@ -243,7 +244,7 @@ func _ready() -> void:
 			else:
 				self.indentation_level = predecessor.indentation_level
 
-	Settings.fade_ticked_off_todos_changed.connect(_apply_state_relative_formating)
+	Settings.fade_ticked_off_todos_changed.connect(_apply_state_relative_formatting)
 
 
 func _set_initial_state() -> void:
@@ -252,13 +253,17 @@ func _set_initial_state() -> void:
 		%Bookmark.hide()
 		%Delete.size_flags_horizontal += SIZE_EXPAND
 
+	_apply_state_relative_formatting.call_deferred(true)
+
 
 func _connect_signals() -> void:
 	#region Global Signals
 	Settings.search_query_changed.connect(_check_for_search_query_match)
 	_check_for_search_query_match.call_deferred() # deferred, in case this item is loaded from disk
 
-	Settings.hide_ticked_off_todos_changed.connect(_apply_state_relative_formating)
+	Settings.hide_ticked_off_todos_changed.connect(
+		_apply_state_relative_formatting.bind(true)
+	)
 
 	EventBus.bookmark_jump_requested.connect(func(bookmarked_date, bookmarked_line_number):
 		if date:
@@ -350,16 +355,13 @@ func delete() -> void:
 	_reindent_sub_todos(-1)
 
 	if %Edit.text:
-		var to_do_list := get_parent()
-		var items_in_list := to_do_list.get_child_count()
-		if items_in_list > 1:
-			var position_in_list := self.get_index()
-			if items_in_list == position_in_list + 1:
-				# The deleted item is the last in the list: select its predecessor!
-				to_do_list.get_child(position_in_list - 1).edit()
-			else:
-				# The deleted item is *not* the last in the list: select its successor!
-				to_do_list.get_child(position_in_list + 1).edit()
+		var successor = get_node("../../..").get_nearest_visible_successor(get_index())
+		if successor:
+			successor.edit()
+		else:
+			var predecessor = get_node("../../..").get_nearest_visible_predecessor(get_index())
+			if predecessor:
+				predecessor.edit()
 
 	queue_free()
 	if self.text:
@@ -608,17 +610,19 @@ func set_extra_info(num_done : int , num_items : int) -> void:
 func _input(event: InputEvent) -> void:
 	if is_in_edit_mode():
 		if event.is_action_pressed("toggle_todo", false, true):
-			self.state = States.DONE if self.state != States.DONE else States.TO_DO
+			if not is_heading:
+				self.state = States.DONE if self.state != States.DONE else States.TO_DO
 		elif event.is_action_pressed("cancel_todo", false, true):
-			self.state = States.FAILED if self.state != States.FAILED else States.TO_DO
+			if not is_heading:
+				self.state = States.FAILED if self.state != States.FAILED else States.TO_DO
 		elif event.is_action_pressed("previous_todo", true, true):
-			var index := get_index()
-			if index:
-				get_parent().get_child(index - 1).edit()
+			var predecessor = get_node("../../..").get_nearest_visible_predecessor(get_index())
+			if predecessor:
+				predecessor.edit()
 		elif event.is_action_pressed("next_todo", true, true):
-			var index := get_index()
-			if index < get_parent().get_child_count() - 1:
-				get_parent().get_child(index + 1).edit()
+			var successor = get_node("../../..").get_nearest_visible_successor(get_index())
+			if successor:
+				successor.edit()
 		elif event.is_action_pressed("move_todo_up", true, true):
 			moved_up.emit()
 		elif event.is_action_pressed("move_todo_down", true, true):
@@ -801,29 +805,44 @@ func _on_tree_exiting() -> void:
 			self.text = %Edit.text
 
 
-func _apply_state_relative_formating() -> void:
+func _apply_state_relative_formatting(immediate := false) -> void:
 	if Settings.hide_ticked_off_todos:
 		if state != States.TO_DO:
 			if not _has_unticked_sub_todos():
-				if hide_tween:
-					hide_tween.kill()
-				modulate.a = 1.0
-				hide_tween = create_tween()
-				hide_tween.tween_property(self, "modulate:a", 0.0, 1.5)
-				await hide_tween.finished
-				self.hide()
+				if immediate:
+					self.hide()
+				else:
+					if hide_tween:
+						hide_tween.kill()
+					modulate.a = 1.0
+					hide_tween = create_tween().set_parallel()
+					hide_tween.tween_property(%CheckBox, "modulate:a", 0.0, 1.5)
+					hide_tween.tween_property(%Content, "modulate:a", 0.0, 1.5)
+					await hide_tween.finished
+					self.hide()
 
-				var parent_todo := get_parent_todo()
-				if parent_todo and parent_todo.state != States.TO_DO:
-					parent_todo._apply_state_relative_formating()
+					if %EditingOptions.visible:
+						var successor = get_node("../../..").get_nearest_visible_successor(get_index())
+						if successor:
+							successor.edit()
+						else:
+							var predecessor = get_node("../../..").get_nearest_visible_predecessor(get_index())
+							if predecessor:
+								predecessor.edit()
+
+					var parent_todo := get_parent_todo()
+					if parent_todo and parent_todo.state != States.TO_DO:
+						parent_todo._apply_state_relative_formatting()
 		else:
 			if hide_tween:
 				hide_tween.kill()
-				modulate.a = 1.0
+				%CheckBox.modulate.a = 1.0
+				%Content.modulate.a = 1.0
 	else:
 		if hide_tween:
 			hide_tween.kill()
-		modulate.a = 1.0
+			%CheckBox.modulate.a = 1.0
+			%Content.modulate.a = 1.0
 		self.show()
 
 		if Settings.fade_ticked_off_todos:
