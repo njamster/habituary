@@ -4,6 +4,7 @@ extends Node
 signal to_do_text_colors_changed
 signal current_day_changed
 signal view_mode_changed
+signal view_mode_cap_changed
 signal day_start_changed
 signal dark_mode_changed
 signal search_query_changed
@@ -107,6 +108,15 @@ var previous_view_mode
 		_start_debounce_timer()
 
 		view_mode_changed.emit()
+
+var view_mode_cap := 7:
+	set(value):
+		if view_mode_cap == value:
+			return
+
+		view_mode_cap = value
+
+		view_mode_cap_changed.emit()
 
 var previous_day
 

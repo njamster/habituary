@@ -42,9 +42,8 @@ func _connect_signals() -> void:
 
 	Settings.current_day_changed.connect(_on_current_day_changed)
 
-	Settings.view_mode_changed.connect(func():
-		_on_current_day_changed()
-	)
+	Settings.view_mode_changed.connect(_on_current_day_changed)
+	Settings.view_mode_cap_changed.connect(_on_current_day_changed)
 	#endregion
 
 	#region Local Signals
@@ -166,7 +165,8 @@ func _on_view_mode_changed() -> void:
 
 
 func _on_current_day_changed() -> void:
-	if Settings.view_mode != 1 and date.as_dict() == Settings.current_day.as_dict():
+	var view_mode = min(Settings.view_mode, Settings.view_mode_cap)
+	if view_mode != 1 and date.as_dict() == Settings.current_day.as_dict():
 		theme_type_variation = "DayPanel_CurrentDay"
 	else:
 		theme_type_variation = "DayPanel"
