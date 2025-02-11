@@ -13,7 +13,7 @@ func _ready() -> void:
 
 func _connect_signals() -> void:
 	#region Global Signals
-	resized.connect.call_deferred(_on_resized)
+	resized.connect(_on_resized)
 
 	Settings.view_mode_changed.connect(_update_list_view)
 	_update_list_view()

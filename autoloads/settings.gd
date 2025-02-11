@@ -14,7 +14,6 @@ signal hide_ticked_off_todos_changed
 signal fade_ticked_off_todos_changed
 signal fade_non_today_dates_changed
 signal bookmarks_due_today_changed
-signal ui_scale_factor_changed
 
 
 enum TodayPosition {
@@ -39,7 +38,7 @@ enum SidePanelState {
 }
 
 
-const MIN_UI_SCALE_FACTOR := 0.75
+const MIN_UI_SCALE_FACTOR := 1.00
 const MAX_UI_SCALE_FACTOR := 3.00
 
 
@@ -270,9 +269,27 @@ var bookmarks_due_today := 0:
 		)
 		_start_debounce_timer()
 
-		ui_scale_factor_changed.emit()
+		if not is_node_ready():
+			await self.ready  # while loading from disk
 
 		get_window().content_scale_factor = ui_scale_factor
+
+		# HACK: For some reason, changing the window's content_scale_factor does
+		# affect the result of get_contents_minimum_size in a weird way, making
+		# it smaller(!) the larger the scale_factor becomes.
+		# That's why I reimplement get_contents_minimum_size here, but without
+		# taking the control's position into account (which appears to change
+		# with the scale_factor). I believe this will lead to wrong results if
+		# the control's position is *not* equal to (0, 0), but otherwise will
+		# work correctly (which is sufficient for this project).
+		var minimum_content_size := Vector2.ZERO
+		for child in get_window().get_children():
+			if child is Control:
+				minimum_content_size = minimum_content_size.max(
+					child.get_combined_minimum_size()
+				)
+
+		get_window().min_size = minimum_content_size * ui_scale_factor
 
 @export var is_maximized: bool:
 	set(value):
