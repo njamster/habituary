@@ -274,6 +274,10 @@ var bookmarks_due_today := 0:
 
 		get_window().content_scale_factor = ui_scale_factor
 
+		# FIXME: I don't understand yet why, but somehow waiting one frame here
+		# is crucial forscale factor changes during runtime work properly?!
+		await get_tree().process_frame
+
 		# HACK: For some reason, changing the window's content_scale_factor does
 		# affect the result of get_contents_minimum_size in a weird way, making
 		# it smaller(!) the larger the scale_factor becomes.
