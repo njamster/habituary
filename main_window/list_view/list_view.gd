@@ -25,13 +25,14 @@ func _connect_signals() -> void:
 
 
 func _on_resized() -> void:
-	var todolist_width := 160  # FIXME: avoid hardcoded magic values...
+	var todolist_width : int = get_child(0).get_combined_minimum_size().x
+	var separation := get_theme_constant("separation", "LargeSeparation")
 
-	if size.x >= 7 * todolist_width:
+	if size.x >= 7 * todolist_width + 6 * separation + 1:
 		Settings.view_mode_cap = 7
-	elif size.x >= 5 * todolist_width:
+	elif size.x >= 5 * todolist_width + 4 * separation + 1:
 		Settings.view_mode_cap = 5
-	elif size.x >= 3 * todolist_width:
+	elif size.x >= 3 * todolist_width + 2 * separation + 1:
 		Settings.view_mode_cap = 3
 	else:
 		Settings.view_mode_cap = 1
