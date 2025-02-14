@@ -34,6 +34,7 @@ text_alignment = 2
 
 [node name="JumpTo" type="Button" parent="VBox/Row1"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
@@ -41,6 +42,7 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 icon = ExtResource("3_qdkvd")
 flat = true
+expand_icon = true
 
 [node name="Tooltip" type="Node" parent="VBox/Row1/JumpTo"]
 script = ExtResource("2_ufj5y")

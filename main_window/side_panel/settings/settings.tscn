@@ -56,6 +56,7 @@ vertical_alignment = 2
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
+theme_override_constants/icon_max_width = 20
 icon = ExtResource("4_bf631")
 
 [node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/StorePath/Setting/Change"]
