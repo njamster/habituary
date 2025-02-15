@@ -108,6 +108,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 		"border_blend" = true,
 		"corner_radius" = 6,
 		"content_margin" = 12,
+		"anti_aliasing_size" = 0.33,
 	}
 	#endregion
 
@@ -121,6 +122,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	button.set_main_style({
 		"corner_radius" = 3,
 		"content_margin" = 4,
+		"anti_aliasing_size" = 0.33,
 	})
 	button.focus = {
 		"draw_center" = false,
@@ -148,6 +150,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	calendar_widget_button.set_main_style({
 		"corner_radius" = 4,
 		"content_margin" = 4,
+		"anti_aliasing_size" = 0.33,
 	})
 	calendar_widget_button.disabled = {
 		"bg_color" = Color(neutral_4, 0.3),
@@ -168,6 +171,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 
 	calendar_widget_day_button.set_main_style({
 		"corner_radius" = 45,
+		"anti_aliasing_size" = 0.33,
 	})
 	calendar_widget_day_button.hover = {
 		"bg_color" = neutral_3,
@@ -187,6 +191,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 
 	calendar_widget_day_button_selected.set_main_style({
 		"corner_radius" = 45,
+		"anti_aliasing_size" = 0.33,
 	})
 	calendar_widget_day_button_selected.hover = {
 		"bg_color" = neutral_5,
@@ -206,6 +211,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 
 	calendar_widget_day_button_today.set_main_style({
 		"corner_radius" = 45,
+		"anti_aliasing_size" = 0.33,
 	})
 	calendar_widget_day_button_today.hover = {
 		"bg_color" = neutral_5,
@@ -225,6 +231,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 
 	calendar_widget_day_button_weekend_day.set_main_style({
 		"corner_radius" = 45,
+		"anti_aliasing_size" = 0.33,
 	})
 	calendar_widget_day_button_weekend_day.hover = {
 		"bg_color" = primary_4,
@@ -268,6 +275,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	left_sidebar_button.set_main_style({
 		"corner_radius" = { "top_right": 4, "bottom_right": 4 },
 		"content_margin" = 4,
+		"anti_aliasing_size" = 0.33,
 	})
 	left_sidebar_button.disabled = {
 		"bg_color" = Color(neutral_3, 0.3),
@@ -328,6 +336,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 		"bg_color" = neutral_1,
 		"corner_radius" = 6,
 		"content_margin" = 12,
+		"anti_aliasing_size" = 0.33,
 	}
 	#endregion
 
@@ -357,6 +366,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	right_sidebar_button.set_main_style({
 		"corner_radius" = { "top_left": 4, "bottom_left": 4 },
 		"content_margin" = 4,
+		"anti_aliasing_size" = 0.33,
 	})
 	right_sidebar_button.disabled = {
 		"bg_color" = Color(neutral_3, 0.3),
@@ -573,7 +583,8 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	to_do_item_editing_options.set_main_style({
 		"bg_color" = primary_1,
 		"corner_radius" = 6,
-		"content_margin" = { "left": 6, "right": 6 }
+		"content_margin" = { "left": 6, "right": 6 },
+		"anti_aliasing_size" = 0.33,
 	})
 	#endregion
 
@@ -587,7 +598,8 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	search_bar_shortcut_hint.set_main_style({
 		"bg_color" = neutral_4,
 		"corner_radius" = 3,
-		"content_margin" = { "left": 4, "right": 4 }
+		"content_margin" = { "left": 4, "right": 4 },
+		"anti_aliasing_size" = 0.33,
 	})
 	#endregion
 
@@ -688,7 +700,8 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	popup_menu.font_hover_color = primary_1
 
 	popup_menu.set_main_style({
-		"bg_color": neutral_3,
+		"bg_color" = neutral_3,
+		"anti_aliasing_size" = 0.33,
 	})
 	#endregion
 
@@ -708,6 +721,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 		"corner_radius" = { "top_left": 16, "top_right": 16 },
 		"expand_margin" = { "left": 8, "top": 8, "right": 8, "bottom": 30 },
 		"content_margin" = 0,
+		"anti_aliasing_size" = 0.33,
 	})
 	#endregion
 
@@ -719,6 +733,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 		"draw_center" = true,
 		"corner_radius" = 8,
 		"content_margin" = { "left": 4, "top": 4, "right": 4, "bottom": 2 },
+		"anti_aliasing_size" = 0.33,
 	})
 	#endregion
 
@@ -785,7 +800,8 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	to_do_item_heading.set_main_style({
 		"bg_color" = neutral_4,
 		"corner_radius" = 6,
-		"resource_local_to_scene" = true
+		"resource_local_to_scene" = true,
+		"anti_aliasing_size" = 0.33,
 	})
 	#endregion
 

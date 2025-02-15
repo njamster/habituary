@@ -10,10 +10,10 @@
 [ext_resource type="Texture2D" uid="uid://6im7rq1y7co6" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/folded.svg" id="4_fnk6y"]
 [ext_resource type="Texture2D" uid="uid://3ry73dkvfi1u" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/bookmark_indicator.svg" id="5_eqyfo"]
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/drag_handle/drag_handle.gd" id="5_mx38m"]
-[ext_resource type="Texture2D" uid="uid://d2xrq4e5mb2sv" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/triangle_up.png" id="8_5rkws"]
 [ext_resource type="Texture2D" uid="uid://gy7qpfsq4aaa" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/heading.svg" id="8_5475s"]
 [ext_resource type="Texture2D" uid="uid://dr7xg2ji33j32" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/bold.svg" id="9_boywj"]
 [ext_resource type="Texture2D" uid="uid://b8u24hbkd0vj1" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/italic.svg" id="10_2fgom"]
+[ext_resource type="Texture2D" uid="uid://b3f6l5cfcoswd" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/triangle_up.svg" id="10_u8h4d"]
 [ext_resource type="Texture2D" uid="uid://cwqxidmwtgk3w" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/add_bookmark.svg" id="12_5svov"]
 [ext_resource type="Texture2D" uid="uid://dkggv455u3otk" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/remove_bookmark.svg" id="13_itt7w"]
 
@@ -46,6 +46,7 @@ corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
+anti_aliasing_size = 0.33
 
 [sub_resource type="InputEventAction" id="InputEventAction_i0vg5"]
 action = &"toggle_bookmark"
@@ -168,11 +169,13 @@ text = "Bookmarked To-Do"
 
 [node name="Triangle" type="TextureRect" parent="."]
 modulate = Color(0.560784, 0.737255, 0.733333, 1)
+custom_minimum_size = Vector2(22, 13)
 layout_mode = 2
 size_flags_horizontal = 0
 mouse_filter = 0
-texture = ExtResource("8_5rkws")
-stretch_mode = 3
+texture = ExtResource("10_u8h4d")
+expand_mode = 1
+stretch_mode = 4
 
 [node name="EditingOptions" type="PanelContainer" parent="."]
 unique_name_in_owner = true

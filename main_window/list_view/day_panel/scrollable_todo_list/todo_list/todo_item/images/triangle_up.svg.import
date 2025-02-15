@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://btawkf8e1mx5h"
-path="res://.godot/imported/notification_dot.png-d61132fa4e97a182b04d45daea0968d2.ctex"
+uid="uid://b3f6l5cfcoswd"
+path="res://.godot/imported/triangle_up.svg-3a7704f31e381e14f1e0ed3470456913.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://main_window/extra_panels_widget/images/notification_dot.png"
-dest_files=["res://.godot/imported/notification_dot.png-d61132fa4e97a182b04d45daea0968d2.ctex"]
+source_file="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/triangle_up.svg"
+dest_files=["res://.godot/imported/triangle_up.svg-3a7704f31e381e14f1e0ed3470456913.ctex"]
 
 [params]
 
@@ -21,7 +21,7 @@ compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -32,3 +32,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=3.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

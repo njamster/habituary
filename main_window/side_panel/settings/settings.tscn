@@ -293,6 +293,7 @@ text = "To-Do Color #1"
 [node name="Reset" type="Button" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color1"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme_override_constants/icon_max_width = 20
 icon = ExtResource("7_amjql")
 
 [node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color1/Reset"]
@@ -324,6 +325,7 @@ text = "To-Do Color #2"
 [node name="Reset" type="Button" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color2"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme_override_constants/icon_max_width = 20
 icon = ExtResource("7_amjql")
 
 [node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color2/Reset"]
@@ -355,6 +357,7 @@ text = "To-Do Color #3"
 [node name="Reset" type="Button" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color3"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme_override_constants/icon_max_width = 20
 icon = ExtResource("7_amjql")
 
 [node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color3/Reset"]
@@ -386,6 +389,7 @@ text = "To-Do Color #4"
 [node name="Reset" type="Button" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color4"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme_override_constants/icon_max_width = 20
 icon = ExtResource("7_amjql")
 
 [node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color4/Reset"]
@@ -417,6 +421,7 @@ text = "To-Do Color #5"
 [node name="Reset" type="Button" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color5"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme_override_constants/icon_max_width = 20
 icon = ExtResource("7_amjql")
 
 [node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/ToDoColors/Color5/Reset"]
