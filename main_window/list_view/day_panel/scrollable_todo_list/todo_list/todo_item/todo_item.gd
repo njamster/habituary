@@ -786,6 +786,8 @@ func _on_text_color_gui_input(event: InputEvent) -> void:
 		match event.button_index:
 			MOUSE_BUTTON_LEFT, MOUSE_BUTTON_WHEEL_UP:
 				text_color_id += 1
+			MOUSE_BUTTON_MIDDLE:
+				text_color_id = 0
 			MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_WHEEL_DOWN:
 				text_color_id -= 1
 			_:

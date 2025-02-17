@@ -271,7 +271,9 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_sg8j5")
 script = ExtResource("3_oduck")
 text = "Change Text Color"
 input_action = "next_text_color,previous_text_color"
+popup_delay = 1.2
 popup_position = 3
+gap_width = 4
 
 [node name="Bookmark" type="Button" parent="EditingOptions/HBox"]
 unique_name_in_owner = true
@@ -295,8 +297,9 @@ icon_toggled_on = ExtResource("13_itt7w")
 script = ExtResource("3_oduck")
 text = "Add Bookmark"
 is_dense = true
+popup_delay = 1.2
 popup_position = 5
-gap_width = 0
+gap_width = 4
 
 [node name="Spacer2" type="Control" parent="EditingOptions/HBox"]
 custom_minimum_size = Vector2(4, 0)
@@ -320,5 +323,6 @@ icon = ExtResource("3_nsj7w")
 script = ExtResource("3_oduck")
 text = "Delete To-Do"
 is_dense = true
+popup_delay = 1.2
 popup_position = 5
-gap_width = 0
+gap_width = 4
