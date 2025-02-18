@@ -2,6 +2,7 @@ extends Node
 
 
 signal to_do_text_colors_changed
+signal store_path_changed
 signal current_day_changed
 signal view_mode_changed
 signal view_mode_cap_changed
@@ -77,6 +78,8 @@ var DEFAULT_STORE_PATH : String:
 
 		store_path = value
 		_start_debounce_timer()
+
+		store_path_changed.emit()
 
 var settings_path : String
 
