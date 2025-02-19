@@ -417,6 +417,9 @@ func _on_edit_resized() -> void:
 
 
 func _on_edit_text_changed(new_text: String) -> void:
+	# hide the mouse cursor once the user starts typing
+	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+
 	if new_text.begins_with("- ") and \
 		self.indentation_level < get_maximum_indentation_level():
 			self.indentation_level += 1
@@ -608,6 +611,11 @@ func set_extra_info(num_done : int , num_items : int) -> void:
 
 
 func _input(event: InputEvent) -> void:
+	# if the user moves the mouse, make sure the cursor becomes visible again
+	if Input.mouse_mode == Input.MOUSE_MODE_HIDDEN:
+		if event is InputEventMouseMotion:
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
 	if is_in_edit_mode():
 		if event.is_action_pressed("toggle_todo", false, true):
 			if not is_heading:
