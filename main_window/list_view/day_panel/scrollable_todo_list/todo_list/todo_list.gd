@@ -194,24 +194,10 @@ func find_item_pos(at_position : Vector2) -> int:
 func fold_heading(item_index: int, unfold := false) -> void:
 	var heading := %Items.get_child(item_index)
 
-	var has_sub_items := false
-	if item_index + 1 < %Items.get_child_count():
-		var child := %Items.get_child(item_index + 1)
-		if child.indentation_level > heading.indentation_level:
-			has_sub_items = true
-
 	var num_items := 0
 	var num_done := 0
 
-	for i in range(item_index + 1, %Items.get_child_count()):
-		var child := %Items.get_child(i)
-
-		if child.indentation_level < heading.indentation_level:
-			break  # the for-loop
-		elif has_sub_items or child.is_heading:
-			if child.indentation_level == heading.indentation_level:
-				break  # the for-loop
-
+	for child in get_subordinate_items(item_index):
 		if unfold:
 			if Settings.hide_ticked_off_todos:
 				if child.state == child.States.TO_DO or \
@@ -356,12 +342,24 @@ func _on_line_highlight_item_rect_changed() -> void:
 func get_subordinate_items(item_index : int) -> Array:
 	var subordinate_items := []
 
+	var item := %Items.get_child(item_index)
+
+	var has_sub_items := false
+	if item_index + 1 < %Items.get_child_count():
+		var child := %Items.get_child(item_index + 1)
+		if child.indentation_level > item.indentation_level:
+			has_sub_items = true
+
 	for i in range(item_index + 1, %Items.get_child_count()):
 		var child := %Items.get_child(i)
-		if child.is_heading:
+
+		if child.indentation_level < item.indentation_level:
 			return subordinate_items
-		else:
-			subordinate_items.append(child)
+		elif has_sub_items or child.is_heading:
+			if child.indentation_level == item.indentation_level:
+				return subordinate_items
+
+		subordinate_items.append(child)
 
 	return subordinate_items
 
