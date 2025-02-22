@@ -171,6 +171,11 @@ var indentation_level := 0:
 	set(value):
 		var old_indentation_level := indentation_level
 		indentation_level = clamp(value, 0, get_maximum_indentation_level())
+		if indentation_level != value:
+			# play a short animation to indicate that the value was rejected
+			var tween := create_tween()
+			tween.tween_property($MainRow, "position:x", sign(value) * 5, 0.03)
+			tween.tween_property($MainRow, "position:x",  0, 0.03)
 		var change := indentation_level - old_indentation_level
 
 		%Indentation.custom_minimum_size.x = indentation_level * 20
@@ -637,13 +642,17 @@ func _input(event: InputEvent) -> void:
 			moved_down.emit()
 		elif event.is_action_pressed("indent_todo", false, true):
 			self.indentation_level += 1
+		elif event.is_action_pressed("indent_todo", true, true):
+			pass  # consume echo events without doing anything
 		elif event.is_action_pressed("unindent_todo", false, true):
-			if self.text: # skip this step for newly created to-dos that haven't been saved yet
+			if self.text and self.indentation_level > 0:
 				# Move the to-do & all its sub items to the end of its current scope. This matters
 				# if it has siblings, which would become sub items after deindentation otherwise!
 				# FIXME: That is a rather hacky way to achieve this...
 				self.get_node("../../..").move_to_do(self, 999_999_999)
 			self.indentation_level -= 1
+		elif event.is_action_pressed("unindent_todo", true, true):
+			pass  # consume echo events without doing anything
 		elif event.is_action_pressed("next_text_color", false, true):
 			text_color_id += 1
 		elif event.is_action_pressed("previous_text_color", false, true):
