@@ -1,6 +1,6 @@
 extends Button
 
-@onready var host := get_node("../../..")
+@onready var host := get_node("../../../../..")
 
 var nodes_to_move := []
 

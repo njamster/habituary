@@ -69,26 +69,38 @@ mouse_filter = 0
 theme_type_variation = &"NoSeparation"
 script = ExtResource("2_6v2l5")
 
-[node name="MainRow" type="PanelContainer" parent="."]
+[node name="HBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Indentation" type="Control" parent="HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="VBox" type="VBoxContainer" parent="HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"NoSeparation"
+
+[node name="MainRow" type="PanelContainer" parent="HBox/VBox"]
+unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
 theme_type_variation = &"ToDoItem_NoHeading"
 
-[node name="HBox" type="HBoxContainer" parent="MainRow"]
+[node name="HBox" type="HBoxContainer" parent="HBox/VBox/MainRow"]
 custom_minimum_size = Vector2(0, 27)
 layout_mode = 2
 theme_type_variation = &"NoSeparation"
 
-[node name="Indentation" type="Control" parent="MainRow/HBox"]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="Toggle" type="MarginContainer" parent="MainRow/HBox"]
+[node name="Toggle" type="MarginContainer" parent="HBox/VBox/MainRow/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"ToDoItem_TogglePadding"
 
-[node name="CheckBox" type="Button" parent="MainRow/HBox/Toggle"]
+[node name="CheckBox" type="Button" parent="HBox/VBox/MainRow/HBox/Toggle"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -99,7 +111,7 @@ theme_override_constants/icon_max_width = 20
 icon = ExtResource("2_6dyr4")
 flat = true
 
-[node name="FoldHeading" type="Button" parent="MainRow/HBox/Toggle"]
+[node name="FoldHeading" type="Button" parent="HBox/VBox/MainRow/HBox/Toggle"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -115,19 +127,20 @@ script = ExtResource("2_n5f11")
 icon_toggled_off = ExtResource("2_2nsse")
 icon_toggled_on = ExtResource("4_fnk6y")
 
-[node name="ExtraInfo" type="Label" parent="MainRow/HBox"]
+[node name="ExtraInfo" type="Label" parent="HBox/VBox/MainRow/HBox"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 theme_type_variation = &"ToDoItem_ExtraInfo"
 
-[node name="Content" type="MarginContainer" parent="MainRow/HBox"]
+[node name="Content" type="MarginContainer" parent="HBox/VBox/MainRow/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 1
 theme_type_variation = &"ToDoItem_ContentPadding"
 
-[node name="Edit" type="LineEdit" parent="MainRow/HBox/Content"]
+[node name="Edit" type="LineEdit" parent="HBox/VBox/MainRow/HBox/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
@@ -138,7 +151,7 @@ drag_and_drop_selection_enabled = false
 caret_blink = true
 caret_blink_interval = 0.45
 
-[node name="DragHandle" type="Button" parent="MainRow/HBox"]
+[node name="DragHandle" type="Button" parent="HBox/VBox/MainRow/HBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(31, 27)
 layout_mode = 2
@@ -149,12 +162,12 @@ theme_override_constants/icon_max_width = 20
 icon = ExtResource("3_avsfu")
 script = ExtResource("5_mx38m")
 
-[node name="Tooltip" type="Node" parent="MainRow/HBox/DragHandle"]
+[node name="Tooltip" type="Node" parent="HBox/VBox/MainRow/HBox/DragHandle"]
 script = ExtResource("3_oduck")
 text = "Move To-Do"
 popup_position = 5
 
-[node name="BookmarkIndicator" type="TextureRect" parent="MainRow/HBox"]
+[node name="BookmarkIndicator" type="TextureRect" parent="HBox/VBox/MainRow/HBox"]
 unique_name_in_owner = true
 modulate = Color(0.505882, 0.631373, 0.756863, 1)
 custom_minimum_size = Vector2(22, 22)
@@ -164,11 +177,12 @@ texture = ExtResource("5_eqyfo")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="Tooltip" type="Node" parent="MainRow/HBox/BookmarkIndicator"]
+[node name="Tooltip" type="Node" parent="HBox/VBox/MainRow/HBox/BookmarkIndicator"]
 script = ExtResource("3_oduck")
 text = "Bookmarked To-Do"
 
-[node name="Triangle" type="TextureRect" parent="."]
+[node name="Triangle" type="TextureRect" parent="HBox/VBox"]
+unique_name_in_owner = true
 modulate = Color(0.560784, 0.737255, 0.733333, 1)
 custom_minimum_size = Vector2(22, 13)
 layout_mode = 2

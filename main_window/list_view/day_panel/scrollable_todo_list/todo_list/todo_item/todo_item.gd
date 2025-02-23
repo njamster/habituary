@@ -80,7 +80,7 @@ enum States { TO_DO, DONE, FAILED }
 		is_heading = value
 		if is_inside_tree():
 			if is_heading:
-				$MainRow.theme_type_variation = "ToDoItem_Heading"
+				%MainRow.theme_type_variation = "ToDoItem_Heading"
 				%Heading.get_node("Tooltip").text = "Undo Heading"
 				%Delete.text = "Delete Heading"
 				%FoldHeading.show()
@@ -88,7 +88,7 @@ enum States { TO_DO, DONE, FAILED }
 			else:
 				if is_folded:
 					is_folded = false
-				$MainRow.theme_type_variation = "ToDoItem_NoHeading"
+				%MainRow.theme_type_variation = "ToDoItem_NoHeading"
 				%Heading.get_node("Tooltip").text = "Make Heading"
 				%Delete.text = "Delete To-Do"
 				%FoldHeading.hide()
@@ -174,12 +174,11 @@ var indentation_level := 0:
 		if indentation_level != value:
 			# play a short animation to indicate that the value was rejected
 			var tween := create_tween()
-			tween.tween_property($MainRow, "position:x", sign(value) * 5, 0.03)
-			tween.tween_property($MainRow, "position:x",  0, 0.03)
+			tween.tween_property(%MainRow, "position:x", sign(value) * 5, 0.03)
+			tween.tween_property(%MainRow, "position:x",  0, 0.03)
 		var change := indentation_level - old_indentation_level
 
-		%Indentation.custom_minimum_size.x = indentation_level * 20
-		$Triangle.custom_minimum_size.x = 22 + indentation_level * 40
+		%Indentation.custom_minimum_size.x = indentation_level * 25
 
 		if self.text: # skip this step for newly created to-dos that haven't been saved yet
 			if is_inside_tree() and change:
@@ -226,7 +225,7 @@ func _ready() -> void:
 	_set_initial_state()
 	_connect_signals()
 
-	$Triangle.hide()
+	%Triangle.hide()
 	%EditingOptions.hide()
 	%BookmarkIndicator.hide()
 	%DragHandle.visible = false
@@ -257,6 +256,9 @@ func _set_initial_state() -> void:
 	if not date:
 		%Bookmark.hide()
 		%Delete.size_flags_horizontal += SIZE_EXPAND
+
+	%ExtraInfo.hide()
+	%FoldHeading.hide()
 
 	_apply_state_relative_formatting.call_deferred(true)
 
@@ -332,7 +334,7 @@ func is_in_edit_mode() -> bool:
 
 func edit() -> void:
 	%Edit.grab_focus()
-	$Triangle.show()
+	%Triangle.show()
 	%EditingOptions.show()
 
 	#region Make sure edited to-do is visible
@@ -453,7 +455,7 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 			self.text = new_text
 		%Edit.release_focus()
 		%EditingOptions.hide()
-		$Triangle.hide()
+		%Triangle.hide()
 		%DragHandle.visible = _contains_mouse_cursor
 
 		%Edit.caret_column = 0   # scroll item text back to its beginning
