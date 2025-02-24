@@ -116,17 +116,36 @@ func update_month() -> void:
 	var date = Date.new(anchor_date.as_dict())
 	date.day = 1
 
+	var start_offset := 0
 	if Settings.start_week_on_monday:
-		if date.weekday == 0:
-			for i in range(6):
-				$VBox/GridContainer.add_child(Control.new())
-		elif date.weekday != 1:
-			for i in range(date.weekday - 1):
-				$VBox/GridContainer.add_child(Control.new())
+		start_offset = wrapi(date.weekday - 1, 0, 6)
 	else:
-		for i in range(date.weekday):
-			$VBox/GridContainer.add_child(Control.new())
+		start_offset = date.weekday
 
+	date = date.add_days(-1 * start_offset)
+
+	# add some padding/days from the previous month, if the current month does
+	# not start on the first day of the week
+	for i in range(start_offset):
+		if not Settings.show_outside_month_dates:
+			$VBox/GridContainer.add_child(Control.new())
+		else:
+			var button := DayButton.new(date)
+			if date.weekday == 0:
+				button.theme_type_variation = "CalendarWidget_DayButton_WeekendDay"
+
+			if not FileAccess.file_exists(Settings.store_path.path_join(
+				date.format(Settings.date_format_save)
+			) + ".txt"):
+				button.modulate.a = 0.2
+			else:
+				button.modulate.a = 0.3
+
+			button.pressed.connect(get_parent().get_parent().close_overlay)
+			$VBox/GridContainer.add_child(button)
+		date = date.add_days(1)
+
+	# add the days from the current month
 	for i in range(Date._days_in_month(anchor_date.month, anchor_date.year)):
 		var button := DayButton.new(date)
 		if date.as_dict() == Settings.current_day.as_dict():
@@ -144,6 +163,27 @@ func update_month() -> void:
 		button.pressed.connect(get_parent().get_parent().close_overlay)
 		$VBox/GridContainer.add_child(button)
 		date = date.add_days(1)
+
+	# add some padding/days from the next month, if the current month does not
+	# end on the last day of the week (until the row is filled)
+	while $VBox/GridContainer.get_child_count() % 7 != 0:
+		if not Settings.show_outside_month_dates:
+			$VBox/GridContainer.add_child(Control.new())
+		else:
+			var button := DayButton.new(date)
+			if date.weekday == 0 or date.weekday == 6:
+				button.theme_type_variation = "CalendarWidget_DayButton_WeekendDay"
+
+			if not FileAccess.file_exists(Settings.store_path.path_join(
+				date.format(Settings.date_format_save)
+			) + ".txt"):
+				button.modulate.a = 0.2
+			else:
+				button.modulate.a = 0.3
+
+			button.pressed.connect(get_parent().get_parent().close_overlay)
+			$VBox/GridContainer.add_child(button)
+			date = date.add_days(1)
 
 	# disable today button if we're already in the correct month (button wouldn't do anything)
 	if anchor_date.year == DayTimer.today.year and anchor_date.month == DayTimer.today.month:

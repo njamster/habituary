@@ -11,8 +11,6 @@ func _ready() -> void:
 		if option_id == Settings.today_position:
 			%TodayPosition/Setting/Options.select(option_id)
 
-	%FirstWeekday/Setting/Options.set_pressed_no_signal(Settings.start_week_on_monday)
-
 	$%DayStart/Setting/Hours.value = Settings.day_start_hour_offset
 	$%DayStart/Setting/Minutes.value = Settings.day_start_minute_offset
 
@@ -32,7 +30,19 @@ func _set_initial_state() -> void:
 	%UIScale/Setting/ScaleFactor.max_value = Settings.MAX_UI_SCALE_FACTOR
 	%UIScale/Setting/ScaleFactor.value = Settings.ui_scale_factor
 
-	%HideTickedOffTodos/Setting/Options.set_pressed_no_signal(Settings.hide_ticked_off_todos)
+	%FirstWeekday/Setting/Options.set_pressed_no_signal(
+		Settings.start_week_on_monday
+	)
+	_on_first_weekday_toggled(Settings.start_week_on_monday)
+
+	%OutsideMonthDates/Setting/Options.set_pressed_no_signal(
+		Settings.show_outside_month_dates
+	)
+	_on_outside_month_dates_toggled(Settings.show_outside_month_dates)
+
+	%HideTickedOffTodos/Setting/Options.set_pressed_no_signal(
+		Settings.hide_ticked_off_todos
+	)
 	_on_hide_ticked_off_todos_options_toggled(Settings.hide_ticked_off_todos)
 
 	_set_text_colors()
@@ -61,6 +71,10 @@ func _connect_signals() -> void:
 	%DayStart/Setting/Minutes.value_changed.connect(_on_day_start_minutes_value_changed)
 
 	%FirstWeekday/Setting/Options.toggled.connect(_on_first_weekday_toggled)
+
+	%OutsideMonthDates/Setting/Options.toggled.connect(
+		_on_outside_month_dates_toggled
+	)
 
 	%HideTickedOffTodos/Setting/Options.toggled.connect(_on_hide_ticked_off_todos_options_toggled)
 
@@ -103,9 +117,25 @@ func _on_first_weekday_toggled(toggled_on: bool) -> void:
 	Settings.start_week_on_monday = toggled_on
 
 	if toggled_on:
-		%FirstWeekday/Explanation.text = "New weeks in the calendar widget start on Mondays."
+		%FirstWeekday/Explanation.text = "[fill]New weeks in the calendar" \
+		+ " widget start on Mondays.[/fill]"
 	else:
-		%FirstWeekday/Explanation.text = "New weeks in the calendar widget start on Sundays."
+		%FirstWeekday/Explanation.text = "[fill]New weeks in the calendar" \
+		+ " widget start on Sundays.[/fill]"
+
+
+func _on_outside_month_dates_toggled(toggled_on: bool) -> void:
+	Settings.show_outside_month_dates = toggled_on
+
+	if toggled_on:
+		%OutsideMonthDates/Explanation.text = "[fill]If the current month" \
+		+ " doesn't start with the first or ends with the last day of the" \
+		+ " week, those gaps in the calendar widget will be filled up with" \
+		+ " dates from the previous or next month.[/fill]"
+	else:
+		%OutsideMonthDates/Explanation.text = "[fill]If the current month" \
+		+ " doesn't start with the first or ends with the last day of the" \
+		+ "week, those gaps in the calendar widget will be left empty.[/fill]"
 
 
 func _on_day_start_hours_value_changed(value: float) -> void:

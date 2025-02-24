@@ -142,6 +142,14 @@ var current_day := DayTimer.today:
 		start_week_on_monday = value
 		_start_debounce_timer()
 
+@export var show_outside_month_dates := false:
+	set(value):
+		if show_outside_month_dates == value:
+			return
+
+		show_outside_month_dates = value
+		_start_debounce_timer()
+
 @export var day_start_hour_offset := 0:
 	set(value):
 		if day_start_hour_offset == value:
