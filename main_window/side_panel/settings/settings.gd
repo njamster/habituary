@@ -5,12 +5,6 @@ func _ready() -> void:
 	_set_initial_state()
 	_connect_signals()
 
-	for option_name in Settings.TodayPosition:
-		var option_id : int = Settings.TodayPosition[option_name]
-		%TodayPosition/Setting/Options.add_item(option_name.capitalize(), option_id)
-		if option_id == Settings.today_position:
-			%TodayPosition/Setting/Options.select(option_id)
-
 	$%DayStart/Setting/Hours.value = Settings.day_start_hour_offset
 	$%DayStart/Setting/Minutes.value = Settings.day_start_minute_offset
 
@@ -44,6 +38,13 @@ func _set_initial_state() -> void:
 		Settings.hide_ticked_off_todos
 	)
 	_on_hide_ticked_off_todos_options_toggled(Settings.hide_ticked_off_todos)
+
+	for option_name in Settings.TodayPosition:
+		var option_id : int = Settings.TodayPosition[option_name]
+		%TodayPosition/Setting/Options.add_item(option_name.capitalize(), option_id)
+		if option_id == Settings.today_position:
+			%TodayPosition/Setting/Options.select(option_id)
+			_on_today_position_item_selected(option_id)
 
 	_set_text_colors()
 
@@ -102,13 +103,16 @@ func _on_today_position_item_selected(index: int) -> void:
 	match index:
 		Settings.TodayPosition.LEFTMOST:
 			%TodayPosition/Explanation.text = \
-				"After changing dates, the currently selected day will be displayed at the leftmost position of the list view."
+				"[fill]After changing dates, the currently selected day will" \
+				+ " be displayed at the leftmost position.[/fill]"
 		Settings.TodayPosition.SECOND_PLACE:
 			%TodayPosition/Explanation.text = \
-				"After changing dates, the currently selected day will be displayed at the second position of the list view."
+				"[fill]After changing dates, the currently selected day will" \
+				+ " be displayed at the second position.[/fill]"
 		Settings.TodayPosition.CENTERED:
 			%TodayPosition/Explanation.text = \
-				"After changing dates, the currently selected day will be displayed at the center position of the list view."
+				"[fill]After changing dates, the currently selected day will" \
+				+ " be displayed at the center position.[/fill]"
 		_:
 			%TodayPosition/Explanation.text = ""
 

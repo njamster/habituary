@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://dyuqr0r0y8hub"]
+
+[ext_resource type="Script" path="res://main_window/side_panel/settings/collapsible_category/collapsible_category.gd" id="1_so0um"]
+[ext_resource type="Texture2D" uid="uid://6im7rq1y7co6" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/folded.svg" id="2_7njyv"]
+
+[node name="CollapsibleCategory" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_so0um")
+
+[node name="Heading" type="Button" parent="."]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_constants/icon_max_width = 20
+toggle_mode = true
+button_pressed = true
+text = "HEADING"
+icon = ExtResource("2_7njyv")
+alignment = 0
+text_overrun_behavior = 3
+
+[node name="Content" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 2
+theme_type_variation = &"MediumSeparation"
