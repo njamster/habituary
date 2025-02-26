@@ -369,6 +369,10 @@ func delete() -> void:
 			var predecessor = get_node("../../..").get_nearest_visible_predecessor(get_index())
 			if predecessor:
 				predecessor.edit()
+			else:
+				Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	else:
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 	queue_free()
 	if self.text:
@@ -451,8 +455,7 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 	var new_item := (self.text == "")
 
 	if new_text:
-		if not key_input:
-			self.text = new_text
+		self.text = new_text
 		%Edit.release_focus()
 		%EditingOptions.hide()
 		%Triangle.hide()
@@ -460,22 +463,25 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 
 		%Edit.caret_column = 0   # scroll item text back to its beginning
 
-		if new_item and key_input:
-			if Input.is_key_pressed(KEY_SHIFT):
-				predecessor_requested.emit()
-			else:
-				successor_requested.emit()
+		if new_item:
+			if key_input:
+				if Input.is_key_pressed(KEY_SHIFT):
+					predecessor_requested.emit()
+				else:
+					successor_requested.emit()
+		else:
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	else:
 		delete()
 
 
 func _on_edit_focus_exited() -> void:
-	if not is_queued_for_deletion() and %Edit.visible:
-		await get_tree().process_frame
-		if is_inside_tree():
-			var focus_owner := get_viewport().gui_get_focus_owner()
-			if not focus_owner or (not focus_owner == self and not focus_owner.owner == self):
-				_on_edit_text_submitted(%Edit.text, false)
+	await get_tree().process_frame
+	if is_inside_tree() and not is_queued_for_deletion() and %EditingOptions.visible:
+		var focus_owner := get_viewport().gui_get_focus_owner()
+		if not focus_owner or (not focus_owner == self and not focus_owner.owner == self):
+			_on_edit_text_submitted(%Edit.text, false)
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 
 func _on_focus_exited() -> void:
