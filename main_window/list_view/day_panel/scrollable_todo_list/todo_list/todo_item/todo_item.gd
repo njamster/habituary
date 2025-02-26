@@ -618,11 +618,6 @@ func set_extra_info(num_done : int , num_items : int) -> void:
 
 
 func _input(event: InputEvent) -> void:
-	# if the user moves the mouse, make sure the cursor becomes visible again
-	if Input.mouse_mode == Input.MOUSE_MODE_HIDDEN:
-		if event is InputEventMouseMotion:
-			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-
 	if is_in_edit_mode():
 		if event.is_action_pressed("toggle_todo", false, true):
 			if not is_heading:

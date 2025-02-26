@@ -136,6 +136,14 @@ func remove_day_panel(index : int) -> void:
 		day_panel.queue_free()
 
 
+func _input(event: InputEvent) -> void:
+	# If the user moves the mouse, make sure the cursor becomes visible again
+	# (it automatically is hidden while typing in a to-do's text).
+	if Input.mouse_mode == Input.MOUSE_MODE_HIDDEN:
+		if event is InputEventMouseMotion:
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_DRAG_END:
 		if drag_cache.get_children():
