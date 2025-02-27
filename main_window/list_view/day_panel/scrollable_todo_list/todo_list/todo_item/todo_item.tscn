@@ -61,23 +61,26 @@ action = &"delete_todo"
 events = [SubResource("InputEventAction_8e6wv")]
 
 [node name="ToDoItem" type="VBoxContainer" groups=["todo_item"]]
-custom_minimum_size = Vector2(0, 27)
 offset_right = 1920.0
 offset_bottom = 27.0
 focus_mode = 2
-mouse_filter = 0
+mouse_filter = 2
 theme_type_variation = &"NoSeparation"
 script = ExtResource("2_6v2l5")
 
+[node name="UpperPadding" type="Control" parent="."]
+custom_minimum_size = Vector2(0, 6)
+layout_mode = 2
+mouse_filter = 2
+
 [node name="HBox" type="HBoxContainer" parent="."]
 layout_mode = 2
+theme_type_variation = &"NoSeparation"
 
 [node name="Indentation" type="Control" parent="HBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 size_flags_horizontal = 8
-size_flags_vertical = 0
 
 [node name="VBox" type="VBoxContainer" parent="HBox"]
 layout_mode = 2
@@ -86,12 +89,11 @@ theme_type_variation = &"NoSeparation"
 
 [node name="MainRow" type="PanelContainer" parent="HBox/VBox"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 27)
 layout_mode = 2
-mouse_filter = 1
 theme_type_variation = &"ToDoItem_NoHeading"
 
 [node name="HBox" type="HBoxContainer" parent="HBox/VBox/MainRow"]
-custom_minimum_size = Vector2(0, 27)
 layout_mode = 2
 theme_type_variation = &"NoSeparation"
 
@@ -153,7 +155,6 @@ caret_blink_interval = 0.45
 
 [node name="DragHandle" type="Button" parent="HBox/VBox/MainRow/HBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(31, 27)
 layout_mode = 2
 mouse_filter = 1
 mouse_default_cursor_shape = 6
@@ -170,7 +171,7 @@ popup_position = 5
 [node name="BookmarkIndicator" type="TextureRect" parent="HBox/VBox/MainRow/HBox"]
 unique_name_in_owner = true
 modulate = Color(0.505882, 0.631373, 0.756863, 1)
-custom_minimum_size = Vector2(22, 22)
+custom_minimum_size = Vector2(22, 0)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 texture = ExtResource("5_eqyfo")
@@ -186,7 +187,6 @@ unique_name_in_owner = true
 modulate = Color(0.560784, 0.737255, 0.733333, 1)
 custom_minimum_size = Vector2(22, 13)
 layout_mode = 2
-size_flags_horizontal = 0
 mouse_filter = 0
 texture = ExtResource("10_u8h4d")
 expand_mode = 1
@@ -340,3 +340,8 @@ is_dense = true
 popup_delay = 1.2
 popup_position = 5
 gap_width = 4
+
+[node name="LowerPadding" type="Control" parent="."]
+custom_minimum_size = Vector2(0, 7)
+layout_mode = 2
+mouse_filter = 2

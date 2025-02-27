@@ -172,7 +172,7 @@ func find_item_pos(at_position : Vector2) -> int:
 			continue
 		if child.is_heading:
 			inside_folded_heading = false
-		if child.global_position.y > at_position.y:
+		if child.global_position.y >= at_position.y:
 			if not inside_folded_heading:
 				if last_heading:
 					last_heading.get_node("%FoldHeading").button_pressed = false
@@ -242,7 +242,7 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 			# Now, move the entry to its new loation.
 			if entry.get_parent() != %Items:
 				# item moved from one list to another
-				var old_list = entry.get_parent().get_parent().get_parent()
+				var old_list = entry.get_parent().get_parent()
 				disconnect_todo_signals(entry)
 				if entry.is_bookmarked:
 					var old_date = entry.date
@@ -311,23 +311,25 @@ func show_line_highlight(mouse_position : Vector2) -> void:
 	for i in range(%Items.get_child_count() - 1, -1, -1):
 		var child := %Items.get_child(i)
 		if child.visible:
-			y_position = child.global_position.y + child.size.y + %Items.get_theme_constant("separation")
+			y_position = child.global_position.y + child.size.y
 			break
 
 	# if the mouse cursor is above that last visible item, find the item that is closest to the
 	# current mouse cursor position and put the line there
 	for i in %Items.get_child_count():
 		var child := %Items.get_child(i)
-		if child.visible and child.global_position.y > mouse_position.y:
+		# Note: 13 is the combined height of a to-do item's upper- and lower-
+		# padding. It's subtracted from the mouse position here, to ensure that
+		# the same result is given when hovering the lower padding of the upper
+		# item as when hovering the upper padding of its successor.
+		if child.visible and child.global_position.y > mouse_position.y - 13:
 			y_position = child.global_position.y
 			break
 
-	$LineHighlight.global_position.y = y_position - \
-		0.5 * %Items.get_theme_constant("separation")
-	if y_position == %Items.global_position.y:
-		$LineHighlight.position.y += 0.5 * $LineHighlight.custom_minimum_size.y
-	else:
-		$LineHighlight.position.y -= 0.5 * $LineHighlight.custom_minimum_size.y
+	$LineHighlight.global_position.y = y_position
+	if y_position != %Items.global_position.y:
+		$LineHighlight.position.y -= 2
+
 	$LineHighlight.modulate.a = 1.0
 
 

@@ -541,12 +541,6 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	medium_separation.separation = 16
 	#endregion
 
-	#region TodoList_ItemSeparation
-	var todo_list_item_separation := theme.create_theme_type("TodoList_ItemSeparation", "BoxContainer")
-
-	todo_list_item_separation.separation = 13
-	#endregion
-
 	#region SmallSeparation
 	var small_separation := theme.create_theme_type("SmallSeparation", "BoxContainer")
 
@@ -636,13 +630,6 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	calendar_extra_padding.margin_left = 40
 	calendar_extra_padding.margin_top = 87
 	calendar_extra_padding.margin_right = 40
-	#endregion
-
-	#region ToDoList_VerticalPadding
-	var to_do_list_vertical_padding := theme.create_theme_type("ToDoList_VerticalPadding", "MarginContainer")
-
-	to_do_list_vertical_padding.margin_top = 6
-	to_do_list_vertical_padding.margin_bottom = 7
 	#endregion
 
 	#region ToDoItem_TogglePadding

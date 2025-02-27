@@ -20,8 +20,8 @@ var _initialization_finished := false
 var date : Date:
 	get():
 		# FIXME: avoid using a relative path that involves parent nodes
-		if "date" in get_node("../../../../../../.."):
-			return Date.new(get_node("../../../../../../..").date.as_dict())
+		if "date" in get_node("../../../../../.."):
+			return Date.new(get_node("../../../../../..").date.as_dict())
 		else:
 			return null
 
@@ -292,9 +292,10 @@ func _connect_signals() -> void:
 	#region Local Signals
 	focus_exited.connect(_on_focus_exited)
 	gui_input.connect(_on_gui_input)
-	mouse_entered.connect(_on_mouse_entered)
-	mouse_exited.connect(_on_mouse_exited)
 	tree_exiting.connect(_on_tree_exiting)
+
+	%MainRow.mouse_entered.connect(_on_mouse_entered)
+	%MainRow.mouse_exited.connect(_on_mouse_exited)
 
 	%CheckBox.gui_input.connect(_on_check_box_gui_input)
 
@@ -341,7 +342,7 @@ func edit() -> void:
 	# FIXME: this is pretty hacky patch...
 	await get_tree().process_frame
 	await get_tree().process_frame
-	var scroll_container := get_node("../../../..")
+	var scroll_container := get_node("../../..")
 	scroll_container.ensure_control_visible(self)
 	var row_height = scroll_container.TODO_ITEM_HEIGHT
 	if scroll_container.scroll_vertical % row_height != 0:
@@ -362,11 +363,11 @@ func delete() -> void:
 	_reindent_sub_todos(-1)
 
 	if %Edit.text:
-		var successor = get_node("../../..").get_nearest_visible_successor(get_index())
+		var successor = get_node("../..").get_nearest_visible_successor(get_index())
 		if successor:
 			successor.edit()
 		else:
-			var predecessor = get_node("../../..").get_nearest_visible_predecessor(get_index())
+			var predecessor = get_node("../..").get_nearest_visible_predecessor(get_index())
 			if predecessor:
 				predecessor.edit()
 			else:
@@ -497,12 +498,12 @@ func _on_content_gui_input(event: InputEvent) -> void:
 
 
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-	return get_node("../../..")._can_drop_data(_at_position, data)
+	return get_node("../..")._can_drop_data(_at_position, data)
 
 
 func _drop_data(_at_position: Vector2, data: Variant) -> void:
 	# FIXME: avoid asumptions about the parent's of this node
-	get_node("../../..")._drop_data(position - Vector2.ONE, data)
+	get_node("../..")._drop_data(position - Vector2.ONE, data)
 
 
 func save_to_disk(file : FileAccess) -> void:
@@ -632,11 +633,11 @@ func _input(event: InputEvent) -> void:
 			if not is_heading:
 				self.state = States.FAILED if self.state != States.FAILED else States.TO_DO
 		elif event.is_action_pressed("previous_todo", true, true):
-			var predecessor = get_node("../../..").get_nearest_visible_predecessor(get_index())
+			var predecessor = get_node("../..").get_nearest_visible_predecessor(get_index())
 			if predecessor:
 				predecessor.edit()
 		elif event.is_action_pressed("next_todo", true, true):
-			var successor = get_node("../../..").get_nearest_visible_successor(get_index())
+			var successor = get_node("../..").get_nearest_visible_successor(get_index())
 			if successor:
 				successor.edit()
 		elif event.is_action_pressed("move_todo_up", true, true):
@@ -652,7 +653,7 @@ func _input(event: InputEvent) -> void:
 				# Move the to-do & all its sub items to the end of its current scope. This matters
 				# if it has siblings, which would become sub items after deindentation otherwise!
 				# FIXME: That is a rather hacky way to achieve this...
-				self.get_node("../../..").move_to_do(self, 999_999_999)
+				self.get_node("../..").move_to_do(self, 999_999_999)
 			self.indentation_level -= 1
 		elif event.is_action_pressed("unindent_todo", true, true):
 			pass  # consume echo events without doing anything
@@ -844,11 +845,11 @@ func _apply_state_relative_formatting(immediate := false) -> void:
 					self.hide()
 
 					if %EditingOptions.visible:
-						var successor = get_node("../../..").get_nearest_visible_successor(get_index())
+						var successor = get_node("../..").get_nearest_visible_successor(get_index())
 						if successor:
 							successor.edit()
 						else:
-							var predecessor = get_node("../../..").get_nearest_visible_predecessor(get_index())
+							var predecessor = get_node("../..").get_nearest_visible_predecessor(get_index())
 							if predecessor:
 								predecessor.edit()
 
