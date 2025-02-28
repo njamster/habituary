@@ -1,5 +1,6 @@
 extends VBoxContainer
 
+
 signal predecessor_requested
 signal successor_requested
 
@@ -12,7 +13,9 @@ signal unfolded
 signal moved_up
 signal moved_down
 
+
 @onready var last_index := get_index()
+
 
 # used to avoid emitting `list_save_requested` too early
 var _initialization_finished := false
@@ -81,21 +84,17 @@ enum States { TO_DO, DONE, FAILED }
 		if is_inside_tree():
 			if is_heading:
 				%MainRow.theme_type_variation = "ToDoItem_Heading"
-				%Heading.get_node("Tooltip").text = "Undo Heading"
-				%Delete.text = "Delete Heading"
 				%FoldHeading.show()
 				%CheckBox.hide()
 			else:
 				if is_folded:
 					is_folded = false
 				%MainRow.theme_type_variation = "ToDoItem_NoHeading"
-				%Heading.get_node("Tooltip").text = "Make Heading"
-				%Delete.text = "Delete To-Do"
 				%FoldHeading.hide()
 				%CheckBox.show()
-			%Delete.get_node("Tooltip").text = %Delete.text
-			_on_editing_options_resized()
-			%Heading.button_pressed = is_heading
+
+			if has_node("EditingOptions"):
+				$EditingOptions.update_heading()
 
 			if _initialization_finished and self.text:
 				list_save_requested.emit("is_heading changed")
@@ -104,12 +103,10 @@ enum States { TO_DO, DONE, FAILED }
 	set(value):
 		is_bold = value
 		if is_inside_tree():
-			if is_bold:
-				%Bold.get_node("Tooltip").text = "Undo Bold"
-			else:
-				%Bold.get_node("Tooltip").text = "Make Bold"
 			_apply_formatting()
-			%Bold.button_pressed = is_bold
+
+			if has_node("EditingOptions"):
+				$EditingOptions.update_bold()
 
 			if _initialization_finished and self.text:
 				list_save_requested.emit("is_bold changed")
@@ -118,12 +115,10 @@ enum States { TO_DO, DONE, FAILED }
 	set(value):
 		is_italic = value
 		if is_inside_tree():
-			if is_italic:
-				%Italic.get_node("Tooltip").text = "Undo Italic"
-			else:
-				%Italic.get_node("Tooltip").text = "Make Italic"
 			_apply_formatting()
-			%Italic.button_pressed = is_italic
+
+			if has_node("EditingOptions"):
+				$EditingOptions.update_italic()
 
 			if _initialization_finished and self.text:
 				list_save_requested.emit("is_italic changed")
@@ -156,13 +151,12 @@ var is_bookmarked := false:
 
 		if is_inside_tree():
 			if is_bookmarked:
-				%Bookmark.text = %Bookmark.text.replace("Add", "Remove")
 				%BookmarkIndicator.show()
 			else:
-				%Bookmark.text = %Bookmark.text.replace("Remove", "Add")
 				%BookmarkIndicator.hide()
-			%Bookmark.get_node("Tooltip").text = %Bookmark.text
-			%Bookmark.button_pressed = is_bookmarked
+
+			if has_node("EditingOptions"):
+				$EditingOptions.update_bookmark()
 
 			if _initialization_finished and self.text:
 				list_save_requested.emit("is_bookmarked changed")
@@ -180,6 +174,9 @@ var indentation_level := 0:
 
 		%Indentation.custom_minimum_size.x = indentation_level * 25
 
+		if has_node("EditingOptions"):
+			$EditingOptions.update_indentation()
+
 		if self.text: # skip this step for newly created to-dos that haven't been saved yet
 			if is_inside_tree() and change:
 				_reindent_sub_todos(change, old_indentation_level)
@@ -195,38 +192,26 @@ var text_color_id := 0:
 
 		if text_color_id:
 			var color = Settings.to_do_text_colors[text_color_id - 1]
-			%TextColor.get("theme_override_styles/panel").bg_color = color
-			%TextColor.get("theme_override_styles/panel").draw_center = true
 			%Edit.add_theme_color_override("font_placeholder_color", Color(color, 0.7))
 			%Edit.add_theme_color_override("font_color", color)
 		else:
-			%TextColor.get("theme_override_styles/panel").draw_center = false
 			%Edit.remove_theme_color_override("font_placeholder_color")
 			%Edit.remove_theme_color_override("font_color")
+
+		if has_node("EditingOptions"):
+			$EditingOptions.update_text_color()
 
 		if old_value != value:
 			if _initialization_finished and self.text:
 				list_save_requested.emit("text_color_id changed")
 
-var _editing_options_shrink_threshold : int
-
 var hide_tween: Tween
 
 
 func _ready() -> void:
-	# Briefly switch to the longer version of the button label:
-	%Bookmark.text = %Bookmark.text.replace("Add", "Remove")
-	# Measure the minimum size of the editing options (i.e. *with* labels), this will serve as the
-	# threshold width value at which all labels in the editing options will be hidden:
-	_editing_options_shrink_threshold = %EditingOptions.get_combined_minimum_size().x
-	# Then switch back to the original button label again:
-	%Bookmark.text = %Bookmark.text.replace("Remove", "Add")
-
 	_set_initial_state()
 	_connect_signals()
 
-	%Triangle.hide()
-	%EditingOptions.hide()
 	%BookmarkIndicator.hide()
 	%DragHandle.visible = false
 
@@ -252,13 +237,7 @@ func _ready() -> void:
 
 
 func _set_initial_state() -> void:
-	# FIXME: temporary band-aid fix until it's possible to bookmark to-dos in the capture panel, too
-	if not date:
-		%Bookmark.hide()
-		%Delete.size_flags_horizontal += SIZE_EXPAND
-
 	%ExtraInfo.hide()
-	%FoldHeading.hide()
 
 	_apply_state_relative_formatting.call_deferred(true)
 
@@ -282,8 +261,6 @@ func _connect_signals() -> void:
 	Settings.to_do_text_colors_changed.connect(func():
 		if text_color_id:
 			var color = Settings.to_do_text_colors[text_color_id - 1]
-			%TextColor.get("theme_override_styles/panel").bg_color = color
-			%TextColor.get("theme_override_styles/panel").draw_center = true
 			%Edit.add_theme_color_override("font_placeholder_color", Color(color, 0.7))
 			%Edit.add_theme_color_override("font_color", color)
 	)
@@ -305,38 +282,30 @@ func _connect_signals() -> void:
 
 	%Edit.text_changed.connect(_on_edit_text_changed)
 	%Edit.text_submitted.connect(_on_edit_text_submitted)
-	%Edit.focus_entered.connect(edit)
+	%Edit.focus_entered.connect(_on_edit_focus_entered)
 	%Edit.focus_exited.connect(_on_edit_focus_exited)
 	%Edit.gui_input.connect(_on_edit_gui_input)
 	%Edit.resized.connect(_on_edit_resized)
 
 	%BookmarkIndicator.gui_input.connect(_on_bookmark_indicator_gui_input)
-
-	%EditingOptions.resized.connect(_on_editing_options_resized)
-	_on_editing_options_resized()
-
-	%Heading.toggled.connect(_on_heading_toggled)
-
-	%Bold.toggled.connect(_on_bold_toggled)
-
-	%Italic.toggled.connect(_on_italic_toggled)
-
-	%TextColor.gui_input.connect(_on_text_color_gui_input)
-
-	%Bookmark.pressed.connect(_on_bookmark_pressed)
-
-	%Delete.pressed.connect(delete)
 	#endregion
 
 
 func is_in_edit_mode() -> bool:
-	return %EditingOptions.visible
+	return has_node("EditingOptions")
 
 
 func edit() -> void:
 	%Edit.grab_focus()
-	%Triangle.show()
-	%EditingOptions.show()
+
+
+func _on_edit_focus_entered() -> void:
+	if not is_in_edit_mode():
+		var editing_options := \
+			preload("editing_options/editing_options.tscn").instantiate()
+		add_child(editing_options, true)
+		# place the editing options above the lower padding
+		move_child(editing_options, -2)
 
 	#region Make sure edited to-do is visible
 	# FIXME: this is pretty hacky patch...
@@ -458,8 +427,6 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 	if new_text:
 		self.text = new_text
 		%Edit.release_focus()
-		%EditingOptions.hide()
-		%Triangle.hide()
 		%DragHandle.visible = _contains_mouse_cursor
 
 		%Edit.caret_column = 0   # scroll item text back to its beginning
@@ -478,10 +445,12 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 
 func _on_edit_focus_exited() -> void:
 	await get_tree().process_frame
-	if is_inside_tree() and not is_queued_for_deletion() and %EditingOptions.visible:
+	if is_inside_tree() and not is_queued_for_deletion() and is_in_edit_mode():
 		var focus_owner := get_viewport().gui_get_focus_owner()
 		if not focus_owner or (not focus_owner == self and not focus_owner.owner == self):
 			_on_edit_text_submitted(%Edit.text, false)
+			if has_node("EditingOptions"):
+				$EditingOptions.queue_free()
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 
@@ -738,37 +707,6 @@ func _apply_formatting() -> void:
 	%ExtraInfo.add_theme_font_override("font", font)
 
 
-func _on_heading_toggled(toggled_on: bool) -> void:
-	is_heading = toggled_on
-
-
-func _on_bold_toggled(toggled_on: bool) -> void:
-	is_bold = toggled_on
-
-
-func _on_italic_toggled(toggled_on: bool) -> void:
-	is_italic = toggled_on
-
-
-func _on_editing_options_resized() -> void:
-	if %EditingOptions.size.x <= _editing_options_shrink_threshold:
-		%FormatLabel.hide()
-
-		%Delete.clip_text = true
-		%Delete.get_node("Tooltip").hide_text = false
-
-		%Bookmark.clip_text = true
-		%Bookmark.get_node("Tooltip").hide_text = false
-	else:
-		%FormatLabel.show()
-
-		%Delete.clip_text = false
-		%Delete.get_node("Tooltip").hide_text = true
-
-		%Bookmark.clip_text = false
-		%Bookmark.get_node("Tooltip").hide_text = true
-
-
 func _check_for_search_query_match() -> void:
 	if not Settings.search_query:
 		text_color_id = text_color_id
@@ -782,15 +720,6 @@ func _check_for_search_query_match() -> void:
 		%Edit.modulate.a = 0.1
 
 
-func _on_bookmark_pressed() -> void:
-	is_bookmarked = not is_bookmarked
-
-	if is_bookmarked:
-		EventBus.bookmark_added.emit(self)
-	else:
-		EventBus.bookmark_removed.emit(self)
-
-
 func _on_bookmark_indicator_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
 		%BookmarkIndicator/Tooltip.hide_tooltip()
@@ -800,22 +729,6 @@ func _on_bookmark_indicator_gui_input(event: InputEvent) -> void:
 func _on_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		release_focus()
-
-
-func _on_text_color_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.is_pressed():
-		match event.button_index:
-			MOUSE_BUTTON_LEFT, MOUSE_BUTTON_WHEEL_UP:
-				text_color_id += 1
-			MOUSE_BUTTON_MIDDLE:
-				text_color_id = 0
-			MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_WHEEL_DOWN:
-				text_color_id -= 1
-			_:
-				return # early, i.e. ignore the input
-
-		get_viewport().set_input_as_handled()
-		%TextColor/Tooltip.hide_tooltip()
 
 
 # NOTE: `tree_exiting` will be emitted both when this panel is about to be removed from the tree
@@ -844,7 +757,7 @@ func _apply_state_relative_formatting(immediate := false) -> void:
 					await hide_tween.finished
 					self.hide()
 
-					if %EditingOptions.visible:
+					if is_in_edit_mode():
 						var successor = get_node("../..").get_nearest_visible_successor(get_index())
 						if successor:
 							successor.edit()
