@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://djl6gthnepxqs"]
+[gd_scene load_steps=12 format=3 uid="uid://djl6gthnepxqs"]
 
 [ext_resource type="Script" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/editing_options/editing_options.gd" id="1_0rh5w"]
 [ext_resource type="Texture2D" uid="uid://b3f6l5cfcoswd" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/triangle_up.svg" id="1_f163n"]
@@ -10,24 +10,6 @@
 [ext_resource type="Script" path="res://custom/toggle_button.gd" id="6_mi4pb"]
 [ext_resource type="Texture2D" uid="uid://dkggv455u3otk" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/remove_bookmark.svg" id="7_pufik"]
 [ext_resource type="Texture2D" uid="uid://4eakbxkw2dmx" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/delete.svg" id="8_wicia"]
-
-[sub_resource type="InputEventAction" id="InputEventAction_cishq"]
-action = &"toggle_heading"
-
-[sub_resource type="Shortcut" id="Shortcut_nnvv7"]
-events = [SubResource("InputEventAction_cishq")]
-
-[sub_resource type="InputEventAction" id="InputEventAction_rvq25"]
-action = &"toggle_bold"
-
-[sub_resource type="Shortcut" id="Shortcut_2niux"]
-events = [SubResource("InputEventAction_rvq25")]
-
-[sub_resource type="InputEventAction" id="InputEventAction_q0hmr"]
-action = &"toggle_italic"
-
-[sub_resource type="Shortcut" id="Shortcut_hrpfk"]
-events = [SubResource("InputEventAction_q0hmr")]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sg8j5"]
 resource_local_to_scene = true
@@ -41,18 +23,6 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 anti_aliasing_size = 0.33
-
-[sub_resource type="InputEventAction" id="InputEventAction_i0vg5"]
-action = &"toggle_bookmark"
-
-[sub_resource type="Shortcut" id="Shortcut_lnt4s"]
-events = [SubResource("InputEventAction_i0vg5")]
-
-[sub_resource type="InputEventAction" id="InputEventAction_8e6wv"]
-action = &"delete_todo"
-
-[sub_resource type="Shortcut" id="Shortcut_3nsuj"]
-events = [SubResource("InputEventAction_8e6wv")]
 
 [node name="EditingOptions" type="VBoxContainer"]
 offset_left = 6.0
@@ -96,13 +66,12 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"ToDoItem_EditingOption"
 theme_override_constants/icon_max_width = 20
 toggle_mode = true
-shortcut = SubResource("Shortcut_nnvv7")
-shortcut_in_tooltip = false
 icon = ExtResource("1_s42og")
 
 [node name="Tooltip" type="Node" parent="PanelContainer/HBox/Heading"]
 script = ExtResource("2_ikgs7")
 text = "Make Heading"
+input_action = "toggle_heading"
 is_dense = true
 popup_delay = 1.2
 popup_position = 3
@@ -116,13 +85,12 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"ToDoItem_EditingOption"
 theme_override_constants/icon_max_width = 20
 toggle_mode = true
-shortcut = SubResource("Shortcut_2niux")
-shortcut_in_tooltip = false
 icon = ExtResource("3_3jerc")
 
 [node name="Tooltip" type="Node" parent="PanelContainer/HBox/Bold"]
 script = ExtResource("2_ikgs7")
 text = "Make Bold"
+input_action = "toggle_bold"
 is_dense = true
 popup_delay = 1.2
 popup_position = 3
@@ -136,13 +104,12 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"ToDoItem_EditingOption"
 theme_override_constants/icon_max_width = 20
 toggle_mode = true
-shortcut = SubResource("Shortcut_hrpfk")
-shortcut_in_tooltip = false
 icon = ExtResource("4_p5e8q")
 
 [node name="Tooltip" type="Node" parent="PanelContainer/HBox/Italic"]
 script = ExtResource("2_ikgs7")
 text = "Make Italic"
+input_action = "toggle_italic"
 is_dense = true
 popup_delay = 1.2
 popup_position = 3
@@ -179,8 +146,6 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"ToDoItem_BookmarkButton"
 theme_override_constants/icon_max_width = 20
 toggle_mode = true
-shortcut = SubResource("Shortcut_lnt4s")
-shortcut_in_tooltip = false
 text = "Add Bookmark"
 icon = ExtResource("5_601vn")
 script = ExtResource("6_mi4pb")
@@ -190,6 +155,7 @@ icon_toggled_on = ExtResource("7_pufik")
 [node name="Tooltip" type="Node" parent="PanelContainer/HBox/Bookmark"]
 script = ExtResource("2_ikgs7")
 text = "Add Bookmark"
+input_action = "toggle_bookmark"
 is_dense = true
 popup_delay = 1.2
 popup_position = 5
@@ -208,14 +174,13 @@ mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_type_variation = &"ToDoItem_DeleteButton"
 theme_override_constants/icon_max_width = 20
-shortcut = SubResource("Shortcut_3nsuj")
-shortcut_in_tooltip = false
 text = "Delete To-Do"
 icon = ExtResource("8_wicia")
 
 [node name="Tooltip" type="Node" parent="PanelContainer/HBox/Delete"]
 script = ExtResource("2_ikgs7")
 text = "Delete To-Do"
+input_action = "delete_todo"
 is_dense = true
 popup_delay = 1.2
 popup_position = 5

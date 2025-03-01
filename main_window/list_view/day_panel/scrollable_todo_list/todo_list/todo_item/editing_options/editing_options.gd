@@ -37,7 +37,7 @@ func _connect_signals() -> void:
 	%Italic.toggled.connect(_on_italic_toggled)
 	%TextColor.gui_input.connect(_on_text_color_gui_input)
 
-	%Bookmark.pressed.connect(_on_bookmark_pressed)
+	%Bookmark.toggled.connect(_on_bookmark_toggled)
 	%Delete.pressed.connect(_on_delete_pressed)
 
 
@@ -153,8 +153,8 @@ func _on_text_color_gui_input(event: InputEvent) -> void:
 		%TextColor/Tooltip.hide_tooltip()
 
 
-func _on_bookmark_pressed() -> void:
-	get_parent().is_bookmarked = not get_parent().is_bookmarked
+func _on_bookmark_toggled(toggled_on: bool) -> void:
+	get_parent().is_bookmarked = toggled_on
 
 	if get_parent().is_bookmarked:
 		EventBus.bookmark_added.emit(get_parent())
@@ -164,3 +164,30 @@ func _on_bookmark_pressed() -> void:
 
 func _on_delete_pressed() -> void:
 	get_parent().delete()
+
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("toggle_heading", false, true):
+		%Heading.button_pressed = not %Heading.button_pressed
+	elif event.is_action_pressed("toggle_heading", true, true):
+		pass  # consume echo events without doing anything
+	elif event.is_action_pressed("toggle_bold", false, true):
+		%Bold.button_pressed = not %Bold.button_pressed
+	elif event.is_action_pressed("toggle_bold", true, true):
+		pass  # consume echo events without doing anything
+	elif event.is_action_pressed("toggle_italic", false, true):
+		%Italic.button_pressed = not %Italic.button_pressed
+	elif event.is_action_pressed("toggle_italic", true, true):
+		pass  # consume echo events without doing anything
+	elif event.is_action_pressed("toggle_bookmark", false, true):
+		%Bookmark.button_pressed = not %Bookmark.button_pressed
+	elif event.is_action_pressed("toggle_bookmark", true, true):
+		pass  # consume echo events without doing anything
+	elif event.is_action_pressed("delete_todo", false, true):
+		_on_delete_pressed()
+	elif event.is_action_pressed("delete_todo", true, true):
+		pass  # consume echo events without doing anything
+	else:
+		return # early, i.e. ignore the input
+
+	accept_event()
