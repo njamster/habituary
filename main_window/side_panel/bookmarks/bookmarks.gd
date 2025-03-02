@@ -2,10 +2,14 @@ extends VBoxContainer
 
 
 func _ready() -> void:
+	_set_initial_state()
 	_connect_signals()
 
+
+func _set_initial_state() -> void:
 	$NoneSet.show()
 	$IncludePast.hide()
+
 	$IncludePast.set_pressed_no_signal(Settings.show_bookmarks_from_the_past)
 
 	_search_for_bookmarks()
