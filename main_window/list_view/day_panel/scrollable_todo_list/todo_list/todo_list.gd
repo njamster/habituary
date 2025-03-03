@@ -1,5 +1,6 @@
 extends MarginContainer
 
+
 signal list_save_requested
 
 const TODO_ITEM := preload("todo_item/todo_item.tscn")
@@ -8,9 +9,12 @@ var pending_save := false
 
 
 func _ready() -> void:
+	_set_initial_state()
 	_connect_signals()
 
-	$LineHighlight.modulate.a = 0.0
+
+func _set_initial_state() -> void:
+	hide_line_highlight()
 
 
 func _connect_signals() -> void:
@@ -22,7 +26,7 @@ func _connect_signals() -> void:
 	#endregion
 
 	#region Local Signals
-	$LineHighlight.item_rect_changed.connect(_on_line_highlight_item_rect_changed)
+	item_rect_changed.connect(hide_line_highlight)
 
 	%Items.child_order_changed.connect(_on_items_child_order_changed)
 
@@ -303,42 +307,23 @@ func load_from_disk(file : FileAccess) -> void:
 			restored_item.load_from_disk(next_line)
 
 
-func show_line_highlight(mouse_position : Vector2) -> void:
-	# base assumption: list is empty -> put the line at the top of the list
-	var y_position = %Items.global_position.y
+func show_line_highlight(mouse_position: Vector2) -> void:
+	$LineHighlight.show()
 
-	# if the list has any visible items, put the line below the last one of those
-	for i in range(%Items.get_child_count() - 1, -1, -1):
-		var child := %Items.get_child(i)
-		if child.visible:
-			y_position = child.global_position.y + child.size.y
-			break
+	# As LineHighlight is the child of a container node, we have to wait one
+	# frame until Godot allows changing its position again.
+	await get_tree().process_frame
 
-	# if the mouse cursor is above that last visible item, find the item that is closest to the
-	# current mouse cursor position and put the line there
-	for i in %Items.get_child_count():
-		var child := %Items.get_child(i)
-		# Note: 13 is the combined height of a to-do item's upper- and lower-
-		# padding. It's subtracted from the mouse position here, to ensure that
-		# the same result is given when hovering the lower padding of the upper
-		# item as when hovering the upper padding of its successor.
-		if child.visible and child.global_position.y > mouse_position.y - 13:
-			y_position = child.global_position.y
-			break
+	var row_height = $Lines.get_combined_minimum_size().y
+	var local_mouse_position = mouse_position.y - %Items.global_position.y
+	var line_position = row_height * round(local_mouse_position / row_height)
 
-	$LineHighlight.global_position.y = y_position
-	if y_position != %Items.global_position.y:
-		$LineHighlight.position.y -= 2
-
-	$LineHighlight.modulate.a = 1.0
+	# NOTE: The -2 offset centers the highlight vertically along the line.
+	$LineHighlight.position.y = clamp(line_position - 2, 0, $Items.size.y)
 
 
 func hide_line_highlight() -> void:
-	$LineHighlight.modulate.a = 0.0
-
-
-func _on_line_highlight_item_rect_changed() -> void:
-	$LineHighlight.modulate.a = 0.0
+	$LineHighlight.hide()
 
 
 func get_subordinate_items(item_index : int) -> Array:
