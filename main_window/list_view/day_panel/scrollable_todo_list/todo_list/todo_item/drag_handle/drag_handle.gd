@@ -59,7 +59,9 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 	# everywhere but here, where it should happen as soon as the user is starting to drag.
 	EventBus.todo_list_clicked.emit()
 
-	to_do.get_day_panel().is_dragged = true
+	var day_panel := to_do.get_day_panel()
+	if day_panel:
+		day_panel.is_dragged = true
 
 	return nodes_to_move
 
@@ -68,4 +70,6 @@ func _notification(what: int) -> void:
 	if what == Node.NOTIFICATION_DRAG_END:
 		for node in nodes_to_move:
 			node.modulate.a = 1.0
-		to_do.get_day_panel().is_dragged = false
+		var day_panel := to_do.get_day_panel()
+		if day_panel:
+			day_panel.is_dragged = false
