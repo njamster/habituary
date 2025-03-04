@@ -1,3 +1,4 @@
+class_name ToDoItem
 extends VBoxContainer
 
 
@@ -22,13 +23,13 @@ var _initialization_finished := false
 
 var date : Date:
 	get():
-		# FIXME: avoid using a relative path that involves parent nodes
-		if "date" in get_node("../../../../../.."):
-			return Date.new(get_node("../../../../../..").date.as_dict())
+		var day_panel := get_day_panel()
+		if day_panel:
+			return Date.new(day_panel.date.as_dict())
 		else:
 			return null
 
-@export var text := "":
+var text := "":
 	set(value):
 		if text != value:
 			text = value
@@ -42,7 +43,7 @@ var date : Date:
 					list_save_requested.emit("text changed")
 
 enum States { TO_DO, DONE, FAILED }
-@export var state := States.TO_DO:
+var state := States.TO_DO:
 	set(value):
 		state = value
 		if is_inside_tree():
@@ -78,7 +79,7 @@ enum States { TO_DO, DONE, FAILED }
 			if _initialization_finished and self.text:
 				list_save_requested.emit("state changed")
 
-@export var is_heading := false:
+var is_heading := false:
 	set(value):
 		is_heading = value
 		if is_inside_tree():
@@ -99,7 +100,7 @@ enum States { TO_DO, DONE, FAILED }
 			if _initialization_finished and self.text:
 				list_save_requested.emit("is_heading changed")
 
-@export var is_bold := false:
+var is_bold := false:
 	set(value):
 		is_bold = value
 		if is_inside_tree():
@@ -111,7 +112,7 @@ enum States { TO_DO, DONE, FAILED }
 			if _initialization_finished and self.text:
 				list_save_requested.emit("is_bold changed")
 
-@export var is_italic := false:
+var is_italic := false:
 	set(value):
 		is_italic = value
 		if is_inside_tree():
@@ -222,11 +223,11 @@ func _ready() -> void:
 	if not self.text: # i.e. it's a newly created to-do (not restored from disk)
 		var index = self.get_index()
 		if index > 0:
-			var todo_list := self.get_parent()
-			var predecessor = todo_list.get_child(index - 1)
+			var item_list := get_item_list()
+			var predecessor = item_list.get_child(index - 1)
 			var successor
-			if index < todo_list.get_child_count() - 1:
-				successor = todo_list.get_child(index + 1)
+			if index < item_list.get_child_count() - 1:
+				successor = item_list.get_child(index + 1)
 			if predecessor.text.ends_with(":") or (successor and \
 				successor.indentation_level == predecessor.indentation_level + 1):
 					self.indentation_level = predecessor.indentation_level + 1
@@ -307,11 +308,12 @@ func _on_edit_focus_entered() -> void:
 		# place the editing options above the lower padding
 		move_child(editing_options, -2)
 
-	#region Make sure edited to-do is visible
-	# FIXME: this is pretty hacky patch...
+	##region Make sure edited to-do is visible
+	## FIXME: this is pretty hacky patch...
 	await get_tree().process_frame
 	await get_tree().process_frame
-	var scroll_container := get_node("../../..")
+	await get_tree().process_frame
+	var scroll_container := get_to_do_list().get_scroll_container()
 	scroll_container.ensure_control_visible(self)
 	var row_height = scroll_container.TODO_ITEM_HEIGHT
 	if scroll_container.scroll_vertical % row_height != 0:
@@ -319,7 +321,7 @@ func _on_edit_focus_entered() -> void:
 		scroll_container.scroll_vertical += (
 			row_height - scroll_container.scroll_vertical % row_height
 		)
-	#endregion
+	##endregion
 
 	editing_started.emit()
 
@@ -332,11 +334,11 @@ func delete() -> void:
 	_reindent_sub_todos(-1)
 
 	if %Edit.text:
-		var successor = get_node("../..").get_nearest_visible_successor(get_index())
+		var successor = get_to_do_list().get_nearest_visible_successor(get_index())
 		if successor:
 			successor.edit()
 		else:
-			var predecessor = get_node("../..").get_nearest_visible_predecessor(get_index())
+			var predecessor = get_to_do_list().get_nearest_visible_predecessor(get_index())
 			if predecessor:
 				predecessor.edit()
 			else:
@@ -356,9 +358,9 @@ func _reindent_sub_todos(change : int, threshold := indentation_level) -> void:
 
 	var sub_todos := []
 
-	var SUCCESSOR_IDS := range(get_index() + 1, get_parent().get_child_count())
+	var SUCCESSOR_IDS := range(get_index() + 1, get_item_list().get_child_count())
 	for successor_id in SUCCESSOR_IDS:
-		var successor = get_parent().get_child(successor_id)
+		var successor = get_item_list().get_child(successor_id)
 		if successor.indentation_level == threshold + 1:
 			sub_todos.append(successor)
 		elif successor.indentation_level <= threshold:
@@ -467,12 +469,11 @@ func _on_content_gui_input(event: InputEvent) -> void:
 
 
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-	return get_node("../..")._can_drop_data(_at_position, data)
+	return get_to_do_list()._can_drop_data(_at_position, data)
 
 
 func _drop_data(_at_position: Vector2, data: Variant) -> void:
-	# FIXME: avoid asumptions about the parent's of this node
-	get_node("../..")._drop_data(position - Vector2.ONE, data)
+	get_to_do_list()._drop_data(position - Vector2.ONE, data)
 
 
 func save_to_disk(file : FileAccess) -> void:
@@ -602,11 +603,11 @@ func _input(event: InputEvent) -> void:
 			if not is_heading:
 				self.state = States.FAILED if self.state != States.FAILED else States.TO_DO
 		elif event.is_action_pressed("previous_todo", true, true):
-			var predecessor = get_node("../..").get_nearest_visible_predecessor(get_index())
+			var predecessor = get_to_do_list().get_nearest_visible_predecessor(get_index())
 			if predecessor:
 				predecessor.edit()
 		elif event.is_action_pressed("next_todo", true, true):
-			var successor = get_node("../..").get_nearest_visible_successor(get_index())
+			var successor = get_to_do_list().get_nearest_visible_successor(get_index())
 			if successor:
 				successor.edit()
 		elif event.is_action_pressed("move_todo_up", true, true):
@@ -622,7 +623,7 @@ func _input(event: InputEvent) -> void:
 				# Move the to-do & all its sub items to the end of its current scope. This matters
 				# if it has siblings, which would become sub items after deindentation otherwise!
 				# FIXME: That is a rather hacky way to achieve this...
-				self.get_node("../..").move_to_do(self, 999_999_999)
+				get_to_do_list().move_to_do(self, 999_999_999)
 			self.indentation_level -= 1
 		elif event.is_action_pressed("unindent_todo", true, true):
 			pass  # consume echo events without doing anything
@@ -758,11 +759,11 @@ func _apply_state_relative_formatting(immediate := false) -> void:
 					self.hide()
 
 					if is_in_edit_mode():
-						var successor = get_node("../..").get_nearest_visible_successor(get_index())
+						var successor = get_to_do_list().get_nearest_visible_successor(get_index())
 						if successor:
 							successor.edit()
 						else:
-							var predecessor = get_node("../..").get_nearest_visible_predecessor(get_index())
+							var predecessor = get_to_do_list().get_nearest_visible_predecessor(get_index())
 							if predecessor:
 								predecessor.edit()
 
@@ -800,7 +801,7 @@ func get_maximum_indentation_level() -> int:
 		# The maximum indentation level of a to-do is equal to the indentation
 		# level of its predecessor plus one, unless that value would be higher
 		# than the overall allowed maximum specified above.
-		var predecessor := self.get_parent().get_child(self.get_index() - 1)
+		var predecessor := get_item_list().get_child(self.get_index() - 1)
 		max_indentation_level = min(
 			predecessor.indentation_level + 1,
 			max_indentation_level
@@ -819,9 +820,9 @@ func _on_edit_gui_input(event: InputEvent) -> void:
 
 
 func _has_unticked_sub_todos() -> bool:
-	var SUCCESSOR_IDS := range(get_index() + 1, get_parent().get_child_count())
+	var SUCCESSOR_IDS := range(get_index() + 1, get_item_list().get_child_count())
 	for successor_id in SUCCESSOR_IDS:
-		var successor = get_parent().get_child(successor_id)
+		var successor = get_item_list().get_child(successor_id)
 		if successor.indentation_level <= indentation_level:
 			break # end of scope reached
 		if successor.state == States.TO_DO:
@@ -834,8 +835,26 @@ func get_parent_todo() -> Control:
 	if indentation_level:
 		var PREDECESSOR_IDS := range(get_index() - 1, 0, -1)
 		for predecessor_id in PREDECESSOR_IDS:
-			var predecessor = get_parent().get_child(predecessor_id)
+			var predecessor = get_item_list().get_child(predecessor_id)
 			if predecessor.indentation_level < indentation_level:
 				return predecessor
 
 	return null
+
+
+func get_item_list() -> VBoxContainer:
+	return get_parent()
+
+
+func get_to_do_list() -> ToDoList:
+	var parent := get_parent()
+	while parent is not ToDoList and parent != null:
+		parent = parent.get_parent()
+	return parent
+
+
+func get_day_panel() -> DayPanel:
+	var parent := get_parent()
+	while parent is not DayPanel and parent != null:
+		parent = parent.get_parent()
+	return parent

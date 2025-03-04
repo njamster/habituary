@@ -1,9 +1,10 @@
 extends TextureRect
 
+
 enum Modes {UP, DOWN}
 @export var mode := Modes.UP
 
-@onready var SCROLL_CONTAINER := $"../ScrollContainer"
+@onready var SCROLL_CONTAINER := get_parent().get_node("ScrollContainer")
 @onready var SCROLL_CONTAINER_CONTENT := SCROLL_CONTAINER.get_child(0)
 
 var items_out_of_view := 0

@@ -1,10 +1,17 @@
 extends VBoxContainer
 
 
+@onready var to_do: ToDoItem
+
 var _shrink_threshold: int
 
 
 func _ready() -> void:
+	var parent := get_parent()
+	while parent is not ToDoItem and parent != null:
+		parent = parent.get_parent()
+	to_do = parent
+
 	_set_initial_state()
 	_connect_signals()
 
@@ -24,7 +31,7 @@ func _set_initial_state() -> void:
 
 	# FIXME: temporary band-aid fix, until it's possible to bookmark to-dos in
 	# the capture panel as well
-	if not get_parent().date:
+	if not to_do.date:
 		%Bookmark.hide()
 		%Delete.size_flags_horizontal += SIZE_EXPAND
 
@@ -53,12 +60,12 @@ func update() -> void:
 func update_indentation() -> void:
 	$Indentation.add_theme_constant_override(
 		"margin_left",
-		get_parent().get_node("%Indentation").custom_minimum_size.x
+		to_do.get_node("%Indentation").custom_minimum_size.x
 	)
 
 
 func update_heading() -> void:
-	%Heading.button_pressed = get_parent().is_heading
+	%Heading.button_pressed = to_do.is_heading
 
 	if %Heading.button_pressed:
 		%Heading/Tooltip.text = "Undo Heading"
@@ -70,7 +77,7 @@ func update_heading() -> void:
 
 
 func update_bold() -> void:
-	%Bold.button_pressed = get_parent().is_bold
+	%Bold.button_pressed = to_do.is_bold
 
 	if %Bold.button_pressed:
 		%Bold/Tooltip.text = "Undo Bold"
@@ -79,7 +86,7 @@ func update_bold() -> void:
 
 
 func update_italic() -> void:
-	%Italic.button_pressed = get_parent().is_italic
+	%Italic.button_pressed = to_do.is_italic
 
 	if %Italic.button_pressed:
 		%Italic/Tooltip.text = "Undo Italic"
@@ -88,8 +95,8 @@ func update_italic() -> void:
 
 
 func update_text_color() -> void:
-	if get_parent().text_color_id:
-		var color = Settings.to_do_text_colors[ get_parent().text_color_id - 1]
+	if to_do.text_color_id:
+		var color = Settings.to_do_text_colors[to_do.text_color_id - 1]
 		%TextColor.get("theme_override_styles/panel").bg_color = color
 		%TextColor.get("theme_override_styles/panel").draw_center = true
 	else:
@@ -97,7 +104,7 @@ func update_text_color() -> void:
 
 
 func update_bookmark() -> void:
-	%Bookmark.button_pressed = get_parent().is_bookmarked
+	%Bookmark.button_pressed = to_do.is_bookmarked
 
 	if %Bookmark.button_pressed:
 		%Bookmark.text = %Bookmark.text.replace("Add", "Remove")
@@ -126,26 +133,26 @@ func _on_editing_options_resized() -> void:
 
 
 func _on_heading_toggled(toggled_on: bool) -> void:
-	get_parent().is_heading = toggled_on
+	to_do.is_heading = toggled_on
 
 
 func _on_bold_toggled(toggled_on: bool) -> void:
-	get_parent().is_bold = toggled_on
+	to_do.is_bold = toggled_on
 
 
 func _on_italic_toggled(toggled_on: bool) -> void:
-	get_parent().is_italic = toggled_on
+	to_do.is_italic = toggled_on
 
 
 func _on_text_color_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed():
 		match event.button_index:
 			MOUSE_BUTTON_LEFT, MOUSE_BUTTON_WHEEL_UP:
-				get_parent().text_color_id += 1
+				to_do.text_color_id += 1
 			MOUSE_BUTTON_MIDDLE:
-				get_parent().text_color_id  = 0
+				to_do.text_color_id  = 0
 			MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_WHEEL_DOWN:
-				get_parent().text_color_id -= 1
+				to_do.text_color_id -= 1
 			_:
 				return  # early, i.e. ignore the input
 
@@ -154,16 +161,16 @@ func _on_text_color_gui_input(event: InputEvent) -> void:
 
 
 func _on_bookmark_toggled(toggled_on: bool) -> void:
-	get_parent().is_bookmarked = toggled_on
+	to_do.is_bookmarked = toggled_on
 
-	if get_parent().is_bookmarked:
-		EventBus.bookmark_added.emit(get_parent())
+	if to_do.is_bookmarked:
+		EventBus.bookmark_added.emit(to_do)
 	else:
-		EventBus.bookmark_removed.emit(get_parent())
+		EventBus.bookmark_removed.emit(to_do)
 
 
 func _on_delete_pressed() -> void:
-	get_parent().delete()
+	to_do.delete()
 
 
 func _input(event: InputEvent) -> void:

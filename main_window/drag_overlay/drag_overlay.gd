@@ -46,15 +46,16 @@ func _on_side_panel_changed() -> void:
 			$LeftBorder.add_theme_constant_override("margin_left", 0)
 			$LeftBorder.size.x = 0 # shrink to minimum width again
 	else:
-		var side_panel_width = get_node("../HBox/SidePanel").custom_minimum_size.x
+		var side_panel_width = Settings.side_panel_width
 		$LeftBorder.add_theme_constant_override("margin_left", side_panel_width)
 
 
 func _process(_delta: float) -> void:
-	var window_size = get_window().size.x
+	var window_width = get_window().size.x
+	var mouse_x_position := get_global_mouse_position().x
 	var left_padding = $LeftBorder["theme_override_constants/margin_left"]
-	$LeftBorder.visible = (get_parent().get_global_mouse_position().x < left_padding + TRIGGER_ZONE_WIDTH)
-	$RightBorder.visible = (get_parent().get_global_mouse_position().x > window_size - TRIGGER_ZONE_WIDTH)
+	$LeftBorder.visible = mouse_x_position < left_padding + TRIGGER_ZONE_WIDTH
+	$RightBorder.visible = mouse_x_position > window_width - TRIGGER_ZONE_WIDTH
 
 
 func _on_left_border_drag_hover_trigger_triggered() -> void:

@@ -1,6 +1,7 @@
 extends Node
 class_name Tooltip
 
+
 @export_multiline var text : String:
 	set(value):
 		text = value
@@ -31,6 +32,8 @@ enum PopupPosition {AUTOMATIC_HORIZONTAL, AUTOMATIC_VERTICAL, ABOVE, RIGHT, BELO
 
 @export var show_on_disabled_buttons := false
 
+@onready var host := get_parent()
+
 var _tooltip_panel : PanelContainer
 var _tooltip_label : Label
 var _hover_timer : Timer
@@ -46,17 +49,17 @@ func _ready() -> void:
 	_hover_timer.wait_time = popup_delay
 	_hover_timer.timeout.connect(_spawn_panel)
 
-	get_parent().mouse_entered.connect(show_tooltip)
-	get_parent().mouse_exited.connect(hide_tooltip)
+	host.mouse_entered.connect(show_tooltip)
+	host.mouse_exited.connect(hide_tooltip)
 
-	if get_parent() is BaseButton:
+	if host is BaseButton:
 		if not self.input_action:
 			# try to grab input action from first shortcut event
-			if get_parent().shortcut and get_parent().shortcut.events:
-				self.input_action = get_parent().shortcut.events[0].action
+			if host.shortcut and host.shortcut.events:
+				self.input_action = host.shortcut.events[0].action
 
-		get_parent().pressed.connect(_on_press_or_toggle)
-		get_parent().toggled.connect(_on_press_or_toggle)
+		host.pressed.connect(_on_press_or_toggle)
+		host.toggled.connect(_on_press_or_toggle)
 
 	get_tree().get_root().size_changed.connect(hide_tooltip)
 
@@ -67,7 +70,7 @@ func show_tooltip() -> void:
 	if disabled or (not text and not input_action):
 		return
 
-	if get_parent() is BaseButton and get_parent().disabled and not show_on_disabled_buttons:
+	if host is BaseButton and host.disabled and not show_on_disabled_buttons:
 		return
 
 	_hover_timer.start()
@@ -136,7 +139,7 @@ func _spawn_panel() -> void:
 
 func _position_tooltip() -> void:
 	# temporarily anchor tooltip at the top left corner of the parent node
-	_tooltip_panel.global_position = get_parent().global_position
+	_tooltip_panel.global_position = host.global_position
 
 	match self.popup_position:
 		PopupPosition.AUTOMATIC_HORIZONTAL:
@@ -166,12 +169,12 @@ func _position_above() -> void:
 
 func _position_below() -> void:
 	_center_horizontally()
-	_tooltip_panel.global_position.y += get_parent().size.y + gap_width
+	_tooltip_panel.global_position.y += host.size.y + gap_width
 
 
 func _center_horizontally() -> void:
 	_tooltip_panel.global_position.x = clamp(
-		_tooltip_panel.global_position.x + 0.5 * (get_parent().size.x - _tooltip_panel.size.x),
+		_tooltip_panel.global_position.x + 0.5 * (host.size.x - _tooltip_panel.size.x),
 		gap_width,
 		get_window().size.x - _tooltip_panel.size.x - gap_width
 	)
@@ -184,12 +187,12 @@ func _position_left() -> void:
 
 func _position_right() -> void:
 	_center_vertically()
-	_tooltip_panel.global_position.x += get_parent().size.x + gap_width
+	_tooltip_panel.global_position.x += host.size.x + gap_width
 
 
 func _center_vertically() -> void:
 	_tooltip_panel.global_position.y = clamp(
-		_tooltip_panel.global_position.y + 0.5 * (get_parent().size.y - _tooltip_panel.size.y),
+		_tooltip_panel.global_position.y + 0.5 * (host.size.y - _tooltip_panel.size.y),
 		gap_width,
 		get_window().size.y - _tooltip_panel.size.y - gap_width
 	)

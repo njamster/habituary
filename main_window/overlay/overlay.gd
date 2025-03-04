@@ -26,6 +26,8 @@ func _connect_signals() -> void:
 
 	#region Local Signals
 	$Background.gui_input.connect(_on_background_gui_input)
+
+	%CalendarWidget.closed.connect(close_overlay)
 	#endregion
 
 

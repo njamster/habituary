@@ -1,3 +1,4 @@
+class_name ToDoList
 extends MarginContainer
 
 
@@ -19,10 +20,9 @@ func _set_initial_state() -> void:
 
 func _connect_signals() -> void:
 	#region Parent Signals
-	if get_parent().has_signal("scrolled"):
-		get_parent().scrolled.connect(
-			_start_debounce_timer.bind("list scrolled")
-		)
+	get_scroll_container().scrolled.connect(
+		_start_debounce_timer.bind("list scrolled")
+	)
 	#endregion
 
 	#region Local Signals
@@ -244,9 +244,9 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 			var old_index = entry.get_index()
 
 			# Now, move the entry to its new loation.
-			if entry.get_parent() != %Items:
+			if entry.get_item_list() != %Items:
 				# item moved from one list to another
-				var old_list = entry.get_parent().get_parent()
+				var old_list = entry.get_to_do_list()
 				disconnect_todo_signals(entry)
 				if entry.is_bookmarked:
 					var old_date = entry.date
@@ -285,7 +285,7 @@ func save_to_disk(file : FileAccess) -> void:
 	for child in %Items.get_children():
 		child.save_to_disk(file)
 
-	var scroll_offset : int = get_node("..").scroll_vertical
+	var scroll_offset : int = get_scroll_container().scroll_vertical
 	if scroll_offset != 0:
 		file.store_line("SCROLL:%d" % scroll_offset)
 
@@ -301,7 +301,7 @@ func load_from_disk(file : FileAccess) -> void:
 			# FIXME: the following works, but is rather hacky...
 			await get_tree().process_frame
 			await get_tree().process_frame
-			get_node("..").set("scroll_vertical", scroll_offset)
+			get_scroll_container().set("scroll_vertical", scroll_offset)
 		else:
 			var restored_item := add_todo()
 			restored_item.load_from_disk(next_line)
@@ -382,3 +382,11 @@ func get_nearest_visible_successor(index: int) -> Control:
 			return successor
 
 	return null
+
+
+
+func get_scroll_container() -> ScrollContainer:
+	var parent := get_parent()
+	while parent is not ScrollContainer and parent != null:
+		parent = parent.get_parent()
+	return parent

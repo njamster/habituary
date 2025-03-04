@@ -336,6 +336,7 @@ var bookmarks_due_today := 0:
 		return get_window().mode == Window.MODE_FULLSCREEN || \
 			get_window().mode == Window.MODE_EXCLUSIVE_FULLSCREEN
 
+var side_panel_width := 360  # pixels
 
 func _enter_tree() -> void:
 	get_window().wrap_controls = true  # Sadly, there is no ProjectSetting to enable this by default

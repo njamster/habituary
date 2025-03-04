@@ -13,6 +13,8 @@ func _ready() -> void:
 
 
 func _set_initial_state() -> void:
+	custom_minimum_size.x = Settings.side_panel_width
+
 	_update_side_panel()
 
 

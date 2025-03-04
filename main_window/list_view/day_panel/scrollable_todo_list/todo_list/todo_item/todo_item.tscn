@@ -132,6 +132,9 @@ stretch_mode = 4
 script = ExtResource("3_oduck")
 text = "Bookmarked To-Do"
 
+[node name="MarginContainer" type="MarginContainer" parent="HBox/VBox"]
+layout_mode = 2
+
 [node name="LowerPadding" type="Control" parent="."]
 custom_minimum_size = Vector2(0, 7)
 layout_mode = 2

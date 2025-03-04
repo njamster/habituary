@@ -3,7 +3,6 @@
 [ext_resource type="Script" path="res://main_window/side_panel/side_panel.gd" id="1_mcu5f"]
 
 [node name="SidePanel" type="PanelContainer"]
-custom_minimum_size = Vector2(360, 0)
 anchors_preset = 9
 anchor_bottom = 1.0
 offset_right = 216.0

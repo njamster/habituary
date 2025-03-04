@@ -1,3 +1,4 @@
+class_name DayPanel
 extends PanelContainer
 
 var date : Date:
