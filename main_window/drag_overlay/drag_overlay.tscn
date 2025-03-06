@@ -1,8 +1,8 @@
 [gd_scene load_steps=9 format=3 uid="uid://cih6c2f3oxfl0"]
 
-[ext_resource type="Script" path="res://main_window/drag_overlay/drag_overlay.gd" id="1_0aom8"]
+[ext_resource type="Script" uid="uid://572g0uycodq4" path="res://main_window/drag_overlay/drag_overlay.gd" id="1_0aom8"]
 [ext_resource type="Texture2D" uid="uid://bx431ihwuqyf1" path="res://main_window/drag_overlay/images/arrow_left.svg" id="3_ndai4"]
-[ext_resource type="Script" path="res://custom/drag_hover_trigger.gd" id="4_hhxuo"]
+[ext_resource type="Script" uid="uid://bcgem14qd6rmk" path="res://custom/drag_hover_trigger.gd" id="4_hhxuo"]
 [ext_resource type="Texture2D" uid="uid://do8ihkyyxxd77" path="res://main_window/drag_overlay/images/arrow_right.svg" id="4_rppmn"]
 
 [sub_resource type="Gradient" id="Gradient_r1vji"]

@@ -2,13 +2,13 @@
 
 [ext_resource type="Texture2D" uid="uid://ci7y27fysy52o" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/unfolded.svg" id="2_2nsse"]
 [ext_resource type="Texture2D" uid="uid://d00v4pleoufwq" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/to_do.svg" id="2_6dyr4"]
-[ext_resource type="Script" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/todo_item.gd" id="2_6v2l5"]
-[ext_resource type="Script" path="res://custom/toggle_button.gd" id="2_n5f11"]
+[ext_resource type="Script" uid="uid://drqri80pio2r1" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/todo_item.gd" id="2_6v2l5"]
+[ext_resource type="Script" uid="uid://dnkjpbn8pmav1" path="res://custom/toggle_button.gd" id="2_n5f11"]
 [ext_resource type="Texture2D" uid="uid://b80hle2h5sj20" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/drag_indicator.svg" id="3_avsfu"]
-[ext_resource type="Script" path="res://custom/tooltip.gd" id="3_oduck"]
+[ext_resource type="Script" uid="uid://bqai4pv020yjf" path="res://custom/tooltip.gd" id="3_oduck"]
 [ext_resource type="Texture2D" uid="uid://6im7rq1y7co6" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/folded.svg" id="4_fnk6y"]
 [ext_resource type="Texture2D" uid="uid://3ry73dkvfi1u" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/bookmark_indicator.svg" id="5_eqyfo"]
-[ext_resource type="Script" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/drag_handle/drag_handle.gd" id="5_mx38m"]
+[ext_resource type="Script" uid="uid://vmmkt3uxuea7" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/drag_handle/drag_handle.gd" id="5_mx38m"]
 
 [node name="ToDoItem" type="VBoxContainer" groups=["todo_item"]]
 offset_right = 1920.0

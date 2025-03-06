@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://cmdy32v105kli"]
 
-[ext_resource type="Script" path="res://main_window/list_view/day_panel/day_panel.gd" id="1_a2phy"]
-[ext_resource type="Script" path="res://custom/tooltip.gd" id="2_wbwrx"]
+[ext_resource type="Script" uid="uid://pqbhw87u6qwh" path="res://main_window/list_view/day_panel/day_panel.gd" id="1_a2phy"]
+[ext_resource type="Script" uid="uid://bqai4pv020yjf" path="res://custom/tooltip.gd" id="2_wbwrx"]
 [ext_resource type="PackedScene" uid="uid://be8ue76y7g22d" path="res://main_window/list_view/day_panel/scrollable_todo_list/scrollable_todo_list.tscn" id="3_db22u"]
 
 [node name="DayPanel" type="PanelContainer"]

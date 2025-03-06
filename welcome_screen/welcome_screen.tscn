@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://h7so45kbcg12"]
 
-[ext_resource type="Script" path="res://welcome_screen/welcome_screen.gd" id="1_2u8hd"]
+[ext_resource type="Script" uid="uid://df0fh22oc8yq4" path="res://welcome_screen/welcome_screen.gd" id="1_2u8hd"]
 [ext_resource type="Texture2D" uid="uid://dvka68ounxvou" path="res://icon.svg" id="2_4vfht"]
 
 [node name="WelcomeScreen" type="CenterContainer"]

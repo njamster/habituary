@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://be8ue76y7g22d"]
 
 [ext_resource type="PackedScene" uid="uid://ofa44bt1yn4u" path="res://main_window/list_view/day_panel/scrollable_todo_list/scroll_button/scroll_button.tscn" id="1_6pw8l"]
-[ext_resource type="Script" path="res://main_window/list_view/day_panel/scrollable_todo_list/scrollable_todo_list.gd" id="1_qun0k"]
-[ext_resource type="Script" path="res://main_window/list_view/day_panel/scrollable_todo_list/scroll_container/scroll_container.gd" id="2_sy37a"]
+[ext_resource type="Script" uid="uid://tl8qvryk2nyn" path="res://main_window/list_view/day_panel/scrollable_todo_list/scrollable_todo_list.gd" id="1_qun0k"]
+[ext_resource type="Script" uid="uid://bumdvbxj7yxw7" path="res://main_window/list_view/day_panel/scrollable_todo_list/scroll_container/scroll_container.gd" id="2_sy37a"]
 [ext_resource type="PackedScene" uid="uid://dw8mvf72vw7qk" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_list.tscn" id="3_5137q"]
 
 [node name="ScrollableTodoList" type="VBoxContainer"]

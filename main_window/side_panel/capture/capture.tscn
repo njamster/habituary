@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://c62hgueeuxxi7"]
 
-[ext_resource type="Script" path="res://main_window/side_panel/capture/capture.gd" id="1_4705a"]
+[ext_resource type="Script" uid="uid://3n8plvb828dy" path="res://main_window/side_panel/capture/capture.gd" id="1_4705a"]
 [ext_resource type="PackedScene" uid="uid://be8ue76y7g22d" path="res://main_window/list_view/day_panel/scrollable_todo_list/scrollable_todo_list.tscn" id="1_t4swo"]
 [ext_resource type="FontFile" uid="uid://bv1lbje08ni7s" path="res://theme/fonts/OpenSans-MediumItalic.ttf" id="2_brlsl"]
 

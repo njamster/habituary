@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bbv588umdv0q4"]
 
-[ext_resource type="Script" path="res://main_window/side_panel/side_panel.gd" id="1_mcu5f"]
+[ext_resource type="Script" uid="uid://bw6diye2uke6q" path="res://main_window/side_panel/side_panel.gd" id="1_mcu5f"]
 
 [node name="SidePanel" type="PanelContainer"]
 anchors_preset = 9

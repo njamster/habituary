@@ -69,34 +69,34 @@ func _update_style_box(name : StringName, theme_type : StringName, properties : 
 				if value is int:
 					style_box.set_border_width_all(value)
 				elif value is Dictionary:
-					style_box.border_width_left = value.get("left", -1)
-					style_box.border_width_top = value.get("top", -1)
-					style_box.border_width_right = value.get("right", -1)
-					style_box.border_width_bottom = value.get("bottom", -1)
+					style_box.border_width_left = value.get("left", 0)
+					style_box.border_width_top = value.get("top", 0)
+					style_box.border_width_right = value.get("right", 0)
+					style_box.border_width_bottom = value.get("bottom", 0)
 			"corner_radius":
 				if value is int:
 					style_box.set_corner_radius_all(value)
 				elif value is Dictionary:
-					style_box.corner_radius_top_left = value.get("top_left", -1)
-					style_box.corner_radius_top_right = value.get("top_right", -1)
-					style_box.corner_radius_bottom_right = value.get("bottom_right", -1)
-					style_box.corner_radius_bottom_left = value.get("bottom_left", -1)
+					style_box.corner_radius_top_left = value.get("top_left", 0)
+					style_box.corner_radius_top_right = value.get("top_right", 0)
+					style_box.corner_radius_bottom_right = value.get("bottom_right", 0)
+					style_box.corner_radius_bottom_left = value.get("bottom_left", 0)
 			"expand_margin":
 				if value is int:
 					style_box.set_expand_margin_all(value)
 				elif value is Dictionary:
-					style_box.expand_margin_left = value.get("left", -1)
-					style_box.expand_margin_top = value.get("top", -1)
-					style_box.expand_margin_right = value.get("right", -1)
-					style_box.expand_margin_bottom = value.get("bottom", -1)
+					style_box.expand_margin_left = value.get("left", 0)
+					style_box.expand_margin_top = value.get("top", 0)
+					style_box.expand_margin_right = value.get("right", 0)
+					style_box.expand_margin_bottom = value.get("bottom", 0)
 			"content_margin":
 				if value is int:
 					style_box.set_content_margin_all(value)
 				elif value is Dictionary:
-					style_box.content_margin_left = value.get("left", -1)
-					style_box.content_margin_top = value.get("top", -1)
-					style_box.content_margin_right = value.get("right", -1)
-					style_box.content_margin_bottom = value.get("bottom", -1)
+					style_box.content_margin_left = value.get("left", 0)
+					style_box.content_margin_top = value.get("top", 0)
+					style_box.content_margin_right = value.get("right", 0)
+					style_box.content_margin_bottom = value.get("bottom", 0)
 			_:
 				if style_box.get(key) != null:
 					style_box[key] = properties[key]

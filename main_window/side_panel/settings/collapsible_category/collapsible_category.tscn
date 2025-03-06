@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dyuqr0r0y8hub"]
 
-[ext_resource type="Script" path="res://main_window/side_panel/settings/collapsible_category/collapsible_category.gd" id="1_so0um"]
+[ext_resource type="Script" uid="uid://btvpnphwvhjho" path="res://main_window/side_panel/settings/collapsible_category/collapsible_category.gd" id="1_so0um"]
 [ext_resource type="Texture2D" uid="uid://6im7rq1y7co6" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/folded.svg" id="2_7njyv"]
 
 [node name="CollapsibleCategory" type="VBoxContainer"]

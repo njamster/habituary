@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dw8mvf72vw7qk"]
 
-[ext_resource type="Script" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_list.gd" id="1_06eaj"]
+[ext_resource type="Script" uid="uid://ypx7jrrd2a21" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_list.gd" id="1_06eaj"]
 [ext_resource type="Texture2D" uid="uid://mvrb0206nsy5" path="res://main_window/list_view/day_panel/scrollable_todo_list/images/line.png" id="1_cxvr8"]
 
 [node name="TodoList" type="MarginContainer"]

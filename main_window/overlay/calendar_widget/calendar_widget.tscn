@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://l4kyh6xqycoy"]
 
-[ext_resource type="Script" path="res://main_window/overlay/calendar_widget/calendar_widget.gd" id="1_6ouga"]
+[ext_resource type="Script" uid="uid://c4y85vkqxxebi" path="res://main_window/overlay/calendar_widget/calendar_widget.gd" id="1_6ouga"]
 [ext_resource type="Texture2D" uid="uid://kpsxfahirjkd" path="res://main_window/navigation_bar_left/images/arrow_left.svg" id="2_3qe07"]
-[ext_resource type="Script" path="res://custom/tooltip.gd" id="2_yxtut"]
+[ext_resource type="Script" uid="uid://bqai4pv020yjf" path="res://custom/tooltip.gd" id="2_yxtut"]
 [ext_resource type="Texture2D" uid="uid://dg16vv3p66p28" path="res://main_window/navigation_bar_left/images/today.svg" id="4_w73ku"]
 [ext_resource type="Texture2D" uid="uid://5x5oa7kf2q8s" path="res://main_window/navigation_bar_right/images/arrow_right.svg" id="5_kngd2"]
 

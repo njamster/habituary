@@ -1,13 +1,13 @@
 [gd_scene load_steps=12 format=3 uid="uid://djl6gthnepxqs"]
 
-[ext_resource type="Script" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/editing_options/editing_options.gd" id="1_0rh5w"]
+[ext_resource type="Script" uid="uid://pmtq5ntqimij" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/editing_options/editing_options.gd" id="1_0rh5w"]
 [ext_resource type="Texture2D" uid="uid://b3f6l5cfcoswd" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/triangle_up.svg" id="1_f163n"]
 [ext_resource type="Texture2D" uid="uid://gy7qpfsq4aaa" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/heading.svg" id="1_s42og"]
-[ext_resource type="Script" path="res://custom/tooltip.gd" id="2_ikgs7"]
+[ext_resource type="Script" uid="uid://bqai4pv020yjf" path="res://custom/tooltip.gd" id="2_ikgs7"]
 [ext_resource type="Texture2D" uid="uid://dr7xg2ji33j32" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/bold.svg" id="3_3jerc"]
 [ext_resource type="Texture2D" uid="uid://b8u24hbkd0vj1" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/italic.svg" id="4_p5e8q"]
 [ext_resource type="Texture2D" uid="uid://cwqxidmwtgk3w" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/add_bookmark.svg" id="5_601vn"]
-[ext_resource type="Script" path="res://custom/toggle_button.gd" id="6_mi4pb"]
+[ext_resource type="Script" uid="uid://dnkjpbn8pmav1" path="res://custom/toggle_button.gd" id="6_mi4pb"]
 [ext_resource type="Texture2D" uid="uid://dkggv455u3otk" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/remove_bookmark.svg" id="7_pufik"]
 [ext_resource type="Texture2D" uid="uid://4eakbxkw2dmx" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/delete.svg" id="8_wicia"]
 

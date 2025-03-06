@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://ba4ne2kctshba"]
 
-[ext_resource type="Script" path="res://main_window/side_panel/bookmarks/bookmarks.gd" id="1_60nsm"]
-[ext_resource type="Script" path="res://custom/padded_scrollbar.gd" id="2_d7bib"]
+[ext_resource type="Script" uid="uid://d06mi7ktuhh4f" path="res://main_window/side_panel/bookmarks/bookmarks.gd" id="1_60nsm"]
+[ext_resource type="Script" uid="uid://6f4n5n4dfbfm" path="res://custom/padded_scrollbar.gd" id="2_d7bib"]
 
 [node name="Bookmarks" type="VBoxContainer"]
 anchors_preset = 15

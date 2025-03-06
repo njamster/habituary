@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://esddcur57ihc"]
 
-[ext_resource type="Script" path="res://main_window/list_view/list_view.gd" id="1_8iis1"]
+[ext_resource type="Script" uid="uid://bob64wd7lqetm" path="res://main_window/list_view/list_view.gd" id="1_8iis1"]
 
 [node name="ListView" type="HBoxContainer"]
 anchors_preset = 15
