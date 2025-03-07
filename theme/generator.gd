@@ -433,10 +433,27 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	#endregion
 
 	#region SpinBox
-	# var spin_box := theme.create_theme_type("SpinBox")
-	# ...
-	# NOTE: Cannot be themed properly yet! See: https://github.com/godotengine/godot/pull/89265
-	# FIXME: Wait for Godot 4.4
+	var spin_box := theme.create_theme_type("SpinBox")
+
+	spin_box.up_icon_modulate = neutral_5
+	spin_box.up_disabled_icon_modulate = Color(neutral_5, 0.5)
+
+	spin_box.down_icon_modulate = neutral_5
+	spin_box.down_disabled_icon_modulate = Color(neutral_5, 0.5)
+
+
+	var spin_box_inner_line_edit := theme.create_theme_type("SpinBoxInnerLineEdit", "LineEdit")
+
+	spin_box_inner_line_edit.normal = {
+		"bg_color" = neutral_2,
+		"corner_radius" = 3,
+	}
+	spin_box_inner_line_edit.focus = {
+		"bg_color" = neutral_2,
+		"border_width" = 2,
+		"border_color" = primary_4,
+		"corner_radius" = 3,
+	}
 	#endregion
 
 	#region SubtleLabel

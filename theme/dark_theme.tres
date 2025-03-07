@@ -1,4 +1,4 @@
-[gd_resource type="Theme" script_class="ConciseTheme" load_steps=124 format=3 uid="uid://ccwu2q5gv825w"]
+[gd_resource type="Theme" script_class="ConciseTheme" load_steps=126 format=3 uid="uid://ccwu2q5gv825w"]
 
 [ext_resource type="FontFile" uid="uid://clgk36lj6qey" path="res://theme/fonts/OpenSans-ExtraBold.ttf" id="1_dk6dp"]
 [ext_resource type="Script" uid="uid://s44v1x47rqnh" path="res://custom/concise_theme.gd" id="1_jlir6"]
@@ -705,6 +705,27 @@ border_width_right = 4
 border_color = Color(0.368627, 0.505882, 0.67451, 1)
 corner_detail = 5
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bc6ul"]
+bg_color = Color(0.231373, 0.258824, 0.321569, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.368627, 0.505882, 0.67451, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6apny"]
+bg_color = Color(0.231373, 0.258824, 0.321569, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_co47r"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w50aw"]
@@ -1011,6 +1032,13 @@ SmallSeparation/base_type = &"BoxContainer"
 SmallSeparation/constants/separation = 8
 SmallText/base_type = &"Label"
 SmallText/font_sizes/font_size = 12
+SpinBox/colors/down_disabled_icon_modulate = Color(0.847059, 0.870588, 0.913725, 0.5)
+SpinBox/colors/down_icon_modulate = Color(0.847059, 0.870588, 0.913725, 1)
+SpinBox/colors/up_disabled_icon_modulate = Color(0.847059, 0.870588, 0.913725, 0.5)
+SpinBox/colors/up_icon_modulate = Color(0.847059, 0.870588, 0.913725, 1)
+SpinBoxInnerLineEdit/base_type = &"LineEdit"
+SpinBoxInnerLineEdit/styles/focus = SubResource("StyleBoxFlat_bc6ul")
+SpinBoxInnerLineEdit/styles/normal = SubResource("StyleBoxFlat_6apny")
 SubtleLabel/base_type = &"Label"
 SubtleLabel/colors/font_color = Color(0.847059, 0.870588, 0.913725, 1)
 SubtleLabel/font_sizes/font_size = 12

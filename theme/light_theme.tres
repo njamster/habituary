@@ -1,4 +1,4 @@
-[gd_resource type="Theme" script_class="ConciseTheme" load_steps=124 format=3 uid="uid://byyjpjypr5iud"]
+[gd_resource type="Theme" script_class="ConciseTheme" load_steps=126 format=3 uid="uid://byyjpjypr5iud"]
 
 [ext_resource type="FontFile" uid="uid://bv1lbje08ni7s" path="res://theme/fonts/OpenSans-MediumItalic.ttf" id="1_5fgq0"]
 [ext_resource type="Script" uid="uid://s44v1x47rqnh" path="res://custom/concise_theme.gd" id="1_366r7"]
@@ -324,17 +324,17 @@ corner_radius_bottom_right = 45
 corner_radius_bottom_left = 45
 anti_aliasing_size = 0.33
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ahaw3"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4cvu5"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6rh3d"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a6e4j"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gtjcm"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vsof4"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1e0tv"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4xkvq"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_obmsn"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tw8gb"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_id0vh"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_an21j"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_epqrx"]
 content_margin_left = 0.0
@@ -705,6 +705,27 @@ border_width_right = 4
 border_color = Color(0.368627, 0.505882, 0.67451, 1)
 corner_detail = 5
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a6e4j"]
+bg_color = Color(0.92549, 0.937255, 0.956863, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.368627, 0.505882, 0.67451, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vsof4"]
+bg_color = Color(0.92549, 0.937255, 0.956863, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tkxkw"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_twr3b"]
@@ -880,12 +901,12 @@ Calendar_ExtraPadding/base_type = &"MarginContainer"
 Calendar_ExtraPadding/constants/margin_left = 40
 Calendar_ExtraPadding/constants/margin_right = 40
 Calendar_ExtraPadding/constants/margin_top = 87
-CheckButton/styles/disabled = SubResource("StyleBoxEmpty_ahaw3")
-CheckButton/styles/focus = SubResource("StyleBoxEmpty_6rh3d")
-CheckButton/styles/hover = SubResource("StyleBoxEmpty_gtjcm")
-CheckButton/styles/hover_pressed = SubResource("StyleBoxEmpty_1e0tv")
-CheckButton/styles/normal = SubResource("StyleBoxEmpty_obmsn")
-CheckButton/styles/pressed = SubResource("StyleBoxEmpty_id0vh")
+CheckButton/styles/disabled = SubResource("StyleBoxEmpty_4cvu5")
+CheckButton/styles/focus = SubResource("StyleBoxEmpty_a6e4j")
+CheckButton/styles/hover = SubResource("StyleBoxEmpty_vsof4")
+CheckButton/styles/hover_pressed = SubResource("StyleBoxEmpty_4xkvq")
+CheckButton/styles/normal = SubResource("StyleBoxEmpty_tw8gb")
+CheckButton/styles/pressed = SubResource("StyleBoxEmpty_an21j")
 DayPanel/base_type = &"PanelContainer"
 DayPanel/styles/panel = SubResource("StyleBoxEmpty_epqrx")
 DayPanel_CurrentDay/base_type = &"PanelContainer"
@@ -1011,6 +1032,13 @@ SmallSeparation/base_type = &"BoxContainer"
 SmallSeparation/constants/separation = 8
 SmallText/base_type = &"Label"
 SmallText/font_sizes/font_size = 12
+SpinBox/colors/down_disabled_icon_modulate = Color(0.298039, 0.337255, 0.415686, 0.5)
+SpinBox/colors/down_icon_modulate = Color(0.298039, 0.337255, 0.415686, 1)
+SpinBox/colors/up_disabled_icon_modulate = Color(0.298039, 0.337255, 0.415686, 0.5)
+SpinBox/colors/up_icon_modulate = Color(0.298039, 0.337255, 0.415686, 1)
+SpinBoxInnerLineEdit/base_type = &"LineEdit"
+SpinBoxInnerLineEdit/styles/focus = SubResource("StyleBoxFlat_a6e4j")
+SpinBoxInnerLineEdit/styles/normal = SubResource("StyleBoxFlat_vsof4")
 SubtleLabel/base_type = &"Label"
 SubtleLabel/colors/font_color = Color(0.298039, 0.337255, 0.415686, 1)
 SubtleLabel/font_sizes/font_size = 12
