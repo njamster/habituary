@@ -279,7 +279,7 @@ func _connect_signals() -> void:
 
 	%FoldHeading.toggled.connect(_on_fold_heading_toggled)
 
-	%Content.gui_input.connect(_on_gui_input)
+	%Edit.gui_input.connect(_on_gui_input)
 
 	%Edit.text_changed.connect(_on_edit_text_changed)
 	%Edit.text_submitted.connect(_on_edit_text_submitted)
@@ -729,7 +729,7 @@ func _on_bookmark_indicator_gui_input(event: InputEvent) -> void:
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
-		release_focus()
+		%Edit.release_focus()
 
 
 # NOTE: `tree_exiting` will be emitted both when this panel is about to be removed from the tree
