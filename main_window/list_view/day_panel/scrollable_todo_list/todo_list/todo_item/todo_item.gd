@@ -413,14 +413,19 @@ func _on_edit_text_changed(new_text: String) -> void:
 		_check_for_search_query_match()
 
 
-func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
+func _strip_text(raw_text: String) -> String:
 	# trim any leading & trailing whitespace
-	new_text = new_text.strip_edges()
+	raw_text = raw_text.strip_edges()
 
 	# if users manually added the bookmark tag to the end of the to-do's text, remove it...
-	while new_text.ends_with("[BOOKMARK]"):
-		new_text = new_text.left(-10).strip_edges()
-	# ... and change the line edit's text accordingly
+	while raw_text.ends_with("[BOOKMARK]"):
+		raw_text = raw_text.left(-10).strip_edges()
+
+	return raw_text
+
+
+func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
+	new_text = _strip_text(new_text)
 	%Edit.text = new_text
 	_on_edit_text_changed(new_text)
 
@@ -480,6 +485,10 @@ func save_to_disk(file : FileAccess) -> void:
 	if not self.text:
 		return
 
+	var stripped_text = _strip_text(self.text)
+	if not stripped_text:
+		return
+
 	var string := ""
 
 	if self.indentation_level > 0:
@@ -502,7 +511,7 @@ func save_to_disk(file : FileAccess) -> void:
 		string += "*"
 	if is_bold:
 		string += "**"
-	string += self.text
+	string += stripped_text
 	if is_bold:
 		string += "**"
 	if is_italic:

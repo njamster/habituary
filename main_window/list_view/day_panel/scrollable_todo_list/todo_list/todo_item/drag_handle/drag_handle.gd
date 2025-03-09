@@ -14,8 +14,6 @@ func _ready() -> void:
 
 
 func _get_drag_data(_at_position: Vector2) -> Variant:
-	to_do._on_edit_text_submitted(to_do.get_node("%Edit").text, false)
-
 	get_node("Tooltip").hide_tooltip()
 
 	var items = VBoxContainer.new()
@@ -40,12 +38,13 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 				break  # end of scope reached
 
 	for node in nodes_to_move:
-		if node.is_in_edit_mode():
-			node._on_edit_focus_exited()
 		# we only need a visually equivalent copy, not a functional one
 		# that's why all DuplicateFlags are unset (== 0) here
 		var preview = node.duplicate(0)
 		items.add_child(preview)
+
+		if node.is_in_edit_mode():
+			preview.get_node("EditingOptions").hide()
 
 	var pivot = Control.new()
 	items.position = -1 * position

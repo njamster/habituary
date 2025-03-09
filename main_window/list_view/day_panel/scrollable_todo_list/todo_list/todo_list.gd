@@ -258,6 +258,8 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 				connect_todo_signals(entry)
 				%Items.move_child(entry, base_position + i)
 				old_list._start_debounce_timer("to-do dragged to another list")
+				if entry.is_in_edit_mode():
+					entry.edit()
 			else:
 				# item changed its position inside the list
 				if base_position >= old_index - i and \
