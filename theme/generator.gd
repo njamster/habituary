@@ -467,6 +467,8 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	#region TooltipLabel
 	var tooltip_label := theme.create_theme_type("TooltipLabel")
 
+	tooltip_label.font_color = neutral_1
+
 	tooltip_label.font_size = 13
 	#endregion
 
@@ -474,7 +476,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	var tooltip_panel := theme.create_theme_type("TooltipPanel", "PanelContainer")
 
 	tooltip_panel.panel = {
-		"bg_color" = neutral_4,
+		"bg_color" = neutral_5,
 		"corner_radius" = 5,
 		"content_margin" = { "left": 6, "top": 2, "right": 6, "bottom": 2 },
 	}

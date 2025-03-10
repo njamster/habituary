@@ -63,6 +63,14 @@ theme_override_constants/icon_max_width = 20
 icon = ExtResource("2_6dyr4")
 flat = true
 
+[node name="Tooltip" type="Node" parent="HBox/VBox/MainRow/HBox/Toggle/CheckBox"]
+script = ExtResource("3_oduck")
+text = "L-Click: Mark As Done
+R-Click: Mark As Canceled"
+popup_delay = 2.5
+gap_width = 6
+metadata/_custom_type_script = "uid://bqai4pv020yjf"
+
 [node name="FoldHeading" type="Button" parent="HBox/VBox/MainRow/HBox/Toggle"]
 unique_name_in_owner = true
 visible = false
@@ -78,6 +86,12 @@ flat = true
 script = ExtResource("2_n5f11")
 icon_toggled_off = ExtResource("2_2nsse")
 icon_toggled_on = ExtResource("4_fnk6y")
+
+[node name="Tooltip" type="Node" parent="HBox/VBox/MainRow/HBox/Toggle/FoldHeading"]
+script = ExtResource("3_oduck")
+popup_delay = 1.5
+gap_width = 6
+metadata/_custom_type_script = "uid://bqai4pv020yjf"
 
 [node name="ExtraInfo" type="Label" parent="HBox/VBox/MainRow/HBox"]
 unique_name_in_owner = true

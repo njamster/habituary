@@ -91,6 +91,9 @@ func _spawn_panel() -> void:
 	_tooltip_panel = PanelContainer.new()
 	add_child(_tooltip_panel)
 
+	# Since this is not a Control node, it breaks the chain of automatic theme
+	# inheritance, and we need to set the theme of the panel manually here.
+	_tooltip_panel.theme = get_window().theme
 	_tooltip_panel.theme_type_variation = "TooltipPanel"
 
 	# step 2: create container

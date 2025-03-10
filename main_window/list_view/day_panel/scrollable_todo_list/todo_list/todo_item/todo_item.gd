@@ -240,6 +240,8 @@ func _ready() -> void:
 func _set_initial_state() -> void:
 	%ExtraInfo.hide()
 
+	_on_fold_heading_toggled(self.is_folded)
+
 	_apply_state_relative_formatting.call_deferred(true)
 
 
@@ -597,6 +599,11 @@ func _on_mouse_exited() -> void:
 
 func _on_fold_heading_toggled(toggled_on: bool) -> void:
 	self.is_folded = toggled_on
+
+	if self.is_folded:
+		%FoldHeading/Tooltip.text = "Unfold Heading"
+	else:
+		%FoldHeading/Tooltip.text = "Fold Heading"
 
 
 func set_extra_info(num_done : int , num_items : int) -> void:
