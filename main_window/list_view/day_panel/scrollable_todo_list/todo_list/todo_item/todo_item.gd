@@ -90,6 +90,9 @@ var is_heading := false:
 			else:
 				if is_folded:
 					is_folded = false
+					%FoldHeading.button_pressed = is_folded
+					self.unfolded.emit.call_deferred()
+					%ExtraInfo.hide()
 				%MainRow.theme_type_variation = "ToDoItem_NoHeading"
 				%FoldHeading.hide()
 				%CheckBox.show()
@@ -129,6 +132,9 @@ var _contains_mouse_cursor := false
 var is_folded := false:
 	set(value):
 		is_folded = value
+
+		if not is_heading:
+			return
 
 		if not is_node_ready():
 			await self.ready
@@ -796,7 +802,8 @@ func _apply_state_relative_formatting(immediate := false) -> void:
 			hide_tween.kill()
 			%CheckBox.modulate.a = 1.0
 			%Content.modulate.a = 1.0
-		self.show()
+		if not is_folded:
+			self.show()
 
 		if Settings.fade_ticked_off_todos:
 			if state != States.TO_DO:

@@ -212,6 +212,7 @@ func fold_heading(item_index: int, unfold := false) -> void:
 				if child.is_heading and child.is_folded:
 					fold_heading.call_deferred(child.get_index())
 		else:
+			child.is_folded = true
 			child.hide()
 
 		if not child.is_heading:
