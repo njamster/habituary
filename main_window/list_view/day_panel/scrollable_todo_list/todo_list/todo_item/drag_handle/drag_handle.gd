@@ -14,8 +14,6 @@ func _ready() -> void:
 
 
 func _get_drag_data(_at_position: Vector2) -> Variant:
-	get_node("Tooltip").hide_tooltip()
-
 	var items = VBoxContainer.new()
 	items.add_theme_constant_override(
 		"separation",

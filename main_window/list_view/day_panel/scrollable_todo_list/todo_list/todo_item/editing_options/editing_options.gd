@@ -157,7 +157,6 @@ func _on_text_color_gui_input(event: InputEvent) -> void:
 				return  # early, i.e. ignore the input
 
 		get_viewport().set_input_as_handled()
-		%TextColor/Tooltip.hide_tooltip()
 
 
 func _on_bookmark_toggled(toggled_on: bool) -> void:

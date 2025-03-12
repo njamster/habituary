@@ -158,11 +158,7 @@ func _on_header_mouse_exited() -> void:
 
 
 func _on_view_mode_changed() -> void:
-	if Settings.view_mode == 1:
-		%Header/Tooltip.disabled = true
-		%Header/Tooltip.hide_tooltip()
-	else:
-		%Header/Tooltip.disabled = false
+	%Header/Tooltip.disabled = (Settings.view_mode == 1)
 
 
 func _on_current_day_changed() -> void:

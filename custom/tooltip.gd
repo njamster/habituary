@@ -212,3 +212,9 @@ func _on_press_or_toggle(_toggled_on := false) -> void:
 		# has not yet finished (i.e. there's no tooltip visible), reset the _hover_timer.
 		# => While rapidly pressing a button, no tooltip will be shown!
 		show_tooltip()
+
+
+func _input(event: InputEvent) -> void:
+	# Hide as soon as the user starts typing or clicks anywhere
+	if event is InputEventKey or event is InputEventMouseButton:
+		hide_tooltip()
