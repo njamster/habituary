@@ -23,9 +23,10 @@ func _connect_signals() -> void:
 	item_rect_changed.connect(_on_item_rect_changed)
 	visibility_changed.connect(_on_visibility_changed)
 
+	%Month.mouse_entered.connect(_on_month_mouse_entered)
 	%Month.mouse_exited.connect(_on_month_mouse_exited)
 
-	%YearLabel.gui_input.connect(_on_year_label_gui_input)
+	%YearLabel.mouse_entered.connect(_on_year_label_mouse_entered)
 
 	%YearSpinBox.value_changed.connect(_on_year_spin_box_value_changed)
 	%YearSpinBox.mouse_exited.connect(_on_year_spin_box_mouse_exited)
@@ -241,12 +242,11 @@ func _on_month_selected(selected_id : int) -> void:
 	update_month()
 
 
-func _on_year_label_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
-		%YearLabel.hide()
-		%YearSpinBox.show()
-		%YearSpinBox.value = int(%YearLabel.text)
-		%YearSpinBox.get_line_edit().grab_focus()
+func _on_year_label_mouse_entered() -> void:
+	%YearLabel.hide()
+	%YearSpinBox.show()
+	%YearSpinBox.value = int(%YearLabel.text)
+	%YearSpinBox.get_line_edit().grab_focus()
 
 
 func _on_year_spin_box_mouse_exited() -> void:
@@ -260,8 +260,12 @@ func _on_year_spin_box_value_changed(value: float) -> void:
 	update_month()
 
 
+func _on_month_mouse_entered():
+	%Month.show_popup()
+	%Month.get_popup().set_focused_item(-1)
+
+
 func _on_month_mouse_exited() -> void:
-	if %Month.get_popup().visible:
-		await get_tree().process_frame
-		if %Month.get_popup().get_focused_item() == -1:
-			%Month.get_popup().hide()
+	await get_tree().process_frame
+	if %Month.get_popup().get_focused_item() == -1:
+		%Month.get_popup().hide()

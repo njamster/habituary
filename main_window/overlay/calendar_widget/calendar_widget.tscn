@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://5x5oa7kf2q8s" path="res://main_window/navigation_bar_right/images/arrow_right.svg" id="5_kngd2"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jfnkl"]
-content_margin_left = 13.0
+content_margin_left = 14.0
 
 [node name="CalendarWidget" type="PanelContainer"]
 anchors_preset = 1
@@ -68,6 +68,7 @@ popup/item_11/id = 12
 
 [node name="YearLabel" type="Label" parent="VBox/HBox/Title"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(79, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 0
@@ -78,7 +79,9 @@ text = "2024"
 [node name="YearSpinBox" type="SpinBox" parent="VBox/HBox/Title"]
 unique_name_in_owner = true
 visible = false
+custom_minimum_size = Vector2(79, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 max_value = 9999.0
 value = 2024.0
 allow_greater = true
