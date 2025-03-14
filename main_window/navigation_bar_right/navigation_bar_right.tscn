@@ -25,6 +25,7 @@ action = &"toggle_calendar_widget"
 events = [SubResource("InputEventAction_28eux")]
 
 [node name="NavigationBarRight" type="VBoxContainer"]
+theme_type_variation = &"TinySeparation"
 script = ExtResource("1_i4fec")
 
 [node name="NextDay" type="Button" parent="."]

@@ -27,6 +27,7 @@ theme_type_variation = &"MediumSeparation"
 
 [node name="HBox" type="HBoxContainer" parent="VBox"]
 layout_mode = 2
+theme_type_variation = &"TinySeparation"
 
 [node name="Title" type="HBoxContainer" parent="VBox/HBox"]
 custom_minimum_size = Vector2(180, 0)

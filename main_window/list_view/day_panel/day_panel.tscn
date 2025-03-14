@@ -15,7 +15,6 @@ script = ExtResource("1_a2phy")
 
 [node name="VBox" type="VBoxContainer" parent="."]
 layout_mode = 2
-theme_type_variation = &"NoSeparation"
 
 [node name="Header" type="PanelContainer" parent="VBox"]
 unique_name_in_owner = true
@@ -25,7 +24,6 @@ theme_type_variation = &"DayPanel_Header"
 
 [node name="VBox" type="VBoxContainer" parent="VBox/Header"]
 layout_mode = 2
-theme_type_variation = &"NoSeparation"
 
 [node name="Date" type="Label" parent="VBox/Header/VBox"]
 unique_name_in_owner = true

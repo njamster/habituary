@@ -22,7 +22,6 @@ script = ExtResource("1_cqr1i")
 
 [node name="HBox" type="HBoxContainer" parent="."]
 layout_mode = 2
-theme_type_variation = &"NoSeparation"
 
 [node name="SidePanel" parent="HBox" instance=ExtResource("1_rij1k")]
 layout_mode = 2

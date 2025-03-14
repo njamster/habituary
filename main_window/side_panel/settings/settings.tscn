@@ -42,6 +42,7 @@ theme_type_variation = &"MediumSeparation"
 
 [node name="General" parent="ScrollContainer/PaddedScrollbar/VBox" instance=ExtResource("3_jtwi2")]
 layout_mode = 2
+theme_type_variation = &"TinySeparation"
 
 [node name="Heading" parent="ScrollContainer/PaddedScrollbar/VBox/General" index="0"]
 button_pressed = false
@@ -124,6 +125,7 @@ layout_mode = 2
 
 [node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content/DayStart"]
 layout_mode = 2
+theme_type_variation = &"TinySeparation"
 
 [node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content/DayStart/Setting"]
 layout_mode = 2
@@ -161,6 +163,7 @@ fit_content = true
 
 [node name="ListView" parent="ScrollContainer/PaddedScrollbar/VBox" instance=ExtResource("3_jtwi2")]
 layout_mode = 2
+theme_type_variation = &"TinySeparation"
 
 [node name="Heading" parent="ScrollContainer/PaddedScrollbar/VBox/ListView" index="0"]
 text = "LIST VIEW"
@@ -216,6 +219,7 @@ fit_content = true
 
 [node name="ToDos" parent="ScrollContainer/PaddedScrollbar/VBox" instance=ExtResource("3_jtwi2")]
 layout_mode = 2
+theme_type_variation = &"TinySeparation"
 
 [node name="Heading" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos" index="0"]
 text = "TO-DOS"
@@ -278,6 +282,7 @@ fit_content = true
 [node name="ToDoColors" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content" index="2"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"TinySeparation"
 
 [node name="Color1" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors"]
 layout_mode = 2
@@ -450,6 +455,7 @@ fit_content = true
 
 [node name="Calendar" parent="ScrollContainer/PaddedScrollbar/VBox" instance=ExtResource("3_jtwi2")]
 layout_mode = 2
+theme_type_variation = &"TinySeparation"
 
 [node name="Heading" parent="ScrollContainer/PaddedScrollbar/VBox/Calendar" index="0"]
 text = "CALENDAR"

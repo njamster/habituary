@@ -14,10 +14,10 @@ script = ExtResource("1_cjbqa")
 [node name="VBox" type="VBoxContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_type_variation = &"NoSeparation"
 
 [node name="Row1" type="HBoxContainer" parent="VBox"]
 layout_mode = 2
+theme_type_variation = &"TinySeparation"
 
 [node name="DayCounter" type="Label" parent="VBox/Row1"]
 unique_name_in_owner = true

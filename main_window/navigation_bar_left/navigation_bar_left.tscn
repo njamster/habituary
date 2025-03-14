@@ -27,6 +27,7 @@ events = [SubResource("InputEventAction_e5hy0")]
 [node name="NavigationBarLeft" type="VBoxContainer"]
 offset_right = 28.0
 offset_bottom = 114.0
+theme_type_variation = &"TinySeparation"
 script = ExtResource("1_kn5h0")
 
 [node name="PreviousDay" type="Button" parent="."]

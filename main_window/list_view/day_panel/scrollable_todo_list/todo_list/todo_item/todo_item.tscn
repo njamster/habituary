@@ -15,7 +15,6 @@ offset_right = 1920.0
 offset_bottom = 27.0
 focus_mode = 2
 mouse_filter = 2
-theme_type_variation = &"NoSeparation"
 script = ExtResource("2_6v2l5")
 
 [node name="UpperPadding" type="Control" parent="."]
@@ -25,7 +24,6 @@ mouse_filter = 2
 
 [node name="HBox" type="HBoxContainer" parent="."]
 layout_mode = 2
-theme_type_variation = &"NoSeparation"
 
 [node name="Indentation" type="Control" parent="HBox"]
 unique_name_in_owner = true
@@ -35,7 +33,6 @@ size_flags_horizontal = 8
 [node name="VBox" type="VBoxContainer" parent="HBox"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_type_variation = &"NoSeparation"
 
 [node name="MainRow" type="PanelContainer" parent="HBox/VBox"]
 unique_name_in_owner = true
@@ -45,7 +42,6 @@ theme_type_variation = &"ToDoItem_NoHeading"
 
 [node name="HBox" type="HBoxContainer" parent="HBox/VBox/MainRow"]
 layout_mode = 2
-theme_type_variation = &"NoSeparation"
 
 [node name="Toggle" type="MarginContainer" parent="HBox/VBox/MainRow/HBox"]
 unique_name_in_owner = true

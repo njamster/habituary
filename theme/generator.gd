@@ -548,16 +548,16 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	scroll_button_text_search_match.font_size = 12
 	#endregion
 
-	#region LargeSeparation
-	var large_separation := theme.create_theme_type("LargeSeparation", "BoxContainer")
+	#region BoxContainer
+	var box_container := theme.create_theme_type("BoxContainer")
 
-	large_separation.separation = 32
+	box_container.separation = 0
 	#endregion
 
-	#region MediumSeparation
-	var medium_separation := theme.create_theme_type("MediumSeparation", "BoxContainer")
+	#region TinySeparation
+	var tiny_separation := theme.create_theme_type("TinySeparation", "BoxContainer")
 
-	medium_separation.separation = 16
+	tiny_separation.separation = 4
 	#endregion
 
 	#region SmallSeparation
@@ -566,10 +566,16 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	small_separation.separation = 8
 	#endregion
 
-	#region NoSeparation
-	var no_separation := theme.create_theme_type("NoSeparation", "BoxContainer")
+	#region MediumSeparation
+	var medium_separation := theme.create_theme_type("MediumSeparation", "BoxContainer")
 
-	no_separation.separation = 0
+	medium_separation.separation = 16
+	#endregion
+
+	#region LargeSeparation
+	var large_separation := theme.create_theme_type("LargeSeparation", "BoxContainer")
+
+	large_separation.separation = 32
 	#endregion
 
 	#region FlatButton

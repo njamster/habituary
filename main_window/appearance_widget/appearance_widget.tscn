@@ -36,6 +36,7 @@ events = [SubResource("InputEventAction_uckjy")]
 [node name="AppearanceWidget" type="VBoxContainer"]
 offset_right = 28.0
 offset_bottom = 124.0
+theme_type_variation = &"TinySeparation"
 script = ExtResource("1_1o2da")
 
 [node name="SingleDay" type="Button" parent="."]

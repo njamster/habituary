@@ -29,6 +29,7 @@ events = [SubResource("InputEventAction_j70y2")]
 offset_right = 28.0
 offset_bottom = 102.0
 size_flags_vertical = 10
+theme_type_variation = &"TinySeparation"
 script = ExtResource("1_5x0ik")
 
 [node name="Capture" type="Button" parent="."]
