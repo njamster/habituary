@@ -1,10 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://l4kyh6xqycoy"]
+[gd_scene load_steps=8 format=3 uid="uid://l4kyh6xqycoy"]
 
 [ext_resource type="Script" uid="uid://c4y85vkqxxebi" path="res://main_window/overlay/calendar_widget/calendar_widget.gd" id="1_6ouga"]
 [ext_resource type="Texture2D" uid="uid://kpsxfahirjkd" path="res://main_window/navigation_bar_left/images/arrow_left.svg" id="2_3qe07"]
 [ext_resource type="Script" uid="uid://bqai4pv020yjf" path="res://custom/tooltip.gd" id="2_yxtut"]
 [ext_resource type="Texture2D" uid="uid://dg16vv3p66p28" path="res://main_window/navigation_bar_left/images/today.svg" id="4_w73ku"]
 [ext_resource type="Texture2D" uid="uid://5x5oa7kf2q8s" path="res://main_window/navigation_bar_right/images/arrow_right.svg" id="5_kngd2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lhre3"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jfnkl"]
 content_margin_left = 14.0
@@ -34,11 +36,12 @@ custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Month" type="MenuButton" parent="VBox/HBox/Title"]
+[node name="MonthButton" type="MenuButton" parent="VBox/HBox/Title"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme_override_styles/hover = SubResource("StyleBoxEmpty_lhre3")
 text = "SEPTEMBER"
 flat = false
 item_count = 12
@@ -67,6 +70,10 @@ popup/item_10/id = 11
 popup/item_11/text = "   DECEMBER"
 popup/item_11/id = 12
 
+[node name="HoverTimer" type="Timer" parent="VBox/HBox/Title/MonthButton"]
+wait_time = 0.4
+one_shot = true
+
 [node name="YearLabel" type="Label" parent="VBox/HBox/Title"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(79, 0)
@@ -76,6 +83,10 @@ mouse_filter = 0
 mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_jfnkl")
 text = "2024"
+
+[node name="HoverTimer" type="Timer" parent="VBox/HBox/Title/YearLabel"]
+wait_time = 0.4
+one_shot = true
 
 [node name="YearSpinBox" type="SpinBox" parent="VBox/HBox/Title"]
 unique_name_in_owner = true

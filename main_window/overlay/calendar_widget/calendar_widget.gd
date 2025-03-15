@@ -4,18 +4,25 @@ extends PanelContainer
 signal closed
 
 
-var anchor_date : Date
+var anchor_date: Date
+
+
+var _mouse_over_month_button := false
+var _mouse_over_month_popup_menu := false
+
+
+@onready var month_popup_menu: PopupMenu = %MonthButton.get_popup()
 
 
 func _ready() -> void:
+	_set_initial_state()
 	_connect_signals()
 
-	%Month.show()
-	%YearLabel.show()
 
-	var popup_menu : PopupMenu = %Month.get_popup()
-	popup_menu.id_pressed.connect(_on_month_selected)
-	popup_menu.mouse_exited.connect(popup_menu.hide)
+func _set_initial_state() -> void:
+	%MonthButton.show()
+	%YearLabel.show()
+	%YearSpinBox.hide()
 
 
 func _connect_signals() -> void:
@@ -23,10 +30,18 @@ func _connect_signals() -> void:
 	item_rect_changed.connect(_on_item_rect_changed)
 	visibility_changed.connect(_on_visibility_changed)
 
-	%Month.mouse_entered.connect(_on_month_mouse_entered)
-	%Month.mouse_exited.connect(_on_month_mouse_exited)
+	%MonthButton.mouse_entered.connect(_on_month_button_mouse_entered)
+	%MonthButton/HoverTimer.timeout.connect(_on_month_button_hover_timer_timeout)
+	%MonthButton.toggled.connect(_on_month_button_toggled)
+	%MonthButton.mouse_exited.connect(_on_month_button_mouse_exited)
+
+	month_popup_menu.id_pressed.connect(_on_month_selected)
+	month_popup_menu.mouse_entered.connect(_on_month_popup_menu_mouse_entered)
+	month_popup_menu.mouse_exited.connect(_on_month_popup_menu_mouse_exited)
 
 	%YearLabel.mouse_entered.connect(_on_year_label_mouse_entered)
+	%YearLabel/HoverTimer.timeout.connect(_on_year_label_hover_timer_timeout)
+	%YearLabel.mouse_exited.connect(_on_year_label_mouse_exited)
 
 	%YearSpinBox.value_changed.connect(_on_year_spin_box_value_changed)
 	%YearSpinBox.mouse_exited.connect(_on_year_spin_box_mouse_exited)
@@ -94,7 +109,7 @@ func update_day() -> void:
 
 func update_month() -> void:
 	# update the title
-	%Month.text = Date._MONTH_NAMES[anchor_date.month - 1].to_upper()
+	%MonthButton.text = Date._MONTH_NAMES[anchor_date.month - 1].to_upper()
 	%YearLabel.text = str(anchor_date.year)
 
 	# remove old children
@@ -243,10 +258,18 @@ func _on_month_selected(selected_id : int) -> void:
 
 
 func _on_year_label_mouse_entered() -> void:
+	%YearLabel/HoverTimer.start()
+
+
+func _on_year_label_hover_timer_timeout() -> void:
 	%YearLabel.hide()
 	%YearSpinBox.show()
 	%YearSpinBox.value = int(%YearLabel.text)
 	%YearSpinBox.get_line_edit().grab_focus()
+
+
+func _on_year_label_mouse_exited() -> void:
+	%YearLabel/HoverTimer.stop()
 
 
 func _on_year_spin_box_mouse_exited() -> void:
@@ -260,12 +283,34 @@ func _on_year_spin_box_value_changed(value: float) -> void:
 	update_month()
 
 
-func _on_month_mouse_entered():
-	%Month.show_popup()
-	%Month.get_popup().set_focused_item(-1)
+func _on_month_button_mouse_entered():
+	_mouse_over_month_button = true
+	%MonthButton/HoverTimer.start()
 
 
-func _on_month_mouse_exited() -> void:
+func _on_month_button_hover_timer_timeout() -> void:
+	%MonthButton.show_popup()
+	month_popup_menu.set_focused_item(-1)
+
+
+func _on_month_button_toggled(_toggled_on: bool) -> void:
+	%MonthButton/HoverTimer.stop()
+
+
+func _on_month_button_mouse_exited() -> void:
+	_mouse_over_month_button = false
+	%MonthButton/HoverTimer.stop()
 	await get_tree().process_frame
-	if %Month.get_popup().get_focused_item() == -1:
-		%Month.get_popup().hide()
+	if not (_mouse_over_month_button or _mouse_over_month_popup_menu):
+		month_popup_menu.hide()
+
+
+func _on_month_popup_menu_mouse_entered() -> void:
+	_mouse_over_month_popup_menu = true
+
+
+func _on_month_popup_menu_mouse_exited() -> void:
+	_mouse_over_month_popup_menu = false
+	await get_tree().process_frame
+	if not (_mouse_over_month_button or _mouse_over_month_popup_menu):
+		month_popup_menu.hide()
