@@ -41,7 +41,7 @@ import/blender/enabled=false
 
 [gui]
 
-theme/custom="res://theme/dark_theme.tres"
+theme/custom="uid://b6uigmasjumt4"
 
 [input]
 

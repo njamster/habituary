@@ -116,6 +116,13 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	var button := theme.create_theme_type("Button")
 
 	button.set_default_color(neutral_7)
+	if file_name == "light_theme":
+		button.font_hover_color = neutral_2
+		button.icon_hover_color = neutral_2
+		button.font_pressed_color = neutral_2
+		button.icon_pressed_color = neutral_2
+		button.font_hover_pressed_color = neutral_2
+		button.icon_hover_pressed_color = neutral_2
 	button.font_disabled_color = Color(neutral_7, 0.5)
 	button.icon_disabled_color = Color(neutral_7, 0.5)
 
@@ -246,6 +253,8 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 
 	#region CheckButton
 	var check_button := theme.create_theme_type("CheckButton")
+
+	check_button.set_default_color(neutral_7)
 
 	check_button.disabled = StyleBoxEmpty.new()
 	check_button.focus = StyleBoxEmpty.new()
@@ -580,6 +589,8 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 
 	#region FlatButton
 	var flat_button := theme.create_theme_type("FlatButton", "Button")
+
+	flat_button.set_default_color(neutral_7)
 
 	flat_button.set_main_style({
 		# StyleBoxEmpty
