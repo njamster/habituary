@@ -49,19 +49,11 @@ func _connect_signals() -> void:
 
 
 func update() -> void:
-	update_indentation()
 	update_heading()
 	update_bold()
 	update_italic()
 	update_text_color()
 	update_bookmark()
-
-
-func update_indentation() -> void:
-	$Indentation.add_theme_constant_override(
-		"margin_left",
-		to_do.get_node("%Indentation").custom_minimum_size.x
-	)
 
 
 func update_heading() -> void:

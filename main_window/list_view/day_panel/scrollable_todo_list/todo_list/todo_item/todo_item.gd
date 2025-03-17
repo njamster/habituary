@@ -170,26 +170,7 @@ var is_bookmarked := false:
 
 var indentation_level := 0:
 	set(value):
-		var old_indentation_level := indentation_level
 		indentation_level = clamp(value, 0, get_maximum_indentation_level())
-		if indentation_level != value:
-			# play a short animation to indicate that the value was rejected
-			var tween := create_tween()
-			tween.tween_property(%MainRow, "position:x", sign(value) * 5, 0.03)
-			tween.tween_property(%MainRow, "position:x",  0, 0.03)
-		var change := indentation_level - old_indentation_level
-
-		%Indentation.custom_minimum_size.x = indentation_level * 25
-
-		if has_node("EditingOptions"):
-			$EditingOptions.update_indentation()
-
-		if self.text: # skip this step for newly created to-dos that haven't been saved yet
-			if is_inside_tree() and change:
-				_reindent_sub_todos(change, old_indentation_level)
-
-			if _initialization_finished:
-				list_save_requested.emit("indentation_level changed")
 
 
 var text_color_id := 0:
@@ -314,7 +295,7 @@ func _on_edit_focus_entered() -> void:
 			preload("editing_options/editing_options.tscn").instantiate()
 		add_child(editing_options, true)
 		# place the editing options above the lower padding
-		move_child(editing_options, -2)
+		move_child(editing_options, $LowerPadding.get_index())
 
 	##region Make sure edited to-do is visible
 	## FIXME: this is pretty hacky patch...
@@ -489,7 +470,7 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 	get_to_do_list()._drop_data(position - Vector2.ONE, data)
 
 
-func save_to_disk(file : FileAccess) -> void:
+func save_to_disk(file: FileAccess, depth := 0) -> void:
 	if not self.text:
 		return
 
@@ -499,9 +480,8 @@ func save_to_disk(file : FileAccess) -> void:
 
 	var string := ""
 
-	if self.indentation_level > 0:
-		for i in self.indentation_level:
-			string += "  "
+	for i in depth:
+		string += "    "
 
 	if is_heading:
 		if is_folded:
@@ -533,11 +513,14 @@ func save_to_disk(file : FileAccess) -> void:
 
 	file.store_line(string)
 
+	for sub_item in %SubItems.get_children():
+		sub_item.save_to_disk(file, depth + 1)
+
 
 func load_from_disk(line : String) -> void:
-	while line.begins_with("  "):
-		line = line.right(-2)
-		self.indentation_level += 1
+	while line.begins_with("    "):
+		line = line.right(-4)
+		get_item_list().indent_todo(self)
 
 	if line.begins_with("# ") or line.begins_with("v "):
 		line = line.right(-2)
@@ -637,16 +620,11 @@ func _input(event: InputEvent) -> void:
 		elif event.is_action_pressed("move_todo_down", true, true):
 			moved_down.emit()
 		elif event.is_action_pressed("indent_todo", false, true):
-			self.indentation_level += 1
+			get_item_list().indent_todo(self)
 		elif event.is_action_pressed("indent_todo", true, true):
 			pass  # consume echo events without doing anything
 		elif event.is_action_pressed("unindent_todo", false, true):
-			if self.text and self.indentation_level > 0:
-				# Move the to-do & all its sub items to the end of its current scope. This matters
-				# if it has siblings, which would become sub items after deindentation otherwise!
-				# FIXME: That is a rather hacky way to achieve this...
-				get_to_do_list().move_to_do(self, 999_999_999)
-			self.indentation_level -= 1
+			get_item_list().unindent_todo(self)
 		elif event.is_action_pressed("unindent_todo", true, true):
 			pass  # consume echo events without doing anything
 		elif event.is_action_pressed("next_text_color", false, true):
@@ -854,14 +832,14 @@ func _has_unticked_sub_todos() -> bool:
 
 
 func get_parent_todo() -> Control:
-	if indentation_level:
-		var PREDECESSOR_IDS := range(get_index() - 1, 0, -1)
-		for predecessor_id in PREDECESSOR_IDS:
-			var predecessor = get_item_list().get_child(predecessor_id)
-			if predecessor.indentation_level < indentation_level:
-				return predecessor
+	if self.get_item_list().name != "SubItems":
+		return null
 
-	return null
+	var parent := get_parent()
+	while parent is not ToDoItem and parent != null:
+		parent = parent.get_parent()
+
+	return parent
 
 
 func get_item_list() -> VBoxContainer:
