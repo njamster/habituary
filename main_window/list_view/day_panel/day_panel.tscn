@@ -52,10 +52,6 @@ script = ExtResource("2_wbwrx")
 text = "Double-Click To Zoom In"
 popup_position = 4
 
-[node name="Spacer" type="Control" parent="VBox"]
-custom_minimum_size = Vector2(0, 8)
-layout_mode = 2
-
 [node name="ScrollableTodoList" parent="VBox" instance=ExtResource("3_db22u")]
 unique_name_in_owner = true
 layout_mode = 2

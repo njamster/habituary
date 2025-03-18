@@ -16,14 +16,20 @@ size_flags_vertical = 3
 mouse_default_cursor_shape = 2
 script = ExtResource("1_06eaj")
 
-[node name="Lines" type="TextureRect" parent="."]
+[node name="Offset" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_top = 7
+
+[node name="Lines" type="TextureRect" parent="Offset"]
+unique_name_in_owner = true
 self_modulate = Color(0.298039, 0.337255, 0.415686, 1)
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("1_cxvr8")
 stretch_mode = 1
 
-[node name="LineHighlight" type="ColorRect" parent="."]
+[node name="LineHighlight" type="ColorRect" parent="Offset"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 3)
 layout_mode = 2
 size_flags_horizontal = 3

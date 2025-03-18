@@ -19,7 +19,7 @@ mouse_filter = 2
 script = ExtResource("2_6v2l5")
 
 [node name="UpperPadding" type="Control" parent="."]
-custom_minimum_size = Vector2(0, 6)
+custom_minimum_size = Vector2(0, 13)
 layout_mode = 2
 mouse_filter = 2
 
@@ -131,11 +131,6 @@ stretch_mode = 4
 [node name="Tooltip" type="Node" parent="MainRow/HBox/BookmarkIndicator"]
 script = ExtResource("3_oduck")
 text = "Bookmarked To-Do"
-
-[node name="LowerPadding" type="Control" parent="."]
-custom_minimum_size = Vector2(0, 7)
-layout_mode = 2
-mouse_filter = 2
 
 [node name="Indentation" type="MarginContainer" parent="."]
 layout_mode = 2

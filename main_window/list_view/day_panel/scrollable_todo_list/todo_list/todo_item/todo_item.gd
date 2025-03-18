@@ -294,8 +294,8 @@ func _on_edit_focus_entered() -> void:
 		var editing_options := \
 			preload("editing_options/editing_options.tscn").instantiate()
 		add_child(editing_options, true)
-		# place the editing options above the lower padding
-		move_child(editing_options, $LowerPadding.get_index())
+		# place the editing options above the SubItems container
+		move_child(editing_options, $Indentation.get_index())
 
 	##region Make sure edited to-do is visible
 	## FIXME: this is pretty hacky patch...

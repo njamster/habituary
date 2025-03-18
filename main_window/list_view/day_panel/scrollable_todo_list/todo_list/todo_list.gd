@@ -311,22 +311,23 @@ func load_from_disk(file : FileAccess) -> void:
 
 
 func show_line_highlight(mouse_position: Vector2) -> void:
-	$LineHighlight.show()
+	%LineHighlight.show()
 
 	# As LineHighlight is the child of a container node, we have to wait one
 	# frame until Godot allows changing its position again.
 	await get_tree().process_frame
 
-	var row_height = $Lines.get_combined_minimum_size().y
+	var row_height = %Lines.get_combined_minimum_size().y
 	var local_mouse_position = mouse_position.y - %Items.global_position.y
 	var line_position = row_height * round(local_mouse_position / row_height)
 
 	# NOTE: The -2 offset centers the highlight vertically along the line.
-	$LineHighlight.position.y = clamp(line_position - 2, 0, $Items.size.y)
+	%LineHighlight.position.y = clamp(line_position - 2, 0, $Items.size.y) + \
+		$Offset.get_theme_constant("margin_top")
 
 
 func hide_line_highlight() -> void:
-	$LineHighlight.hide()
+	%LineHighlight.hide()
 
 
 func get_subordinate_items(item_index : int) -> Array:

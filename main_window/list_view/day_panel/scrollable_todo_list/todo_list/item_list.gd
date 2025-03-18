@@ -1,6 +1,39 @@
 extends VBoxContainer
 
 
+const TODO_ITEM := preload("todo_item/todo_item.tscn")
+
+
+func _ready() -> void:
+	_connect_signals()
+
+
+func _connect_signals() -> void:
+	gui_input.connect(_on_gui_input)
+
+
+func _on_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
+		accept_event()
+
+		var at_index := 0
+		for child in get_children():
+			if child.position.y > event.position.y - 13:
+				break
+			at_index += 1
+
+		add_todo(at_index)
+
+
+func add_todo(at_index: int) -> void:
+	var new_item := TODO_ITEM.instantiate()
+	add_child(new_item)
+
+	move_child(new_item, clamp(at_index, 0, get_child_count()))
+
+	new_item.edit()
+
+
 func indent_todo(item: ToDoItem) -> void:
 	if item.get_index() == 0:
 		_reject_indentation_change(item, +1)

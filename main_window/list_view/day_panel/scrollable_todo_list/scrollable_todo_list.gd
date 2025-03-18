@@ -41,7 +41,7 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_MASK_LEFT:
 		if event.pressed:
-			%TodoList.add_todo(%TodoList/LineHighlight.global_position)
+			%TodoList.add_todo(%TodoList/Offset/LineHighlight.global_position)
 
 
 func save_to_disk() -> void:
