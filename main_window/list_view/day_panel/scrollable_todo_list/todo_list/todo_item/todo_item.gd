@@ -2,17 +2,11 @@ class_name ToDoItem
 extends VBoxContainer
 
 
-signal predecessor_requested
-signal successor_requested
-
 signal editing_started
 signal list_save_requested(reason)
 
 signal folded
 signal unfolded
-
-signal moved_up
-signal moved_down
 
 
 @onready var last_index := get_index()
@@ -430,9 +424,9 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 		if new_item:
 			if key_input:
 				if Input.is_key_pressed(KEY_SHIFT):
-					predecessor_requested.emit()
+					get_item_list().add_todo_above(self)
 				else:
-					successor_requested.emit()
+					get_item_list().add_todo_below(self)
 		else:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	else:
@@ -608,17 +602,13 @@ func _input(event: InputEvent) -> void:
 			if not is_heading:
 				self.state = States.FAILED if self.state != States.FAILED else States.TO_DO
 		elif event.is_action_pressed("previous_todo", true, true):
-			var predecessor = get_to_do_list().get_nearest_visible_predecessor(get_index())
-			if predecessor:
-				predecessor.edit()
+			get_item_list().select_predecessor_todo(self)
 		elif event.is_action_pressed("next_todo", true, true):
-			var successor = get_to_do_list().get_nearest_visible_successor(get_index())
-			if successor:
-				successor.edit()
+			get_item_list().select_successor_todo(self)
 		elif event.is_action_pressed("move_todo_up", true, true):
-			moved_up.emit()
+			get_item_list().move_todo_up(self)
 		elif event.is_action_pressed("move_todo_down", true, true):
-			moved_down.emit()
+			get_item_list().move_todo_down(self)
 		elif event.is_action_pressed("indent_todo", false, true):
 			get_item_list().indent_todo(self)
 		elif event.is_action_pressed("indent_todo", true, true):

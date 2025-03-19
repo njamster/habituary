@@ -24,8 +24,6 @@ func _connect_signals() -> void:
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 
-	%ScrollContainer.gui_input.connect(_on_gui_input)
-
 	%TodoList.list_save_requested.connect(save_to_disk)
 	#endregion
 
@@ -36,12 +34,6 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
 	%TodoList._drop_data(at_position - %ScrollContainer.position, data)
-
-
-func _on_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_MASK_LEFT:
-		if event.pressed:
-			%TodoList.add_todo(%TodoList/Offset/LineHighlight.global_position)
 
 
 func save_to_disk() -> void:

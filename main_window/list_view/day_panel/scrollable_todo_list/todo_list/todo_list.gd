@@ -38,18 +38,6 @@ func _connect_signals() -> void:
 	#endregion
 
 
-func add_todo(at_position := Vector2.ZERO) -> Control:
-	var new_item := TODO_ITEM.instantiate()
-	%Items.add_child(new_item)
-	if at_position != Vector2.ZERO:
-		%Items.move_child(new_item, find_item_pos(at_position))
-	connect_todo_signals(new_item)
-	if at_position != Vector2.ZERO:
-		# deferred to wait for the container to update the item's position
-		new_item.edit.call_deferred()
-	return new_item
-
-
 func _start_debounce_timer(reason := "Unknown"):
 	if OS.is_debug_build():
 		print("[DEBUG] List Save Requested: (Re)Starting DebounceTimer... (Reason: %s)" % reason)
@@ -64,25 +52,11 @@ func _start_debounce_timer(reason := "Unknown"):
 func connect_todo_signals(todo_item : Control) -> void:
 	todo_item.editing_started.connect(hide_line_highlight)
 	todo_item.list_save_requested.connect(_start_debounce_timer)
-	todo_item.predecessor_requested.connect(func():
-		var predecessor := add_todo(self.global_position + todo_item.position - Vector2(0, 32))
-		predecessor.indentation_level = todo_item.indentation_level
-	)
-	todo_item.successor_requested.connect(func():
-		var successor := add_todo(self.global_position + todo_item.position + Vector2(0, 32))
-		successor.indentation_level = todo_item.indentation_level
-	)
 	todo_item.folded.connect(func():
 		fold_heading(todo_item.get_index(), false)
 	)
 	todo_item.unfolded.connect(func():
 		fold_heading(todo_item.get_index(), true)
-	)
-	todo_item.moved_up.connect(func():
-		move_to_do(todo_item, -1)
-	)
-	todo_item.moved_down.connect(func():
-		move_to_do(todo_item, +1)
 	)
 
 
@@ -306,7 +280,7 @@ func load_from_disk(file : FileAccess) -> void:
 			await get_tree().process_frame
 			get_scroll_container().set("scroll_vertical", scroll_offset)
 		else:
-			var restored_item := add_todo()
+			var restored_item = %Items.add_todo(-1, false)
 			restored_item.load_from_disk(next_line)
 
 
@@ -322,8 +296,11 @@ func show_line_highlight(mouse_position: Vector2) -> void:
 	var line_position = row_height * round(local_mouse_position / row_height)
 
 	# NOTE: The -2 offset centers the highlight vertically along the line.
-	%LineHighlight.position.y = clamp(line_position - 2, 0, $Items.size.y) + \
-		$Offset.get_theme_constant("margin_top")
+	%LineHighlight.position.y = clamp(
+		line_position - 2,
+		0,
+		$Items.get_combined_minimum_size().y
+	) + $Offset.get_theme_constant("margin_top")
 
 
 func hide_line_highlight() -> void:

@@ -1,9 +1,6 @@
 extends VBoxContainer
 
 
-const TODO_ITEM := preload("todo_item/todo_item.tscn")
-
-
 func _ready() -> void:
 	_connect_signals()
 
@@ -25,13 +22,46 @@ func _on_gui_input(event: InputEvent) -> void:
 		add_todo(at_index)
 
 
-func add_todo(at_index: int) -> void:
-	var new_item := TODO_ITEM.instantiate()
+func add_todo(at_index := -1, auto_edit := true) -> ToDoItem:
+	var new_item := preload("todo_item/todo_item.tscn").instantiate()
 	add_child(new_item)
 
-	move_child(new_item, clamp(at_index, 0, get_child_count()))
+	move_child(new_item, clamp(at_index, -get_child_count(), get_child_count()))
 
-	new_item.edit()
+	if auto_edit:
+		new_item.edit()
+
+	return new_item
+
+
+func add_todo_above(item: ToDoItem) -> void:
+	add_todo(item.get_index())
+
+
+func add_todo_below(item: ToDoItem) -> void:
+	add_todo(item.get_index() + 1)
+
+
+func move_todo_up(item: ToDoItem) -> void:
+	move_child(item, max(item.get_index() - 1, 0))
+
+
+func move_todo_down(item: ToDoItem) -> void:
+	move_child(item, item.get_index() + 1)
+
+
+func select_predecessor_todo(item: ToDoItem) -> void:
+	if item.get_index() == 0:
+		return  # no predecessor
+
+	get_child(item.get_index() - 1).edit()
+
+
+func select_successor_todo(item: ToDoItem) -> void:
+	if item.get_index() == get_child_count() - 1:
+		return  # no successor
+
+	get_child(item.get_index() + 1).edit()
 
 
 func indent_todo(item: ToDoItem) -> void:
