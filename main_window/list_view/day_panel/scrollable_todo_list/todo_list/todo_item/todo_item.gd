@@ -281,6 +281,7 @@ func is_in_edit_mode() -> bool:
 
 func edit() -> void:
 	%Edit.grab_focus()
+	%Edit.edit()
 
 
 func _on_edit_focus_entered() -> void:
@@ -291,8 +292,8 @@ func _on_edit_focus_entered() -> void:
 		# place the editing options above the SubItems container
 		move_child(editing_options, $Indentation.get_index())
 
-	##region Make sure edited to-do is visible
-	## FIXME: this is pretty hacky patch...
+	#region Make sure edited to-do is visible
+	# FIXME: this is pretty hacky patch...
 	await get_tree().process_frame
 	await get_tree().process_frame
 	await get_tree().process_frame
@@ -304,7 +305,7 @@ func _on_edit_focus_entered() -> void:
 		scroll_container.scroll_vertical += (
 			row_height - scroll_container.scroll_vertical % row_height
 		)
-	##endregion
+	#endregion
 
 	editing_started.emit()
 
@@ -317,11 +318,11 @@ func delete() -> void:
 	_reindent_sub_todos(-1)
 
 	if %Edit.text:
-		var successor = get_to_do_list().get_nearest_visible_successor(get_index())
+		var successor = get_item_list().get_successor_todo(self)
 		if successor:
 			successor.edit()
 		else:
-			var predecessor = get_to_do_list().get_nearest_visible_predecessor(get_index())
+			var predecessor = get_item_list().get_predecessor_todo(self)
 			if predecessor:
 				predecessor.edit()
 			else:
@@ -602,9 +603,13 @@ func _input(event: InputEvent) -> void:
 			if not is_heading:
 				self.state = States.FAILED if self.state != States.FAILED else States.TO_DO
 		elif event.is_action_pressed("previous_todo", true, true):
-			get_item_list().select_predecessor_todo(self)
+			var predecessor = get_item_list().get_predecessor_todo(self)
+			if predecessor:
+				predecessor.edit()
 		elif event.is_action_pressed("next_todo", true, true):
-			get_item_list().select_successor_todo(self)
+			var successor = get_item_list().get_successor_todo(self)
+			if successor:
+				successor.edit()
 		elif event.is_action_pressed("move_todo_up", true, true):
 			get_item_list().move_todo_up(self)
 		elif event.is_action_pressed("move_todo_down", true, true):
@@ -748,11 +753,11 @@ func _apply_state_relative_formatting(immediate := false) -> void:
 					self.hide()
 
 					if is_in_edit_mode():
-						var successor = get_to_do_list().get_nearest_visible_successor(get_index())
+						var successor = get_item_list().get_successor_todo(self)
 						if successor:
 							successor.edit()
 						else:
-							var predecessor = get_to_do_list().get_nearest_visible_predecessor(get_index())
+							var predecessor = get_item_list().get_predecessor_todo(self)
 							if predecessor:
 								predecessor.edit()
 

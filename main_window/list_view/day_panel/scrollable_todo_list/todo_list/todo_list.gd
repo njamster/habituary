@@ -347,25 +347,6 @@ func _on_items_child_order_changed() -> void:
 				item.last_index = item.get_index()
 
 
-func get_nearest_visible_predecessor(index: int) -> Control:
-	for i in range(index - 1, -1, -1):
-		var predecessor := %Items.get_child(i)
-		if predecessor.visible:
-			return predecessor
-
-	return null
-
-
-func get_nearest_visible_successor(index: int) -> Control:
-	for i in range(index + 1, %Items.get_child_count()):
-		var successor := %Items.get_child(i)
-		if successor.visible:
-			return successor
-
-	return null
-
-
-
 func get_scroll_container() -> ScrollContainer:
 	var parent := get_parent()
 	while parent is not ScrollContainer and parent != null:

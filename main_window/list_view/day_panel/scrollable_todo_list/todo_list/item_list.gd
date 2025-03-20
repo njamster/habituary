@@ -50,18 +50,22 @@ func move_todo_down(item: ToDoItem) -> void:
 	move_child(item, item.get_index() + 1)
 
 
-func select_predecessor_todo(item: ToDoItem) -> void:
-	if item.get_index() == 0:
-		return  # no predecessor
+func get_predecessor_todo(item: ToDoItem) -> ToDoItem:
+	for i in range(item.get_index() - 1, -1, -1):
+			var predecessor := get_child(i)
+			if predecessor.visible:
+				return predecessor
 
-	get_child(item.get_index() - 1).edit()
+	return null  # no predecessor
 
 
-func select_successor_todo(item: ToDoItem) -> void:
-	if item.get_index() == get_child_count() - 1:
-		return  # no successor
+func get_successor_todo(item: ToDoItem) -> ToDoItem:
+	for i in range(item.get_index() + 1, get_child_count()):
+		var successor := get_child(i)
+		if successor.visible:
+			return successor
 
-	get_child(item.get_index() + 1).edit()
+	return null  # no successor
 
 
 func indent_todo(item: ToDoItem) -> void:

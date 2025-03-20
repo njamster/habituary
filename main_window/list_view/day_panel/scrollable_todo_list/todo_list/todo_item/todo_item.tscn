@@ -14,7 +14,6 @@
 [node name="ToDoItem" type="VBoxContainer" groups=["todo_item"]]
 offset_right = 1920.0
 offset_bottom = 27.0
-focus_mode = 2
 mouse_filter = 2
 script = ExtResource("2_6v2l5")
 
