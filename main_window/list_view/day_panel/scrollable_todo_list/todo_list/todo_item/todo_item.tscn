@@ -57,7 +57,6 @@ metadata/_custom_type_script = "uid://bqai4pv020yjf"
 
 [node name="FoldHeading" type="Button" parent="MainRow/HBox/Toggle"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 focus_mode = 0
 mouse_filter = 1
@@ -77,12 +76,6 @@ popup_delay = 1.5
 gap_width = 6
 metadata/_custom_type_script = "uid://bqai4pv020yjf"
 
-[node name="ExtraInfo" type="Label" parent="MainRow/HBox"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-theme_type_variation = &"ToDoItem_ExtraInfo"
-
 [node name="Content" type="MarginContainer" parent="MainRow/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -100,6 +93,12 @@ context_menu_enabled = false
 drag_and_drop_selection_enabled = false
 caret_blink = true
 caret_blink_interval = 0.45
+
+[node name="ExtraInfo" type="Label" parent="MainRow/HBox"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_type_variation = &"ToDoItem_ExtraInfo"
 
 [node name="DragHandle" type="Button" parent="MainRow/HBox"]
 unique_name_in_owner = true

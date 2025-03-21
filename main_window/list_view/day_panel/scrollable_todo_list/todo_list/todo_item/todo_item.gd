@@ -127,23 +127,25 @@ var is_folded := false:
 	set(value):
 		is_folded = value
 
-		if not is_heading:
-			return
-
-		if not is_node_ready():
-			await self.ready
+		#if not is_heading:
+			#return
+#
+		#if not is_node_ready():
+			#await self.ready
 
 		%FoldHeading.button_pressed = is_folded
 
 		if is_folded:
-			self.folded.emit.call_deferred()
+			#self.folded.emit.call_deferred()
+			%SubItems.hide()
 			%ExtraInfo.show()
 		else:
-			self.unfolded.emit.call_deferred()
+			#self.unfolded.emit.call_deferred()
+			%SubItems.show()
 			%ExtraInfo.hide()
 
-		if _initialization_finished and self.text:
-			list_save_requested.emit("is_folded changed")
+		#if _initialization_finished and self.text:
+			#list_save_requested.emit("is_folded changed")
 
 
 var is_bookmarked := false:
@@ -219,6 +221,8 @@ func _ready() -> void:
 
 
 func _set_initial_state() -> void:
+	%CheckBox.show()
+	%FoldHeading.hide()
 	%ExtraInfo.hide()
 
 	_on_fold_heading_toggled(self.is_folded)
@@ -272,6 +276,9 @@ func _connect_signals() -> void:
 	%Edit.resized.connect(_on_edit_resized)
 
 	%BookmarkIndicator.gui_input.connect(_on_bookmark_indicator_gui_input)
+
+	%SubItems.child_entered_tree.connect(_on_sub_item_added.unbind(1))
+	%SubItems.child_exiting_tree.connect(_on_sub_item_removed.unbind(1))
 	#endregion
 
 
@@ -559,8 +566,10 @@ func load_from_disk(line : String) -> void:
 
 func _on_mouse_entered() -> void:
 	_contains_mouse_cursor = true
+
 	%CheckBox.theme_type_variation = "ToDoItem_Focused"
 	%FoldHeading.theme_type_variation = "ToDoItem_Focused"
+
 	if not get_viewport().gui_is_dragging():
 		%DragHandle.show()
 
@@ -580,14 +589,13 @@ func _on_mouse_exited() -> void:
 
 		%FoldHeading.theme_type_variation = "ToDoItem"
 
-
 func _on_fold_heading_toggled(toggled_on: bool) -> void:
 	self.is_folded = toggled_on
 
 	if self.is_folded:
-		%FoldHeading/Tooltip.text = "Unfold Heading"
+		%FoldHeading/Tooltip.text = "Unfold Sub-Items"
 	else:
-		%FoldHeading/Tooltip.text = "Fold Heading"
+		%FoldHeading/Tooltip.text = "Fold Sub-Items"
 
 
 func set_extra_info(num_done : int , num_items : int) -> void:
@@ -853,3 +861,18 @@ func get_day_panel() -> DayPanel:
 	while parent is not DayPanel and parent != null:
 		parent = parent.get_parent()
 	return parent
+
+
+func _on_sub_item_added() -> void:
+	%CheckBox.hide()
+	%FoldHeading.show()
+
+	%ExtraInfo.text = "(%d)" % %SubItems.get_child_count()
+
+
+func _on_sub_item_removed() -> void:
+	if %SubItems.get_child_count():
+		%CheckBox.show()
+		%FoldHeading.hide()
+
+	%ExtraInfo.text = "(%d)" % %SubItems.get_child_count()
