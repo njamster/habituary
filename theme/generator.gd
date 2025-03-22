@@ -600,7 +600,8 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	#region ToDoItem_ExtraInfo
 	var to_do_item_extra_info := theme.create_theme_type("ToDoItem_ExtraInfo", "Label")
 
-	to_do_item_extra_info.font_size = 10
+	to_do_item_extra_info.font_size = 12
+	to_do_item_extra_info.font_color = primary_3
 
 	to_do_item_extra_info.normal = {
 		"content_margin" = { "left": 3, "right": 3 }

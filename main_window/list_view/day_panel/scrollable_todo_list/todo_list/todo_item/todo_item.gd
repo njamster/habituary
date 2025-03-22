@@ -138,11 +138,9 @@ var is_folded := false:
 		if is_folded:
 			#self.folded.emit.call_deferred()
 			%SubItems.hide()
-			%ExtraInfo.show()
 		else:
 			#self.unfolded.emit.call_deferred()
 			%SubItems.show()
-			%ExtraInfo.hide()
 
 		#if _initialization_finished and self.text:
 			#list_save_requested.emit("is_folded changed")
@@ -278,7 +276,10 @@ func _connect_signals() -> void:
 	%BookmarkIndicator.gui_input.connect(_on_bookmark_indicator_gui_input)
 
 	%SubItems.child_entered_tree.connect(_on_sub_item_added.unbind(1))
-	%SubItems.child_exiting_tree.connect(_on_sub_item_removed.unbind(1))
+	%SubItems.child_exiting_tree.connect(
+		_on_sub_item_removed.unbind(1),
+		CONNECT_DEFERRED
+	)
 	#endregion
 
 
@@ -318,9 +319,11 @@ func _on_edit_focus_entered() -> void:
 
 
 func delete() -> void:
+	for i in range(%SubItems.get_child_count() - 1, -1, -1):
+		%SubItems.unindent_todo(%SubItems.get_child(i))
+
 	if is_bookmarked:
 		EventBus.bookmark_removed.emit(self)
-	self.unfolded.emit()
 
 	_reindent_sub_todos(-1)
 
@@ -588,6 +591,7 @@ func _on_mouse_exited() -> void:
 			%CheckBox.theme_type_variation = "ToDoItem"
 
 		%FoldHeading.theme_type_variation = "ToDoItem"
+
 
 func _on_fold_heading_toggled(toggled_on: bool) -> void:
 	self.is_folded = toggled_on
@@ -864,15 +868,32 @@ func get_day_panel() -> DayPanel:
 
 
 func _on_sub_item_added() -> void:
+	is_folded = false
+
 	%CheckBox.hide()
 	%FoldHeading.show()
 
-	%ExtraInfo.text = "(%d)" % %SubItems.get_child_count()
+	_update_extra_info()
 
 
 func _on_sub_item_removed() -> void:
-	if %SubItems.get_child_count():
+	if %SubItems.get_child_count() == 0:
 		%CheckBox.show()
 		%FoldHeading.hide()
 
-	%ExtraInfo.text = "(%d)" % %SubItems.get_child_count()
+	_update_extra_info()
+
+
+func get_sub_item_count() -> int:
+	var sub_item_count := 0
+
+	for sub_item in %SubItems.get_children():
+		sub_item_count += 1 + sub_item.get_sub_item_count()
+
+	return sub_item_count
+
+
+func _update_extra_info() -> void:
+	var sub_item_count := get_sub_item_count()
+	%ExtraInfo.text = "(%d)" % sub_item_count
+	%ExtraInfo.visible = (sub_item_count > 0)

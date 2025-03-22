@@ -789,7 +789,7 @@ corner_radius_bottom_left = 6
 corner_detail = 5
 anti_aliasing_size = 0.33
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uq05c"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4cvu5"]
 content_margin_left = 3.0
 content_margin_top = 0.0
 content_margin_right = 3.0
@@ -1131,8 +1131,9 @@ ToDoItem_EditingOption/styles/pressed = SubResource("StyleBoxEmpty_mj162")
 ToDoItem_EditingOptions/base_type = &"PanelContainer"
 ToDoItem_EditingOptions/styles/panel = SubResource("StyleBoxFlat_wm5p8")
 ToDoItem_ExtraInfo/base_type = &"Label"
-ToDoItem_ExtraInfo/font_sizes/font_size = 10
-ToDoItem_ExtraInfo/styles/normal = SubResource("StyleBoxEmpty_uq05c")
+ToDoItem_ExtraInfo/colors/font_color = Color(0.505882, 0.631373, 0.756863, 1)
+ToDoItem_ExtraInfo/font_sizes/font_size = 12
+ToDoItem_ExtraInfo/styles/normal = SubResource("StyleBoxEmpty_4cvu5")
 ToDoItem_Failed/base_type = &"Button"
 ToDoItem_Failed/colors/font_color = Color(0.74902, 0.380392, 0.415686, 1)
 ToDoItem_Failed/colors/font_disabled_color = Color(0.74902, 0.380392, 0.415686, 1)
