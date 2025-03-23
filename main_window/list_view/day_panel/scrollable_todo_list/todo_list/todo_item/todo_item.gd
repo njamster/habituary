@@ -291,6 +291,9 @@ func edit() -> void:
 	%Edit.grab_focus()
 	%Edit.edit()
 
+	if has_meta("caret_position"):
+		%Edit.caret_column = get_meta("caret_position")
+
 
 func _on_edit_focus_entered() -> void:
 	if not is_in_edit_mode():
@@ -419,6 +422,9 @@ func _strip_text(raw_text: String) -> String:
 
 
 func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
+	# save caret_column value, as it will be reset once %Edit.text is set
+	set_meta("caret_position", %Edit.caret_column)
+
 	new_text = _strip_text(new_text)
 	%Edit.text = new_text
 	_on_edit_text_changed(new_text)
@@ -897,3 +903,7 @@ func _update_extra_info() -> void:
 	var sub_item_count := get_sub_item_count()
 	%ExtraInfo.text = "(%d)" % sub_item_count
 	%ExtraInfo.visible = (sub_item_count > 0)
+
+
+func get_sub_item(index: int) -> Node:
+	return get_node("%SubItems").get_child(index)

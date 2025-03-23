@@ -51,19 +51,38 @@ func move_todo_down(item: ToDoItem) -> void:
 
 
 func get_predecessor_todo(item: ToDoItem) -> ToDoItem:
-	for i in range(item.get_index() - 1, -1, -1):
-			var predecessor := get_child(i)
-			if predecessor.visible:
-				return predecessor
+	if item.get_index() > 0:
+		# item has at least one item before it...
+		var predecessor := get_child(item.get_index() - 1)
+		var sub_item_count = predecessor.get_sub_item_count()
+		if sub_item_count > 0:
+			# ... if that item has any sub items -> return the last of them
+			return predecessor.get_sub_item(sub_item_count - 1)
+		else:
+			# ... otherwise -> return the item itself
+			return predecessor
+	elif name == "SubItems":
+		# item is the first sub item of another item -> return that item
+		return item.get_parent_todo()
 
 	return null  # no predecessor
 
 
 func get_successor_todo(item: ToDoItem) -> ToDoItem:
-	for i in range(item.get_index() + 1, get_child_count()):
-		var successor := get_child(i)
-		if successor.visible:
-			return successor
+	if item.get_sub_item_count() > 0:
+		# item has at least one sub item -> return that
+		return item.get_sub_item(0)
+	elif item.get_index() < get_child_count() - 1:
+		# item has at least one item after it -> return that
+		return get_child(item.get_index() + 1)
+	elif name == "SubItems":
+		# item is the final sub item of another item -> return the item after
+		# that item (if there is any)
+		if item.get_parent_todo().get_item_list().get_child_count() > \
+				item.get_parent_todo().get_index() + 1:
+					return item.get_parent_todo().get_item_list().get_child(
+						item.get_parent_todo().get_index() + 1
+					)
 
 	return null  # no successor
 
