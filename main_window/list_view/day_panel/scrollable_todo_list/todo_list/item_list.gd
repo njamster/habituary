@@ -125,3 +125,45 @@ func _reject_indentation_change(item: ToDoItem, direction: int) -> void:
 	var main_row := item.get_node("%MainRow")
 	tween.tween_property(main_row, "position:x", direction * 5, 0.03)
 	tween.tween_property(main_row, "position:x",  0, 0.03)
+
+
+func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
+	return data is ToDoItem
+
+
+func _drop_data(at_position: Vector2, data: Variant) -> void:
+	if data.is_ancestor_of(self):
+		return  # prevent the user from dropping a to-do on its own sub items
+
+	var at_index := 0
+	for child in get_children():
+		if child == data:
+			continue
+		if child.position.y > at_position.y - 13:
+			break
+		at_index += 1
+
+	var dragged_from = data.get_item_list()
+	var old_list = data.get_to_do_list()
+
+	#var old_index = data.get_index()
+	#if entry.is_bookmarked:
+		#var old_date = entry.date
+		#entry.last_index = base_position + i
+		#entry.reparent(%Items)
+		#EventBus.bookmark_changed.emit(entry, old_date, old_index)
+	#else:
+		#entry.reparent(%Items)
+
+	if dragged_from != self:
+		data.reparent(self)
+
+	move_child(data, at_index)
+
+	if dragged_from != self:
+		old_list._start_debounce_timer("to-do dragged to another list")
+
+	if data.is_in_edit_mode():
+		data.edit()
+
+	data.get_to_do_list()._start_debounce_timer("to-do dropped")

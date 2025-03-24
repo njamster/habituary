@@ -124,14 +124,6 @@ func _apply_date_relative_formating() -> void:
 		modulate.a = 1.0
 
 
-func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-	return %TodoList._can_drop_data(_at_position, data)
-
-
-func _drop_data(at_position: Vector2, data: Variant) -> void:
-	%TodoList._drop_data(at_position - %ScrollContainer.position, data)
-
-
 func _on_header_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_MASK_LEFT:
 		if event.pressed and event.double_click:

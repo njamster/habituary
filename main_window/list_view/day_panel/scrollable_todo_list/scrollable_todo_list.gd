@@ -28,14 +28,6 @@ func _connect_signals() -> void:
 	#endregion
 
 
-func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-	return %TodoList._can_drop_data(_at_position, data)
-
-
-func _drop_data(at_position: Vector2, data: Variant) -> void:
-	%TodoList._drop_data(at_position - %ScrollContainer.position, data)
-
-
 func save_to_disk() -> void:
 	if not %TodoList.pending_save:
 		return # early

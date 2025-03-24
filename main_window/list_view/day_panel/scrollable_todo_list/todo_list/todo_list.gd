@@ -197,63 +197,6 @@ func fold_heading(item_index: int, unfold := false) -> void:
 	heading.set_extra_info(num_done, num_items)
 
 
-func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-	if data is Array:
-		for entry in data:
-			if entry.has_method("is_in_group"):
-				if not entry.is_in_group("todo_item"):
-					return false
-			else:
-				return false
-		return true
-
-	return false
-
-
-func _drop_data(at_position: Vector2, data: Variant) -> void:
-	if data is Array:
-		var base_position := find_item_pos(self.global_position + at_position)
-		for i in data.size():
-			var entry = data[i]
-
-			var old_index = entry.get_index()
-
-			# Now, move the entry to its new loation.
-			if entry.get_item_list() != %Items:
-				# item moved from one list to another
-				var old_list = entry.get_to_do_list()
-				disconnect_todo_signals(entry)
-				if entry.is_bookmarked:
-					var old_date = entry.date
-					entry.last_index = base_position + i
-					entry.reparent(%Items)
-					EventBus.bookmark_changed.emit(entry, old_date, old_index)
-				else:
-					entry.reparent(%Items)
-				connect_todo_signals(entry)
-				%Items.move_child(entry, base_position + i)
-				old_list._start_debounce_timer("to-do dragged to another list")
-				if entry.is_in_edit_mode():
-					entry.edit()
-			else:
-				# item changed its position inside the list
-				if base_position >= old_index - i and \
-					base_position <= old_index + data.size() - i:
-						# new position _is_ the previous position
-						continue
-				elif old_index < base_position:
-					# new position is _below_ the previous position
-					%Items.move_child(entry, base_position - 1)
-				else:
-					# new position is _above_ the previous position
-					%Items.move_child(entry, min(%Items.get_child_count(), base_position + i))
-
-		# Re-trigger the setter of the first entries indentation_level to adjust it if necessary.
-		data[0].indentation_level = data[0].indentation_level
-
-		self._start_debounce_timer("to-do dropped")
-
-
 func has_items() -> bool:
 	return %Items.get_child_count() > 0
 

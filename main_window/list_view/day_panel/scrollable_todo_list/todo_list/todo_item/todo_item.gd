@@ -473,14 +473,6 @@ func _on_content_gui_input(event: InputEvent) -> void:
 				edit()
 
 
-func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-	return get_to_do_list()._can_drop_data(_at_position, data)
-
-
-func _drop_data(_at_position: Vector2, data: Variant) -> void:
-	get_to_do_list()._drop_data(position - Vector2.ONE, data)
-
-
 func save_to_disk(file: FileAccess, depth := 0) -> void:
 	if not self.text:
 		return
