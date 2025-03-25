@@ -2,13 +2,6 @@ class_name ToDoItem
 extends VBoxContainer
 
 
-signal editing_started
-signal list_save_requested(reason)
-
-signal folded
-signal unfolded
-
-
 @onready var last_index := get_index()
 
 
@@ -34,7 +27,7 @@ var text := "":
 					EventBus.bookmark_changed.emit(self, date, get_index())
 
 				if _initialization_finished:
-					list_save_requested.emit("text changed")
+					get_to_do_list()._start_debounce_timer("text changed")
 
 enum States { TO_DO, DONE, FAILED }
 var state := States.TO_DO:
@@ -71,7 +64,7 @@ var state := States.TO_DO:
 				EventBus.bookmark_changed.emit(self, date, get_index())
 
 			if _initialization_finished and self.text:
-				list_save_requested.emit("state changed")
+				get_to_do_list()._start_debounce_timer("state changed")
 
 var is_heading := false:
 	set(value):
@@ -79,23 +72,14 @@ var is_heading := false:
 		if is_inside_tree():
 			if is_heading:
 				%MainRow.theme_type_variation = "ToDoItem_Heading"
-				%FoldHeading.show()
-				%CheckBox.hide()
 			else:
-				if is_folded:
-					is_folded = false
-					%FoldHeading.button_pressed = is_folded
-					self.unfolded.emit.call_deferred()
-					%ExtraInfo.hide()
 				%MainRow.theme_type_variation = "ToDoItem_NoHeading"
-				%FoldHeading.hide()
-				%CheckBox.show()
 
 			if has_node("EditingOptions"):
 				$EditingOptions.update_heading()
 
 			if _initialization_finished and self.text:
-				list_save_requested.emit("is_heading changed")
+				get_to_do_list()._start_debounce_timer("is_heading changed")
 
 var is_bold := false:
 	set(value):
@@ -107,7 +91,7 @@ var is_bold := false:
 				$EditingOptions.update_bold()
 
 			if _initialization_finished and self.text:
-				list_save_requested.emit("is_bold changed")
+				get_to_do_list()._start_debounce_timer("is_bold changed")
 
 var is_italic := false:
 	set(value):
@@ -119,7 +103,7 @@ var is_italic := false:
 				$EditingOptions.update_italic()
 
 			if _initialization_finished and self.text:
-				list_save_requested.emit("is_italic changed")
+				get_to_do_list()._start_debounce_timer("is_italic changed")
 
 var _contains_mouse_cursor := false
 
@@ -127,23 +111,15 @@ var is_folded := false:
 	set(value):
 		is_folded = value
 
-		#if not is_heading:
-			#return
-#
-		#if not is_node_ready():
-			#await self.ready
-
-		%FoldHeading.button_pressed = is_folded
+		%FoldHeading.button_pressed = value
 
 		if is_folded:
-			#self.folded.emit.call_deferred()
 			%SubItems.hide()
 		else:
-			#self.unfolded.emit.call_deferred()
 			%SubItems.show()
 
-		#if _initialization_finished and self.text:
-			#list_save_requested.emit("is_folded changed")
+		if _initialization_finished and self.text:
+			get_to_do_list()._start_debounce_timer("is_folded changed")
 
 
 var is_bookmarked := false:
@@ -160,7 +136,7 @@ var is_bookmarked := false:
 				$EditingOptions.update_bookmark()
 
 			if _initialization_finished and self.text:
-				list_save_requested.emit("is_bookmarked changed")
+				get_to_do_list()._start_debounce_timer("is_bookmarked changed")
 
 var indentation_level := 0:
 	set(value):
@@ -185,7 +161,7 @@ var text_color_id := 0:
 
 		if old_value != value:
 			if _initialization_finished and self.text:
-				list_save_requested.emit("text_color_id changed")
+				get_to_do_list()._start_debounce_timer("text_color_id changed")
 
 var hide_tween: Tween
 
@@ -197,9 +173,10 @@ func _ready() -> void:
 	%BookmarkIndicator.hide()
 	%DragHandle.visible = false
 
-	set_deferred("_initialization_finished", true) # deferred, in case this item is loaded from disk
-
-	await get_tree().process_frame # i.e. until _initialization_finished == true
+	# deferred for two frames, in case this item is loaded from disk
+	await get_tree().process_frame
+	await get_tree().process_frame
+	_initialization_finished = true
 
 	if not self.text: # i.e. it's a newly created to-do (not restored from disk)
 		var index = self.get_index()
@@ -318,7 +295,7 @@ func _on_edit_focus_entered() -> void:
 		)
 	#endregion
 
-	editing_started.emit()
+	get_to_do_list().hide_line_highlight()
 
 
 func delete() -> void:
@@ -346,7 +323,7 @@ func delete() -> void:
 	queue_free()
 	if self.text:
 		await tree_exited
-		list_save_requested.emit("to-do deleted")
+		get_to_do_list()._start_debounce_timer("to-do deleted")
 
 
 func _reindent_sub_todos(change : int, threshold := indentation_level) -> void:
@@ -486,17 +463,15 @@ func save_to_disk(file: FileAccess, depth := 0) -> void:
 	for i in depth:
 		string += "    "
 
-	if is_heading:
-		if is_folded:
-			string += "> "
-		else:
-			string += "v "
-	elif self.state == States.DONE:
+	if self.state == States.DONE:
 		string += "[x] "
 	elif self.state == States.FAILED:
 		string += "[-] "
 	else:
 		string += "[ ] "
+
+	if is_folded:
+		string += "> "
 
 	if is_italic:
 		string += "*"
@@ -525,15 +500,7 @@ func load_from_disk(line : String) -> void:
 		line = line.right(-4)
 		get_item_list().indent_todo(self)
 
-	if line.begins_with("# ") or line.begins_with("v "):
-		line = line.right(-2)
-		self.is_heading = true
-		self.is_folded = false
-	elif line.begins_with("> "):
-		line = line.right(-2)
-		self.is_heading = true
-		self.is_folded = true
-	elif line.begins_with("[ ] "):
+	if line.begins_with("[ ] "):
 		line = line.right(-4)
 	elif line.begins_with("[x] "):
 		self.state = States.DONE
@@ -541,8 +508,10 @@ func load_from_disk(line : String) -> void:
 	elif line.begins_with("[-] "):
 		self.state = States.FAILED
 		line = line.right(-4)
-	else:
-		push_warning("Unknown format for line \"%s\" (will be automatically converted into a todo)" % line)
+
+	if line.begins_with("> "):
+		line = line.right(-2)
+		self.set_deferred("is_folded", true)
 
 	var reg_ex := RegEx.new()
 	reg_ex.compile(" \\[COLOR(?<digit>[1-5])\\]$")
@@ -598,10 +567,6 @@ func _on_fold_heading_toggled(toggled_on: bool) -> void:
 		%FoldHeading/Tooltip.text = "Unfold Sub-Items"
 	else:
 		%FoldHeading/Tooltip.text = "Fold Sub-Items"
-
-
-func set_extra_info(num_done : int , num_items : int) -> void:
-	%ExtraInfo.text = "%d/%d" % [num_done, num_items]
 
 
 func _input(event: InputEvent) -> void:

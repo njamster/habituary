@@ -32,7 +32,7 @@ func save_to_disk() -> void:
 	if not %TodoList.pending_save:
 		return # early
 
-	if %TodoList.has_items():
+	if %TodoList/Items.get_child_count():
 		var file := FileAccess.open(store_path, FileAccess.WRITE)
 		%TodoList.save_to_disk(file)
 	elif FileAccess.file_exists(store_path):
