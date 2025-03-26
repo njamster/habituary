@@ -99,7 +99,9 @@ func indent_todo(item: ToDoItem) -> void:
 		item.edit()
 
 		if item.text:
-			item.list_save_requested.emit("indentation_level changed")
+			item.get_to_do_list()._start_debounce_timer(
+				"indentation_level changed"
+			)
 
 
 func unindent_todo(item: ToDoItem) -> void:
@@ -116,7 +118,9 @@ func unindent_todo(item: ToDoItem) -> void:
 		item.edit()
 
 		if item.text:
-			item.list_save_requested.emit("indentation_level changed")
+			item.get_to_do_list()._start_debounce_timer(
+				"indentation_level changed"
+			)
 
 
 ## Play a short animation to indicate a rejected indentation request.

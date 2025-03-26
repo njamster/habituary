@@ -322,8 +322,9 @@ func delete() -> void:
 
 	queue_free()
 	if self.text:
+		var to_do_list := get_to_do_list()
 		await tree_exited
-		get_to_do_list()._start_debounce_timer("to-do deleted")
+		to_do_list._start_debounce_timer("to-do deleted")
 
 
 func _reindent_sub_todos(change : int, threshold := indentation_level) -> void:
