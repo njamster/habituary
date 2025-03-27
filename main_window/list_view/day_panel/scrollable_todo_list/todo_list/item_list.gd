@@ -93,6 +93,8 @@ func indent_todo(item: ToDoItem) -> void:
 		return  # first item in a list cannot be indented
 
 	var predecessor_item := get_child(item.get_index() - 1)
+	if predecessor_item.is_folded:
+		predecessor_item.is_folded = false
 	item.reparent(predecessor_item.get_node("%SubItems"))
 
 	if item._initialization_finished:

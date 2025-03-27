@@ -832,8 +832,6 @@ func get_day_panel() -> DayPanel:
 
 
 func _on_sub_item_added() -> void:
-	is_folded = false
-
 	%CheckBox.hide()
 	%FoldHeading.show()
 
