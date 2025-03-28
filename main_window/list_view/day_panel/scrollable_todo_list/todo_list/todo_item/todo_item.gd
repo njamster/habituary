@@ -573,11 +573,19 @@ func _on_fold_heading_toggled(toggled_on: bool) -> void:
 func _input(event: InputEvent) -> void:
 	if is_in_edit_mode():
 		if event.is_action_pressed("toggle_todo", false, true):
-			if not is_heading:
+			if %SubItems.is_empty():
 				self.state = States.DONE if self.state != States.DONE else States.TO_DO
+			else:
+				is_folded = not is_folded
+		elif event.is_action_pressed("toggle_todo", true, true):
+			pass  # consume echo events without doing anything
 		elif event.is_action_pressed("cancel_todo", false, true):
-			if not is_heading:
+			if %SubItems.is_empty():
 				self.state = States.FAILED if self.state != States.FAILED else States.TO_DO
+			else:
+				is_folded = not is_folded
+		elif event.is_action_pressed("cancel_todo", true, true):
+			pass  # consume echo events without doing anything
 		elif event.is_action_pressed("previous_todo", true, true):
 			var predecessor = get_item_list().get_predecessor_todo(self)
 			if predecessor:
@@ -839,7 +847,7 @@ func _on_sub_item_added() -> void:
 
 
 func _on_sub_item_removed() -> void:
-	if %SubItems.get_child_count() == 0:
+	if %SubItems.is_empty():
 		%CheckBox.show()
 		%FoldHeading.hide()
 

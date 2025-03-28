@@ -173,3 +173,7 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 		data.edit()
 
 	data.get_to_do_list()._start_debounce_timer("to-do dropped")
+
+
+func is_empty() -> bool:
+	return get_child_count() == 0
