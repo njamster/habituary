@@ -28,6 +28,11 @@ func add_todo(at_index := -1, auto_edit := true) -> ToDoItem:
 
 	move_child(new_item, clamp(at_index, -get_child_count(), get_child_count()))
 
+	if at_index > 0:
+		var predecessor := get_child(at_index - 1)
+		if predecessor.has_sub_items() or predecessor.text.ends_with(":"):
+			indent_todo(new_item)
+
 	if auto_edit:
 		new_item.edit()
 
@@ -88,7 +93,7 @@ func get_successor_todo(item: ToDoItem) -> ToDoItem:
 
 
 func indent_todo(item: ToDoItem) -> void:
-	if item.get_index() == 0:
+	if item.get_index() == 0 or item.indentation_level == 3:
 		_reject_indentation_change(item, +1)
 		return  # first item in a list cannot be indented
 
@@ -96,6 +101,8 @@ func indent_todo(item: ToDoItem) -> void:
 	if predecessor_item.is_folded:
 		predecessor_item.is_folded = false
 	item.reparent(predecessor_item.get_node("%SubItems"))
+
+	item.indentation_level += 1
 
 	if item._initialization_finished:
 		item.edit()
@@ -115,6 +122,8 @@ func unindent_todo(item: ToDoItem) -> void:
 
 	item.reparent(parent_todo.get_item_list())
 	item.get_parent().move_child(item, parent_todo.get_index() + 1)
+
+	item.indentation_level -= 1
 
 	if item._initialization_finished:
 		item.edit()

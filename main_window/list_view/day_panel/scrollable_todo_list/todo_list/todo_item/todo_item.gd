@@ -138,9 +138,7 @@ var is_bookmarked := false:
 			if _initialization_finished and self.text:
 				get_to_do_list()._start_debounce_timer("is_bookmarked changed")
 
-var indentation_level := 0:
-	set(value):
-		indentation_level = clamp(value, 0, get_maximum_indentation_level())
+var indentation_level := 0
 
 
 var text_color_id := 0:
@@ -177,20 +175,6 @@ func _ready() -> void:
 	await get_tree().process_frame
 	await get_tree().process_frame
 	_initialization_finished = true
-
-	if not self.text: # i.e. it's a newly created to-do (not restored from disk)
-		var index = self.get_index()
-		if index > 0:
-			var item_list := get_item_list()
-			var predecessor = item_list.get_child(index - 1)
-			var successor
-			if index < item_list.get_child_count() - 1:
-				successor = item_list.get_child(index + 1)
-			if predecessor.text.ends_with(":") or (successor and \
-				successor.indentation_level == predecessor.indentation_level + 1):
-					self.indentation_level = predecessor.indentation_level + 1
-			else:
-				self.indentation_level = predecessor.indentation_level
 
 	Settings.fade_ticked_off_todos_changed.connect(_apply_state_relative_formatting)
 
@@ -305,8 +289,6 @@ func delete() -> void:
 	if is_bookmarked:
 		EventBus.bookmark_removed.emit(self)
 
-	_reindent_sub_todos(-1)
-
 	if %Edit.text:
 		var successor = get_item_list().get_successor_todo(self)
 		if successor:
@@ -325,24 +307,6 @@ func delete() -> void:
 		var to_do_list := get_to_do_list()
 		await tree_exited
 		to_do_list._start_debounce_timer("to-do deleted")
-
-
-func _reindent_sub_todos(change : int, threshold := indentation_level) -> void:
-	if change == 0 or threshold < 0:
-		return
-
-	var sub_todos := []
-
-	var SUCCESSOR_IDS := range(get_index() + 1, get_item_list().get_child_count())
-	for successor_id in SUCCESSOR_IDS:
-		var successor = get_item_list().get_child(successor_id)
-		if successor.indentation_level == threshold + 1:
-			sub_todos.append(successor)
-		elif successor.indentation_level <= threshold:
-			break # end of scope reached
-
-	for sub_todo in sub_todos:
-		sub_todo.indentation_level += change
 
 
 func _on_edit_resized() -> void:
@@ -378,10 +342,9 @@ func _on_edit_text_changed(new_text: String) -> void:
 	# hide the mouse cursor once the user starts typing
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 
-	if new_text.begins_with("- ") and \
-		self.indentation_level < get_maximum_indentation_level():
-			self.indentation_level += 1
-			%Edit.text = new_text.right(-2).strip_edges()
+	if new_text.begins_with("- "):
+		get_item_list().indent_todo(self)
+		%Edit.text = new_text.right(-2).strip_edges()
 	else:
 		if date:
 			EventBus.bookmark_changed.emit(self, date, get_index())
@@ -773,39 +736,17 @@ func _apply_state_relative_formatting(immediate := false) -> void:
 			%Content.modulate.a = 1.0
 
 
-func get_maximum_indentation_level() -> int:
-	var max_indentation_level := 3
-
-	if self.get_index() > 0:
-		# The maximum indentation level of a to-do is equal to the indentation
-		# level of its predecessor plus one, unless that value would be higher
-		# than the overall allowed maximum specified above.
-		var predecessor := get_item_list().get_child(self.get_index() - 1)
-		max_indentation_level = min(
-			predecessor.indentation_level + 1,
-			max_indentation_level
-		)
-	else:
-		# The first item in a list is not allowed to be indented!
-		max_indentation_level = 0
-
-	return max_indentation_level
-
-
 func _on_edit_gui_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_text_backspace"):
-		if %Edit.text == "" and self.indentation_level > 0:
-			self.indentation_level -= 1
+	if event.is_action_pressed("ui_text_backspace") and %Edit.text == "":
+		get_item_list().unindent_todo(self)
 
 
 func _has_unticked_sub_todos() -> bool:
-	var SUCCESSOR_IDS := range(get_index() + 1, get_item_list().get_child_count())
-	for successor_id in SUCCESSOR_IDS:
-		var successor = get_item_list().get_child(successor_id)
-		if successor.indentation_level <= indentation_level:
-			break # end of scope reached
-		if successor.state == States.TO_DO:
+	for sub_item in %SubItems.get_children():
+		if sub_item.state == States.TO_DO:
 			return true
+		else:
+			return sub_item._has_unticked_sub_todos()
 
 	return false
 
@@ -867,6 +808,10 @@ func _update_extra_info() -> void:
 	var sub_item_count := get_sub_item_count()
 	%ExtraInfo.text = "(%d)" % sub_item_count
 	%ExtraInfo.visible = (sub_item_count > 0)
+
+
+func has_sub_items() -> bool:
+	return get_node("%SubItems").get_child_count()
 
 
 func get_sub_item(index: int) -> Node:
