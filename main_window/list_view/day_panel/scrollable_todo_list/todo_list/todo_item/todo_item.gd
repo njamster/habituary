@@ -49,6 +49,9 @@ var state := States.TO_DO:
 
 			%CheckBox.button_pressed = (state != States.TO_DO)
 
+			if indentation_level:
+				get_parent_todo()._adapt_sub_item_state()
+
 			if not _contains_mouse_cursor:
 				if self.state == States.DONE:
 					%CheckBox.theme_type_variation = "ToDoItem_Done"
@@ -746,7 +749,8 @@ func _has_unticked_sub_todos() -> bool:
 		if sub_item.state == States.TO_DO:
 			return true
 		else:
-			return sub_item._has_unticked_sub_todos()
+			if sub_item._has_unticked_sub_todos():
+				return true
 
 	return false
 
@@ -784,6 +788,7 @@ func _on_sub_item_added() -> void:
 	%CheckBox.hide()
 	%FoldHeading.show()
 
+	_adapt_sub_item_state()
 	_update_extra_info()
 
 
@@ -792,6 +797,7 @@ func _on_sub_item_removed() -> void:
 		%CheckBox.show()
 		%FoldHeading.hide()
 
+	_adapt_sub_item_state()
 	_update_extra_info()
 
 
@@ -816,3 +822,10 @@ func has_sub_items() -> bool:
 
 func get_sub_item(index: int) -> Node:
 	return get_node("%SubItems").get_child(index)
+
+
+func _adapt_sub_item_state() -> void:
+	if _has_unticked_sub_todos():
+		self.state = States.TO_DO
+	else:
+		self.state = States.DONE
