@@ -697,7 +697,7 @@ func _apply_state_relative_formatting(immediate := false) -> void:
 						hide_tween.kill()
 					modulate.a = 1.0
 					hide_tween = create_tween().set_parallel()
-					hide_tween.tween_property(%CheckBox, "modulate:a", 0.0, 1.5)
+					hide_tween.tween_property(%Toggle, "modulate:a", 0.0, 1.5)
 					hide_tween.tween_property(%Content, "modulate:a", 0.0, 1.5)
 					await hide_tween.finished
 					self.hide()
@@ -717,25 +717,25 @@ func _apply_state_relative_formatting(immediate := false) -> void:
 		else:
 			if hide_tween:
 				hide_tween.kill()
-				%CheckBox.modulate.a = 1.0
+				%Toggle.modulate.a = 1.0
 				%Content.modulate.a = 1.0
 	else:
 		if hide_tween:
 			hide_tween.kill()
-			%CheckBox.modulate.a = 1.0
+			%Toggle.modulate.a = 1.0
 			%Content.modulate.a = 1.0
 		if not is_folded:
 			self.show()
 
 		if Settings.fade_ticked_off_todos:
 			if state != States.TO_DO:
-				%CheckBox.modulate.a = 0.5
+				%Toggle.modulate.a = 0.5
 				%Content.modulate.a = 0.5
 			else:
-				%CheckBox.modulate.a = 1.0
+				%Toggle.modulate.a = 1.0
 				%Content.modulate.a = 1.0
 		else:
-			%CheckBox.modulate.a = 1.0
+			%Toggle.modulate.a = 1.0
 			%Content.modulate.a = 1.0
 
 
@@ -825,7 +825,10 @@ func get_sub_item(index: int) -> Node:
 
 
 func _adapt_sub_item_state() -> void:
-	if _has_unticked_sub_todos():
+	if %SubItems.is_empty():
 		self.state = States.TO_DO
 	else:
-		self.state = States.DONE
+		if _has_unticked_sub_todos():
+			self.state = States.TO_DO
+		else:
+			self.state = States.DONE
