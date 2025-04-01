@@ -175,6 +175,11 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 
 	move_child(data, at_index)
 
+	if at_index > 0:
+		var predecessor := get_child(at_index - 1)
+		if predecessor.has_sub_items() or predecessor.text.ends_with(":"):
+			indent_todo(data)
+
 	if dragged_from != self:
 		old_list._start_debounce_timer("to-do dragged to another list")
 
