@@ -32,6 +32,9 @@ var text := "":
 enum States { TO_DO, DONE, FAILED }
 var state := States.TO_DO:
 	set(value):
+		if state == value:
+			return
+
 		state = value
 		if is_inside_tree():
 			if state == States.TO_DO:
