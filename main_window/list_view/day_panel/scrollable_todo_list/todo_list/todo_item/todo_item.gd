@@ -194,6 +194,8 @@ func _set_initial_state() -> void:
 
 	_apply_state_relative_formatting.call_deferred(true)
 
+	%MainRow.set_drag_forwarding(Callable(), _can_drop_data, _drop_data)
+
 
 func _connect_signals() -> void:
 	#region Global Signals
@@ -835,3 +837,27 @@ func _adapt_sub_item_state() -> void:
 			self.state = States.TO_DO
 		else:
 			self.state = States.DONE
+
+
+func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
+	# prevents the user from dropping a to-do on itself or its own sub items
+	return data is ToDoItem and data != self and not data.is_ancestor_of(self)
+
+
+func _drop_data(_at_position: Vector2, data: Variant) -> void:
+	if data.get_parent_todo() == self:
+		# If a to-do is dropped on its parent to-do, move the to-do to the
+		# end of the item list of its parent to-do (if it isn't already).
+		%SubItems.move_child(data, -1)
+	else:
+		var old_list = data.get_to_do_list()
+
+		data.reparent(%SubItems)
+
+		if old_list != self.get_to_do_list():
+			old_list._start_debounce_timer("to-do dragged to another list")
+
+		if data.is_in_edit_mode():
+			data.edit()
+
+		data.get_to_do_list()._start_debounce_timer("to-do dropped")

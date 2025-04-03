@@ -30,6 +30,7 @@ theme_type_variation = &"ToDoItem_NoHeading"
 
 [node name="HBox" type="HBoxContainer" parent="MainRow"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="Toggle" type="MarginContainer" parent="MainRow/HBox"]
 unique_name_in_owner = true
@@ -98,6 +99,7 @@ caret_blink_interval = 0.45
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
+mouse_filter = 1
 theme_type_variation = &"ToDoItem_ExtraInfo"
 
 [node name="DragHandle" type="Button" parent="MainRow/HBox"]

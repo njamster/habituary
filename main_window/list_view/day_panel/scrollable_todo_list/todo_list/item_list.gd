@@ -143,13 +143,11 @@ func _reject_indentation_change(item: ToDoItem, direction: int) -> void:
 
 
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-	return data is ToDoItem
+	# prevents the user from dropping a to-do on its own sub items
+	return data is ToDoItem and not data.is_ancestor_of(self)
 
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
-	if data.is_ancestor_of(self):
-		return  # prevent the user from dropping a to-do on its own sub items
-
 	var at_index := 0
 	for child in get_children():
 		if child == data:
@@ -174,11 +172,6 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 		data.reparent(self)
 
 	move_child(data, at_index)
-
-	if at_index > 0:
-		var predecessor := get_child(at_index - 1)
-		if predecessor.has_sub_items() or predecessor.text.ends_with(":"):
-			indent_todo(data)
 
 	if dragged_from != self:
 		old_list._start_debounce_timer("to-do dragged to another list")
