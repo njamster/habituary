@@ -512,7 +512,16 @@ func _on_mouse_entered() -> void:
 	%CheckBox.theme_type_variation = "ToDoItem_Focused"
 	%FoldHeading.theme_type_variation = "ToDoItem_Focused"
 
-	if not get_viewport().gui_is_dragging():
+	if get_viewport().gui_is_dragging():
+		if _can_drop_data(
+			get_global_mouse_position(),
+			get_viewport().gui_get_drag_data()
+		):
+			var style_box := StyleBoxFlat.new()
+			style_box.bg_color = Color("#81A1C1")
+			style_box.set_corner_radius_all(5)
+			%MainRow.add_theme_stylebox_override("panel", style_box)
+	else:
 		%DragHandle.show()
 
 
@@ -530,6 +539,9 @@ func _on_mouse_exited() -> void:
 			%CheckBox.theme_type_variation = "ToDoItem"
 
 		%FoldHeading.theme_type_variation = "ToDoItem"
+
+	if get_viewport().gui_is_dragging():
+		%MainRow.remove_theme_stylebox_override("panel")
 
 
 func _on_fold_heading_toggled(toggled_on: bool) -> void:
@@ -845,6 +857,8 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 
 
 func _drop_data(_at_position: Vector2, data: Variant) -> void:
+	%MainRow.remove_theme_stylebox_override("panel")
+
 	if data.get_parent_todo() == self:
 		# If a to-do is dropped on its parent to-do, move the to-do to the
 		# end of the item list of its parent to-do (if it isn't already).
