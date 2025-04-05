@@ -76,11 +76,7 @@ func load_from_disk(file : FileAccess) -> void:
 
 
 func show_line_highlight(mouse_position: Vector2) -> void:
-	%LineHighlight.show()
-
-	# As LineHighlight is the child of a container node, we have to wait one
-	# frame until Godot allows changing its position again.
-	await get_tree().process_frame
+	%LineHighlight.modulate.a = 1.0
 
 	var row_height = %Lines.get_combined_minimum_size().y
 	var local_mouse_position = mouse_position.y - %Items.global_position.y
@@ -95,7 +91,7 @@ func show_line_highlight(mouse_position: Vector2) -> void:
 
 
 func hide_line_highlight() -> void:
-	%LineHighlight.hide()
+	%LineHighlight.modulate.a = 0.0
 
 
 func _input(event: InputEvent) -> void:

@@ -21,8 +21,6 @@ func _connect_signals() -> void:
 	# NOTE: `tree_exited` will be emitted both when this panel is removed from the tree because
 	# the user scrolled the list's view, as well as on a NOTIFICATION_WM_CLOSE_REQUEST.
 	tree_exited.connect(save_to_disk)
-	mouse_entered.connect(_on_mouse_entered)
-	mouse_exited.connect(_on_mouse_exited)
 
 	%TodoList.list_save_requested.connect(save_to_disk)
 	#endregion
@@ -48,16 +46,3 @@ func save_to_disk() -> void:
 func load_from_disk() -> void:
 	if FileAccess.file_exists(store_path):
 		%TodoList.load_from_disk(FileAccess.open(store_path, FileAccess.READ))
-
-
-func _on_mouse_entered() -> void:
-	$HoverTimer.timeout.connect(%TodoList.show_line_highlight.bind(get_global_mouse_position()))
-	$HoverTimer.start()
-
-
-func _on_mouse_exited() -> void:
-	if $HoverTimer.is_stopped():
-		%TodoList.hide_line_highlight()
-	else:
-		$HoverTimer.stop()
-	$HoverTimer.timeout.disconnect(%TodoList.show_line_highlight)

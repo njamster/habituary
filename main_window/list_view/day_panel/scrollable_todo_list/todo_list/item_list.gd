@@ -8,6 +8,13 @@ func _ready() -> void:
 func _connect_signals() -> void:
 	gui_input.connect(_on_gui_input)
 
+	mouse_entered.connect(func():
+		get_child(0).get_to_do_list().show_line_highlight(get_global_mouse_position())
+	)
+	mouse_exited.connect(func():
+		get_child(0).get_to_do_list().hide_line_highlight()
+	)
+
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():

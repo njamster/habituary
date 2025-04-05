@@ -135,6 +135,7 @@ text = "Bookmarked To-Do"
 
 [node name="Indentation" type="MarginContainer" parent="."]
 layout_mode = 2
+mouse_filter = 0
 theme_override_constants/margin_left = 25
 
 [node name="SubItems" type="VBoxContainer" parent="Indentation"]
