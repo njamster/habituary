@@ -141,4 +141,5 @@ theme_override_constants/margin_left = 25
 [node name="SubItems" type="VBoxContainer" parent="Indentation"]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_default_cursor_shape = 2
 script = ExtResource("10_sj4p5")

@@ -9,10 +9,10 @@ func _connect_signals() -> void:
 	gui_input.connect(_on_gui_input)
 
 	mouse_entered.connect(func():
-		get_child(0).get_to_do_list().show_line_highlight(get_global_mouse_position())
+		get_to_do_list().show_line_highlight(get_global_mouse_position())
 	)
 	mouse_exited.connect(func():
-		get_child(0).get_to_do_list().hide_line_highlight()
+		get_to_do_list().hide_line_highlight()
 	)
 
 
@@ -191,3 +191,10 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 
 func is_empty() -> bool:
 	return get_child_count() == 0
+
+
+func get_to_do_list() -> ToDoList:
+	var parent := get_parent()
+	while parent is not ToDoList and parent != null:
+		parent = parent.get_parent()
+	return parent
