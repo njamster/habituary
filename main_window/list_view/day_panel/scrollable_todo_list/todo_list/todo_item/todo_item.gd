@@ -121,6 +121,13 @@ var is_folded := false:
 
 		if is_folded:
 			%SubItems.hide()
+			if Settings.search_query:
+				for sub_item in %SubItems.get_children():
+						if sub_item.get_node("%Edit").text.contains(
+							Settings.search_query
+						):
+							%SubItems.show()
+							break
 		else:
 			%SubItems.show()
 
@@ -671,16 +678,36 @@ func _apply_formatting() -> void:
 
 
 func _check_for_search_query_match() -> void:
+	var parent_todo := get_parent_todo()
+
 	if not Settings.search_query:
 		text_color_id = text_color_id
 		%Edit.theme_type_variation = "LineEdit_Minimal"
 		%Edit.modulate.a = 1.0
+
+		if parent_todo and parent_todo.is_folded:
+			# If the sub items list was temporarily made visible again, as it
+			# contained a matching item (see elif-case below), hide it again.
+			parent_todo.get_node("%SubItems").hide()
 	elif %Edit.text.contains(Settings.search_query):
 		%Edit.theme_type_variation = "LineEdit_SearchMatch"
 		%Edit.modulate.a = 1.0
+
+		if parent_todo and parent_todo.is_folded:
+			# Temporarily overrule the is_folded state, and make the sub items
+			# list (and therefore: this matching item) visible again.
+			# NOTE: Called deferred, to make sure it's called *after* potential
+			# other, non-matching sub items, which would otherwise immediately
+			# undo this change again (see the else-case below).
+			parent_todo.get_node("%SubItems").show.call_deferred()
 	else:
 		%Edit.theme_type_variation = "LineEdit_Minimal"
 		%Edit.modulate.a = 0.1
+
+		if parent_todo and parent_todo.is_folded:
+			# If the sub items list was temporarily made visible again, as it
+			# contained a matching item (see elif-case above), hide it again.
+			parent_todo.get_node("%SubItems").hide()
 
 
 func _on_bookmark_indicator_gui_input(event: InputEvent) -> void:
