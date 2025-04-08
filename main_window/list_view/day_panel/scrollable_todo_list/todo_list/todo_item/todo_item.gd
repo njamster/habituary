@@ -120,14 +120,7 @@ var is_folded := false:
 		%FoldHeading.button_pressed = value
 
 		if is_folded:
-			%SubItems.hide()
-			if Settings.search_query:
-				for sub_item in %SubItems.get_children():
-						if sub_item.get_node("%Edit").text.contains(
-							Settings.search_query
-						):
-							%SubItems.show()
-							break
+			%SubItems.visible = contains_search_query_match()
 		else:
 			%SubItems.show()
 
@@ -693,13 +686,16 @@ func _check_for_search_query_match() -> void:
 		%Edit.theme_type_variation = "LineEdit_SearchMatch"
 		%Edit.modulate.a = 1.0
 
-		if parent_todo and parent_todo.is_folded:
+		if not is_visible_in_tree():
 			# Temporarily overrule the is_folded state, and make the sub items
 			# list (and therefore: this matching item) visible again.
 			# NOTE: Called deferred, to make sure it's called *after* potential
 			# other, non-matching sub items, which would otherwise immediately
 			# undo this change again (see the else-case below).
-			parent_todo.get_node("%SubItems").show.call_deferred()
+			while parent_todo:
+				if parent_todo.is_folded:
+					parent_todo.get_node("%SubItems").show.call_deferred()
+				parent_todo = parent_todo.get_parent_todo()
 	else:
 		%Edit.theme_type_variation = "LineEdit_Minimal"
 		%Edit.modulate.a = 0.1
@@ -902,3 +898,17 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 			data.edit()
 
 		data.get_to_do_list()._start_debounce_timer("to-do dropped")
+
+
+func contains_search_query_match() -> bool:
+	if not Settings.search_query:
+		return false
+
+	if get_node("%Edit").text.contains(Settings.search_query):
+		return true
+
+	for sub_item in %SubItems.get_children():
+		if sub_item.contains_search_query_match():
+			return true
+
+	return false
