@@ -257,6 +257,13 @@ func is_in_edit_mode() -> bool:
 
 
 func edit() -> void:
+	if not is_visible_in_tree():
+		var parent_todo := get_parent_todo()
+		while parent_todo:
+			if parent_todo.is_folded:
+				parent_todo.is_folded = false
+			parent_todo = parent_todo.get_parent_todo()
+
 	%Edit.grab_focus()
 	%Edit.edit()
 
