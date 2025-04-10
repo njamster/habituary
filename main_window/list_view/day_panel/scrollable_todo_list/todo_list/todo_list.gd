@@ -114,3 +114,9 @@ func get_scroll_container() -> ScrollContainer:
 	while parent is not ScrollContainer and parent != null:
 		parent = parent.get_parent()
 	return parent
+
+
+func edit_line(line_id: int) -> void:
+	var result = %Items.get_item_for_line_number(line_id)
+	if result is ToDoItem:
+		result.edit()

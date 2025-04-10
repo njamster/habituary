@@ -198,3 +198,20 @@ func get_to_do_list() -> ToDoList:
 	while parent is not ToDoList and parent != null:
 		parent = parent.get_parent()
 	return parent
+
+
+func get_item_for_line_number(target: int, start := 0) -> Variant:
+	var i := start
+
+	for to_do in get_children():
+		if i == target:
+			return to_do
+		i += 1
+
+		var result = to_do.get_node("%SubItems").get_item_for_line_number(target, i)
+		if result is ToDoItem:
+			return result
+		else:
+			i = result
+
+	return i

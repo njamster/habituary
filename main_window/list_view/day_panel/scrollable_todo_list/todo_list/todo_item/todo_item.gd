@@ -206,13 +206,6 @@ func _connect_signals() -> void:
 		_apply_state_relative_formatting.bind(true)
 	)
 
-	EventBus.bookmark_jump_requested.connect(func(bookmarked_date, bookmarked_line_number):
-		if date:
-			if self.is_bookmarked and date.day_difference_to(bookmarked_date) == 0 \
-				and get_index() == bookmarked_line_number:
-					edit()
-	)
-
 	Settings.to_do_text_colors_changed.connect(func():
 		if text_color_id:
 			var color = Settings.to_do_text_colors[text_color_id - 1]
