@@ -215,3 +215,20 @@ func get_item_for_line_number(target: int, start := 0) -> Variant:
 			i = result
 
 	return i
+
+
+func get_line_number_for_item(item: ToDoItem, start := 0) -> int:
+	var i := start
+
+	for to_do in get_children():
+		if to_do == item:
+			return i
+		i += 1
+
+		var result = to_do.get_node("%SubItems").get_line_number_for_item(item, i)
+		if result is ToDoItem:
+			return result
+		else:
+			i = result
+
+	return i

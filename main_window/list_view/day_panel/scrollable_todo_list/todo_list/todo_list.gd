@@ -120,3 +120,7 @@ func edit_line(line_id: int) -> void:
 	var result = %Items.get_item_for_line_number(line_id)
 	if result is ToDoItem:
 		result.edit()
+
+
+func get_line_number_for_item(item: ToDoItem) -> int:
+	return %Items.get_line_number_for_item(item)

@@ -24,7 +24,7 @@ var text := "":
 				%Edit.text = text
 
 				if date:
-					EventBus.bookmark_changed.emit(self, date, get_index())
+					EventBus.bookmark_changed.emit(self, date, get_list_index())
 
 				if _initialization_finished:
 					get_to_do_list()._start_debounce_timer("text changed")
@@ -67,7 +67,7 @@ var state := States.TO_DO:
 				_apply_state_relative_formatting()
 
 			if date:
-				EventBus.bookmark_changed.emit(self, date, get_index())
+				EventBus.bookmark_changed.emit(self, date, get_list_index())
 
 			if _initialization_finished and self.text:
 				get_to_do_list()._start_debounce_timer("state changed")
@@ -912,3 +912,7 @@ func contains_search_query_match() -> bool:
 			return true
 
 	return false
+
+
+func get_list_index() -> int:
+	return get_to_do_list().get_line_number_for_item(self)
