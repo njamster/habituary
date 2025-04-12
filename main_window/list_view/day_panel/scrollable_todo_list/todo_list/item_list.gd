@@ -166,19 +166,15 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 	var dragged_from = data.get_item_list()
 	var old_list = data.get_to_do_list()
 
-	#var old_index = data.get_index()
-	#if entry.is_bookmarked:
-		#var old_date = entry.date
-		#entry.last_index = base_position + i
-		#entry.reparent(%Items)
-		#EventBus.bookmark_changed.emit(entry, old_date, old_index)
-	#else:
-		#entry.reparent(%Items)
+	var old_date = data.date
+	var old_index = data.get_list_index()
 
 	if dragged_from != self:
 		data.reparent(self)
-
 	move_child(data, at_index)
+
+	if data.is_bookmarked:
+		EventBus.bookmark_changed.emit(data, old_date, old_index)
 
 	if dragged_from != self:
 		old_list._start_debounce_timer("to-do dragged to another list")
