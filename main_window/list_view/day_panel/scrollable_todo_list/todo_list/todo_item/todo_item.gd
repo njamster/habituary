@@ -23,7 +23,7 @@ var text := "":
 			if is_inside_tree():
 				%Edit.text = text
 
-				if date:
+				if date and is_bookmarked:
 					EventBus.bookmark_changed.emit(self, date, get_list_index())
 
 				if _initialization_finished:
@@ -66,7 +66,7 @@ var state := States.TO_DO:
 			if _initialization_finished:
 				_apply_state_relative_formatting()
 
-			if date:
+			if date and is_bookmarked:
 				EventBus.bookmark_changed.emit(self, date, get_list_index())
 
 			if _initialization_finished and self.text:
@@ -354,7 +354,7 @@ func _on_edit_text_changed(new_text: String) -> void:
 		get_item_list().indent_todo(self)
 		%Edit.text = new_text.right(-2).strip_edges()
 	else:
-		if date:
+		if date and is_bookmarked:
 			EventBus.bookmark_changed.emit(self, date, get_index())
 		_check_for_search_query_match()
 

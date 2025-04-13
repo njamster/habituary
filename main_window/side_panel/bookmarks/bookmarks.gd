@@ -46,11 +46,10 @@ func _search_for_bookmarks() -> void:
 					var line := file.get_line()
 
 					# ignore indentation levels
-					while line.begins_with("  "):
-						line = line.right(-2)
+					while line.begins_with("    "):
+						line = line.right(-4)
 
-					if line.begins_with("# ") or line.begins_with("v ") or line.begins_with("> ") \
-						or line.begins_with("[ ] ") or line.begins_with("[x] ") or line.begins_with("[-] "):
+					if line.begins_with("[ ] ") or line.begins_with("[x] ") or line.begins_with("[-] "):
 							line_number += 1
 
 					var color_tag_reg_ex := RegEx.new()
@@ -65,9 +64,7 @@ func _search_for_bookmarks() -> void:
 
 						# FIXME: avoid replicating the entire line parsing from todo_item.gd here
 						var is_done := false
-						if line.begins_with("# ") or line.begins_with("v ") or line.begins_with("> "):
-							line = line.right(-2)
-						elif line.begins_with("[x] ") or line.begins_with("[-] "):
+						if line.begins_with("[x] ") or line.begins_with("[-] "):
 							line = line.right(-4)
 							is_done = true
 						elif line.begins_with("[ ] "):

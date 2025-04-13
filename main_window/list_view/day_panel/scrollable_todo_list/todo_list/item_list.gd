@@ -55,11 +55,17 @@ func add_todo_below(item: ToDoItem) -> void:
 
 
 func move_todo_up(item: ToDoItem) -> void:
+	var old_list_index := item.get_list_index()
 	move_child(item, max(item.get_index() - 1, 0))
+	if item.is_bookmarked:
+		EventBus.bookmark_changed.emit(item, item.date, old_list_index)
 
 
 func move_todo_down(item: ToDoItem) -> void:
+	var old_list_index := item.get_list_index()
 	move_child(item, item.get_index() + 1)
+	if item.is_bookmarked:
+		EventBus.bookmark_changed.emit(item, item.date, old_list_index)
 
 
 func get_predecessor_todo(item: ToDoItem) -> ToDoItem:
@@ -221,10 +227,9 @@ func get_line_number_for_item(item: ToDoItem, start := 0) -> int:
 			return i
 		i += 1
 
-		var result = to_do.get_node("%SubItems").get_line_number_for_item(item, i)
-		if result is ToDoItem:
-			return result
-		else:
-			i = result
+		if to_do.has_sub_items():
+			var result = to_do.get_node("%SubItems").get_line_number_for_item(item, i)
+			if result:
+				return result
 
 	return i
