@@ -889,7 +889,13 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 	else:
 		var old_list = data.get_to_do_list()
 
+		var old_date = data.date
+		var old_index = data.get_list_index()
+
 		data.reparent(%SubItems)
+
+		if data.is_bookmarked:
+			EventBus.bookmark_changed.emit(data, old_date, old_index)
 
 		if old_list != self.get_to_do_list():
 			old_list._start_debounce_timer("to-do dragged to another list")
