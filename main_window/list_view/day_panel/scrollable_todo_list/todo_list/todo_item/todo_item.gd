@@ -238,10 +238,7 @@ func _connect_signals() -> void:
 	%BookmarkIndicator.gui_input.connect(_on_bookmark_indicator_gui_input)
 
 	%SubItems.child_entered_tree.connect(_on_sub_item_added.unbind(1))
-	%SubItems.child_exiting_tree.connect(
-		_on_sub_item_removed.unbind(1),
-		CONNECT_DEFERRED
-	)
+	%SubItems.child_exiting_tree.connect(_on_sub_item_removed)
 	#endregion
 
 
@@ -832,7 +829,18 @@ func _on_sub_item_added() -> void:
 	_update_extra_info()
 
 
-func _on_sub_item_removed() -> void:
+func _on_sub_item_removed(sub_item: ToDoItem) -> void:
+	# at this point, the sub item is still part of the tree
+	if sub_item.is_bookmarked:
+		EventBus.bookmark_changed.emit.call_deferred(
+			sub_item,
+			sub_item.date,
+			sub_item.get_list_index()
+		)
+
+	await get_tree().process_frame
+
+	# now, the sub item is no longer part of the tree
 	if %SubItems.is_empty():
 		%CheckBox.show()
 		%FoldHeading.hide()
