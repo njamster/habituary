@@ -229,7 +229,9 @@ func get_line_number_for_item(item: ToDoItem, start := 0) -> int:
 
 		if to_do.has_sub_items():
 			var result = to_do.get_node("%SubItems").get_line_number_for_item(item, i)
-			if result:
+			if result >= 0:
 				return result
+			else:
+				i = abs(result)
 
-	return i
+	return -i  # a negative return value means the item is not in this item list
