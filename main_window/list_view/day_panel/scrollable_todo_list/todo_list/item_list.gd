@@ -55,17 +55,29 @@ func add_todo_below(item: ToDoItem) -> void:
 
 
 func move_todo_up(item: ToDoItem) -> void:
-	var old_list_index := item.get_list_index()
-	move_child(item, max(item.get_index() - 1, 0))
 	if item.is_bookmarked:
-		EventBus.bookmark_changed.emit(item, item.date, old_list_index)
+		# Deferred, so the signal is emitted *after* the item was moved, but
+		# with the list_index value from the frame *before* that point.
+		EventBus.bookmark_changed.emit.call_deferred(
+			item,
+			item.date,
+			item.get_list_index()
+		)
+	item.update_bookmarked_sub_items()
+	move_child(item, max(item.get_index() - 1, 0))
 
 
 func move_todo_down(item: ToDoItem) -> void:
-	var old_list_index := item.get_list_index()
-	move_child(item, item.get_index() + 1)
 	if item.is_bookmarked:
-		EventBus.bookmark_changed.emit(item, item.date, old_list_index)
+		# Deferred, so the signal is emitted *after* the item was moved, but
+		# with the list_index value from the frame *before* that point.
+		EventBus.bookmark_changed.emit.call_deferred(
+			item,
+			item.date,
+			item.get_list_index()
+		)
+	item.update_bookmarked_sub_items()
+	move_child(item, item.get_index() + 1)
 
 
 func get_predecessor_todo(item: ToDoItem) -> ToDoItem:
@@ -172,15 +184,19 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 	var dragged_from = data.get_item_list()
 	var old_list = data.get_to_do_list()
 
-	var old_date = data.date
-	var old_index = data.get_list_index()
+	if data.is_bookmarked:
+		# Deferred, so the signal is emitted *after* the item was moved, but
+		# with the list_index value from the frame *before* that point.
+		EventBus.bookmark_changed.emit.call_deferred(
+			data,
+			data.date,
+			data.get_list_index()
+		)
+	data.update_bookmarked_sub_items()
 
 	if dragged_from != self:
 		data.reparent(self)
 	move_child(data, at_index)
-
-	if data.is_bookmarked:
-		EventBus.bookmark_changed.emit(data, old_date, old_index)
 
 	if dragged_from != self:
 		old_list._start_debounce_timer("to-do dragged to another list")
@@ -235,3 +251,18 @@ func get_line_number_for_item(item: ToDoItem, start := 0) -> int:
 				i = abs(result)
 
 	return -i  # a negative return value means the item is not in this item list
+
+
+func update_bookmarked_items() -> void:
+	for item in get_children():
+		if item.is_bookmarked:
+			# Deferred, so the signal is emitted *after* the item was moved, but
+			# with the list_index value from the frame *before* that point.
+			EventBus.bookmark_changed.emit.call_deferred(
+				item,
+				item.date,
+				item.get_list_index()
+			)
+
+		if item.has_sub_items():
+			item.get_node("%SubItems").update_bookmarked_items()

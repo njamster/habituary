@@ -897,14 +897,17 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 	else:
 		var old_list = data.get_to_do_list()
 
-		var old_date = data.date
-		var old_index = data.get_list_index()
+		if data.is_bookmarked:
+			# Deferred, so the signal is emitted *after* the item was moved, but
+			# with the list_index value from the frame *before* that point.
+			EventBus.bookmark_changed.emit.call_deferred(
+				data,
+				data.date,
+				data.get_list_index()
+			)
+		data.update_bookmarked_sub_items()
 
 		data.reparent(%SubItems)
-
-		if data.is_bookmarked:
-			EventBus.bookmark_changed.emit(data, old_date, old_index)
-
 		if old_list != self.get_to_do_list():
 			old_list._start_debounce_timer("to-do dragged to another list")
 
@@ -930,3 +933,7 @@ func contains_search_query_match() -> bool:
 
 func get_list_index() -> int:
 	return get_to_do_list().get_line_number_for_item(self)
+
+
+func update_bookmarked_sub_items() -> void:
+	get_item_list().update_bookmarked_items()
