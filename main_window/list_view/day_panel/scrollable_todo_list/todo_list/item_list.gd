@@ -106,13 +106,11 @@ func get_successor_todo(item: ToDoItem) -> ToDoItem:
 		# item has at least one item after it -> return that
 		return get_child(item.get_index() + 1)
 	elif name == "SubItems":
-		# item is the final sub item of another item -> return the item after
-		# that item (if there is any)
-		if item.get_parent_todo().get_item_list().get_child_count() > \
-				item.get_parent_todo().get_index() + 1:
-					return item.get_parent_todo().get_item_list().get_child(
-						item.get_parent_todo().get_index() + 1
-					)
+		# item is the final sub item of another item
+		# -> return the item after that item (if there is any)
+		return item.get_to_do_list().get_item_for_line_number(
+			item.get_list_index() + 1
+		)
 
 	return null  # no successor
 

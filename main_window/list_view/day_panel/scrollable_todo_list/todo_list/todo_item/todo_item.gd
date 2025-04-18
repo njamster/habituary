@@ -868,8 +868,20 @@ func has_sub_items() -> bool:
 	return get_node("%SubItems").get_child_count()
 
 
-func get_sub_item(index: int) -> Node:
-	return get_node("%SubItems").get_child(index)
+func get_sub_item(index: int) -> Variant:
+	for sub_item in %SubItems.get_children():
+		if index == 0:
+			return sub_item
+		else:
+			index -= 1
+
+		var result = sub_item.get_sub_item(index)
+		if result is ToDoItem:
+			return result
+		else:
+			index = result
+
+	return index
 
 
 func _adapt_sub_item_state() -> void:
