@@ -1,23 +1,31 @@
 extends VBoxContainer
 
 
+const MAX_INDENTATION_LEVEL := 3
+
+
+#region Setup
 func _ready() -> void:
 	_connect_signals()
 
 
 func _connect_signals() -> void:
+	#region Local Signals
 	gui_input.connect(_on_gui_input)
 
 	mouse_entered.connect(func():
-		get_to_do_list().show_line_highlight(get_global_mouse_position())
+		get_to_do_list().show_line_highlight()
 	)
 	mouse_exited.connect(func():
 		get_to_do_list().hide_line_highlight()
 	)
+	#endregion
 
 
 func _on_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
+	if event is InputEventMouseButton and \
+			event.button_index == MOUSE_BUTTON_LEFT and \
+					event.pressed:
 		accept_event()
 
 		var at_index := 0
@@ -27,18 +35,17 @@ func _on_gui_input(event: InputEvent) -> void:
 			at_index += 1
 
 		add_todo(at_index)
+#endregion
 
 
+#region Adding Items
 func add_todo(at_index := -1, auto_edit := true) -> ToDoItem:
+	# Add a new to-do item to the end of this item list.
 	var new_item := preload("todo_item/todo_item.tscn").instantiate()
 	add_child(new_item)
 
-	move_child(new_item, clamp(at_index, -get_child_count(), get_child_count()))
-
-	if at_index > 0:
-		var predecessor := get_child(at_index - 1)
-		if predecessor.has_sub_items() or predecessor.text.ends_with(":"):
-			indent_todo(new_item)
+	# Then move it to the position indicated by [at_index].
+	move_child(new_item, at_index)
 
 	if auto_edit:
 		new_item.edit()
@@ -46,38 +53,102 @@ func add_todo(at_index := -1, auto_edit := true) -> ToDoItem:
 	return new_item
 
 
-func add_todo_above(item: ToDoItem) -> void:
-	add_todo(item.get_index())
+func add_todo_above(item: ToDoItem, auto_edit := true) -> ToDoItem:
+	return add_todo(item.get_index(), auto_edit)
 
 
-func add_todo_below(item: ToDoItem) -> void:
-	add_todo(item.get_index() + 1)
+func add_todo_below(item: ToDoItem, auto_edit := true) -> ToDoItem:
+	return add_todo(item.get_index() + 1, auto_edit)
+#endregion
+
+
+#region Moving Items
+func move_todo(item: ToDoItem, to_index: int) -> void:
+	if item.is_bookmarked:
+		# Deferred, so the signal is emitted *after* the item was moved, but
+		# with the [list_index] value from the frame *before* that point.
+		EventBus.bookmark_changed.emit.call_deferred(
+			item,
+			item.date,
+			item.get_list_index()
+		)
+	item.update_bookmarked_sub_items()
+
+	move_child(item, clampi(to_index, 0, get_child_count()))
 
 
 func move_todo_up(item: ToDoItem) -> void:
-	if item.is_bookmarked:
-		# Deferred, so the signal is emitted *after* the item was moved, but
-		# with the list_index value from the frame *before* that point.
-		EventBus.bookmark_changed.emit.call_deferred(
-			item,
-			item.date,
-			item.get_list_index()
-		)
-	item.update_bookmarked_sub_items()
-	move_child(item, max(item.get_index() - 1, 0))
+	move_todo(item, item.get_index() - 1)
 
 
 func move_todo_down(item: ToDoItem) -> void:
-	if item.is_bookmarked:
+	move_todo(item, item.get_index() + 1)
+
+
+func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
+	# prevents the user from dropping a to-do on its own sub items
+	return data is ToDoItem and not data.is_ancestor_of(self)
+
+
+func _drop_data(at_position: Vector2, data: Variant) -> void:
+	var at_index := 0
+	for child in get_children():
+		if child == data:
+			continue
+		if child.position.y > at_position.y - 13:
+			break
+		else:
+			at_index += 1
+
+	var dragged_from = data.get_item_list()
+	var old_list = data.get_to_do_list()
+
+	if data.is_bookmarked:
 		# Deferred, so the signal is emitted *after* the item was moved, but
 		# with the list_index value from the frame *before* that point.
 		EventBus.bookmark_changed.emit.call_deferred(
-			item,
-			item.date,
-			item.get_list_index()
+			data,
+			data.date,
+			data.get_list_index()
 		)
-	item.update_bookmarked_sub_items()
-	move_child(item, item.get_index() + 1)
+	data.update_bookmarked_sub_items()
+
+	if dragged_from != self:
+		data.reparent(self)
+	move_child(data, at_index)
+
+	if dragged_from != self:
+		old_list._start_debounce_timer("to-do dragged to another list")
+
+	if data.is_in_edit_mode():
+		data.edit()
+
+	data.get_to_do_list()._start_debounce_timer("to-do dropped")
+
+
+func update_bookmarked_items() -> void:
+	for item in get_children():
+		if item.is_bookmarked:
+			# Deferred, so the signal is emitted *after* the item was moved, but
+			# with the list_index value from the frame *before* that point.
+			EventBus.bookmark_changed.emit.call_deferred(
+				item,
+				item.date,
+				item.get_list_index()
+			)
+
+		if item.has_sub_items():
+			item.get_node("%SubItems").update_bookmarked_items()
+#endregion
+
+
+#region Getting Items
+func is_empty() -> bool:
+	for child in get_children():
+		if child is ToDoItem:
+			return false
+
+	return true
 
 
 func get_predecessor_todo(item: ToDoItem) -> ToDoItem:
@@ -115,8 +186,47 @@ func get_successor_todo(item: ToDoItem) -> ToDoItem:
 	return null  # no successor
 
 
+func get_item_for_line_number(target: int, start := 0) -> Variant:
+	var i := start
+
+	for to_do in get_children():
+		if i == target:
+			return to_do
+		else:
+			i += 1
+
+		var result = to_do.get_node("%SubItems").get_item_for_line_number(target, i)
+		if result is ToDoItem:
+			return result
+		else:
+			i = result
+
+	return i
+
+
+func get_line_number_for_item(item: ToDoItem, start := 0) -> int:
+	var i := start
+
+	for to_do in get_children():
+		if to_do == item:
+			return i
+		else:
+			i += 1
+
+		if to_do.has_sub_items():
+			var result = to_do.get_node("%SubItems").get_line_number_for_item(item, i)
+			if result >= 0:
+				return result
+			else:
+				i = abs(result)
+
+	return -i  # a negative return value means the item is not in this item list
+#endregion
+
+
+#region Indenting Items
 func indent_todo(item: ToDoItem) -> void:
-	if item.get_index() == 0 or item.indentation_level == 3:
+	if item.get_index() == 0 or item.indentation_level == MAX_INDENTATION_LEVEL:
 		_reject_indentation_change(item, +1)
 		return  # first item in a list cannot be indented
 
@@ -157,110 +267,19 @@ func unindent_todo(item: ToDoItem) -> void:
 			)
 
 
-## Play a short animation to indicate a rejected indentation request.
+## Plays a short animation to indicate a rejected indentation request.
 func _reject_indentation_change(item: ToDoItem, direction: int) -> void:
 	var tween := create_tween()
 	var main_row := item.get_node("%MainRow")
 	tween.tween_property(main_row, "position:x", direction * 5, 0.03)
-	tween.tween_property(main_row, "position:x",  0, 0.03)
+	tween.tween_property(main_row, "position:x", 0, 0.03)
+#endregion
 
 
-func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-	# prevents the user from dropping a to-do on its own sub items
-	return data is ToDoItem and not data.is_ancestor_of(self)
-
-
-func _drop_data(at_position: Vector2, data: Variant) -> void:
-	var at_index := 0
-	for child in get_children():
-		if child == data:
-			continue
-		if child.position.y > at_position.y - 13:
-			break
-		at_index += 1
-
-	var dragged_from = data.get_item_list()
-	var old_list = data.get_to_do_list()
-
-	if data.is_bookmarked:
-		# Deferred, so the signal is emitted *after* the item was moved, but
-		# with the list_index value from the frame *before* that point.
-		EventBus.bookmark_changed.emit.call_deferred(
-			data,
-			data.date,
-			data.get_list_index()
-		)
-	data.update_bookmarked_sub_items()
-
-	if dragged_from != self:
-		data.reparent(self)
-	move_child(data, at_index)
-
-	if dragged_from != self:
-		old_list._start_debounce_timer("to-do dragged to another list")
-
-	if data.is_in_edit_mode():
-		data.edit()
-
-	data.get_to_do_list()._start_debounce_timer("to-do dropped")
-
-
-func is_empty() -> bool:
-	return get_child_count() == 0
-
-
+#region Helper Functions
 func get_to_do_list() -> ToDoList:
 	var parent := get_parent()
 	while parent is not ToDoList and parent != null:
 		parent = parent.get_parent()
 	return parent
-
-
-func get_item_for_line_number(target: int, start := 0) -> Variant:
-	var i := start
-
-	for to_do in get_children():
-		if i == target:
-			return to_do
-		i += 1
-
-		var result = to_do.get_node("%SubItems").get_item_for_line_number(target, i)
-		if result is ToDoItem:
-			return result
-		else:
-			i = result
-
-	return i
-
-
-func get_line_number_for_item(item: ToDoItem, start := 0) -> int:
-	var i := start
-
-	for to_do in get_children():
-		if to_do == item:
-			return i
-		i += 1
-
-		if to_do.has_sub_items():
-			var result = to_do.get_node("%SubItems").get_line_number_for_item(item, i)
-			if result >= 0:
-				return result
-			else:
-				i = abs(result)
-
-	return -i  # a negative return value means the item is not in this item list
-
-
-func update_bookmarked_items() -> void:
-	for item in get_children():
-		if item.is_bookmarked:
-			# Deferred, so the signal is emitted *after* the item was moved, but
-			# with the list_index value from the frame *before* that point.
-			EventBus.bookmark_changed.emit.call_deferred(
-				item,
-				item.date,
-				item.get_list_index()
-			)
-
-		if item.has_sub_items():
-			item.get_node("%SubItems").update_bookmarked_items()
+#endregion

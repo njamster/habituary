@@ -75,11 +75,9 @@ func load_from_disk(file : FileAccess) -> void:
 			restored_item.load_from_disk(next_line)
 
 
-func show_line_highlight(mouse_position: Vector2) -> void:
-	%LineHighlight.modulate.a = 1.0
-
+func show_line_highlight() -> void:
 	var row_height = %Lines.get_combined_minimum_size().y
-	var local_mouse_position = mouse_position.y - %Items.global_position.y
+	var local_mouse_position = get_local_mouse_position().y
 	var line_position = row_height * round(local_mouse_position / row_height)
 
 	# NOTE: The -2 offset centers the highlight vertically along the line.
@@ -88,6 +86,8 @@ func show_line_highlight(mouse_position: Vector2) -> void:
 		0,
 		$Items.get_combined_minimum_size().y
 	) + $Offset.get_theme_constant("margin_top")
+
+	%LineHighlight.modulate.a = 1.0
 
 
 func hide_line_highlight() -> void:

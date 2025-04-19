@@ -792,7 +792,7 @@ func _has_unticked_sub_todos() -> bool:
 	return false
 
 
-func get_parent_todo() -> Control:
+func get_parent_todo() -> ToDoItem:
 	if self.get_item_list().name != "SubItems":
 		return null
 
