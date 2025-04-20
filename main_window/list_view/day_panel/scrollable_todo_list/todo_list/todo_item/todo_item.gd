@@ -704,7 +704,10 @@ func _check_for_search_query_match() -> void:
 
 
 func _on_bookmark_indicator_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
+	if event is InputEventMouseButton and \
+			event.button_index == MOUSE_BUTTON_LEFT and \
+					event.is_released():
+		Settings.side_panel = Settings.SidePanelState.BOOKMARKS
 		edit()
 
 
