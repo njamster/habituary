@@ -21,6 +21,8 @@ func _connect_signals() -> void:
 
 	EventBus.bookmark_changed.connect(_on_bookmark_changed)
 
+	EventBus.bookmark_indicator_clicked.connect(_on_bookmark_indicator_clicked)
+
 	EventBus.bookmark_removed.connect(_on_bookmark_removed)
 	#endregion
 
@@ -150,6 +152,13 @@ func _on_bookmark_changed(to_do : Control, old_date : Date, old_index : int) -> 
 			bookmark.text = to_do.get_node("%Edit").text
 			bookmark.is_done = (to_do.state != to_do.States.TO_DO)
 			_resort_list.call_deferred()
+			return
+
+
+func _on_bookmark_indicator_clicked(date: Date, index: int) -> void:
+	for bookmark in %Items.get_children():
+		if bookmark.date.day_difference_to(date) == 0 and bookmark.line_number == index:
+			bookmark.get_node("%JumpTo").grab_focus()
 			return
 
 

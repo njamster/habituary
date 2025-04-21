@@ -708,7 +708,7 @@ func _on_bookmark_indicator_gui_input(event: InputEvent) -> void:
 			event.button_index == MOUSE_BUTTON_LEFT and \
 					event.is_released():
 		Settings.side_panel = Settings.SidePanelState.BOOKMARKS
-		edit()
+		EventBus.bookmark_indicator_clicked.emit(date, get_list_index())
 
 
 func _on_gui_input(event: InputEvent) -> void:
