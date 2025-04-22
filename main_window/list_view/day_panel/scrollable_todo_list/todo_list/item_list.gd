@@ -63,26 +63,12 @@ func add_todo_below(item: ToDoItem, auto_edit := true) -> ToDoItem:
 
 
 #region Moving Items
-func move_todo(item: ToDoItem, to_index: int) -> void:
-	if item.is_bookmarked:
-		# Deferred, so the signal is emitted *after* the item was moved, but
-		# with the [list_index] value from the frame *before* that point.
-		EventBus.bookmark_changed.emit.call_deferred(
-			item,
-			item.date,
-			item.get_list_index()
-		)
-	item.update_bookmarked_sub_items()
-
-	move_child(item, clampi(to_index, 0, get_child_count()))
-
-
 func move_todo_up(item: ToDoItem) -> void:
-	move_todo(item, item.get_index() - 1)
+	move_child(item, max(0, item.get_index() - 1))
 
 
 func move_todo_down(item: ToDoItem) -> void:
-	move_todo(item, item.get_index() + 1)
+	move_child(item, item.get_index() + 1)
 
 
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
@@ -103,16 +89,6 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 	var dragged_from = data.get_item_list()
 	var old_list = data.get_to_do_list()
 
-	if data.is_bookmarked:
-		# Deferred, so the signal is emitted *after* the item was moved, but
-		# with the list_index value from the frame *before* that point.
-		EventBus.bookmark_changed.emit.call_deferred(
-			data,
-			data.date,
-			data.get_list_index()
-		)
-	data.update_bookmarked_sub_items()
-
 	if dragged_from != self:
 		data.reparent(self)
 	move_child(data, at_index)
@@ -124,21 +100,6 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 		data.edit()
 
 	data.get_to_do_list()._start_debounce_timer("to-do dropped")
-
-
-func update_bookmarked_items() -> void:
-	for item in get_children():
-		if item.is_bookmarked:
-			# Deferred, so the signal is emitted *after* the item was moved, but
-			# with the list_index value from the frame *before* that point.
-			EventBus.bookmark_changed.emit.call_deferred(
-				item,
-				item.date,
-				item.get_list_index()
-			)
-
-		if item.has_sub_items():
-			item.get_node("%SubItems").update_bookmarked_items()
 #endregion
 
 
@@ -149,6 +110,16 @@ func is_empty() -> bool:
 			return false
 
 	return true
+
+
+func get_all_items() -> Array[Node]:
+	var result: Array[Node] = []
+
+	for item in get_children():
+		result.append(item)
+		result += item.get_node("%SubItems").get_all_items()
+
+	return result
 
 
 func get_predecessor_todo(item: ToDoItem) -> ToDoItem:

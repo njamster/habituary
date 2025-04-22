@@ -103,10 +103,10 @@ func _input(event: InputEvent) -> void:
 
 func _on_items_child_order_changed() -> void:
 	if is_inside_tree():
-		for item in %Items.get_children():
+		for item in %Items.get_all_items():
 			if item.is_bookmarked:
 				EventBus.bookmark_changed.emit.call_deferred(item, item.date, item.last_index)
-				item.last_index = item.get_index()
+				item.last_index = item.get_list_index()
 
 
 func get_scroll_container() -> ScrollContainer:
