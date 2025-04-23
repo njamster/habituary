@@ -216,7 +216,6 @@ func _connect_signals() -> void:
 
 	#region Local Signals
 	focus_exited.connect(_on_focus_exited)
-	gui_input.connect(_on_gui_input)
 	tree_exiting.connect(_on_tree_exiting)
 
 	%MainRow.mouse_entered.connect(_on_mouse_entered)
@@ -225,8 +224,6 @@ func _connect_signals() -> void:
 	%CheckBox.gui_input.connect(_on_check_box_gui_input)
 
 	%FoldHeading.toggled.connect(_on_fold_heading_toggled)
-
-	%Edit.gui_input.connect(_on_gui_input)
 
 	%Edit.text_changed.connect(_on_edit_text_changed)
 	%Edit.text_submitted.connect(_on_edit_text_submitted)
@@ -711,11 +708,6 @@ func _on_bookmark_indicator_gui_input(event: InputEvent) -> void:
 		EventBus.bookmark_indicator_clicked.emit(date, get_list_index())
 
 
-func _on_gui_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel"):
-		%Edit.release_focus()
-
-
 # NOTE: `tree_exiting` will be emitted both when this panel is about to be removed from the tree
 # because the user scrolled the list' view, as well as on a NOTIFICATION_WM_CLOSE_REQUEST, but also
 # when an item is deleted (which is why we check if it's queded for deletion first).
@@ -780,8 +772,17 @@ func _apply_state_relative_formatting(immediate := false) -> void:
 
 
 func _on_edit_gui_input(event: InputEvent) -> void:
+	# Only allow focusing the edit field via left-clicks (by default, pressing
+	# the right or middle mouse button will work as well)
+	if event is InputEventMouseButton and \
+			event.button_index != MOUSE_BUTTON_LEFT:
+		accept_event()
+
 	if event.is_action_pressed("ui_text_backspace") and %Edit.text == "":
 		get_item_list().unindent_todo(self)
+
+	if event.is_action_pressed("ui_cancel"):
+		%Edit.release_focus()
 
 
 func _has_unticked_sub_todos() -> bool:
