@@ -503,9 +503,6 @@ func load_from_disk(line : String) -> void:
 func _on_mouse_entered() -> void:
 	_contains_mouse_cursor = true
 
-	%CheckBox.theme_type_variation = "ToDoItem_Focused"
-	%FoldHeading.theme_type_variation = "ToDoItem_Focused"
-
 	if get_viewport().gui_is_dragging():
 		if _can_drop_data(
 			get_global_mouse_position(),
@@ -516,6 +513,9 @@ func _on_mouse_entered() -> void:
 			style_box.set_corner_radius_all(5)
 			%MainRow.add_theme_stylebox_override("panel", style_box)
 	else:
+		%CheckBox.theme_type_variation = "ToDoItem_Focused"
+		%FoldHeading.theme_type_variation = "ToDoItem_Focused"
+
 		%DragHandle.show()
 
 

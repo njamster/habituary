@@ -14,6 +14,13 @@ func _connect_signals() -> void:
 	gui_input.connect(_on_gui_input)
 
 	mouse_entered.connect(func():
+		if get_viewport().gui_is_dragging():
+			if not _can_drop_data(
+					get_local_mouse_position(),
+					get_viewport().gui_get_drag_data()
+				):
+					return  # early
+
 		get_to_do_list().show_line_highlight()
 	)
 	mouse_exited.connect(func():
