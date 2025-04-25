@@ -28,6 +28,18 @@ func _set_initial_state() -> void:
 	_update_store_path()
 	_update_header()
 
+	%Header.set_drag_forwarding(
+		Callable(),  # unused, no forwarding required
+		%ScrollableTodoList/%TodoList/%Items._can_drop_data,
+		# FIXME: This is a pretty hacky way to make sure the dragged item is
+		# added to the end of the item list. It should work, though...
+		func(_at_position: Vector2, data: Variant):
+			%ScrollableTodoList/%TodoList/%Items._drop_data(
+				999_999_999_999 * Vector2.ONE,
+				data
+			)
+	)
+
 
 func _connect_signals() -> void:
 	#region Global Signals
@@ -166,3 +178,11 @@ func _on_current_day_changed() -> void:
 		theme_type_variation = "DayPanel_CurrentDay"
 	else:
 		theme_type_variation = "DayPanel"
+
+
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_DRAG_BEGIN:
+			%Header/Tooltip.disabled = true
+		NOTIFICATION_DRAG_END:
+			%Header/Tooltip.disabled = (Settings.view_mode == 1)
