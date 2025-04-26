@@ -121,8 +121,11 @@ var is_folded := false:
 
 		if is_folded:
 			%SubItems.visible = contains_search_query_match()
+			_update_extra_info()
+			%ExtraInfo.show()
 		else:
 			%SubItems.show()
+			%ExtraInfo.hide()
 
 		if _initialization_finished and self.text:
 			get_to_do_list()._start_debounce_timer("is_folded changed")
@@ -731,6 +734,7 @@ func _apply_state_relative_formatting(immediate := false) -> void:
 					hide_tween = create_tween().set_parallel()
 					hide_tween.tween_property(%Toggle, "modulate:a", 0.0, 1.5)
 					hide_tween.tween_property(%Content, "modulate:a", 0.0, 1.5)
+					hide_tween.tween_property(%ExtraInfo, "modulate:a", 0.0, 1.5)
 					await hide_tween.finished
 					self.hide()
 
@@ -751,11 +755,13 @@ func _apply_state_relative_formatting(immediate := false) -> void:
 				hide_tween.kill()
 				%Toggle.modulate.a = 1.0
 				%Content.modulate.a = 1.0
+				%ExtraInfo.modulate.a = 1.0
 	else:
 		if hide_tween:
 			hide_tween.kill()
 			%Toggle.modulate.a = 1.0
 			%Content.modulate.a = 1.0
+			%ExtraInfo.modulate.a = 1.0
 		if not is_folded:
 			self.show()
 
@@ -763,12 +769,15 @@ func _apply_state_relative_formatting(immediate := false) -> void:
 			if state != States.TO_DO:
 				%Toggle.modulate.a = 0.5
 				%Content.modulate.a = 0.5
+				%ExtraInfo.modulate.a = 0.5
 			else:
 				%Toggle.modulate.a = 1.0
 				%Content.modulate.a = 1.0
+				%ExtraInfo.modulate.a = 1.0
 		else:
 			%Toggle.modulate.a = 1.0
 			%Content.modulate.a = 1.0
+			%ExtraInfo.modulate.a = 1.0
 
 
 func _on_edit_gui_input(event: InputEvent) -> void:
@@ -830,7 +839,6 @@ func _on_sub_item_added() -> void:
 	%FoldHeading.show()
 
 	_adapt_sub_item_state()
-	_update_extra_info()
 
 
 func _on_sub_item_removed(sub_item: ToDoItem) -> void:
@@ -850,7 +858,6 @@ func _on_sub_item_removed(sub_item: ToDoItem) -> void:
 		%FoldHeading.hide()
 
 	_adapt_sub_item_state()
-	_update_extra_info()
 
 
 func get_sub_item_count() -> int:
@@ -862,10 +869,23 @@ func get_sub_item_count() -> int:
 	return sub_item_count
 
 
+func get_to_do_count() -> int:
+	var to_do_count := 0
+
+	for sub_item in %SubItems.get_children():
+		if sub_item.state != States.TO_DO:
+			to_do_count += 1
+
+		to_do_count += sub_item.get_to_do_count()
+
+	return to_do_count
+
+
 func _update_extra_info() -> void:
+	var to_do_count := get_to_do_count()
 	var sub_item_count := get_sub_item_count()
-	%ExtraInfo.text = "(%d)" % sub_item_count
-	%ExtraInfo.visible = (sub_item_count > 0)
+
+	%ExtraInfo.text = "(%d/%d)" % [to_do_count, sub_item_count]
 
 
 func has_sub_items() -> bool:

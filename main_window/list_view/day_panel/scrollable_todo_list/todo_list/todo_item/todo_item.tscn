@@ -102,6 +102,20 @@ layout_mode = 2
 mouse_filter = 1
 theme_type_variation = &"ToDoItem_ExtraInfo"
 
+[node name="BookmarkIndicator" type="TextureRect" parent="MainRow/HBox"]
+unique_name_in_owner = true
+modulate = Color(0.505882, 0.631373, 0.756863, 1)
+custom_minimum_size = Vector2(22, 0)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+texture = ExtResource("5_eqyfo")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Tooltip" type="Node" parent="MainRow/HBox/BookmarkIndicator"]
+script = ExtResource("3_oduck")
+text = "Bookmarked To-Do"
+
 [node name="DragHandle" type="Button" parent="MainRow/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -118,20 +132,6 @@ script = ExtResource("5_mx38m")
 script = ExtResource("3_oduck")
 text = "Move To-Do"
 popup_position = 5
-
-[node name="BookmarkIndicator" type="TextureRect" parent="MainRow/HBox"]
-unique_name_in_owner = true
-modulate = Color(0.505882, 0.631373, 0.756863, 1)
-custom_minimum_size = Vector2(22, 0)
-layout_mode = 2
-mouse_default_cursor_shape = 2
-texture = ExtResource("5_eqyfo")
-expand_mode = 1
-stretch_mode = 4
-
-[node name="Tooltip" type="Node" parent="MainRow/HBox/BookmarkIndicator"]
-script = ExtResource("3_oduck")
-text = "Bookmarked To-Do"
 
 [node name="Indentation" type="MarginContainer" parent="."]
 layout_mode = 2
