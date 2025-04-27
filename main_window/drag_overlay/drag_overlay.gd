@@ -34,7 +34,7 @@ func deactivate() -> void:
 func _notification(what: int) -> void:
 	match what:
 		NOTIFICATION_DRAG_BEGIN:
-			if get_viewport().gui_get_drag_data() is Array:
+			if get_viewport().gui_get_drag_data() is ToDoItem:
 				activate()
 		NOTIFICATION_DRAG_END:
 			deactivate()

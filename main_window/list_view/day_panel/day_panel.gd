@@ -8,9 +8,7 @@ var date : Date:
 
 		date = value
 
-var is_dragged: bool:
-	get():
-		return %ScrollableTodoList.is_dragged
+var is_dragged := false
 
 
 func _ready() -> void:

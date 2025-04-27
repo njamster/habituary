@@ -869,23 +869,23 @@ func get_sub_item_count() -> int:
 	return sub_item_count
 
 
-func get_to_do_count() -> int:
-	var to_do_count := 0
+func get_done_items_count() -> int:
+	var done_items_count := 0
 
 	for sub_item in %SubItems.get_children():
 		if sub_item.state != States.TO_DO:
-			to_do_count += 1
+			done_items_count += 1
 
-		to_do_count += sub_item.get_to_do_count()
+		done_items_count += sub_item.get_done_items_count()
 
-	return to_do_count
+	return done_items_count
 
 
 func _update_extra_info() -> void:
-	var to_do_count := get_to_do_count()
 	var sub_item_count := get_sub_item_count()
+	var done_items_count := get_done_items_count()
 
-	%ExtraInfo.text = "(%d/%d)" % [to_do_count, sub_item_count]
+	%ExtraInfo.text = "(%d/%d)" % [done_items_count, sub_item_count]
 
 
 func has_sub_items() -> bool:

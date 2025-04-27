@@ -9,8 +9,6 @@ var store_path: String:
 		store_path = value
 		load_from_disk()
 
-var is_dragged := false
-
 
 func _ready() -> void:
 	_connect_signals()
