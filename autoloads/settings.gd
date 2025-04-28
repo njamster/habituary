@@ -264,7 +264,6 @@ var bookmarks_due_today := 0:
 			return
 
 		bookmarks_due_today = value
-		_start_debounce_timer()
 
 		bookmarks_due_today_changed.emit()
 

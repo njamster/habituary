@@ -170,7 +170,7 @@ func _on_bookmark_removed(to_do : Control) -> void:
 		if bookmark.date.day_difference_to(date) == 0 and bookmark.line_number == line_number:
 			$NoneSet.visible = (%Items.get_child_count() == 1)
 			$IncludePast.visible = not $NoneSet.visible
-			bookmark.queue_free()
+			bookmark.remove()
 			return
 
 

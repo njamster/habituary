@@ -71,8 +71,6 @@ func _connect_signals() -> void:
 	#endregion
 
 	#region Local Signals
-	tree_exited.connect(_on_tree_exited)
-
 	%JumpTo.pressed.connect(_on_jump_to_pressed)
 	#endregion
 
@@ -144,6 +142,7 @@ func _on_jump_to_pressed() -> void:
 	EventBus.bookmark_jump_requested.emit(date, line_number)
 
 
-func _on_tree_exited() -> void:
+func remove() -> void:
 	if date.day_difference_to(DayTimer.today) == 0 and not is_done:
 		Settings.bookmarks_due_today -= 1
+	queue_free()
