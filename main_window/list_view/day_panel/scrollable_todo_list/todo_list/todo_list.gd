@@ -28,7 +28,10 @@ func _connect_signals() -> void:
 	#region Local Signals
 	item_rect_changed.connect(hide_line_highlight)
 
-	%Items.child_order_changed.connect(_on_items_child_order_changed)
+	# Deferred, so the callback isn't called while the list is first loaded
+	%Items.child_order_changed.connect.call_deferred(
+		_on_items_child_order_changed
+	)
 
 	$DebounceTimer.timeout.connect(func():
 		if OS.is_debug_build():

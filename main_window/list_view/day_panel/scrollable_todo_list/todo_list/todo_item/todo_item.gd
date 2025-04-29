@@ -372,8 +372,9 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 	set_meta("caret_position", %Edit.caret_column)
 
 	new_text = _strip_text(new_text)
-	%Edit.text = new_text
-	_on_edit_text_changed(new_text)
+	if %Edit.text != new_text:
+		%Edit.text = new_text
+		_on_edit_text_changed(new_text)
 
 	var new_item := (self.text == "")
 
