@@ -28,11 +28,6 @@ func _connect_signals() -> void:
 	#region Local Signals
 	item_rect_changed.connect(hide_line_highlight)
 
-	# Deferred, so the callback isn't called while the list is first loaded
-	%Items.child_order_changed.connect.call_deferred(
-		_on_items_child_order_changed
-	)
-
 	$DebounceTimer.timeout.connect(func():
 		if OS.is_debug_build():
 			print("[DEBUG] DebounceTimer Timed Out: Saving List...")
@@ -102,14 +97,6 @@ func _input(event: InputEvent) -> void:
 		if Rect2(global_position, size).has_point(event.global_position):
 			if self.is_ancestor_of(get_viewport().gui_get_hovered_control()):
 				EventBus.todo_list_clicked.emit()
-
-
-func _on_items_child_order_changed() -> void:
-	if is_inside_tree():
-		for item in %Items.get_all_items():
-			if item.is_bookmarked:
-				EventBus.bookmark_changed.emit.call_deferred(item, item.date, item.last_index)
-				item.last_index = item.get_list_index()
 
 
 func get_scroll_container() -> ScrollContainer:
