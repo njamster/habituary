@@ -209,13 +209,18 @@ func get_line_number_for_item(item: ToDoItem, start := 0) -> int:
 func _on_items_child_order_changed() -> void:
 	if is_inside_tree():
 		for item in get_all_items():
-			print(item.text)
-			if item.is_bookmarked and not item.has_requested_bookmark_update:
-				printt(item.text, item.date.as_dict(), item.last_index)
-				EventBus.bookmark_changed.emit.call_deferred(item, item.date, item.last_index)
+			if not item.is_bookmarked:
+				continue
+
+			if not item.has_requested_bookmark_update:
+				EventBus.bookmark_changed.emit.call_deferred(
+					item,
+					item.date,
+					item.last_index
+				)
 				item.has_requested_bookmark_update = true
-				item.last_index = item.get_list_index()
-		print("")
+
+			item.last_index = item.get_list_index()
 #endregion
 
 

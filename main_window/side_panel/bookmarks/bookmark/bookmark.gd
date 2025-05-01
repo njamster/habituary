@@ -53,6 +53,8 @@ var is_done := false:
 					Settings.bookmarks_due_today += 1
 		_on_show_bookmarks_from_the_past_changed()
 
+var updated_this_frame := false
+
 
 func _ready() -> void:
 	_connect_signals()

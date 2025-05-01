@@ -172,6 +172,8 @@ var text_color_id := 0:
 
 var hide_tween: Tween
 
+var has_requested_bookmark_update := false
+
 
 func _ready() -> void:
 	_set_initial_state()
@@ -850,6 +852,7 @@ func _on_sub_item_removed(sub_item: ToDoItem) -> void:
 			sub_item.date,
 			sub_item.get_list_index()
 		)
+		sub_item.has_requested_bookmark_update = true
 
 	await get_tree().process_frame
 
