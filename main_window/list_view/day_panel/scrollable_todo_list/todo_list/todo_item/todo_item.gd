@@ -937,6 +937,9 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 	else:
 		var old_list = data.get_to_do_list()
 
+		if not self.get_day_panel():
+			data.is_bookmarked = false
+
 		data.reparent(%SubItems)
 		if old_list != self.get_to_do_list():
 			old_list._start_debounce_timer("to-do dragged to another list")

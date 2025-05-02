@@ -101,6 +101,9 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 	var dragged_from = data.get_item_list()
 	var old_list = data.get_to_do_list()
 
+	if not self.get_day_panel():
+		data.is_bookmarked = false
+
 	if dragged_from != self:
 		data.reparent(self)
 	move_child(data, at_index)
@@ -280,6 +283,13 @@ func _reject_indentation_change(item: ToDoItem, direction: int) -> void:
 func get_to_do_list() -> ToDoList:
 	var parent := get_parent()
 	while parent is not ToDoList and parent != null:
+		parent = parent.get_parent()
+	return parent
+
+
+func get_day_panel() -> ToDoList:
+	var parent := get_parent()
+	while parent is not DayPanel and parent != null:
 		parent = parent.get_parent()
 	return parent
 #endregion
