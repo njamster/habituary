@@ -23,9 +23,6 @@ var text := "":
 			if is_inside_tree():
 				%Edit.text = text
 
-				if date and is_bookmarked:
-					EventBus.bookmark_changed.emit(self, date, get_list_index())
-
 				if _initialization_finished:
 					get_to_do_list()._start_debounce_timer("text changed")
 
@@ -352,10 +349,10 @@ func _on_edit_text_changed(new_text: String) -> void:
 	if new_text.begins_with("- "):
 		get_item_list().indent_todo(self)
 		%Edit.text = new_text.right(-2).strip_edges()
-	else:
-		if date and is_bookmarked:
-			EventBus.bookmark_changed.emit(self, date, get_index())
-		_check_for_search_query_match()
+
+	if date and is_bookmarked:
+		EventBus.bookmark_changed.emit(self, date, get_list_index())
+	_check_for_search_query_match()
 
 
 func _strip_text(raw_text: String) -> String:
@@ -845,14 +842,15 @@ func _on_sub_item_added() -> void:
 
 
 func _on_sub_item_removed(sub_item: ToDoItem) -> void:
-	# at this point, the sub item is still part of the tree
-	if sub_item.is_bookmarked:
-		EventBus.bookmark_changed.emit.call_deferred(
-			sub_item,
-			sub_item.date,
-			sub_item.get_list_index()
-		)
-		sub_item.has_requested_bookmark_update = true
+	if get_day_panel().is_queued_for_deletion():
+		# at this point, the sub item is still part of the tree
+		if sub_item.is_bookmarked:
+			EventBus.bookmark_changed.emit.call_deferred(
+				sub_item,
+				sub_item.date,
+				sub_item.get_list_index()
+			)
+			sub_item.has_requested_bookmark_update = true
 
 	await get_tree().process_frame
 
