@@ -842,7 +842,7 @@ func _on_sub_item_added() -> void:
 
 
 func _on_sub_item_removed(sub_item: ToDoItem) -> void:
-	if get_day_panel().is_queued_for_deletion():
+	if not get_day_panel().is_queued_for_deletion():
 		# at this point, the sub item is still part of the tree
 		if sub_item.is_bookmarked:
 			EventBus.bookmark_changed.emit.call_deferred(
