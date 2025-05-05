@@ -159,6 +159,10 @@ func as_dict() -> Dictionary:
 	}
 
 
+func as_string() -> String:
+	return format("YYYY-MM-DD")
+
+
 static func from_string(date_string: String) -> Date:
 	var parts := date_string.split("-")
 	var new_year = int(parts[0])
