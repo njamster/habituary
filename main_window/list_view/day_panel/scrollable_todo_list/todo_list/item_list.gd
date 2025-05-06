@@ -21,7 +21,11 @@ func _connect_signals() -> void:
 				):
 					return  # early
 
-		get_to_do_list().show_line_highlight()
+		var x_offset := 0
+		if name == "SubItems" and get_child_count():
+			x_offset = get_child(0).indentation_level * \
+				get_parent().get_theme_constant("margin_left")
+		get_to_do_list().show_line_highlight(x_offset)
 	)
 	mouse_exited.connect(func():
 		get_to_do_list().hide_line_highlight()

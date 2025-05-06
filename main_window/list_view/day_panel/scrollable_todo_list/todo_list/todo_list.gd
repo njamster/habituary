@@ -73,11 +73,12 @@ func load_from_disk(file : FileAccess) -> void:
 			restored_item.load_from_disk(next_line)
 
 
-func show_line_highlight() -> void:
+func show_line_highlight(x_offset: int) -> void:
 	var row_height = %Lines.get_combined_minimum_size().y
 	var local_mouse_position = get_local_mouse_position().y
 	var line_position = row_height * round(local_mouse_position / row_height)
 
+	%LineHighlight.position.x = x_offset
 	# NOTE: The -2 offset centers the highlight vertically along the line.
 	%LineHighlight.position.y = clamp(
 		line_position - 2,
