@@ -69,21 +69,6 @@ var state := States.TO_DO:
 			if _initialization_finished and self.text:
 				get_to_do_list()._start_debounce_timer("state changed")
 
-var is_heading := false:
-	set(value):
-		is_heading = value
-		if is_inside_tree():
-			if is_heading:
-				%MainRow.theme_type_variation = "ToDoItem_Heading"
-			else:
-				%MainRow.theme_type_variation = "ToDoItem_NoHeading"
-
-			if has_node("EditingOptions"):
-				$EditingOptions.update_heading()
-
-			if _initialization_finished and self.text:
-				get_to_do_list()._start_debounce_timer("is_heading changed")
-
 var is_bold := false:
 	set(value):
 		is_bold = value
@@ -837,6 +822,8 @@ func get_day_panel() -> DayPanel:
 func _on_sub_item_added() -> void:
 	%CheckBox.hide()
 	%FoldHeading.show()
+	if indentation_level == 0:
+		%MainRow.theme_type_variation = "ToDoItem_Heading"
 
 	_adapt_sub_item_state()
 
@@ -858,6 +845,8 @@ func _on_sub_item_removed(sub_item: ToDoItem) -> void:
 	if %SubItems.is_empty():
 		%CheckBox.show()
 		%FoldHeading.hide()
+		if indentation_level == 0:
+			%MainRow.theme_type_variation = "ToDoItem_NoHeading"
 
 	_adapt_sub_item_state()
 

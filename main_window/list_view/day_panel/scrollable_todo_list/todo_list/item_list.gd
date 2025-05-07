@@ -60,6 +60,9 @@ func add_todo(at_index := -1, auto_edit := true) -> ToDoItem:
 	var new_item := preload("todo_item/todo_item.tscn").instantiate()
 	add_child(new_item)
 
+	if name == "SubItems":
+		new_item.indentation_level = get_node("../..").indentation_level + 1
+
 	# Then move it to the position indicated by [at_index].
 	move_child(new_item, at_index)
 
