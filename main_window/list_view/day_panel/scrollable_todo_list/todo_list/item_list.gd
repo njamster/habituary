@@ -110,6 +110,8 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 
 	if not self.get_day_panel():
 		data.is_bookmarked = false
+		for sub_item in data.get_node("%SubItems").get_all_items():
+			sub_item.is_bookmarked = false
 
 	if dragged_from != self:
 		data.reparent(self)
