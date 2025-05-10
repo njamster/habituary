@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://v8u8oswwmlf3"]
+[gd_scene load_steps=12 format=3 uid="uid://v8u8oswwmlf3"]
 
 [ext_resource type="Texture2D" uid="uid://ci7y27fysy52o" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/unfolded.svg" id="2_2nsse"]
 [ext_resource type="Texture2D" uid="uid://d00v4pleoufwq" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/to_do.svg" id="2_6dyr4"]
@@ -10,6 +10,9 @@
 [ext_resource type="Texture2D" uid="uid://3ry73dkvfi1u" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/bookmark_indicator.svg" id="5_eqyfo"]
 [ext_resource type="Script" uid="uid://vmmkt3uxuea7" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/drag_handle/drag_handle.gd" id="5_mx38m"]
 [ext_resource type="Script" uid="uid://dttt783sjv872" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/item_list.gd" id="10_sj4p5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sj4p5"]
+content_margin_right = 8.0
 
 [node name="ToDoItem" type="VBoxContainer" groups=["todo_item"]]
 offset_right = 1920.0
@@ -101,12 +104,14 @@ visible = false
 layout_mode = 2
 mouse_filter = 1
 theme_type_variation = &"ToDoItem_ExtraInfo"
+theme_override_styles/normal = SubResource("StyleBoxEmpty_sj4p5")
 
 [node name="BookmarkIndicator" type="TextureRect" parent="MainRow/HBox"]
 unique_name_in_owner = true
 modulate = Color(0.505882, 0.631373, 0.756863, 1)
-custom_minimum_size = Vector2(22, 0)
+custom_minimum_size = Vector2(21, 23)
 layout_mode = 2
+size_flags_vertical = 0
 mouse_default_cursor_shape = 2
 texture = ExtResource("5_eqyfo")
 expand_mode = 1
