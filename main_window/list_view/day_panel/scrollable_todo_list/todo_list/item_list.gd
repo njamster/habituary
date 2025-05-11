@@ -227,12 +227,13 @@ func _on_items_child_order_changed() -> void:
 			if not item.has_requested_bookmark_update:
 				EventBus.bookmark_changed.emit.call_deferred(
 					item,
-					item.date,
+					item.last_date,
 					item.last_index
 				)
 				item.has_requested_bookmark_update = true
 
 			item.last_index = item.get_list_index()
+			item.last_date = item.date
 #endregion
 
 

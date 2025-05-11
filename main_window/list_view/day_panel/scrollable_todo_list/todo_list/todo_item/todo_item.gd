@@ -2,7 +2,9 @@ class_name ToDoItem
 extends VBoxContainer
 
 
+# helper variables required by _on_items_child_order_changed, in item_list.gd
 @onready var last_index := get_list_index()
+@onready var last_date := date
 
 
 # used to avoid emitting `list_save_requested` too early
@@ -831,7 +833,7 @@ func _on_sub_item_added() -> void:
 func _on_sub_item_removed(sub_item: ToDoItem) -> void:
 	var day_panel := get_day_panel()
 
-	if day_panel and day_panel.is_queued_for_deletion():
+	if day_panel and not day_panel.is_queued_for_deletion():
 		# at this point, the sub item is still part of the tree
 		if sub_item.is_bookmarked:
 			EventBus.bookmark_changed.emit.call_deferred(
