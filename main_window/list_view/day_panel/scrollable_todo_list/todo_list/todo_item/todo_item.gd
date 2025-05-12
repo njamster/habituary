@@ -65,11 +65,12 @@ var state := States.TO_DO:
 			if _initialization_finished:
 				_apply_state_relative_formatting()
 
-			if date and is_bookmarked:
-				EventBus.bookmark_changed.emit(self, date, get_list_index())
+			if _initialization_finished:
+				if date and is_bookmarked:
+					EventBus.bookmark_changed.emit(self, date, get_list_index())
 
-			if _initialization_finished and self.text:
-				get_to_do_list()._start_debounce_timer("state changed")
+				if self.text:
+					get_to_do_list()._start_debounce_timer("state changed")
 
 var is_bold := false:
 	set(value):

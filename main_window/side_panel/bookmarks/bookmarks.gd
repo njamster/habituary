@@ -72,6 +72,9 @@ func _search_for_bookmarks() -> void:
 						elif line.begins_with("[ ] "):
 							line = line.right(-4)
 
+						if line.begins_with("> "):
+							line = line.right(-2)
+
 						if line.begins_with("**") and  line.ends_with("**"):
 							line = line.substr(2, line.length() - 4)
 
