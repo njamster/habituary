@@ -165,7 +165,7 @@ func _ready() -> void:
 	_connect_signals()
 
 	%BookmarkIndicator.hide()
-	%DragHandle.visible = false
+	%DragHandle.modulate.a = 0.1
 
 	# deferred for two frames, in case this item is loaded from disk
 	await get_tree().process_frame
@@ -212,8 +212,12 @@ func _connect_signals() -> void:
 	%MainRow.mouse_exited.connect(_on_mouse_exited)
 
 	%CheckBox.gui_input.connect(_on_check_box_gui_input)
+	%CheckBox.mouse_entered.connect(_on_check_box_mouse_entered)
+	%CheckBox.mouse_exited.connect(_on_check_box_mouse_exited)
 
 	%FoldHeading.toggled.connect(_on_fold_heading_toggled)
+	%FoldHeading.mouse_entered.connect(_on_fold_heading_mouse_entered)
+	%FoldHeading.mouse_exited.connect(_on_fold_heading_mouse_exited)
 
 	%Edit.text_changed.connect(_on_edit_text_changed)
 	%Edit.text_submitted.connect(_on_edit_text_submitted)
@@ -368,7 +372,10 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 	if new_text:
 		self.text = new_text
 		%Edit.release_focus()
-		%DragHandle.visible = _contains_mouse_cursor
+		if _contains_mouse_cursor:
+			%DragHandle.modulate.a = 1.0
+		else:
+			%DragHandle.modulate.a = 0.1
 
 		%Edit.caret_column = 0   # scroll item text back to its beginning
 
@@ -504,26 +511,18 @@ func _on_mouse_entered() -> void:
 			style_box.set_corner_radius_all(5)
 			%MainRow.add_theme_stylebox_override("panel", style_box)
 	else:
-		%CheckBox.theme_type_variation = "ToDoItem_Focused"
-		%FoldHeading.theme_type_variation = "ToDoItem_Focused"
-
-		%DragHandle.show()
+		%DragHandle.theme_type_variation = "ToDoItem_Focused"
+		%DragHandle.modulate.a = 1.0
 
 
 func _on_mouse_exited() -> void:
 	_contains_mouse_cursor = false
+
 	if not is_queued_for_deletion():
+		%DragHandle.theme_type_variation = "FlatButton"
+
 		if not is_in_edit_mode():
-			%DragHandle.hide()
-
-		if self.state == States.DONE:
-			%CheckBox.theme_type_variation = "ToDoItem_Done"
-		elif self.state == States.FAILED:
-			%CheckBox.theme_type_variation = "ToDoItem_Failed"
-		else:
-			%CheckBox.theme_type_variation = "ToDoItem"
-
-		%FoldHeading.theme_type_variation = "ToDoItem"
+			%DragHandle.modulate.a = 0.1
 
 	if get_viewport().gui_is_dragging():
 		%MainRow.remove_theme_stylebox_override("panel")
@@ -958,3 +957,24 @@ func contains_search_query_match() -> bool:
 
 func get_list_index() -> int:
 	return get_to_do_list().get_line_number_for_item(self)
+
+
+func _on_check_box_mouse_entered() -> void:
+	%CheckBox.theme_type_variation = "ToDoItem_Focused"
+
+
+func _on_check_box_mouse_exited() -> void:
+	if self.state == States.DONE:
+		%CheckBox.theme_type_variation = "ToDoItem_Done"
+	elif self.state == States.FAILED:
+		%CheckBox.theme_type_variation = "ToDoItem_Failed"
+	else:
+		%CheckBox.theme_type_variation = "ToDoItem"
+
+
+func _on_fold_heading_mouse_entered() -> void:
+	%FoldHeading.theme_type_variation = "ToDoItem_Focused"
+
+
+func _on_fold_heading_mouse_exited() -> void:
+	%FoldHeading.theme_type_variation = "FlatButton"

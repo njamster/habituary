@@ -38,6 +38,7 @@ mouse_filter = 2
 [node name="Toggle" type="MarginContainer" parent="MainRow/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 0
 theme_type_variation = &"ToDoItem_TogglePadding"
 
 [node name="CheckBox" type="Button" parent="MainRow/HBox/Toggle"]
