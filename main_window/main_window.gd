@@ -16,9 +16,12 @@ func _unhandled_input(event: InputEvent) -> void:
 
 		if $Overlay.visible:
 			$Overlay.close_overlay()
-	elif event.is_action_pressed("toggle_fullscreen"):
-		Settings.is_fullscreen = not Settings.is_fullscreen
 	elif event.is_action_pressed("ui_cancel"):
+		var focus_owner = get_viewport().gui_get_focus_owner()
+		if focus_owner:
+			focus_owner.release_focus()
+			return
+
 		if Settings.previous_day and Settings.previous_view_mode:
 			# restore previous values
 			Settings.current_day = Settings.previous_day
@@ -26,3 +29,5 @@ func _unhandled_input(event: InputEvent) -> void:
 			# clear the cached values
 			Settings.previous_day = null
 			Settings.previous_view_mode = null
+	elif event.is_action_pressed("toggle_fullscreen"):
+		Settings.is_fullscreen = not Settings.is_fullscreen

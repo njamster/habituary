@@ -1,6 +1,9 @@
 extends PanelContainer
 
 
+var _contains_mouse_cursor := false
+
+
 func _ready() -> void:
 	_connect_signals()
 
@@ -43,7 +46,10 @@ func _on_search_query_focus_entered() -> void:
 
 
 func _on_search_query_focus_exited() -> void:
-	theme_type_variation = "SearchBar"
+	if _contains_mouse_cursor:
+		theme_type_variation = "SearchBar_Hover"
+	else:
+		theme_type_variation = "SearchBar"
 	%ShortcutHint.show()
 
 
@@ -52,9 +58,10 @@ func _on_search_query_text_changed(new_text: String) -> void:
 
 
 func _on_search_query_gui_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.keycode == KEY_ESCAPE and event.pressed:
+	if event.is_action_pressed("ui_cancel"):
 		%SearchQuery.text = ""
 		%SearchQuery.text_changed.emit("")
+		%SearchQuery.release_focus()
 
 
 func _on_search_query_text_submitted(_new_text: String) -> void:
@@ -66,11 +73,15 @@ func _on_shortcut_hint_pressed() -> void:
 
 
 func _on_mouse_entered() -> void:
+	_contains_mouse_cursor = true
+
 	if get_viewport().gui_get_focus_owner() != %SearchQuery:
 		self.theme_type_variation = "SearchBar_Hover"
 
 
 func _on_mouse_exited() -> void:
+	_contains_mouse_cursor = false
+
 	if get_viewport().gui_get_focus_owner() != %SearchQuery:
 		self.theme_type_variation = "SearchBar"
 
