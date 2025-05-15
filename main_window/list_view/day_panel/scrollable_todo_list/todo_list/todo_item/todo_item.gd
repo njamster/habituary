@@ -100,17 +100,23 @@ var _contains_mouse_cursor := false
 
 var is_folded := false:
 	set(value):
+		if %SubItems.is_empty():
+			return
+
 		is_folded = value
 
 		%FoldHeading.button_pressed = value
 
+		_update_extra_info()
+
 		if is_folded:
 			%SubItems.visible = contains_search_query_match()
-			_update_extra_info()
-			%ExtraInfo.show()
+			%ExtraInfo.visible = \
+				Settings.show_sub_item_count != Settings.ShowSubItemCount.NEVER
 		else:
 			%SubItems.show()
-			%ExtraInfo.hide()
+			%ExtraInfo.visible = \
+				Settings.show_sub_item_count == Settings.ShowSubItemCount.ALWAYS
 
 		if _initialization_finished and self.text:
 			get_to_do_list()._start_debounce_timer("is_folded changed")
@@ -201,6 +207,10 @@ func _connect_signals() -> void:
 			var color = Settings.to_do_text_colors[text_color_id - 1]
 			%Edit.add_theme_color_override("font_placeholder_color", Color(color, 0.7))
 			%Edit.add_theme_color_override("font_color", color)
+	)
+
+	Settings.show_sub_item_count_changed.connect(func():
+		self.is_folded = self.is_folded
 	)
 	#endregion
 
@@ -476,6 +486,8 @@ func load_from_disk(line : String) -> void:
 	if line.begins_with("> "):
 		line = line.right(-2)
 		self.set_deferred("is_folded", true)
+	else:
+		self.set_deferred("is_folded", false)
 
 	var reg_ex := RegEx.new()
 	reg_ex.compile(" \\[COLOR(?<digit>[1-5])\\]$")
@@ -651,7 +663,6 @@ func _apply_formatting() -> void:
 			font = preload("res://theme/fonts/OpenSans-Medium.ttf")
 
 	%Edit.add_theme_font_override("font", font)
-	%ExtraInfo.add_theme_font_override("font", font)
 
 
 func _check_for_search_query_match() -> void:
