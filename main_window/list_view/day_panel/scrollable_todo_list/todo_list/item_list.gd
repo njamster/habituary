@@ -83,11 +83,21 @@ func add_todo_below(item: ToDoItem, auto_edit := true) -> ToDoItem:
 
 #region Moving Items
 func move_todo_up(item: ToDoItem) -> void:
-	move_child(item, max(0, item.get_index() - 1))
+	var index := item.get_index()
+
+	if index > 0:
+		move_child(item,index - 1)
+	else:
+		_reject_indentation_change(item, Vector2.UP)
 
 
 func move_todo_down(item: ToDoItem) -> void:
-	move_child(item, item.get_index() + 1)
+	var index := item.get_index()
+
+	if index < get_child_count() - 1:
+		move_child(item, index + 1)
+	else:
+		_reject_indentation_change(item, Vector2.DOWN)
 
 
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
@@ -240,7 +250,7 @@ func _on_items_child_order_changed() -> void:
 #region Indenting Items
 func indent_todo(item: ToDoItem) -> void:
 	if item.get_index() == 0 or item.indentation_level == MAX_INDENTATION_LEVEL:
-		_reject_indentation_change(item, +1)
+		_reject_indentation_change(item, Vector2.RIGHT)
 		return  # first item in a list cannot be indented
 
 	var predecessor_item := get_child(item.get_index() - 1)
@@ -263,7 +273,7 @@ func unindent_todo(item: ToDoItem) -> void:
 	var parent_todo := item.get_parent_todo()
 
 	if not parent_todo:
-		_reject_indentation_change(item, -1)
+		_reject_indentation_change(item, Vector2.LEFT)
 		return  # item cannot be unindented any further
 
 	item.reparent(parent_todo.get_item_list())
@@ -280,12 +290,23 @@ func unindent_todo(item: ToDoItem) -> void:
 			)
 
 
-## Plays a short animation to indicate a rejected indentation request.
-func _reject_indentation_change(item: ToDoItem, direction: int) -> void:
+## Plays a short animation to indicate a rejected indentation/move request.
+func _reject_indentation_change(item: ToDoItem, direction: Vector2) -> void:
 	var tween := create_tween()
-	var main_row := item.get_node("%MainRow")
-	tween.tween_property(main_row, "position:x", direction * 5, 0.03)
-	tween.tween_property(main_row, "position:x", 0, 0.03)
+	# forward motion:
+	tween.tween_property(
+		item,
+		"position",
+		+5 * direction,
+		0.03
+	).as_relative()
+	# backward motion:
+	tween.tween_property(
+		item,
+		"position",
+		-5 * direction,
+		0.03
+	).as_relative()
 #endregion
 
 
