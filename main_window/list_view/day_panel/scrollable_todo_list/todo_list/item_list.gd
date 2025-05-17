@@ -3,6 +3,8 @@ extends VBoxContainer
 
 const MAX_INDENTATION_LEVEL := 3
 
+var rejection_tween : Tween
+
 
 #region Setup
 func _ready() -> void:
@@ -292,16 +294,19 @@ func unindent_todo(item: ToDoItem) -> void:
 
 ## Plays a short animation to indicate a rejected indentation/move request.
 func _reject_indentation_change(item: ToDoItem, direction: Vector2) -> void:
-	var tween := create_tween()
+	if rejection_tween and rejection_tween.is_valid():
+		return  # early (and let the old tween finish)
+	rejection_tween = create_tween()
+
 	# forward motion:
-	tween.tween_property(
+	rejection_tween.tween_property(
 		item,
 		"position",
 		+5 * direction,
 		0.03
 	).as_relative()
 	# backward motion:
-	tween.tween_property(
+	rejection_tween.tween_property(
 		item,
 		"position",
 		-5 * direction,
