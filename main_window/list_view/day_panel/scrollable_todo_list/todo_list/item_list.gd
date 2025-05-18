@@ -163,7 +163,7 @@ func get_predecessor_todo(item: ToDoItem) -> ToDoItem:
 		# item has at least one item before it...
 		var predecessor := get_child(item.get_index() - 1)
 		var sub_item_count = predecessor.get_sub_item_count()
-		if sub_item_count > 0:
+		if predecessor.get_node("%SubItems").visible and sub_item_count > 0:
 			# ... if that item has any sub items -> return the last of them
 			return predecessor.get_sub_item(sub_item_count - 1)
 		else:
@@ -177,7 +177,7 @@ func get_predecessor_todo(item: ToDoItem) -> ToDoItem:
 
 
 func get_successor_todo(item: ToDoItem) -> ToDoItem:
-	if item.get_sub_item_count() > 0:
+	if item.get_node("%SubItems").visible and item.get_sub_item_count() > 0:
 		# item has at least one sub item -> return that
 		return item.get_sub_item(0)
 	elif item.get_index() < get_child_count() - 1:
