@@ -33,6 +33,8 @@ func _connect_signals() -> void:
 		get_to_do_list().hide_line_highlight()
 	)
 
+	child_entered_tree.connect(_on_item_added)
+
 	# Deferred, so the callback isn't called while the list is first loaded
 	child_order_changed.connect.call_deferred(
 		_on_items_child_order_changed
@@ -57,13 +59,17 @@ func _on_gui_input(event: InputEvent) -> void:
 
 
 #region Adding Items
+func _on_item_added(item: ToDoItem) -> void:
+	if name == "Items":
+		item.indentation_level = 0
+	elif name == "SubItems":
+		item.indentation_level = get_node("../..").indentation_level + 1
+
+
 func add_todo(at_index := -1, auto_edit := true) -> ToDoItem:
 	# Add a new to-do item to the end of this item list.
 	var new_item := preload("todo_item/todo_item.tscn").instantiate()
 	add_child(new_item)
-
-	if name == "SubItems":
-		new_item.indentation_level = get_node("../..").indentation_level + 1
 
 	# Then move it to the position indicated by [at_index].
 	move_child(new_item, at_index)
@@ -260,8 +266,6 @@ func indent_todo(item: ToDoItem) -> void:
 		predecessor_item.is_folded = false
 	item.reparent(predecessor_item.get_node("%SubItems"))
 
-	item.indentation_level += 1
-
 	if item._initialization_finished:
 		item.edit()
 
@@ -280,8 +284,6 @@ func unindent_todo(item: ToDoItem) -> void:
 
 	item.reparent(parent_todo.get_item_list())
 	item.get_parent().move_child(item, parent_todo.get_index() + 1)
-
-	item.indentation_level -= 1
 
 	if item._initialization_finished:
 		item.edit()

@@ -714,6 +714,8 @@ func _on_bookmark_indicator_gui_input(event: InputEvent) -> void:
 # when an item is deleted (which is why we check if it's queded for deletion first).
 func _on_tree_exiting() -> void:
 	if not is_queued_for_deletion():
+		%MainRow.theme_type_variation = "ToDoItem_NoHeading"
+
 		# submit any yet unsubmitted changes
 		if %Edit.text != self.text:
 			self.text = %Edit.text
