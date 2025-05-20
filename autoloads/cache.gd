@@ -21,7 +21,59 @@ func _connect_signals() -> void:
 
 func _on_store_path_changed() -> void:
 	data = {}  # reset cached data
+
+	if not Settings.sub_items_refactor_patch_applied:
+		var directory := DirAccess.open(Settings.store_path)
+		if directory:
+			for filename in directory.get_files():
+				_apply_sub_items_refactor_patch(Settings.store_path, filename)
+
+		Settings.sub_items_refactor_patch_applied = true
+
 	_load_directory(Settings.store_path)
+
+
+func _apply_sub_items_refactor_patch(directory_path: String, filename: String) -> void:
+	if not _is_valid_filename(filename):
+		return
+
+	var full_path := directory_path.path_join(filename)
+	var file_to_patch := FileAccess.open(full_path, FileAccess.READ_WRITE)
+	if file_to_patch:
+		var new_content = ""
+
+		var is_legacy_file = false
+		var inside_heading = false
+		while file_to_patch.get_position() < file_to_patch.get_length():
+			var next_line := file_to_patch.get_line()
+
+			if next_line.begins_with("  [") or next_line.begins_with("  >") or \
+					next_line.begins_with("  v"):
+						is_legacy_file = true
+
+			while next_line.begins_with("  "):
+				next_line = next_line.right(-2)
+				new_content += "    "
+
+			if next_line.begins_with("v "):
+				is_legacy_file = true
+				inside_heading = true
+				next_line = next_line.right(-2)
+				new_content += "[ ] "
+			elif next_line.begins_with("> "):
+				is_legacy_file = true
+				inside_heading = true
+				next_line = next_line.right(-2)
+				new_content += "[ ] > "
+			elif inside_heading:
+				new_content += "    "
+
+			new_content += next_line + "\n"
+
+		if is_legacy_file:
+			file_to_patch.resize(0) # erase the previous content
+			file_to_patch.seek(0) # reset the writing cursor
+			file_to_patch.store_string(new_content)
 
 
 func _load_directory(directory_path: String) -> void:
@@ -42,33 +94,47 @@ func _load_file(directory_path: String, filename: String) -> void:
 		if file.get_length() == 0:
 			return
 
-		# Derive year, month and date from the filename.
-		var splits := filename.trim_suffix(".txt").split("-")
-		var year = splits[0]
-		var month = splits[1]
-		var day = splits[2]
+		if filename == "capture.txt":
+			# Unless modified since then: Ignore already cached file.
+			if "capture" in data:
+				if data["capture"].last_modified >= \
+					FileAccess.get_modified_time(full_path):
+						return
 
-		# If it doesn't exist yet: Create nested dictionary structure.
-		if not year in data:
-			data[year] = {}
-		if not month in data[year]:
-			data[year][month] = {}
+			# Add the file's content and last modification date to the cache.
+			data["capture"] = {
+				"content": file.get_as_text(),
+				"last_modified": FileAccess.get_modified_time(full_path)
+			}
+		else:
+			# Derive year, month and date from the filename.
+			var splits := filename.trim_suffix(".txt").split("-")
+			var year = splits[0]
+			var month = splits[1]
+			var day = splits[2]
 
-		# Unless modified since then: Ignore files that are already cached.
-		if day in data[year][month]:
-			if data[year][month][day].last_modified >= \
-				FileAccess.get_modified_time(full_path):
-					return
+			# If it doesn't exist yet: Create nested dictionary structure.
+			if not year in data:
+				data[year] = {}
+			if not month in data[year]:
+				data[year][month] = {}
 
-		# Add the file's content & the date it was last modified to the cache.
-		data[year][month][day] = {
-			"content": file.get_as_text(),
-			"last_modified": FileAccess.get_modified_time(full_path)
-		}
+			# Unless modified since then: Ignore already cached files.
+			if day in data[year][month]:
+				if data[year][month][day].last_modified >= \
+					FileAccess.get_modified_time(full_path):
+						return
+
+			# Add the file's content and last modification date to the cache.
+			data[year][month][day] = {
+				"content": file.get_as_text(),
+				"last_modified": FileAccess.get_modified_time(full_path)
+			}
 
 
 func _is_valid_filename(filename: String) -> bool:
-	return _valid_filename_reg_ex.search(filename) != null
+	return filename == "capture.txt" or \
+		_valid_filename_reg_ex.search(filename) != null
 
 
 func _notification(what: int) -> void:

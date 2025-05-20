@@ -68,6 +68,11 @@ var DEFAULT_TO_DO_TEXT_COLORS := [
 
 		to_do_text_colors_changed.emit()
 
+@export_group("Backwards Compatibility")
+# IMPORTANT: This variable must be loaded *before* the store_path variable!
+# (as the patch is applied in _on_store_path_changed of autoloads/cache.gd)
+@export var sub_items_refactor_patch_applied := false
+
 var DEFAULT_STORE_PATH : String:
 	get():
 		if OS.has_feature("editor"):
@@ -353,6 +358,7 @@ var bookmarks_due_today := 0:
 		show_sub_item_count_changed.emit()
 
 var side_panel_width := 360  # pixels
+
 
 func _enter_tree() -> void:
 	get_window().wrap_controls = true  # Sadly, there is no ProjectSetting to enable this by default
