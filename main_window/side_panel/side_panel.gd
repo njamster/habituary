@@ -15,6 +15,9 @@ func _ready() -> void:
 func _set_initial_state() -> void:
 	custom_minimum_size.x = Settings.side_panel_width
 
+	# FIXME: Slightly hacky way to make sure _search_for_bookmarks is run...
+	add_child(BOOKMARKS)
+
 	_update_side_panel()
 
 

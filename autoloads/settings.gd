@@ -15,6 +15,7 @@ signal hide_ticked_off_todos_changed
 signal fade_ticked_off_todos_changed
 signal fade_non_today_dates_changed
 signal bookmarks_due_today_changed
+signal show_sub_item_count_changed
 
 
 enum TodayPosition {
@@ -28,6 +29,12 @@ enum FadeNonTodayDates {
 	PAST,
 	FUTURE,
 	PAST_AND_FUTURE
+}
+
+enum ShowSubItemCount {
+	ALWAYS,
+	WHEN_FOLDED,
+	NEVER
 }
 
 enum SidePanelState {
@@ -60,6 +67,11 @@ var DEFAULT_TO_DO_TEXT_COLORS := [
 		_start_debounce_timer()
 
 		to_do_text_colors_changed.emit()
+
+@export_group("Backwards Compatibility")
+# IMPORTANT: This variable must be loaded *before* the store_path variable!
+# (as the patch is applied in _on_store_path_changed of autoloads/cache.gd)
+@export var sub_items_refactor_patch_applied := false
 
 var DEFAULT_STORE_PATH : String:
 	get():
@@ -264,7 +276,6 @@ var bookmarks_due_today := 0:
 			return
 
 		bookmarks_due_today = value
-		_start_debounce_timer()
 
 		bookmarks_due_today_changed.emit()
 
@@ -336,7 +347,18 @@ var bookmarks_due_today := 0:
 		return get_window().mode == Window.MODE_FULLSCREEN || \
 			get_window().mode == Window.MODE_EXCLUSIVE_FULLSCREEN
 
+@export var show_sub_item_count := ShowSubItemCount.WHEN_FOLDED:
+	set(value):
+		if show_sub_item_count == value:
+			return
+
+		show_sub_item_count = value
+		_start_debounce_timer()
+
+		show_sub_item_count_changed.emit()
+
 var side_panel_width := 360  # pixels
+
 
 func _enter_tree() -> void:
 	get_window().wrap_controls = true  # Sadly, there is no ProjectSetting to enable this by default

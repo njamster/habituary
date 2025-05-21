@@ -8,9 +8,7 @@ var date : Date:
 
 		date = value
 
-var is_dragged: bool:
-	get():
-		return %ScrollableTodoList.is_dragged
+var is_dragged := false
 
 
 func _ready() -> void:
@@ -27,6 +25,18 @@ func _set_initial_state() -> void:
 
 	_update_store_path()
 	_update_header()
+
+	%Header.set_drag_forwarding(
+		Callable(),  # unused, no forwarding required
+		%ScrollableTodoList/%TodoList/%Items._can_drop_data,
+		# FIXME: This is a pretty hacky way to make sure the dragged item is
+		# added to the end of the item list. It should work, though...
+		func(_at_position: Vector2, data: Variant):
+			%ScrollableTodoList/%TodoList/%Items._drop_data(
+				999_999_999_999 * Vector2.ONE,
+				data
+			)
+	)
 
 
 func _connect_signals() -> void:
@@ -45,6 +55,13 @@ func _connect_signals() -> void:
 
 	Settings.view_mode_changed.connect(_on_current_day_changed)
 	Settings.view_mode_cap_changed.connect(_on_current_day_changed)
+
+	EventBus.bookmark_jump_requested.connect(func(bookmarked_date, bookmarked_line_number):
+		if date and date.day_difference_to(bookmarked_date) == 0:
+			%ScrollableTodoList.get_node("%TodoList").edit_line(
+				bookmarked_line_number
+			)
+	)
 	#endregion
 
 	#region Local Signals
@@ -124,14 +141,6 @@ func _apply_date_relative_formating() -> void:
 		modulate.a = 1.0
 
 
-func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-	return %TodoList._can_drop_data(_at_position, data)
-
-
-func _drop_data(at_position: Vector2, data: Variant) -> void:
-	%TodoList._drop_data(at_position - %ScrollContainer.position, data)
-
-
 func _on_header_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_MASK_LEFT:
 		if event.pressed and event.double_click:
@@ -167,3 +176,11 @@ func _on_current_day_changed() -> void:
 		theme_type_variation = "DayPanel_CurrentDay"
 	else:
 		theme_type_variation = "DayPanel"
+
+
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_DRAG_BEGIN:
+			%Header/Tooltip.disabled = true
+		NOTIFICATION_DRAG_END:
+			%Header/Tooltip.disabled = (Settings.view_mode == 1)

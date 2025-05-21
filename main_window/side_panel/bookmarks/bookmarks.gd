@@ -21,6 +21,8 @@ func _connect_signals() -> void:
 
 	EventBus.bookmark_changed.connect(_on_bookmark_changed)
 
+	EventBus.bookmark_indicator_clicked.connect(_on_bookmark_indicator_clicked)
+
 	EventBus.bookmark_removed.connect(_on_bookmark_removed)
 	#endregion
 
@@ -46,11 +48,10 @@ func _search_for_bookmarks() -> void:
 					var line := file.get_line()
 
 					# ignore indentation levels
-					while line.begins_with("  "):
-						line = line.right(-2)
+					while line.begins_with("    "):
+						line = line.right(-4)
 
-					if line.begins_with("# ") or line.begins_with("v ") or line.begins_with("> ") \
-						or line.begins_with("[ ] ") or line.begins_with("[x] ") or line.begins_with("[-] "):
+					if line.begins_with("[ ] ") or line.begins_with("[x] ") or line.begins_with("[-] "):
 							line_number += 1
 
 					var color_tag_reg_ex := RegEx.new()
@@ -65,13 +66,14 @@ func _search_for_bookmarks() -> void:
 
 						# FIXME: avoid replicating the entire line parsing from todo_item.gd here
 						var is_done := false
-						if line.begins_with("# ") or line.begins_with("v ") or line.begins_with("> "):
-							line = line.right(-2)
-						elif line.begins_with("[x] ") or line.begins_with("[-] "):
+						if line.begins_with("[x] ") or line.begins_with("[-] "):
 							line = line.right(-4)
 							is_done = true
 						elif line.begins_with("[ ] "):
 							line = line.right(-4)
+
+						if line.begins_with("> "):
+							line = line.right(-2)
 
 						if line.begins_with("**") and  line.ends_with("**"):
 							line = line.substr(2, line.length() - 4)
@@ -139,7 +141,7 @@ func _resort_list() -> void:
 func _on_bookmark_added(to_do : Control) -> void:
 	_add_bookmark(
 		to_do.date,
-		to_do.get_index(),
+		to_do.get_list_index(),
 		to_do.get_node("%Edit").text,
 		to_do.state != to_do.States.TO_DO
 	)
@@ -147,24 +149,40 @@ func _on_bookmark_added(to_do : Control) -> void:
 
 func _on_bookmark_changed(to_do : Control, old_date : Date, old_index : int) -> void:
 	for bookmark in %Items.get_children():
+		if bookmark.updated_this_frame:
+			continue
+
 		if bookmark.date.day_difference_to(old_date) == 0 and bookmark.line_number == old_index:
 			bookmark.date = to_do.date
-			bookmark.line_number = to_do.get_index()
+			bookmark.line_number = to_do.get_list_index()
 			bookmark.text = to_do.get_node("%Edit").text
 			bookmark.is_done = (to_do.state != to_do.States.TO_DO)
+			bookmark.updated_this_frame = true
+
 			_resort_list.call_deferred()
+
+			bookmark.set_deferred("updated_this_frame", false)
+			to_do.set_deferred("has_requested_bookmark_update", false)
+
+			return
+
+
+func _on_bookmark_indicator_clicked(date: Date, index: int) -> void:
+	for bookmark in %Items.get_children():
+		if bookmark.date.day_difference_to(date) == 0 and bookmark.line_number == index:
+			bookmark.get_node("%JumpTo").grab_focus()
 			return
 
 
 func _on_bookmark_removed(to_do : Control) -> void:
 	var date = to_do.date
-	var line_number := to_do.get_index()
+	var line_number = to_do.get_list_index()
 
 	for bookmark in %Items.get_children():
 		if bookmark.date.day_difference_to(date) == 0 and bookmark.line_number == line_number:
 			$NoneSet.visible = (%Items.get_child_count() == 1)
 			$IncludePast.visible = not $NoneSet.visible
-			bookmark.queue_free()
+			bookmark.remove()
 			return
 
 

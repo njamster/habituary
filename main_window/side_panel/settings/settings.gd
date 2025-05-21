@@ -46,7 +46,15 @@ func _set_initial_state() -> void:
 			%TodayPosition/Setting/Options.select(option_id)
 			_on_today_position_item_selected(option_id)
 
+	for option_name in Settings.ShowSubItemCount:
+		var option_id : int = Settings.ShowSubItemCount[option_name]
+		%ShowSubItemCount/Setting/Options.add_item(option_name.capitalize(), option_id)
+		if option_id == Settings.show_sub_item_count:
+			%ShowSubItemCount/Setting/Options.select(option_id)
+			_on_show_sub_item_count_options_item_selected(option_id)
+
 	_set_text_colors()
+
 
 
 func _set_text_colors() -> void:
@@ -86,6 +94,8 @@ func _connect_signals() -> void:
 	for i in range(5):
 		%ToDoColors.get_node("Color%d/ColorPicker" % (i+1)).color_changed.connect(_on_todo_color_changed.bind(i))
 		%ToDoColors.get_node("Color%d/Reset" % (i+1)).pressed.connect(_on_todo_color_reset.bind(i))
+
+	%ShowSubItemCount/Setting/Options.item_selected.connect(_on_show_sub_item_count_options_item_selected)
 
 	%UIScale/Setting/ScaleFactor.value_changed.connect(func(value):
 		Settings.ui_scale_factor = value
@@ -208,6 +218,34 @@ func _on_fade_non_today_dates_options_item_selected(index: int) -> void:
 			%FadeNonTodayDates/Explanation.text = explanation_text.format([
 				"[b][i]past or future [/i][/b]",
 				"will",
+			])
+		_:
+			%FadeNonTodayDates/Explanation.text = "" # this shouldn't happen
+
+
+func _on_show_sub_item_count_options_item_selected(index: int) -> void:
+	Settings.show_sub_item_count = Settings.ShowSubItemCount[
+		Settings.ShowSubItemCount.keys()[index]
+	]
+
+	var explanation_text := "[fill]To-Dos with (indented) sub items will {0}" \
+	+ "display the amount of their completed and total sub items in brackets" \
+	+ " to the right{1}.[/fill]"
+	match index:
+		Settings.ShowSubItemCount.ALWAYS:
+			%ShowSubItemCount/Explanation.text = explanation_text.format([
+				"[u]always[/u] ",
+				"",
+			])
+		Settings.ShowSubItemCount.WHEN_FOLDED:
+			%ShowSubItemCount/Explanation.text = explanation_text.format([
+				"",
+				" [u]only[/u] while folded",
+			])
+		Settings.ShowSubItemCount.NEVER:
+			%ShowSubItemCount/Explanation.text = explanation_text.format([
+				"[u]never[/u] ",
+				"",
 			])
 		_:
 			%FadeNonTodayDates/Explanation.text = "" # this shouldn't happen

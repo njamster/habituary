@@ -132,8 +132,8 @@ func remove_day_panel(index : int) -> void:
 		day_panel.reparent(drag_cache)
 		day_panel.hide()
 	else:
-		remove_child(day_panel)
 		day_panel.queue_free()
+		remove_child(day_panel)
 
 
 func _input(event: InputEvent) -> void:

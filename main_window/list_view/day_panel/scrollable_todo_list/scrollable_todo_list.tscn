@@ -32,7 +32,3 @@ layout_mode = 2
 [node name="ScrollDownButton" parent="." instance=ExtResource("1_6pw8l")]
 layout_mode = 2
 mode = 1
-
-[node name="HoverTimer" type="Timer" parent="."]
-wait_time = 0.1
-one_shot = true

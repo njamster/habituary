@@ -2,20 +2,9 @@ class_name ToDoItem
 extends VBoxContainer
 
 
-signal predecessor_requested
-signal successor_requested
-
-signal editing_started
-signal list_save_requested(reason)
-
-signal folded
-signal unfolded
-
-signal moved_up
-signal moved_down
-
-
-@onready var last_index := get_index()
+# helper variables required by _on_items_child_order_changed, in item_list.gd
+@onready var last_index := get_list_index()
+@onready var last_date := date
 
 
 # used to avoid emitting `list_save_requested` too early
@@ -36,15 +25,15 @@ var text := "":
 			if is_inside_tree():
 				%Edit.text = text
 
-				if date:
-					EventBus.bookmark_changed.emit(self, date, get_index())
-
 				if _initialization_finished:
-					list_save_requested.emit("text changed")
+					get_to_do_list()._start_debounce_timer("text changed")
 
 enum States { TO_DO, DONE, FAILED }
 var state := States.TO_DO:
 	set(value):
+		if state == value:
+			return
+
 		state = value
 		if is_inside_tree():
 			if state == States.TO_DO:
@@ -62,6 +51,9 @@ var state := States.TO_DO:
 
 			%CheckBox.button_pressed = (state != States.TO_DO)
 
+			if indentation_level:
+				get_parent_todo()._adapt_sub_item_state()
+
 			if not _contains_mouse_cursor:
 				if self.state == States.DONE:
 					%CheckBox.theme_type_variation = "ToDoItem_Done"
@@ -73,35 +65,12 @@ var state := States.TO_DO:
 			if _initialization_finished:
 				_apply_state_relative_formatting()
 
-			if date:
-				EventBus.bookmark_changed.emit(self, date, get_index())
+			if _initialization_finished:
+				if date and is_bookmarked:
+					EventBus.bookmark_changed.emit(self, date, get_list_index())
 
-			if _initialization_finished and self.text:
-				list_save_requested.emit("state changed")
-
-var is_heading := false:
-	set(value):
-		is_heading = value
-		if is_inside_tree():
-			if is_heading:
-				%MainRow.theme_type_variation = "ToDoItem_Heading"
-				%FoldHeading.show()
-				%CheckBox.hide()
-			else:
-				if is_folded:
-					is_folded = false
-					%FoldHeading.button_pressed = is_folded
-					self.unfolded.emit.call_deferred()
-					%ExtraInfo.hide()
-				%MainRow.theme_type_variation = "ToDoItem_NoHeading"
-				%FoldHeading.hide()
-				%CheckBox.show()
-
-			if has_node("EditingOptions"):
-				$EditingOptions.update_heading()
-
-			if _initialization_finished and self.text:
-				list_save_requested.emit("is_heading changed")
+				if self.text:
+					get_to_do_list()._start_debounce_timer("state changed")
 
 var is_bold := false:
 	set(value):
@@ -113,7 +82,7 @@ var is_bold := false:
 				$EditingOptions.update_bold()
 
 			if _initialization_finished and self.text:
-				list_save_requested.emit("is_bold changed")
+				get_to_do_list()._start_debounce_timer("is_bold changed")
 
 var is_italic := false:
 	set(value):
@@ -125,31 +94,32 @@ var is_italic := false:
 				$EditingOptions.update_italic()
 
 			if _initialization_finished and self.text:
-				list_save_requested.emit("is_italic changed")
+				get_to_do_list()._start_debounce_timer("is_italic changed")
 
 var _contains_mouse_cursor := false
 
 var is_folded := false:
 	set(value):
-		is_folded = value
-
-		if not is_heading:
+		if %SubItems.is_empty():
 			return
 
-		if not is_node_ready():
-			await self.ready
+		is_folded = value
 
-		%FoldHeading.button_pressed = is_folded
+		%FoldHeading.button_pressed = value
+
+		_update_extra_info()
 
 		if is_folded:
-			self.folded.emit.call_deferred()
-			%ExtraInfo.show()
+			%SubItems.visible = contains_search_query_match()
+			%ExtraInfo.visible = \
+				Settings.show_sub_item_count != Settings.ShowSubItemCount.NEVER
 		else:
-			self.unfolded.emit.call_deferred()
-			%ExtraInfo.hide()
+			%SubItems.show()
+			%ExtraInfo.visible = \
+				Settings.show_sub_item_count == Settings.ShowSubItemCount.ALWAYS
 
 		if _initialization_finished and self.text:
-			list_save_requested.emit("is_folded changed")
+			get_to_do_list()._start_debounce_timer("is_folded changed")
 
 
 var is_bookmarked := false:
@@ -166,30 +136,9 @@ var is_bookmarked := false:
 				$EditingOptions.update_bookmark()
 
 			if _initialization_finished and self.text:
-				list_save_requested.emit("is_bookmarked changed")
+				get_to_do_list()._start_debounce_timer("is_bookmarked changed")
 
-var indentation_level := 0:
-	set(value):
-		var old_indentation_level := indentation_level
-		indentation_level = clamp(value, 0, get_maximum_indentation_level())
-		if indentation_level != value:
-			# play a short animation to indicate that the value was rejected
-			var tween := create_tween()
-			tween.tween_property(%MainRow, "position:x", sign(value) * 5, 0.03)
-			tween.tween_property(%MainRow, "position:x",  0, 0.03)
-		var change := indentation_level - old_indentation_level
-
-		%Indentation.custom_minimum_size.x = indentation_level * 25
-
-		if has_node("EditingOptions"):
-			$EditingOptions.update_indentation()
-
-		if self.text: # skip this step for newly created to-dos that haven't been saved yet
-			if is_inside_tree() and change:
-				_reindent_sub_todos(change, old_indentation_level)
-
-			if _initialization_finished:
-				list_save_requested.emit("indentation_level changed")
+var indentation_level := 0
 
 
 var text_color_id := 0:
@@ -210,9 +159,11 @@ var text_color_id := 0:
 
 		if old_value != value:
 			if _initialization_finished and self.text:
-				list_save_requested.emit("text_color_id changed")
+				get_to_do_list()._start_debounce_timer("text_color_id changed")
 
 var hide_tween: Tween
+
+var has_requested_bookmark_update := false
 
 
 func _ready() -> void:
@@ -220,35 +171,26 @@ func _ready() -> void:
 	_connect_signals()
 
 	%BookmarkIndicator.hide()
-	%DragHandle.visible = false
+	%DragHandle.modulate.a = 0.1
 
-	set_deferred("_initialization_finished", true) # deferred, in case this item is loaded from disk
-
-	await get_tree().process_frame # i.e. until _initialization_finished == true
-
-	if not self.text: # i.e. it's a newly created to-do (not restored from disk)
-		var index = self.get_index()
-		if index > 0:
-			var item_list := get_item_list()
-			var predecessor = item_list.get_child(index - 1)
-			var successor
-			if index < item_list.get_child_count() - 1:
-				successor = item_list.get_child(index + 1)
-			if predecessor.text.ends_with(":") or (successor and \
-				successor.indentation_level == predecessor.indentation_level + 1):
-					self.indentation_level = predecessor.indentation_level + 1
-			else:
-				self.indentation_level = predecessor.indentation_level
+	# deferred for two frames, in case this item is loaded from disk
+	await get_tree().process_frame
+	await get_tree().process_frame
+	_initialization_finished = true
 
 	Settings.fade_ticked_off_todos_changed.connect(_apply_state_relative_formatting)
 
 
 func _set_initial_state() -> void:
+	%CheckBox.show()
+	%FoldHeading.hide()
 	%ExtraInfo.hide()
 
 	_on_fold_heading_toggled(self.is_folded)
 
 	_apply_state_relative_formatting.call_deferred(true)
+
+	%MainRow.set_drag_forwarding(Callable(), _can_drop_data, _drop_data)
 
 
 func _connect_signals() -> void:
@@ -260,34 +202,32 @@ func _connect_signals() -> void:
 		_apply_state_relative_formatting.bind(true)
 	)
 
-	EventBus.bookmark_jump_requested.connect(func(bookmarked_date, bookmarked_line_number):
-		if date:
-			if self.is_bookmarked and date.day_difference_to(bookmarked_date) == 0 \
-				and get_index() == bookmarked_line_number:
-					edit()
-	)
-
 	Settings.to_do_text_colors_changed.connect(func():
 		if text_color_id:
 			var color = Settings.to_do_text_colors[text_color_id - 1]
 			%Edit.add_theme_color_override("font_placeholder_color", Color(color, 0.7))
 			%Edit.add_theme_color_override("font_color", color)
 	)
+
+	Settings.show_sub_item_count_changed.connect(func():
+		self.is_folded = self.is_folded
+	)
 	#endregion
 
 	#region Local Signals
 	focus_exited.connect(_on_focus_exited)
-	gui_input.connect(_on_gui_input)
 	tree_exiting.connect(_on_tree_exiting)
 
 	%MainRow.mouse_entered.connect(_on_mouse_entered)
 	%MainRow.mouse_exited.connect(_on_mouse_exited)
 
 	%CheckBox.gui_input.connect(_on_check_box_gui_input)
+	%CheckBox.mouse_entered.connect(_on_check_box_mouse_entered)
+	%CheckBox.mouse_exited.connect(_on_check_box_mouse_exited)
 
 	%FoldHeading.toggled.connect(_on_fold_heading_toggled)
-
-	%Edit.gui_input.connect(_on_gui_input)
+	%FoldHeading.mouse_entered.connect(_on_fold_heading_mouse_entered)
+	%FoldHeading.mouse_exited.connect(_on_fold_heading_mouse_exited)
 
 	%Edit.text_changed.connect(_on_edit_text_changed)
 	%Edit.text_submitted.connect(_on_edit_text_submitted)
@@ -297,6 +237,9 @@ func _connect_signals() -> void:
 	%Edit.resized.connect(_on_edit_resized)
 
 	%BookmarkIndicator.gui_input.connect(_on_bookmark_indicator_gui_input)
+
+	%SubItems.child_entered_tree.connect(_on_sub_item_added.unbind(1))
+	%SubItems.child_exiting_tree.connect(_on_sub_item_removed)
 	#endregion
 
 
@@ -305,7 +248,18 @@ func is_in_edit_mode() -> bool:
 
 
 func edit() -> void:
+	if not is_visible_in_tree():
+		var parent_todo := get_parent_todo()
+		while parent_todo:
+			if parent_todo.is_folded:
+				parent_todo.is_folded = false
+			parent_todo = parent_todo.get_parent_todo()
+
 	%Edit.grab_focus()
+	%Edit.edit()
+
+	if has_meta("caret_position"):
+		%Edit.caret_column = get_meta("caret_position")
 
 
 func _on_edit_focus_entered() -> void:
@@ -313,11 +267,11 @@ func _on_edit_focus_entered() -> void:
 		var editing_options := \
 			preload("editing_options/editing_options.tscn").instantiate()
 		add_child(editing_options, true)
-		# place the editing options above the lower padding
-		move_child(editing_options, -2)
+		# place the editing options above the SubItems container
+		move_child(editing_options, $Indentation.get_index())
 
-	##region Make sure edited to-do is visible
-	## FIXME: this is pretty hacky patch...
+	#region Make sure edited to-do is visible
+	# FIXME: this is pretty hacky patch...
 	await get_tree().process_frame
 	await get_tree().process_frame
 	await get_tree().process_frame
@@ -329,24 +283,24 @@ func _on_edit_focus_entered() -> void:
 		scroll_container.scroll_vertical += (
 			row_height - scroll_container.scroll_vertical % row_height
 		)
-	##endregion
+	#endregion
 
-	editing_started.emit()
+	get_to_do_list().hide_line_highlight()
 
 
 func delete() -> void:
+	for i in range(%SubItems.get_child_count() - 1, -1, -1):
+		%SubItems.unindent_todo(%SubItems.get_child(i))
+
 	if is_bookmarked:
 		EventBus.bookmark_removed.emit(self)
-	self.unfolded.emit()
-
-	_reindent_sub_todos(-1)
 
 	if %Edit.text:
-		var successor = get_to_do_list().get_nearest_visible_successor(get_index())
+		var successor = get_item_list().get_successor_todo(self)
 		if successor:
 			successor.edit()
 		else:
-			var predecessor = get_to_do_list().get_nearest_visible_predecessor(get_index())
+			var predecessor = get_item_list().get_predecessor_todo(self)
 			if predecessor:
 				predecessor.edit()
 			else:
@@ -356,26 +310,9 @@ func delete() -> void:
 
 	queue_free()
 	if self.text:
+		var to_do_list := get_to_do_list()
 		await tree_exited
-		list_save_requested.emit("to-do deleted")
-
-
-func _reindent_sub_todos(change : int, threshold := indentation_level) -> void:
-	if change == 0 or threshold < 0:
-		return
-
-	var sub_todos := []
-
-	var SUCCESSOR_IDS := range(get_index() + 1, get_item_list().get_child_count())
-	for successor_id in SUCCESSOR_IDS:
-		var successor = get_item_list().get_child(successor_id)
-		if successor.indentation_level == threshold + 1:
-			sub_todos.append(successor)
-		elif successor.indentation_level <= threshold:
-			break # end of scope reached
-
-	for sub_todo in sub_todos:
-		sub_todo.indentation_level += change
+		to_do_list._start_debounce_timer("to-do deleted")
 
 
 func _on_edit_resized() -> void:
@@ -411,14 +348,13 @@ func _on_edit_text_changed(new_text: String) -> void:
 	# hide the mouse cursor once the user starts typing
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 
-	if new_text.begins_with("- ") and \
-		self.indentation_level < get_maximum_indentation_level():
-			self.indentation_level += 1
-			%Edit.text = new_text.right(-2).strip_edges()
-	else:
-		if date:
-			EventBus.bookmark_changed.emit(self, date, get_index())
-		_check_for_search_query_match()
+	if new_text.begins_with("- "):
+		get_item_list().indent_todo(self)
+		%Edit.text = new_text.right(-2).strip_edges()
+
+	if date and is_bookmarked:
+		EventBus.bookmark_changed.emit(self, date, get_list_index())
+	_check_for_search_query_match()
 
 
 func _strip_text(raw_text: String) -> String:
@@ -433,25 +369,32 @@ func _strip_text(raw_text: String) -> String:
 
 
 func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
+	# save caret_column value, as it will be reset once %Edit.text is set
+	set_meta("caret_position", %Edit.caret_column)
+
 	new_text = _strip_text(new_text)
-	%Edit.text = new_text
-	_on_edit_text_changed(new_text)
+	if %Edit.text != new_text:
+		%Edit.text = new_text
+		_on_edit_text_changed(new_text)
 
 	var new_item := (self.text == "")
 
 	if new_text:
 		self.text = new_text
 		%Edit.release_focus()
-		%DragHandle.visible = _contains_mouse_cursor
+		if _contains_mouse_cursor:
+			%DragHandle.modulate.a = 1.0
+		else:
+			%DragHandle.modulate.a = 0.1
 
 		%Edit.caret_column = 0   # scroll item text back to its beginning
 
 		if new_item:
 			if key_input:
 				if Input.is_key_pressed(KEY_SHIFT):
-					predecessor_requested.emit()
+					get_item_list().add_todo_above(self)
 				else:
-					successor_requested.emit()
+					get_item_list().add_todo_below(self)
 		else:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	else:
@@ -481,15 +424,7 @@ func _on_content_gui_input(event: InputEvent) -> void:
 				edit()
 
 
-func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-	return get_to_do_list()._can_drop_data(_at_position, data)
-
-
-func _drop_data(_at_position: Vector2, data: Variant) -> void:
-	get_to_do_list()._drop_data(position - Vector2.ONE, data)
-
-
-func save_to_disk(file : FileAccess) -> void:
+func save_to_disk(file: FileAccess, depth := 0) -> void:
 	if not self.text:
 		return
 
@@ -499,21 +434,18 @@ func save_to_disk(file : FileAccess) -> void:
 
 	var string := ""
 
-	if self.indentation_level > 0:
-		for i in self.indentation_level:
-			string += "  "
+	for i in depth:
+		string += "    "
 
-	if is_heading:
-		if is_folded:
-			string += "> "
-		else:
-			string += "v "
-	elif self.state == States.DONE:
+	if self.state == States.DONE:
 		string += "[x] "
 	elif self.state == States.FAILED:
 		string += "[-] "
 	else:
 		string += "[ ] "
+
+	if is_folded:
+		string += "> "
 
 	if is_italic:
 		string += "*"
@@ -533,21 +465,16 @@ func save_to_disk(file : FileAccess) -> void:
 
 	file.store_line(string)
 
+	for sub_item in %SubItems.get_children():
+		sub_item.save_to_disk(file, depth + 1)
+
 
 func load_from_disk(line : String) -> void:
-	while line.begins_with("  "):
-		line = line.right(-2)
-		self.indentation_level += 1
+	while line.begins_with("    "):
+		line = line.right(-4)
+		get_item_list().indent_todo(self)
 
-	if line.begins_with("# ") or line.begins_with("v "):
-		line = line.right(-2)
-		self.is_heading = true
-		self.is_folded = false
-	elif line.begins_with("> "):
-		line = line.right(-2)
-		self.is_heading = true
-		self.is_folded = true
-	elif line.begins_with("[ ] "):
+	if line.begins_with("[ ] "):
 		line = line.right(-4)
 	elif line.begins_with("[x] "):
 		self.state = States.DONE
@@ -555,8 +482,12 @@ func load_from_disk(line : String) -> void:
 	elif line.begins_with("[-] "):
 		self.state = States.FAILED
 		line = line.right(-4)
+
+	if line.begins_with("> "):
+		line = line.right(-2)
+		self.set_deferred("is_folded", true)
 	else:
-		push_warning("Unknown format for line \"%s\" (will be automatically converted into a todo)" % line)
+		self.set_deferred("is_folded", false)
 
 	var reg_ex := RegEx.new()
 	reg_ex.compile(" \\[COLOR(?<digit>[1-5])\\]$")
@@ -581,72 +512,77 @@ func load_from_disk(line : String) -> void:
 
 func _on_mouse_entered() -> void:
 	_contains_mouse_cursor = true
-	%CheckBox.theme_type_variation = "ToDoItem_Focused"
-	%FoldHeading.theme_type_variation = "ToDoItem_Focused"
-	if not get_viewport().gui_is_dragging():
-		%DragHandle.show()
+
+	if get_viewport().gui_is_dragging():
+		if _can_drop_data(
+			get_global_mouse_position(),
+			get_viewport().gui_get_drag_data()
+		):
+			var style_box := StyleBoxFlat.new()
+			style_box.bg_color = Color("#81A1C1")
+			style_box.set_corner_radius_all(5)
+			%MainRow.add_theme_stylebox_override("panel", style_box)
+	else:
+		%DragHandle.theme_type_variation = "ToDoItem_Focused"
+		%DragHandle.modulate.a = 1.0
 
 
 func _on_mouse_exited() -> void:
 	_contains_mouse_cursor = false
+
 	if not is_queued_for_deletion():
+		%DragHandle.theme_type_variation = "FlatButton"
+
 		if not is_in_edit_mode():
-			%DragHandle.hide()
+			%DragHandle.modulate.a = 0.1
 
-		if self.state == States.DONE:
-			%CheckBox.theme_type_variation = "ToDoItem_Done"
-		elif self.state == States.FAILED:
-			%CheckBox.theme_type_variation = "ToDoItem_Failed"
-		else:
-			%CheckBox.theme_type_variation = "ToDoItem"
-
-		%FoldHeading.theme_type_variation = "ToDoItem"
+	if get_viewport().gui_is_dragging():
+		%MainRow.remove_theme_stylebox_override("panel")
 
 
 func _on_fold_heading_toggled(toggled_on: bool) -> void:
 	self.is_folded = toggled_on
 
 	if self.is_folded:
-		%FoldHeading/Tooltip.text = "Unfold Heading"
+		%FoldHeading/Tooltip.text = "Unfold Sub-Items"
 	else:
-		%FoldHeading/Tooltip.text = "Fold Heading"
-
-
-func set_extra_info(num_done : int , num_items : int) -> void:
-	%ExtraInfo.text = "%d/%d" % [num_done, num_items]
+		%FoldHeading/Tooltip.text = "Fold Sub-Items"
 
 
 func _input(event: InputEvent) -> void:
 	if is_in_edit_mode():
 		if event.is_action_pressed("toggle_todo", false, true):
-			if not is_heading:
+			if %SubItems.is_empty():
 				self.state = States.DONE if self.state != States.DONE else States.TO_DO
+			else:
+				is_folded = not is_folded
+		elif event.is_action_pressed("toggle_todo", true, true):
+			pass  # consume echo events without doing anything
 		elif event.is_action_pressed("cancel_todo", false, true):
-			if not is_heading:
+			if %SubItems.is_empty():
 				self.state = States.FAILED if self.state != States.FAILED else States.TO_DO
+			else:
+				is_folded = not is_folded
+		elif event.is_action_pressed("cancel_todo", true, true):
+			pass  # consume echo events without doing anything
 		elif event.is_action_pressed("previous_todo", true, true):
-			var predecessor = get_to_do_list().get_nearest_visible_predecessor(get_index())
+			var predecessor = get_item_list().get_predecessor_todo(self)
 			if predecessor:
 				predecessor.edit()
 		elif event.is_action_pressed("next_todo", true, true):
-			var successor = get_to_do_list().get_nearest_visible_successor(get_index())
+			var successor = get_item_list().get_successor_todo(self)
 			if successor:
 				successor.edit()
 		elif event.is_action_pressed("move_todo_up", true, true):
-			moved_up.emit()
+			get_item_list().move_todo_up(self)
 		elif event.is_action_pressed("move_todo_down", true, true):
-			moved_down.emit()
+			get_item_list().move_todo_down(self)
 		elif event.is_action_pressed("indent_todo", false, true):
-			self.indentation_level += 1
+			get_item_list().indent_todo(self)
 		elif event.is_action_pressed("indent_todo", true, true):
 			pass  # consume echo events without doing anything
 		elif event.is_action_pressed("unindent_todo", false, true):
-			if self.text and self.indentation_level > 0:
-				# Move the to-do & all its sub items to the end of its current scope. This matters
-				# if it has siblings, which would become sub items after deindentation otherwise!
-				# FIXME: That is a rather hacky way to achieve this...
-				get_to_do_list().move_to_do(self, 999_999_999)
-			self.indentation_level -= 1
+			get_item_list().unindent_todo(self)
 		elif event.is_action_pressed("unindent_todo", true, true):
 			pass  # consume echo events without doing anything
 		elif event.is_action_pressed("next_text_color", false, true):
@@ -727,30 +663,50 @@ func _apply_formatting() -> void:
 			font = preload("res://theme/fonts/OpenSans-Medium.ttf")
 
 	%Edit.add_theme_font_override("font", font)
-	%ExtraInfo.add_theme_font_override("font", font)
 
 
 func _check_for_search_query_match() -> void:
+	var parent_todo := get_parent_todo()
+
 	if not Settings.search_query:
 		text_color_id = text_color_id
 		%Edit.theme_type_variation = "LineEdit_Minimal"
 		%Edit.modulate.a = 1.0
+
+		if parent_todo and parent_todo.is_folded:
+			# If the sub items list was temporarily made visible again, as it
+			# contained a matching item (see elif-case below), hide it again.
+			parent_todo.get_node("%SubItems").hide()
 	elif %Edit.text.contains(Settings.search_query):
 		%Edit.theme_type_variation = "LineEdit_SearchMatch"
 		%Edit.modulate.a = 1.0
+
+		if not is_visible_in_tree():
+			# Temporarily overrule the is_folded state, and make the sub items
+			# list (and therefore: this matching item) visible again.
+			# NOTE: Called deferred, to make sure it's called *after* potential
+			# other, non-matching sub items, which would otherwise immediately
+			# undo this change again (see the else-case below).
+			while parent_todo:
+				if parent_todo.is_folded:
+					parent_todo.get_node("%SubItems").show.call_deferred()
+				parent_todo = parent_todo.get_parent_todo()
 	else:
 		%Edit.theme_type_variation = "LineEdit_Minimal"
 		%Edit.modulate.a = 0.1
 
+		if parent_todo and parent_todo.is_folded:
+			# If the sub items list was temporarily made visible again, as it
+			# contained a matching item (see elif-case above), hide it again.
+			parent_todo.get_node("%SubItems").hide()
+
 
 func _on_bookmark_indicator_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
-		edit()
-
-
-func _on_gui_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel"):
-		%Edit.release_focus()
+	if event is InputEventMouseButton and \
+			event.button_index == MOUSE_BUTTON_LEFT and \
+					event.is_released():
+		Settings.side_panel = Settings.SidePanelState.BOOKMARKS
+		EventBus.bookmark_indicator_clicked.emit(date, get_list_index())
 
 
 # NOTE: `tree_exiting` will be emitted both when this panel is about to be removed from the tree
@@ -758,6 +714,8 @@ func _on_gui_input(event: InputEvent) -> void:
 # when an item is deleted (which is why we check if it's queded for deletion first).
 func _on_tree_exiting() -> void:
 	if not is_queued_for_deletion():
+		%MainRow.theme_type_variation = "ToDoItem_NoHeading"
+
 		# submit any yet unsubmitted changes
 		if %Edit.text != self.text:
 			self.text = %Edit.text
@@ -774,17 +732,18 @@ func _apply_state_relative_formatting(immediate := false) -> void:
 						hide_tween.kill()
 					modulate.a = 1.0
 					hide_tween = create_tween().set_parallel()
-					hide_tween.tween_property(%CheckBox, "modulate:a", 0.0, 1.5)
+					hide_tween.tween_property(%Toggle, "modulate:a", 0.0, 1.5)
 					hide_tween.tween_property(%Content, "modulate:a", 0.0, 1.5)
+					hide_tween.tween_property(%ExtraInfo, "modulate:a", 0.0, 1.5)
 					await hide_tween.finished
 					self.hide()
 
 					if is_in_edit_mode():
-						var successor = get_to_do_list().get_nearest_visible_successor(get_index())
+						var successor = get_item_list().get_successor_todo(self)
 						if successor:
 							successor.edit()
 						else:
-							var predecessor = get_to_do_list().get_nearest_visible_predecessor(get_index())
+							var predecessor = get_item_list().get_predecessor_todo(self)
 							if predecessor:
 								predecessor.edit()
 
@@ -794,74 +753,67 @@ func _apply_state_relative_formatting(immediate := false) -> void:
 		else:
 			if hide_tween:
 				hide_tween.kill()
-				%CheckBox.modulate.a = 1.0
+				%Toggle.modulate.a = 1.0
 				%Content.modulate.a = 1.0
+				%ExtraInfo.modulate.a = 1.0
 	else:
 		if hide_tween:
 			hide_tween.kill()
-			%CheckBox.modulate.a = 1.0
+			%Toggle.modulate.a = 1.0
 			%Content.modulate.a = 1.0
+			%ExtraInfo.modulate.a = 1.0
 		if not is_folded:
 			self.show()
 
 		if Settings.fade_ticked_off_todos:
 			if state != States.TO_DO:
-				%CheckBox.modulate.a = 0.5
+				%Toggle.modulate.a = 0.5
 				%Content.modulate.a = 0.5
+				%ExtraInfo.modulate.a = 0.5
 			else:
-				%CheckBox.modulate.a = 1.0
+				%Toggle.modulate.a = 1.0
 				%Content.modulate.a = 1.0
+				%ExtraInfo.modulate.a = 1.0
 		else:
-			%CheckBox.modulate.a = 1.0
+			%Toggle.modulate.a = 1.0
 			%Content.modulate.a = 1.0
-
-
-func get_maximum_indentation_level() -> int:
-	var max_indentation_level := 3
-
-	if self.get_index() > 0:
-		# The maximum indentation level of a to-do is equal to the indentation
-		# level of its predecessor plus one, unless that value would be higher
-		# than the overall allowed maximum specified above.
-		var predecessor := get_item_list().get_child(self.get_index() - 1)
-		max_indentation_level = min(
-			predecessor.indentation_level + 1,
-			max_indentation_level
-		)
-	else:
-		# The first item in a list is not allowed to be indented!
-		max_indentation_level = 0
-
-	return max_indentation_level
+			%ExtraInfo.modulate.a = 1.0
 
 
 func _on_edit_gui_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_text_backspace"):
-		if %Edit.text == "" and self.indentation_level > 0:
-			self.indentation_level -= 1
+	# Only allow focusing the edit field via left-clicks (by default, pressing
+	# the right or middle mouse button will work as well)
+	if event is InputEventMouseButton and \
+			event.button_index != MOUSE_BUTTON_LEFT:
+		accept_event()
+
+	if event.is_action_pressed("ui_text_backspace") and %Edit.text == "":
+		get_item_list().unindent_todo(self)
+
+	if event.is_action_pressed("ui_cancel"):
+		%Edit.release_focus()
 
 
 func _has_unticked_sub_todos() -> bool:
-	var SUCCESSOR_IDS := range(get_index() + 1, get_item_list().get_child_count())
-	for successor_id in SUCCESSOR_IDS:
-		var successor = get_item_list().get_child(successor_id)
-		if successor.indentation_level <= indentation_level:
-			break # end of scope reached
-		if successor.state == States.TO_DO:
+	for sub_item in %SubItems.get_children():
+		if sub_item.state == States.TO_DO:
 			return true
+		else:
+			if sub_item._has_unticked_sub_todos():
+				return true
 
 	return false
 
 
-func get_parent_todo() -> Control:
-	if indentation_level:
-		var PREDECESSOR_IDS := range(get_index() - 1, 0, -1)
-		for predecessor_id in PREDECESSOR_IDS:
-			var predecessor = get_item_list().get_child(predecessor_id)
-			if predecessor.indentation_level < indentation_level:
-				return predecessor
+func get_parent_todo() -> ToDoItem:
+	if self.get_item_list().name != "SubItems":
+		return null
 
-	return null
+	var parent := get_parent()
+	while parent is not ToDoItem and parent != null:
+		parent = parent.get_parent()
+
+	return parent
 
 
 func get_item_list() -> VBoxContainer:
@@ -880,3 +832,162 @@ func get_day_panel() -> DayPanel:
 	while parent is not DayPanel and parent != null:
 		parent = parent.get_parent()
 	return parent
+
+
+func _on_sub_item_added() -> void:
+	%CheckBox.hide()
+	%FoldHeading.show()
+	if indentation_level == 0:
+		%MainRow.theme_type_variation = "ToDoItem_Heading"
+
+	_adapt_sub_item_state()
+
+
+func _on_sub_item_removed(sub_item: ToDoItem) -> void:
+	var day_panel := get_day_panel()
+
+	if day_panel and not day_panel.is_queued_for_deletion():
+		# at this point, the sub item is still part of the tree
+		if sub_item.is_bookmarked:
+			EventBus.bookmark_changed.emit.call_deferred(
+				sub_item,
+				sub_item.date,
+				sub_item.get_list_index()
+			)
+			sub_item.has_requested_bookmark_update = true
+
+	await get_tree().process_frame
+
+	# now, the sub item is no longer part of the tree
+	if %SubItems.is_empty():
+		%CheckBox.show()
+		%FoldHeading.hide()
+		if indentation_level == 0:
+			%MainRow.theme_type_variation = "ToDoItem_NoHeading"
+
+	_adapt_sub_item_state()
+
+
+func get_sub_item_count() -> int:
+	var sub_item_count := 0
+
+	for sub_item in %SubItems.get_children():
+		sub_item_count += 1 + sub_item.get_sub_item_count()
+
+	return sub_item_count
+
+
+func get_done_items_count() -> int:
+	var done_items_count := 0
+
+	for sub_item in %SubItems.get_children():
+		if sub_item.state != States.TO_DO:
+			done_items_count += 1
+
+		done_items_count += sub_item.get_done_items_count()
+
+	return done_items_count
+
+
+func _update_extra_info() -> void:
+	var sub_item_count := get_sub_item_count()
+	var done_items_count := get_done_items_count()
+
+	%ExtraInfo.text = "(%d/%d)" % [done_items_count, sub_item_count]
+
+
+func has_sub_items() -> bool:
+	return get_node("%SubItems").get_child_count()
+
+
+func get_sub_item(index: int) -> Variant:
+	for sub_item in %SubItems.get_children():
+		if index == 0:
+			return sub_item
+		else:
+			index -= 1
+
+		var result = sub_item.get_sub_item(index)
+		if result is ToDoItem:
+			return result
+		else:
+			index = result
+
+	return index
+
+
+func _adapt_sub_item_state() -> void:
+	if %SubItems.is_empty():
+		self.state = States.TO_DO
+	else:
+		if _has_unticked_sub_todos():
+			self.state = States.TO_DO
+		else:
+			self.state = States.DONE
+
+
+func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
+	# prevents the user from dropping a to-do on itself or its own sub items
+	return data is ToDoItem and data != self and not data.is_ancestor_of(self)
+
+
+func _drop_data(_at_position: Vector2, data: Variant) -> void:
+	%MainRow.remove_theme_stylebox_override("panel")
+
+	if data.get_parent_todo() == self:
+		# If a to-do is dropped on its parent to-do, move the to-do to the
+		# end of the item list of its parent to-do (if it isn't already).
+		%SubItems.move_child(data, -1)
+	else:
+		var old_list = data.get_to_do_list()
+
+		if not self.get_day_panel():
+			data.is_bookmarked = false
+
+		data.reparent(%SubItems)
+		if old_list != self.get_to_do_list():
+			old_list._start_debounce_timer("to-do dragged to another list")
+
+		if data.is_in_edit_mode():
+			data.edit()
+
+		data.get_to_do_list()._start_debounce_timer("to-do dropped")
+
+
+func contains_search_query_match() -> bool:
+	if not Settings.search_query:
+		return false
+
+	if get_node("%Edit").text.contains(Settings.search_query):
+		return true
+
+	for sub_item in %SubItems.get_children():
+		if sub_item.contains_search_query_match():
+			return true
+
+	return false
+
+
+func get_list_index() -> int:
+	return get_to_do_list().get_line_number_for_item(self)
+
+
+func _on_check_box_mouse_entered() -> void:
+	%CheckBox.theme_type_variation = "ToDoItem_Focused"
+
+
+func _on_check_box_mouse_exited() -> void:
+	if self.state == States.DONE:
+		%CheckBox.theme_type_variation = "ToDoItem_Done"
+	elif self.state == States.FAILED:
+		%CheckBox.theme_type_variation = "ToDoItem_Failed"
+	else:
+		%CheckBox.theme_type_variation = "ToDoItem"
+
+
+func _on_fold_heading_mouse_entered() -> void:
+	%FoldHeading.theme_type_variation = "ToDoItem_Focused"
+
+
+func _on_fold_heading_mouse_exited() -> void:
+	%FoldHeading.theme_type_variation = "FlatButton"

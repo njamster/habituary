@@ -15,6 +15,7 @@ signal todo_list_clicked
 
 signal bookmark_added(to_do)
 signal bookmark_changed(to_do, old_date, old_index)
+signal bookmark_indicator_clicked(date, index)
 signal bookmark_removed(to_do)
 signal bookmark_jump_requested(date, line_number)
 @warning_ignore_restore("unused_signal")

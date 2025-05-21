@@ -19,7 +19,6 @@ func _ready() -> void:
 func _set_initial_state() -> void:
 	# Temporarily switch to the longest version of the respective button labels:
 	%Bookmark.text = "Remove Bookmark"
-	%Delete.text = "Delete Heading"
 	# Measure the minimum size of the editing options (i.e. *with* labels). This
 	# will act as the threshold at which all labels in the editing options will
 	# automatically be hidden to save horizontal space:
@@ -39,7 +38,6 @@ func _set_initial_state() -> void:
 func _connect_signals() -> void:
 	$PanelContainer.resized.connect(_on_editing_options_resized)
 
-	%Heading.toggled.connect(_on_heading_toggled)
 	%Bold.toggled.connect(_on_bold_toggled)
 	%Italic.toggled.connect(_on_italic_toggled)
 	%TextColor.gui_input.connect(_on_text_color_gui_input)
@@ -49,31 +47,10 @@ func _connect_signals() -> void:
 
 
 func update() -> void:
-	update_indentation()
-	update_heading()
 	update_bold()
 	update_italic()
 	update_text_color()
 	update_bookmark()
-
-
-func update_indentation() -> void:
-	$Indentation.add_theme_constant_override(
-		"margin_left",
-		to_do.get_node("%Indentation").custom_minimum_size.x
-	)
-
-
-func update_heading() -> void:
-	%Heading.button_pressed = to_do.is_heading
-
-	if %Heading.button_pressed:
-		%Heading/Tooltip.text = "Undo Heading"
-		%Delete.text = "Delete Heading"
-	else:
-		%Heading/Tooltip.text = "Make Heading"
-		%Delete.text = "Delete To-Do"
-	%Delete/Tooltip.text = %Delete.text
 
 
 func update_bold() -> void:
@@ -132,10 +109,6 @@ func _on_editing_options_resized() -> void:
 		%Bookmark/Tooltip.hide_text = true
 
 
-func _on_heading_toggled(toggled_on: bool) -> void:
-	to_do.is_heading = toggled_on
-
-
 func _on_bold_toggled(toggled_on: bool) -> void:
 	to_do.is_bold = toggled_on
 
@@ -173,11 +146,7 @@ func _on_delete_pressed() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("toggle_heading", false, true):
-		%Heading.button_pressed = not %Heading.button_pressed
-	elif event.is_action_pressed("toggle_heading", true, true):
-		pass  # consume echo events without doing anything
-	elif event.is_action_pressed("toggle_bold", false, true):
+	if event.is_action_pressed("toggle_bold", false, true):
 		%Bold.button_pressed = not %Bold.button_pressed
 	elif event.is_action_pressed("toggle_bold", true, true):
 		pass  # consume echo events without doing anything

@@ -453,6 +453,30 @@ bbcode_enabled = true
 text = "[fill]The set of colors that can be assigned to a to-do's text in the formatting options while editing it. Changing this [u]will[/u] affect existing colored to-dos![/fill]"
 fit_content = true
 
+[node name="ShowSubItemCount" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content" index="3"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ShowSubItemCount"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ShowSubItemCount/Setting"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme_type_variation = &"HeaderSmall"
+text = "Show Sub Item Count"
+
+[node name="Options" type="OptionButton" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ShowSubItemCount/Setting"]
+layout_mode = 2
+
+[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ShowSubItemCount"]
+modulate = Color(1, 1, 1, 0.607843)
+layout_mode = 2
+theme_type_variation = &"Explanation"
+bbcode_enabled = true
+fit_content = true
+
 [node name="Calendar" parent="ScrollContainer/PaddedScrollbar/VBox" instance=ExtResource("3_jtwi2")]
 layout_mode = 2
 theme_type_variation = &"TinySeparation"

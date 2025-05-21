@@ -14,6 +14,7 @@ var date : Date:
 		# reset formatting
 		%DayCounter.remove_theme_color_override("font_color")
 		modulate.a = 1.0
+		%JumpTo.modulate.a = 1.0
 
 		_apply_date_relative_formating()
 
@@ -40,15 +41,19 @@ var is_done := false:
 		if day_diff == 0:
 			if is_done:
 				modulate.a = 0.4
+				%JumpTo.modulate.a = 2.5
 				%DayCounter.remove_theme_color_override("font_color")
 				if not old_value:
 					Settings.bookmarks_due_today -= 1
 			else:
 				modulate.a = 1.0
+				%JumpTo.modulate.a = 1.0
 				%DayCounter.add_theme_color_override("font_color", "a3be8c")
 				if old_value:
 					Settings.bookmarks_due_today += 1
 		_on_show_bookmarks_from_the_past_changed()
+
+var updated_this_frame := false
 
 
 func _ready() -> void:
@@ -68,8 +73,6 @@ func _connect_signals() -> void:
 	#endregion
 
 	#region Local Signals
-	tree_exited.connect(_on_tree_exited)
-
 	%JumpTo.pressed.connect(_on_jump_to_pressed)
 	#endregion
 
@@ -107,6 +110,7 @@ func _apply_date_relative_formating() -> void:
 
 	if day_diff < 0:
 		modulate.a = 0.4
+		%JumpTo.modulate.a = 2.5
 		%DayCounter.remove_theme_color_override("font_color")
 		if day_diff == -1:
 			%DayCounter.text = "Yesterday"
@@ -115,6 +119,7 @@ func _apply_date_relative_formating() -> void:
 		theme_type_variation = ""
 	elif day_diff > 0:
 		modulate.a = 1.0
+		%JumpTo.modulate.a = 1.0
 		%DayCounter.remove_theme_color_override("font_color")
 		if day_diff == 1:
 			%DayCounter.text = "Tomorrow"
@@ -123,6 +128,7 @@ func _apply_date_relative_formating() -> void:
 		theme_type_variation = ""
 	else:
 		modulate.a = 1.0
+		%JumpTo.modulate.a = 1.0
 		%DayCounter.add_theme_color_override("font_color", "a3be8c")
 		%DayCounter.text = "TODAY"
 		theme_type_variation = "Bookmark_Today"
@@ -138,6 +144,7 @@ func _on_jump_to_pressed() -> void:
 	EventBus.bookmark_jump_requested.emit(date, line_number)
 
 
-func _on_tree_exited() -> void:
+func remove() -> void:
 	if date.day_difference_to(DayTimer.today) == 0 and not is_done:
 		Settings.bookmarks_due_today -= 1
+	queue_free()
