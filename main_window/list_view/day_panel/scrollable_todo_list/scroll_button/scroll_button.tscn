@@ -1,6 +1,5 @@
-[gd_scene load_steps=4 format=3 uid="uid://ofa44bt1yn4u"]
+[gd_scene load_steps=3 format=3 uid="uid://ofa44bt1yn4u"]
 
-[ext_resource type="Texture2D" uid="uid://mvrb0206nsy5" path="res://main_window/list_view/day_panel/scrollable_todo_list/images/line.png" id="2_6ekag"]
 [ext_resource type="Script" uid="uid://bbwswrn7qu1tp" path="res://main_window/list_view/day_panel/scrollable_todo_list/scroll_button/scroll_button.gd" id="2_gh5kw"]
 [ext_resource type="Script" uid="uid://bcgem14qd6rmk" path="res://custom/drag_hover_trigger.gd" id="3_bvify"]
 
@@ -10,7 +9,6 @@ offset_right = 1.0
 offset_bottom = 40.0
 mouse_filter = 0
 mouse_default_cursor_shape = 2
-texture = ExtResource("2_6ekag")
 stretch_mode = 1
 script = ExtResource("2_gh5kw")
 

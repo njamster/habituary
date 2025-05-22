@@ -17,6 +17,12 @@ func _ready() -> void:
 func _set_initial_state() -> void:
 	hide_line_highlight()
 
+	var spacer = Control.new()
+	spacer.name = "Spacer"
+	spacer.custom_minimum_size.y = 13
+	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	%Items.add_child(spacer, true, Node.INTERNAL_MODE_BACK)
+
 
 func _connect_signals() -> void:
 	#region Parent Signals
@@ -83,7 +89,7 @@ func show_line_highlight(x_offset: int) -> void:
 	%LineHighlight.position.y = clamp(
 		line_position - 2,
 		0,
-		$Items.get_combined_minimum_size().y
+		$Items.get_combined_minimum_size().y - %Items.get_node("Spacer").get_combined_minimum_size().y
 	) + $Offset.get_theme_constant("margin_top")
 
 	%LineHighlight.modulate.a = 1.0

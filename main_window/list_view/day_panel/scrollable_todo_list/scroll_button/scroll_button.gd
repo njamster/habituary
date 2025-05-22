@@ -2,7 +2,14 @@ extends TextureRect
 
 
 enum Modes {UP, DOWN}
-@export var mode := Modes.UP
+@export var mode := Modes.UP:
+	set(value):
+		mode = value
+
+		if mode == Modes.UP:
+			texture = null
+		else:
+			texture = preload("../images/line.png")
 
 @onready var SCROLL_CONTAINER := get_parent().get_node("ScrollContainer")
 @onready var SCROLL_CONTAINER_CONTENT := SCROLL_CONTAINER.get_child(0)

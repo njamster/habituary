@@ -59,7 +59,10 @@ func _on_gui_input(event: InputEvent) -> void:
 
 
 #region Adding Items
-func _on_item_added(item: ToDoItem) -> void:
+func _on_item_added(item: Node) -> void:
+	if item != ToDoItem:
+		return
+
 	if name == "Items":
 		item.indentation_level = 0
 	elif name == "SubItems":

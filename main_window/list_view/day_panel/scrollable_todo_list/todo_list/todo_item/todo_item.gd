@@ -784,7 +784,7 @@ func _on_edit_gui_input(event: InputEvent) -> void:
 	# Only allow focusing the edit field via left-clicks (by default, pressing
 	# the right or middle mouse button will work as well)
 	if event is InputEventMouseButton and \
-			event.button_index != MOUSE_BUTTON_LEFT:
+			event.button_index in [MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_RIGHT]:
 		accept_event()
 
 	if event.is_action_pressed("ui_text_backspace") and %Edit.text == "":

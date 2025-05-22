@@ -35,17 +35,21 @@ func _on_gui_input(event: InputEvent) -> void:
 func _scroll_one_item_down(emit_scrolled_signal := true) -> void:
 	var previous_value := scroll_vertical
 	scroll_vertical += TODO_ITEM_HEIGHT
-	if emit_scrolled_signal:
-		if scroll_vertical != previous_value:
-			scrolled.emit.call_deferred()
+
+	if scroll_vertical != previous_value + TODO_ITEM_HEIGHT:
+		scroll_vertical = previous_value
+	elif emit_scrolled_signal and scroll_vertical != previous_value:
+		scrolled.emit.call_deferred()
 
 
 func _scroll_one_item_up(emit_scrolled_signal := true) -> void:
 	var previous_value := scroll_vertical
 	scroll_vertical -= TODO_ITEM_HEIGHT
-	if emit_scrolled_signal:
-		if scroll_vertical != previous_value:
-			scrolled.emit.call_deferred()
+
+	if scroll_vertical != previous_value - TODO_ITEM_HEIGHT:
+		scroll_vertical = previous_value
+	elif emit_scrolled_signal and scroll_vertical != previous_value:
+		scrolled.emit.call_deferred()
 
 
 func _set(property: StringName, value: Variant) -> bool:
