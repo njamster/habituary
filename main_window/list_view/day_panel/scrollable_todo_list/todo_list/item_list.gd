@@ -60,7 +60,7 @@ func _on_gui_input(event: InputEvent) -> void:
 
 #region Adding Items
 func _on_item_added(item: Node) -> void:
-	if item != ToDoItem:
+	if item is not ToDoItem:
 		return
 
 	if name == "Items":

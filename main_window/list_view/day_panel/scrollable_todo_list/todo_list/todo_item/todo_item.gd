@@ -783,9 +783,14 @@ func _apply_state_relative_formatting(immediate := false) -> void:
 func _on_edit_gui_input(event: InputEvent) -> void:
 	# Only allow focusing the edit field via left-clicks (by default, pressing
 	# the right or middle mouse button will work as well)
-	if event is InputEventMouseButton and \
-			event.button_index in [MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_RIGHT]:
-		accept_event()
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_RIGHT:
+			accept_event()
+		if event.button_index == MOUSE_BUTTON_MIDDLE:
+			# If the edit field is already focused, middle clicking it should
+			# paste the clipboard content – so we can't accept it then!
+			if not %Edit.has_focus():
+				accept_event()
 
 	if event.is_action_pressed("ui_text_backspace") and %Edit.text == "":
 		get_item_list().unindent_todo(self)
