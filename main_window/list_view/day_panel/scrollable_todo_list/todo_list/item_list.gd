@@ -89,6 +89,13 @@ func add_todo_above(item: ToDoItem, auto_edit := true) -> ToDoItem:
 
 func add_todo_below(item: ToDoItem, auto_edit := true) -> ToDoItem:
 	return add_todo(item.get_index() + 1, auto_edit)
+
+
+func add_sub_item(item: ToDoItem, auto_edit := true) -> ToDoItem:
+	return item.get_node("%SubItems").add_todo(
+		item.get_sub_item_count(),
+		auto_edit
+	)
 #endregion
 
 

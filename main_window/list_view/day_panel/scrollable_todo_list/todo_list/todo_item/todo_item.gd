@@ -352,6 +352,12 @@ func _on_edit_text_changed(new_text: String) -> void:
 		get_item_list().indent_todo(self)
 		%Edit.text = new_text.right(-2).strip_edges()
 
+	if not %SubItems.is_empty():
+		if %Edit.text.strip_edges().ends_with(":"):
+			%MainRow.theme_type_variation = "ToDoItem_Heading"
+		else:
+			%MainRow.theme_type_variation = "ToDoItem_NoHeading"
+
 	if date and is_bookmarked:
 		EventBus.bookmark_changed.emit(self, date, get_list_index())
 	_check_for_search_query_match()
@@ -361,9 +367,41 @@ func _strip_text(raw_text: String) -> String:
 	# trim any leading & trailing whitespace
 	raw_text = raw_text.strip_edges()
 
-	# if users manually added the bookmark tag to the end of the to-do's text, remove it...
-	while raw_text.ends_with("[BOOKMARK]"):
-		raw_text = raw_text.left(-10).strip_edges()
+	# Check if the text contains any tags (like a bookmark or a color tag) or
+	# markup (like asterisks or underscores), and if so, trigger their effect
+	# and then remove them from the text.
+	while true:
+		if raw_text.ends_with("[BOOKMARK]"):
+			raw_text = raw_text.left(-10).strip_edges()
+			is_bookmarked = true
+			continue  # from the start of the while loop again
+
+		var color_tag_reg_ex := RegEx.new()
+		color_tag_reg_ex.compile("\\[COLOR(?<digit>[1-5])\\]$")
+		var color_tag_reg_ex_match := color_tag_reg_ex.search(raw_text)
+		if color_tag_reg_ex_match:
+			raw_text = raw_text.substr(0, raw_text.length() - 9).strip_edges()
+			text_color_id = int(color_tag_reg_ex_match.get_string("digit"))
+			continue  # from the start of the while loop again
+
+		# NOTE: The following two if-conditions do *not* check if the matching
+		# parts in the beginning and end of the raw text are distinct. This is
+		# intended! It will also strip *any* number of asterisks or underscores
+		# when the raw text only contains those and nothing else.
+
+		if raw_text.begins_with("**") and raw_text.ends_with("**") or \
+			raw_text.begins_with("__") and raw_text.ends_with("__"):
+				raw_text = raw_text.left(-2).right(-2).strip_edges()
+				is_bold = true
+				continue  # from the start of the while loop again
+
+		if raw_text.begins_with("*") and raw_text.ends_with("*") or \
+			raw_text.begins_with("_") and raw_text.ends_with("_"):
+				raw_text = raw_text.left(-1).right(-1).strip_edges()
+				is_italic = true
+				continue  # from the start of the while loop again
+
+		break  # the while loop, nothing to replace was found anymore
 
 	return raw_text
 
@@ -390,13 +428,19 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 		%Edit.caret_column = 0   # scroll item text back to its beginning
 
 		if new_item:
-			if key_input:
-				if Input.is_key_pressed(KEY_SHIFT):
-					get_item_list().add_todo_above(self)
-				else:
-					get_item_list().add_todo_below(self)
+			if new_text.ends_with(":"):
+				get_item_list().add_sub_item(self)
+			else:
+				get_item_list().add_todo_below(self)
 		else:
-			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+			if key_input:
+				if Input.is_action_pressed("add_todo_above", true):
+					get_item_list().add_todo_above(self)
+				elif Input.is_action_pressed("add_todo_below", true):
+					if new_text.ends_with(":"):
+						get_item_list().add_sub_item(self)
+					else:
+						get_item_list().add_todo_below(self)
 	else:
 		delete()
 
@@ -409,7 +453,6 @@ func _on_edit_focus_exited() -> void:
 			_on_edit_text_submitted(%Edit.text, false)
 			if has_node("EditingOptions"):
 				$EditingOptions.queue_free()
-			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 
 func _on_focus_exited() -> void:
@@ -489,23 +532,10 @@ func load_from_disk(line : String) -> void:
 	else:
 		self.set_deferred("is_folded", false)
 
-	var reg_ex := RegEx.new()
-	reg_ex.compile(" \\[COLOR(?<digit>[1-5])\\]$")
-	var reg_ex_match := reg_ex.search(line)
-	if reg_ex_match:
-		line = line.substr(0, line.length() - 9)
-		text_color_id = int(reg_ex_match.get_string("digit"))
+	line = _strip_text(line)
 
-	if line.ends_with(" [BOOKMARK]"):
-		line = line.substr(0, line.length() - 11)
-		is_bookmarked = true
-
-	if line.begins_with("**") and  line.ends_with("**"):
-		line = line.substr(2, line.length() - 4)
-		is_bold = true
-	if line.begins_with("*") and  line.ends_with("*"):
-		line = line.substr(1, line.length() - 2)
-		is_italic = true
+	if line.is_empty():
+		queue_free()  # forbidden or no text
 
 	self.text = line
 
@@ -842,7 +872,7 @@ func get_day_panel() -> DayPanel:
 func _on_sub_item_added() -> void:
 	%CheckBox.hide()
 	%FoldHeading.show()
-	if indentation_level == 0:
+	if indentation_level == 0 and %Edit.text.strip_edges().ends_with(":"):
 		%MainRow.theme_type_variation = "ToDoItem_Heading"
 
 	_adapt_sub_item_state()
