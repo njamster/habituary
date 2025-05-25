@@ -240,6 +240,8 @@ func _connect_signals() -> void:
 
 	%SubItems.child_entered_tree.connect(_on_sub_item_added.unbind(1))
 	%SubItems.child_exiting_tree.connect(_on_sub_item_removed)
+
+	$UnfoldTimer.timeout.connect(func(): is_folded = false)
 	#endregion
 
 
@@ -427,13 +429,13 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 
 		%Edit.caret_column = 0   # scroll item text back to its beginning
 
-		if new_item:
-			if new_text.ends_with(":"):
-				get_item_list().add_sub_item(self)
+		if key_input:
+			if new_item:
+					if new_text.ends_with(":"):
+						get_item_list().add_sub_item(self)
+					else:
+						get_item_list().add_todo_below(self)
 			else:
-				get_item_list().add_todo_below(self)
-		else:
-			if key_input:
 				if Input.is_action_pressed("add_todo_above", true):
 					get_item_list().add_todo_above(self)
 				elif Input.is_action_pressed("add_todo_below", true):
@@ -453,6 +455,8 @@ func _on_edit_focus_exited() -> void:
 			_on_edit_text_submitted(%Edit.text, false)
 			if has_node("EditingOptions"):
 				$EditingOptions.queue_free()
+			if not get_viewport().gui_get_focus_owner():
+				Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 
 func _on_focus_exited() -> void:
@@ -552,6 +556,8 @@ func _on_mouse_entered() -> void:
 			style_box.bg_color = Color("#81A1C1")
 			style_box.set_corner_radius_all(5)
 			%MainRow.add_theme_stylebox_override("panel", style_box)
+
+			$UnfoldTimer.start()
 	else:
 		%DragHandle.theme_type_variation = "ToDoItem_Focused"
 		%DragHandle.modulate.a = 1.0
@@ -568,6 +574,7 @@ func _on_mouse_exited() -> void:
 
 	if get_viewport().gui_is_dragging():
 		%MainRow.remove_theme_stylebox_override("panel")
+		$UnfoldTimer.stop()
 
 
 func _on_fold_heading_toggled(toggled_on: bool) -> void:

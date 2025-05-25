@@ -149,3 +149,7 @@ unique_name_in_owner = true
 layout_mode = 2
 mouse_default_cursor_shape = 2
 script = ExtResource("10_sj4p5")
+
+[node name="UnfoldTimer" type="Timer" parent="."]
+wait_time = 1.5
+one_shot = true
