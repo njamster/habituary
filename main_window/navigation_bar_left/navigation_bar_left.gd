@@ -36,11 +36,11 @@ func _on_today_pressed() -> void:
 
 func _on_current_day_changed() -> void:
 	if Settings.current_day.day_difference_to(DayTimer.today) == 0:
-		$Today.disabled = true
-		$Today.mouse_default_cursor_shape = CURSOR_FORBIDDEN
+		$Today.mouse_default_cursor_shape = CURSOR_ARROW
+		$Today.hide()
 	else:
-		$Today.disabled = false
 		$Today.mouse_default_cursor_shape = CURSOR_POINTING_HAND
+		$Today.show()
 
 
 func _on_view_mode_changed() -> void:
