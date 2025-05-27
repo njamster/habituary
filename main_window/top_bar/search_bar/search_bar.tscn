@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://c0f0h24u7wfrh"]
+[gd_scene load_steps=5 format=3 uid="uid://c0f0h24u7wfrh"]
 
 [ext_resource type="Texture2D" uid="uid://b8a1xfqe1gfp5" path="res://main_window/top_bar/search_bar/images/search.svg" id="1_1sgf3"]
 [ext_resource type="Script" uid="uid://c7d816d5w87db" path="res://main_window/top_bar/search_bar/search_bar.gd" id="1_6r0fp"]
 [ext_resource type="Script" uid="uid://bqai4pv020yjf" path="res://custom/tooltip.gd" id="3_s4ac0"]
+[ext_resource type="Texture2D" uid="uid://dei5r2t8aee11" path="res://main_window/top_bar/search_bar/images/space_icon.png" id="4_f4laa"]
 
 [node name="SearchBar" type="PanelContainer"]
 offset_right = 215.0
@@ -34,19 +35,20 @@ text = "Search"
 popup_position = 4
 gap_width = 12
 
-[node name="SearchQuery" type="LineEdit" parent="HBox"]
+[node name="SearchQuery" type="TextEdit" parent="HBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(118, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 theme_type_variation = &"LineEdit_Minimal"
+theme_override_constants/line_spacing = 0
+theme_override_icons/space = ExtResource("4_f4laa")
 placeholder_text = "Search To-Dos..."
 context_menu_enabled = false
-clear_button_enabled = true
-select_all_on_focus = true
 caret_blink = true
 caret_blink_interval = 0.45
+draw_spaces = true
 
 [node name="ShortcutHint" type="Button" parent="HBox"]
 unique_name_in_owner = true

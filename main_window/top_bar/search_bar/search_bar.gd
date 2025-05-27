@@ -19,7 +19,6 @@ func _connect_signals() -> void:
 	%Icon.pressed.connect(_on_icon_pressed)
 
 	%SearchQuery.text_changed.connect(_on_search_query_text_changed)
-	%SearchQuery.text_submitted.connect(_on_search_query_text_submitted)
 	%SearchQuery.focus_entered.connect(_on_search_query_focus_entered)
 	%SearchQuery.focus_exited.connect(_on_search_query_focus_exited)
 	%SearchQuery.gui_input.connect(_on_search_query_gui_input)
@@ -42,6 +41,7 @@ func _on_gui_input(event: InputEvent) -> void:
 
 func _on_search_query_focus_entered() -> void:
 	theme_type_variation = "SearchBar_Focused"
+	%SearchQuery.select_all()
 	%ShortcutHint.hide()
 
 
@@ -53,19 +53,26 @@ func _on_search_query_focus_exited() -> void:
 	%ShortcutHint.show()
 
 
-func _on_search_query_text_changed(new_text: String) -> void:
-	Settings.search_query = new_text
+func _on_search_query_text_changed() -> void:
+	Settings.search_query = %SearchQuery.text
 
 
 func _on_search_query_gui_input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		# prevent the built-in TextEdit-behavior when pressing TAB...
+		if event.keycode == KEY_TAB:
+			accept_event()
+			return
+		# ... or ENTER (a.k.a. ui_accept)
+		elif event.keycode in [KEY_ENTER, KEY_KP_ENTER]:
+			%SearchQuery.release_focus()
+			accept_event()
+			return
+
 	if event.is_action_pressed("ui_cancel"):
 		%SearchQuery.text = ""
-		%SearchQuery.text_changed.emit("")
+		%SearchQuery.text_changed.emit()
 		%SearchQuery.release_focus()
-
-
-func _on_search_query_text_submitted(_new_text: String) -> void:
-	%SearchQuery.release_focus()
 
 
 func _on_shortcut_hint_pressed() -> void:
