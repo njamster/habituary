@@ -676,12 +676,6 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	to_do_item_toggle_padding.margin_right = 6
 	#endregion
 
-	#region ToDoItem_ContentPadding
-	var to_do_item_content_padding := theme.create_theme_type("ToDoItem_ContentPadding", "MarginContainer")
-
-	to_do_item_content_padding.margin_right = 6
-	#endregion
-
 	#region ToDoItem_BookmarkButton
 	var to_do_item_bookmark_button := theme.create_theme_type("ToDoItem_BookmarkButton", "Button")
 

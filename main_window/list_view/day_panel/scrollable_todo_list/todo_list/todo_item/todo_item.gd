@@ -54,7 +54,7 @@ var state := States.TO_DO:
 			if indentation_level:
 				get_parent_todo()._adapt_sub_item_state()
 
-			if not _contains_mouse_cursor:
+			if not _is_mouse_over_checkbox:
 				if self.state == States.DONE:
 					%CheckBox.theme_type_variation = "ToDoItem_Done"
 				elif self.state == States.FAILED:
@@ -96,7 +96,7 @@ var is_italic := false:
 			if _initialization_finished and self.text:
 				get_to_do_list()._start_debounce_timer("is_italic changed")
 
-var _contains_mouse_cursor := false
+var _is_mouse_over_checkbox := false
 
 var is_folded := false:
 	set(value):
@@ -422,10 +422,6 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 	if new_text:
 		self.text = new_text
 		%Edit.release_focus()
-		if _contains_mouse_cursor:
-			%DragHandle.modulate.a = 1.0
-		else:
-			%DragHandle.modulate.a = 0.1
 
 		%Edit.caret_column = 0   # scroll item text back to its beginning
 
@@ -461,14 +457,6 @@ func _on_edit_focus_exited() -> void:
 
 func _on_focus_exited() -> void:
 	_on_edit_focus_exited()
-
-
-func _on_content_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
-		if not is_in_edit_mode():
-			accept_event()
-			if self.state == States.TO_DO and _contains_mouse_cursor:
-				edit()
 
 
 func save_to_disk(file: FileAccess, depth := 0) -> void:
@@ -545,8 +533,6 @@ func load_from_disk(line : String) -> void:
 
 
 func _on_mouse_entered() -> void:
-	_contains_mouse_cursor = true
-
 	if get_viewport().gui_is_dragging():
 		if _can_drop_data(
 			get_global_mouse_position(),
@@ -564,8 +550,6 @@ func _on_mouse_entered() -> void:
 
 
 func _on_mouse_exited() -> void:
-	_contains_mouse_cursor = false
-
 	if not is_queued_for_deletion():
 		%DragHandle.theme_type_variation = "FlatButton"
 
@@ -770,7 +754,7 @@ func _apply_state_relative_formatting(immediate := false) -> void:
 					modulate.a = 1.0
 					hide_tween = create_tween().set_parallel()
 					hide_tween.tween_property(%Toggle, "modulate:a", 0.0, 1.5)
-					hide_tween.tween_property(%Content, "modulate:a", 0.0, 1.5)
+					hide_tween.tween_property(%Edit, "modulate:a", 0.0, 1.5)
 					hide_tween.tween_property(%ExtraInfo, "modulate:a", 0.0, 1.5)
 					await hide_tween.finished
 					self.hide()
@@ -791,13 +775,13 @@ func _apply_state_relative_formatting(immediate := false) -> void:
 			if hide_tween:
 				hide_tween.kill()
 				%Toggle.modulate.a = 1.0
-				%Content.modulate.a = 1.0
+				%Edit.modulate.a = 1.0
 				%ExtraInfo.modulate.a = 1.0
 	else:
 		if hide_tween:
 			hide_tween.kill()
 			%Toggle.modulate.a = 1.0
-			%Content.modulate.a = 1.0
+			%Edit.modulate.a = 1.0
 			%ExtraInfo.modulate.a = 1.0
 		if not is_folded:
 			self.show()
@@ -805,15 +789,15 @@ func _apply_state_relative_formatting(immediate := false) -> void:
 		if Settings.fade_ticked_off_todos:
 			if state != States.TO_DO:
 				%Toggle.modulate.a = 0.5
-				%Content.modulate.a = 0.5
+				%Edit.modulate.a = 0.5
 				%ExtraInfo.modulate.a = 0.5
 			else:
 				%Toggle.modulate.a = 1.0
-				%Content.modulate.a = 1.0
+				%Edit.modulate.a = 1.0
 				%ExtraInfo.modulate.a = 1.0
 		else:
 			%Toggle.modulate.a = 1.0
-			%Content.modulate.a = 1.0
+			%Edit.modulate.a = 1.0
 			%ExtraInfo.modulate.a = 1.0
 
 
@@ -1015,10 +999,14 @@ func get_list_index() -> int:
 
 
 func _on_check_box_mouse_entered() -> void:
+	_is_mouse_over_checkbox = true
+
 	%CheckBox.theme_type_variation = "ToDoItem_Focused"
 
 
 func _on_check_box_mouse_exited() -> void:
+	_is_mouse_over_checkbox = false
+
 	if self.state == States.DONE:
 		%CheckBox.theme_type_variation = "ToDoItem_Done"
 	elif self.state == States.FAILED:
