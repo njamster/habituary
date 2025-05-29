@@ -196,7 +196,6 @@ func _set_initial_state() -> void:
 func _connect_signals() -> void:
 	#region Global Signals
 	Settings.search_query_changed.connect(_check_for_search_query_match)
-	_check_for_search_query_match.call_deferred() # deferred, in case this item is loaded from disk
 
 	Settings.hide_ticked_off_todos_changed.connect(
 		_apply_state_relative_formatting.bind(true)
@@ -362,6 +361,7 @@ func _on_edit_text_changed(new_text: String) -> void:
 
 	if date and is_bookmarked:
 		EventBus.bookmark_changed.emit(self, date, get_list_index())
+
 	_check_for_search_query_match()
 
 
@@ -692,7 +692,10 @@ func _check_for_search_query_match() -> void:
 	if not Settings.search_query:
 		text_color_id = text_color_id
 		%Edit.theme_type_variation = "LineEdit_Minimal"
-		%Edit.modulate.a = 1.0
+		if Settings.fade_ticked_off_todos and state != States.TO_DO:
+			%Edit.modulate.a = 0.5
+		else:
+			%Edit.modulate.a = 1.0
 
 		if parent_todo and parent_todo.is_folded:
 			# If the sub items list was temporarily made visible again, as it
@@ -789,11 +792,13 @@ func _apply_state_relative_formatting(immediate := false) -> void:
 		if Settings.fade_ticked_off_todos:
 			if state != States.TO_DO:
 				%Toggle.modulate.a = 0.5
-				%Edit.modulate.a = 0.5
+				if not Settings.search_query:
+					%Edit.modulate.a = 0.5
 				%ExtraInfo.modulate.a = 0.5
 			else:
 				%Toggle.modulate.a = 1.0
-				%Edit.modulate.a = 1.0
+				if not Settings.search_query:
+					%Edit.modulate.a = 1.0
 				%ExtraInfo.modulate.a = 1.0
 		else:
 			%Toggle.modulate.a = 1.0
