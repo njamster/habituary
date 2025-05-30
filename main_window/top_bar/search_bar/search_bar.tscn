@@ -48,7 +48,6 @@ placeholder_text = "Search To-Dos..."
 context_menu_enabled = false
 caret_blink = true
 caret_blink_interval = 0.45
-draw_spaces = true
 
 [node name="ShortcutHint" type="Button" parent="HBox"]
 unique_name_in_owner = true

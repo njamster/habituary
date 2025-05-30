@@ -56,6 +56,9 @@ func _on_search_query_focus_exited() -> void:
 func _on_search_query_text_changed() -> void:
 	Settings.search_query = %SearchQuery.text
 
+	# Do *not* draw spaces while the placeholder text is shown
+	%SearchQuery.draw_spaces = (%SearchQuery.text != "")
+
 
 func _on_search_query_gui_input(event: InputEvent) -> void:
 	if event is InputEventKey:
