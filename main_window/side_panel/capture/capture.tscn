@@ -15,6 +15,7 @@ text = "Capture"
 horizontal_alignment = 1
 
 [node name="Label" type="Label" parent="."]
+custom_minimum_size = Vector2(340, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_brlsl")
 text = "If you can't (or don't want to) assign a to-do to a designated date yet, add it here instead!"
@@ -26,9 +27,8 @@ layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 0
 theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 24
+theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 8
 
 [node name="ScrollableTodoList" parent="OuterMargin" instance=ExtResource("1_t4swo")]
 unique_name_in_owner = true
