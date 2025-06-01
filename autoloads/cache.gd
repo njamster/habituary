@@ -94,42 +94,19 @@ func _load_file(directory_path: String, filename: String) -> void:
 		if file.get_length() == 0:
 			return
 
-		if filename == "capture.txt":
-			# Unless modified since then: Ignore already cached file.
-			if "capture" in data:
-				if data["capture"].last_modified >= \
-					FileAccess.get_modified_time(full_path):
-						return
+		var key := filename.trim_suffix(".txt")
 
-			# Add the file's content and last modification date to the cache.
-			data["capture"] = {
-				"content": file.get_as_text(),
-				"last_modified": FileAccess.get_modified_time(full_path)
-			}
-		else:
-			# Derive year, month and date from the filename.
-			var splits := filename.trim_suffix(".txt").split("-")
-			var year = splits[0]
-			var month = splits[1]
-			var day = splits[2]
+		# Unless modified since then: Ignore already cached files.
+		if key in data:
+			if data[key].last_modified >= \
+				FileAccess.get_modified_time(full_path):
+					return
 
-			# If it doesn't exist yet: Create nested dictionary structure.
-			if not year in data:
-				data[year] = {}
-			if not month in data[year]:
-				data[year][month] = {}
-
-			# Unless modified since then: Ignore already cached files.
-			if day in data[year][month]:
-				if data[year][month][day].last_modified >= \
-					FileAccess.get_modified_time(full_path):
-						return
-
-			# Add the file's content and last modification date to the cache.
-			data[year][month][day] = {
-				"content": file.get_as_text(),
-				"last_modified": FileAccess.get_modified_time(full_path)
-			}
+		# Add the file's content and last modification date to the cache.
+		data[key] = {
+			"content": file.get_as_text().split("\n", false),
+			"last_modified": FileAccess.get_modified_time(full_path)
+		}
 
 
 func _is_valid_filename(filename: String) -> bool:
