@@ -426,19 +426,13 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 		%Edit.caret_column = 0   # scroll item text back to its beginning
 
 		if key_input:
-			if new_item:
-					if new_text.ends_with(":"):
-						get_item_list().add_sub_item(self)
-					else:
-						get_item_list().add_todo_below(self)
-			else:
-				if Input.is_action_pressed("add_todo_above", true):
-					get_item_list().add_todo_above(self)
-				elif Input.is_action_pressed("add_todo_below", true):
-					if new_text.ends_with(":"):
-						get_item_list().add_sub_item(self)
-					else:
-						get_item_list().add_todo_below(self)
+			if Input.is_action_pressed("add_todo_above", true):
+				get_item_list().add_todo_above(self)
+			elif Input.is_action_pressed("add_todo_below", true) or new_item:
+				if new_text.ends_with(":"):
+					get_item_list().add_sub_item(self)
+				else:
+					get_item_list().add_todo_below(self)
 	else:
 		delete()
 
