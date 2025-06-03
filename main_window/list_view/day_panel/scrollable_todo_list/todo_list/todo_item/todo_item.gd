@@ -192,6 +192,13 @@ func _set_initial_state() -> void:
 
 	%MainRow.set_drag_forwarding(Callable(), _can_drop_data, _drop_data)
 
+	# If there's an active search query when initializing this to-do (caused by
+	# e.g. scrolling the list view during a search)...
+	if Settings.search_query:
+		# ... we need to check if this to-do matches that query.
+		# NOTE: Deferred, as the text isn't initialized yet.
+		_check_for_search_query_match.call_deferred()
+
 
 func _connect_signals() -> void:
 	#region Global Signals
