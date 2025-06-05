@@ -117,3 +117,46 @@ func _is_valid_filename(filename: String) -> bool:
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_WINDOW_FOCUS_IN:
 		_load_directory(Settings.store_path)
+
+
+func get_store_path(key: String) -> String:
+	return Settings.store_path.path_join(key + ".txt")
+
+
+func save_to_disk(key: String) -> void:
+	var store_path := get_store_path(key)
+
+	if data[key].content:
+		var file := FileAccess.open(store_path, FileAccess.WRITE)
+		for line in data[key].content:
+			file.store_line(line)
+		file.close()
+
+		data[key].last_modified = FileAccess.get_modified_time(store_path)
+
+
+func update_content(key: String, content: String) -> void:
+	if not key:
+		return  # early
+
+	if content:
+		if key not in data:
+			data[key] = {
+				"content": content.split("\n", false),
+				"last_modified": Time.get_unix_time_from_system()
+			}
+		else:
+			data[key].content = content.split("\n", false)
+
+		save_to_disk(key)
+	else:
+		delete_key(key)
+
+
+func delete_key(key: String) -> void:
+	if not key or key not in data:
+		return  # early
+
+	data.erase(key)
+
+	DirAccess.remove_absolute(get_store_path(key))

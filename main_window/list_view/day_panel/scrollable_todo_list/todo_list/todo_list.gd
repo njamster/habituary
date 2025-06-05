@@ -2,9 +2,16 @@ class_name ToDoList
 extends MarginContainer
 
 
-signal list_save_requested
-
 const TODO_ITEM := preload("todo_item/todo_item.tscn")
+
+var cache_key : String:
+	set(value):
+		if cache_key:  # once set, cache_key becomes immutable
+			return
+
+		cache_key = value
+
+		load_from_cache(cache_key)
 
 var pending_save := false
 
@@ -37,8 +44,10 @@ func _connect_signals() -> void:
 	$DebounceTimer.timeout.connect(func():
 		if OS.is_debug_build():
 			print("[DEBUG] DebounceTimer Timed Out: Saving List...")
-		list_save_requested.emit()
+			save_to_disk()
 	)
+
+	tree_exited.connect(save_to_disk)
 	#endregion
 
 
@@ -53,20 +62,36 @@ func _start_debounce_timer(reason := "Unknown"):
 		$DebounceTimer.start()
 
 
-func save_to_disk(file : FileAccess) -> void:
+func save_to_disk() -> void:
+	if not pending_save:
+		return # early
+
+	var content = ""
+
 	for child in %Items.get_children():
-		child.save_to_disk(file)
+		content += child.as_string() + "\n"
 
 	var scroll_offset : int = get_scroll_container().scroll_vertical
 	if scroll_offset != 0:
-		file.store_line("SCROLL:%d" % scroll_offset)
+		content += "SCROLL:%d" % scroll_offset
+
+	Cache.update_content(cache_key, content.strip_edges(false, true))
+
+	pending_save = false
+
+	if OS.is_debug_build():
+		# NOTE: This will *not* be printed when this function is called after `tree_exited` was
+		# emitted. See: https://github.com/godotengine/godot/issues/90667
+		print("[DEBUG] List Saved to Disk!")
 
 
-func load_from_disk(file : FileAccess) -> void:
-	while file.get_position() < file.get_length():
-		var next_line := file.get_line()
-		if next_line.begins_with("SCROLL:"):
-			var scroll_offset := int(next_line.right(-7))
+func load_from_cache(key : String) -> void:
+	if not key or key not in Cache.data:
+		return  # early
+
+	for line in Cache.data[key].content:
+		if line.begins_with("SCROLL:"):
+			var scroll_offset := int(line.right(-7))
 			# ensure that the scroll offset is a multiple of the height of one row in the list
 			const ROW_HEIGHT := 40.0 # FIXME: avoid magic numbers...
 			scroll_offset = int(round(scroll_offset / ROW_HEIGHT) * ROW_HEIGHT)
@@ -76,7 +101,7 @@ func load_from_disk(file : FileAccess) -> void:
 			get_scroll_container().set("scroll_vertical", scroll_offset)
 		else:
 			var restored_item = %Items.add_todo(-1, false)
-			restored_item.load_from_disk(next_line)
+			restored_item.load_from_string(line)
 
 
 func show_line_highlight(x_offset: int) -> void:

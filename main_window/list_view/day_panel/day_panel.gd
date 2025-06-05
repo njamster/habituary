@@ -19,11 +19,14 @@ func _ready() -> void:
 
 
 func _set_initial_state() -> void:
+	%ScrollableTodoList/%TodoList.cache_key = self.date.format(
+		Settings.date_format_save
+	)
+
 	_on_view_mode_changed()
 	_update_stretch_ratio()
 	_on_current_day_changed()
 
-	_update_store_path()
 	_update_header()
 
 	%Header.set_drag_forwarding(
@@ -65,9 +68,6 @@ func _connect_signals() -> void:
 	#endregion
 
 	#region Local Signals
-	date.changed.connect(_update_store_path)
-	date.changed.connect(_update_header)
-
 	%Header.gui_input.connect(_on_header_gui_input)
 	%Header.mouse_entered.connect(_on_header_mouse_entered)
 	%Header.mouse_exited.connect(_on_header_mouse_exited)
@@ -107,12 +107,6 @@ func _update_date_offset() -> void:
 			%DayOffset.text = "in %d days" % abs(day_offset)
 	else:
 		%DayOffset.text = ""
-
-
-func _update_store_path() -> void:
-	%ScrollableTodoList.store_path = Settings.store_path.path_join(
-		self.date.format(Settings.date_format_save)
-	) + ".txt"
 
 
 func _apply_date_relative_formating() -> void:

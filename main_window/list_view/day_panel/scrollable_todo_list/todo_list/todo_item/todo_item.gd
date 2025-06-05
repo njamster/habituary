@@ -460,13 +460,13 @@ func _on_focus_exited() -> void:
 	_on_edit_focus_exited()
 
 
-func save_to_disk(file: FileAccess, depth := 0) -> void:
+func as_string(depth := 0) -> String:
 	if not self.text:
-		return
+		return ""
 
 	var stripped_text = _strip_text(self.text)
 	if not stripped_text:
-		return
+		return ""
 
 	var string := ""
 
@@ -499,13 +499,13 @@ func save_to_disk(file: FileAccess, depth := 0) -> void:
 	if text_color_id:
 		string += " [COLOR%d]" % text_color_id
 
-	file.store_line(string)
-
 	for sub_item in %SubItems.get_children():
-		sub_item.save_to_disk(file, depth + 1)
+		string += "\n" + sub_item.as_string(depth + 1)
+
+	return string
 
 
-func load_from_disk(line : String) -> void:
+func load_from_string(line: String) -> void:
 	while line.begins_with("    "):
 		line = line.right(-4)
 		get_item_list().indent_todo(self)
