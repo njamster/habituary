@@ -1,6 +1,9 @@
 extends Node
 
 
+signal content_updated(key)
+
+
 var data := {}
 
 var _valid_filename_reg_ex := RegEx.new()
@@ -76,14 +79,14 @@ func _apply_sub_items_refactor_patch(directory_path: String, filename: String) -
 			file_to_patch.store_string(new_content)
 
 
-func _load_directory(directory_path: String) -> void:
+func _load_directory(directory_path: String, emit := false) -> void:
 	var directory := DirAccess.open(directory_path)
 	if directory:
 		for filename in directory.get_files():
-			_load_file(directory_path, filename)
+			_load_file(directory_path, filename, emit)
 
 
-func _load_file(directory_path: String, filename: String) -> void:
+func _load_file(directory_path: String, filename: String, emit: bool) -> void:
 	if not _is_valid_filename(filename):
 		return
 
@@ -108,6 +111,9 @@ func _load_file(directory_path: String, filename: String) -> void:
 			"last_modified": FileAccess.get_modified_time(full_path)
 		}
 
+		if emit:
+			content_updated.emit(key)
+
 
 func _is_valid_filename(filename: String) -> bool:
 	return filename == "capture.txt" or \
@@ -116,7 +122,7 @@ func _is_valid_filename(filename: String) -> bool:
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_WINDOW_FOCUS_IN:
-		_load_directory(Settings.store_path)
+		_load_directory(Settings.store_path, true)
 
 
 func get_store_path(key: String) -> String:

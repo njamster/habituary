@@ -32,6 +32,16 @@ func _set_initial_state() -> void:
 
 
 func _connect_signals() -> void:
+	#region Global Signals
+	Cache.content_updated.connect(func(key):
+		if key == cache_key:
+			for to_do in %Items.get_children():
+				to_do.queue_free()
+
+			load_from_cache(cache_key)
+	)
+	#endregion
+
 	#region Parent Signals
 	get_scroll_container().scrolled.connect(
 		_start_debounce_timer.bind("list scrolled")
