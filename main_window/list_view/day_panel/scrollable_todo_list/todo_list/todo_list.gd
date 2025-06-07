@@ -164,3 +164,10 @@ func get_item_for_line_number(line_number: int) -> ToDoItem:
 		return result
 	else:
 		return null
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_WINDOW_FOCUS_OUT:
+		if pending_save:
+			save_to_disk()
+			$DebounceTimer.stop()
