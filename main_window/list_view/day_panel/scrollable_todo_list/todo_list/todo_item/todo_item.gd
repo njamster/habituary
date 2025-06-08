@@ -508,7 +508,10 @@ func as_string(depth := 0) -> String:
 func load_from_string(line: String) -> void:
 	while line.begins_with("    "):
 		line = line.right(-4)
-		get_item_list().indent_todo(self)
+		get_item_list().indent_todo(self, false)
+
+	# strip any remaining spaces on the left
+	line = line.strip_edges(true, false)
 
 	if line.begins_with("[ ] "):
 		line = line.right(-4)

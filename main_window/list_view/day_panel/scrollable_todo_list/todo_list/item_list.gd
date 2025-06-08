@@ -266,9 +266,10 @@ func _on_items_child_order_changed() -> void:
 
 
 #region Indenting Items
-func indent_todo(item: ToDoItem) -> void:
+func indent_todo(item: ToDoItem, visual_feedback := true) -> void:
 	if item.get_index() == 0 or item.indentation_level == MAX_INDENTATION_LEVEL:
-		_reject_indentation_change(item, Vector2.RIGHT)
+		if visual_feedback:
+			_reject_indentation_change(item, Vector2.RIGHT)
 		return  # first item in a list cannot be indented
 
 	var predecessor_item := get_child(item.get_index() - 1)
@@ -285,11 +286,12 @@ func indent_todo(item: ToDoItem) -> void:
 			)
 
 
-func unindent_todo(item: ToDoItem) -> void:
+func unindent_todo(item: ToDoItem, visual_feedback := true) -> void:
 	var parent_todo := item.get_parent_todo()
 
 	if not parent_todo:
-		_reject_indentation_change(item, Vector2.LEFT)
+		if visual_feedback:
+			_reject_indentation_change(item, Vector2.LEFT)
 		return  # item cannot be unindented any further
 
 	item.reparent(parent_todo.get_item_list())

@@ -38,6 +38,10 @@ func _connect_signals() -> void:
 			for to_do in %Items.get_children():
 				to_do.queue_free()
 
+			# wait till everything got free'd
+			while %Items.get_child_count():
+				await get_tree().process_frame
+
 			load_from_cache(cache_key)
 	)
 	#endregion
