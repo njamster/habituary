@@ -82,7 +82,15 @@ func _apply_sub_items_refactor_patch(directory_path: String, filename: String) -
 func _load_directory(directory_path: String, emit := false) -> void:
 	var directory := DirAccess.open(directory_path)
 	if directory:
-		for filename in directory.get_files():
+		var file_list := directory.get_files()
+
+		if emit:
+			for key in data.keys():
+				if not key + ".txt" in file_list:
+					delete_key(key)
+					content_updated.emit(key)
+
+		for filename in file_list:
 			_load_file(directory_path, filename, emit)
 
 
