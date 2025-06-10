@@ -56,6 +56,10 @@ func _on_search_query_focus_exited() -> void:
 func _on_search_query_text_changed() -> void:
 	Settings.search_query = %SearchQuery.text
 
+	if Settings.main_panel == Settings.MainPanelState.GLOBAL_SEARCH:
+		if not %SearchQuery.text:
+			Settings.main_panel = Settings.MainPanelState.LIST_VIEW
+
 	# Do *not* draw spaces while the placeholder text is shown
 	%SearchQuery.draw_spaces = (%SearchQuery.text != "")
 
@@ -69,6 +73,10 @@ func _on_search_query_gui_input(event: InputEvent) -> void:
 		# ... or ENTER (a.k.a. ui_accept)
 		elif event.keycode in [KEY_ENTER, KEY_KP_ENTER]:
 			%SearchQuery.release_focus()
+
+			if event.shift_pressed and %SearchQuery.text:
+				Settings.main_panel = Settings.MainPanelState.GLOBAL_SEARCH
+
 			accept_event()
 			return
 

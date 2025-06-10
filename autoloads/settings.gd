@@ -10,6 +10,7 @@ signal day_start_changed
 signal dark_mode_changed
 signal search_query_changed
 signal side_panel_changed
+signal main_panel_changed
 signal show_bookmarks_from_the_past_changed
 signal hide_ticked_off_todos_changed
 signal fade_ticked_off_todos_changed
@@ -45,6 +46,10 @@ enum SidePanelState {
 	SETTINGS
 }
 
+enum MainPanelState {
+	LIST_VIEW,
+	GLOBAL_SEARCH
+}
 
 const MIN_UI_SCALE_FACTOR := 1.00
 const MAX_UI_SCALE_FACTOR := 3.00
@@ -229,6 +234,15 @@ var search_query := "":
 		_start_debounce_timer()
 
 		side_panel_changed.emit()
+
+var main_panel := MainPanelState.LIST_VIEW:
+	set(value):
+		if main_panel == value:
+			return
+
+		main_panel = value
+
+		main_panel_changed.emit()
 
 @export var show_bookmarks_from_the_past := true:
 	set(value):

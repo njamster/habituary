@@ -8,6 +8,28 @@ func _enter_tree() -> void:
 		)
 
 
+func _ready() -> void:
+	_set_initial_state()
+	_connect_signals()
+
+
+func _set_initial_state() -> void:
+	_on_main_panel_changed()
+
+
+func _connect_signals() -> void:
+	Settings.main_panel_changed.connect(_on_main_panel_changed)
+
+
+func _on_main_panel_changed() -> void:
+	if Settings.main_panel == Settings.MainPanelState.LIST_VIEW:
+		%ListView.show()
+		%GlobalSearchResults.hide()
+	elif Settings.main_panel == Settings.MainPanelState.GLOBAL_SEARCH:
+		%ListView.hide()
+		%GlobalSearchResults.search()
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
 		var focus_owner = get_viewport().gui_get_focus_owner()
