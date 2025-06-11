@@ -10,6 +10,18 @@ func _connect_signals() -> void:
 	Settings.view_mode_changed.connect(_on_view_mode_changed)
 
 	EventBus.overlay_closed.connect(_on_overlay_closed)
+
+	Settings.main_panel_changed.connect(func():
+		$NextDay.visible = (
+			Settings.main_panel == Settings.MainPanelState.LIST_VIEW
+		)
+		$ShiftViewForward.visible = (
+			Settings.main_panel == Settings.MainPanelState.LIST_VIEW
+		)
+		$Spacer.visible = (
+			Settings.main_panel == Settings.MainPanelState.LIST_VIEW
+		)
+	)
 	#endregion
 
 	#region Local Signals

@@ -11,6 +11,10 @@ func _connect_signals() -> void:
 	_on_view_mode_changed()
 
 	Settings.view_mode_cap_changed.connect(_on_view_mode_cap_changed)
+
+	Settings.main_panel_changed.connect(func():
+		visible = (Settings.main_panel == Settings.MainPanelState.LIST_VIEW)
+	)
 	#endregion
 
 	#region Local Signals

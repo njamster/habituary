@@ -11,6 +11,10 @@ func _connect_signals() -> void:
 
 	Settings.current_day_changed.connect(_on_current_day_changed)
 	_on_current_day_changed()
+
+	Settings.main_panel_changed.connect(func():
+		visible = (Settings.main_panel == Settings.MainPanelState.LIST_VIEW)
+	)
 	#endregion
 
 	#region Local Signals

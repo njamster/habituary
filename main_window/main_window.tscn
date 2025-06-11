@@ -60,7 +60,6 @@ layout_mode = 2
 
 [node name="GlobalSearchResults" parent="HBox/MainPanel/VBox/HBox" instance=ExtResource("5_cg0yv")]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 
 [node name="ListView" parent="HBox/MainPanel/VBox/HBox" instance=ExtResource("7_ajas6")]

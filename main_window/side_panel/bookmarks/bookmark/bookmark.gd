@@ -140,7 +140,6 @@ func _on_show_bookmarks_from_the_past_changed() -> void:
 
 
 func _on_jump_to_pressed() -> void:
-	Settings.main_panel = Settings.MainPanelState.LIST_VIEW
 	Settings.current_day = date
 	EventBus.bookmark_jump_requested.emit(date, line_number)
 

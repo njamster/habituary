@@ -141,6 +141,8 @@ var previous_day
 
 var current_day := DayTimer.today:
 	set(value):
+		Settings.main_panel = Settings.MainPanelState.LIST_VIEW
+
 		if current_day.day_difference_to(value) == 0:
 			return
 

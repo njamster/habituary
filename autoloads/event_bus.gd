@@ -18,4 +18,6 @@ signal bookmark_changed(to_do, old_date, old_index)
 signal bookmark_indicator_clicked(date, index)
 signal bookmark_removed(to_do)
 signal bookmark_jump_requested(date, line_number)
+
+signal global_search_requested()
 @warning_ignore_restore("unused_signal")

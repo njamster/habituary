@@ -16,6 +16,10 @@ func _connect_signals() -> void:
 	resized.connect(_on_resized)
 
 	Settings.view_mode_changed.connect(_update_list_view)
+
+	Settings.main_panel_changed.connect(func():
+		visible = (Settings.main_panel == Settings.MainPanelState.LIST_VIEW)
+	)
 	_update_list_view()
 
 	Settings.view_mode_cap_changed.connect(_update_list_view)
