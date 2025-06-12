@@ -1,4 +1,4 @@
-[gd_resource type="Theme" script_class="ConciseTheme" load_steps=126 format=3 uid="uid://b4mfplatrbpat"]
+[gd_resource type="Theme" script_class="ConciseTheme" load_steps=128 format=3 uid="uid://b4mfplatrbpat"]
 
 [ext_resource type="FontFile" uid="uid://bv1lbje08ni7s" path="res://theme/fonts/OpenSans-MediumItalic.ttf" id="1_5fgq0"]
 [ext_resource type="Script" uid="uid://s44v1x47rqnh" path="res://custom/concise_theme.gd" id="1_366r7"]
@@ -695,6 +695,27 @@ corner_radius_bottom_left = 3
 corner_detail = 5
 anti_aliasing_size = 0.33
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_an21j"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+draw_center = false
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3qpw5"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.505882, 0.631373, 0.756863, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 5
+anti_aliasing_size = 0.33
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h1hii"]
 content_margin_left = 8.0
 content_margin_top = 8.0
@@ -1045,6 +1066,10 @@ SearchBar_ShortcutHint/styles/focus = SubResource("StyleBoxFlat_ttwvp")
 SearchBar_ShortcutHint/styles/hover = SubResource("StyleBoxFlat_48ecl")
 SearchBar_ShortcutHint/styles/normal = SubResource("StyleBoxFlat_nhsbw")
 SearchBar_ShortcutHint/styles/pressed = SubResource("StyleBoxFlat_440ef")
+SearchResult/base_type = &"PanelContainer"
+SearchResult/styles/panel = SubResource("StyleBoxFlat_an21j")
+SearchResult_Focused/base_type = &"PanelContainer"
+SearchResult_Focused/styles/panel = SubResource("StyleBoxFlat_3qpw5")
 SidePanel/base_type = &"PanelContainer"
 SidePanel/styles/panel = SubResource("StyleBoxFlat_h1hii")
 SmallSeparation/base_type = &"BoxContainer"

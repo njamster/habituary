@@ -17,39 +17,44 @@ expand_margin_top = 2.0
 expand_margin_right = 2.0
 expand_margin_bottom = 2.0
 
-[node name="SearchResult" type="HBoxContainer"]
+[node name="SearchResult" type="PanelContainer"]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 28.0
 grow_horizontal = 2
-theme_type_variation = &"SmallSeparation"
+theme_type_variation = &"SearchResult"
 script = ExtResource("1_aiq75")
 
-[node name="Date" type="Label" parent="."]
+[node name="HBox" type="HBoxContainer" parent="."]
 layout_mode = 2
-size_flags_vertical = 8
+theme_type_variation = &"SmallSeparation"
+
+[node name="Date" type="Label" parent="HBox"]
+unique_name_in_owner = true
+layout_mode = 2
 theme_override_fonts/font = ExtResource("1_w40yj")
 text = "2025-06-11"
 
-[node name="Text" type="Label" parent="."]
+[node name="Text" type="Label" parent="HBox"]
+unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 8
 text = "To-Do Text"
 
-[node name="ConnectorLine" type="TextureRect" parent="."]
+[node name="ConnectorLine" type="TextureRect" parent="HBox"]
 self_modulate = Color(0.505882, 0.631373, 0.756863, 1)
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 8
+size_flags_vertical = 4
 texture = ExtResource("3_6ui7r")
 stretch_mode = 1
 
-[node name="JumpTo" type="Button" parent="."]
+[node name="JumpTo" type="Button" parent="HBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
+mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
 theme_override_constants/icon_max_width = 20
@@ -59,7 +64,7 @@ flat = true
 icon_alignment = 1
 expand_icon = true
 
-[node name="Tooltip" type="Node" parent="JumpTo"]
+[node name="Tooltip" type="Node" parent="HBox/JumpTo"]
 script = ExtResource("3_lials")
 text = "Jump to To-Do"
 popup_position = 5
