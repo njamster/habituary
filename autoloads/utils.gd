@@ -22,3 +22,47 @@ func get_exported_properties(node: Node) -> Dictionary:
 				exported_properties[current_group].append(property.name)
 
 	return exported_properties
+
+
+# FIXME: This is almost identical to the strip_text function in todo_item.gd –
+# maybe there's a way to refactor things in a way that allows merging both?
+func strip_tags(line: String) -> String:
+	# trim any leading & trailing whitespace
+	line = line.strip_edges()
+
+	# remove checkbox
+	line = line.right(-4).strip_edges()
+
+	# Check if the text contains any tags (like a bookmark or a color tag) or
+	# markup (like asterisks or underscores), and if so, trigger their effect
+	# and then remove them from the text.
+	while true:
+		if line.ends_with("[BOOKMARK]"):
+			line = line.left(-10).strip_edges()
+			continue  # from the start of the while loop again
+
+		var color_tag_reg_ex := RegEx.new()
+		color_tag_reg_ex.compile("\\[COLOR(?<digit>[1-5])\\]$")
+		var color_tag_reg_ex_match := color_tag_reg_ex.search(line)
+		if color_tag_reg_ex_match:
+			line = line.substr(0, line.length() - 9).strip_edges()
+			continue  # from the start of the while loop again
+
+		# NOTE: The following two if-conditions do *not* check if the matching
+		# parts in the beginning and end of the raw text are distinct. This is
+		# intended! It will also strip *any* number of asterisks or underscores
+		# when the raw text only contains those and nothing else.
+
+		if line.begins_with("**") and line.ends_with("**") or \
+			line.begins_with("__") and line.ends_with("__"):
+				line = line.left(-2).right(-2).strip_edges()
+				continue  # from the start of the while loop again
+
+		if line.begins_with("*") and line.ends_with("*") or \
+			line.begins_with("_") and line.ends_with("_"):
+				line = line.left(-1).right(-1).strip_edges()
+				continue  # from the start of the while loop again
+
+		break  # the while loop, nothing to replace was found anymore
+
+	return line

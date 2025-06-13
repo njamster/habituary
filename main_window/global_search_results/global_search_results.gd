@@ -36,9 +36,10 @@ func search() -> void:
 
 		var line_id := 0
 		for line in Cache.data[key].content:
-			if line.contains(Settings.search_query):
+			var stripped_line := Utils.strip_tags(line)
+			if stripped_line.contains(Settings.search_query):
 				var search_result := SEARCH_RESULT.instantiate()
-				search_result.fill_in(key, line, line_id)
+				search_result.fill_in(key, stripped_line, line_id)
 				%SearchResults.add_child(search_result)
 			line_id += 1
 
