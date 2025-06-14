@@ -1,0 +1,69 @@
+[gd_scene load_steps=8 format=3 uid="uid://dfj2k46fd31gp"]
+
+[ext_resource type="Script" uid="uid://dkechn1xp1m5k" path="res://main_window/global_search_results/search_result_group/seach_result_group.gd" id="1_yx6sb"]
+[ext_resource type="Texture2D" uid="uid://sfx7hdmd5ns0" path="res://main_window/global_search_results/search_result_group/images/unfolded.svg" id="2_bj5ei"]
+[ext_resource type="FontFile" uid="uid://clgk36lj6qey" path="res://theme/fonts/OpenSans-ExtraBold.ttf" id="2_vn6h3"]
+[ext_resource type="Script" uid="uid://dnkjpbn8pmav1" path="res://custom/toggle_button.gd" id="3_d46gf"]
+[ext_resource type="Texture2D" uid="uid://bqw1t06vwq4tt" path="res://main_window/global_search_results/search_result_group/images/folded.svg" id="4_wda2y"]
+[ext_resource type="Script" uid="uid://bqai4pv020yjf" path="res://custom/tooltip.gd" id="5_d46gf"]
+[ext_resource type="Texture2D" uid="uid://dvwky1k2js4hn" path="res://main_window/side_panel/help/input_hint/images/dotted_connector.png" id="7_wda2y"]
+
+[node name="SeachResultGroup" type="VBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_yx6sb")
+
+[node name="Header" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_type_variation = &"TinySeparation"
+
+[node name="FoldToggle" type="Button" parent="Header"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"FlatButton"
+theme_override_constants/icon_max_width = 20
+toggle_mode = true
+icon = ExtResource("2_bj5ei")
+flat = true
+script = ExtResource("3_d46gf")
+icon_toggled_off = ExtResource("2_bj5ei")
+icon_toggled_on = ExtResource("4_wda2y")
+metadata/_custom_type_script = "uid://dnkjpbn8pmav1"
+
+[node name="Tooltip" type="Node" parent="Header/FoldToggle"]
+script = ExtResource("5_d46gf")
+text = "Fold Group"
+popup_delay = 1.5
+gap_width = 3
+metadata/_custom_type_script = "uid://bqai4pv020yjf"
+
+[node name="Date" type="Label" parent="Header"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_vn6h3")
+
+[node name="ExtraPadding" type="MarginContainer" parent="Header"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/margin_top = 12
+
+[node name="ConnectorLine" type="TextureRect" parent="Header/ExtraPadding"]
+self_modulate = Color(0.505882, 0.631373, 0.756863, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+texture = ExtResource("7_wda2y")
+stretch_mode = 1
+
+[node name="ItemCount" type="Label" parent="Header"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"SearchResultGroup_ItemCount"
+
+[node name="Results" type="VBoxContainer" parent="."]
+layout_mode = 2

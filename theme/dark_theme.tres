@@ -1,4 +1,4 @@
-[gd_resource type="Theme" script_class="ConciseTheme" load_steps=128 format=3 uid="uid://b6uigmasjumt4"]
+[gd_resource type="Theme" script_class="ConciseTheme" load_steps=129 format=3 uid="uid://b6uigmasjumt4"]
 
 [ext_resource type="FontFile" uid="uid://clgk36lj6qey" path="res://theme/fonts/OpenSans-ExtraBold.ttf" id="1_dk6dp"]
 [ext_resource type="Script" uid="uid://s44v1x47rqnh" path="res://custom/concise_theme.gd" id="1_jlir6"]
@@ -696,15 +696,21 @@ corner_detail = 5
 anti_aliasing_size = 0.33
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aj72w"]
-content_margin_left = 8.0
+content_margin_left = 22.0
 content_margin_top = 4.0
 content_margin_right = 8.0
 content_margin_bottom = 4.0
 draw_center = false
 corner_detail = 5
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bc6ul"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 9.0
+content_margin_bottom = 0.0
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nxxwh"]
-content_margin_left = 8.0
+content_margin_left = 22.0
 content_margin_top = 4.0
 content_margin_right = 8.0
 content_margin_bottom = 4.0
@@ -1068,6 +1074,10 @@ SearchBar_ShortcutHint/styles/normal = SubResource("StyleBoxFlat_oh360")
 SearchBar_ShortcutHint/styles/pressed = SubResource("StyleBoxFlat_tapk3")
 SearchResult/base_type = &"PanelContainer"
 SearchResult/styles/panel = SubResource("StyleBoxFlat_aj72w")
+SearchResultGroup_ItemCount/base_type = &"Label"
+SearchResultGroup_ItemCount/colors/font_color = Color(0.505882, 0.631373, 0.756863, 1)
+SearchResultGroup_ItemCount/font_sizes/font_size = 12
+SearchResultGroup_ItemCount/styles/normal = SubResource("StyleBoxEmpty_bc6ul")
 SearchResult_Focused/base_type = &"PanelContainer"
 SearchResult_Focused/styles/panel = SubResource("StyleBoxFlat_nxxwh")
 SidePanel/base_type = &"PanelContainer"

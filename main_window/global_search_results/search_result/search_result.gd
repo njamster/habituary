@@ -6,7 +6,6 @@ var line_number : int
 
 func fill_in(key, value, id) -> void:
 	date = Date.from_string(key)
-	%Date.text = date.format("MMM DD, YYYY") + ":"
 	%Text.text = value
 	line_number = id
 

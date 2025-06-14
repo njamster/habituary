@@ -34,14 +34,22 @@ func search() -> void:
 		if key == "capture":
 			continue  # with next key
 
+		var search_result_group := preload(
+			"search_result_group/seach_result_group.tscn"
+		).instantiate()
+		search_result_group.date = Date.from_string(key)
+
 		var line_id := 0
 		for line in Cache.data[key].content:
 			var stripped_line := Utils.strip_tags(line)
 			if stripped_line.contains(Settings.search_query):
 				var search_result := SEARCH_RESULT.instantiate()
 				search_result.fill_in(key, stripped_line, line_id)
-				%SearchResults.add_child(search_result)
+				search_result_group.add_result(search_result)
 			line_id += 1
+
+		if search_result_group.contains_results():
+			$%SearchResults.add_child(search_result_group)
 
 	# If there were no matching items, show the NoHitMessage instead.
 	$NoHitMessage.visible = (%SearchResults.get_child_count() == 0)

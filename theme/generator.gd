@@ -828,7 +828,7 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 
 	search_result.set_main_style({
 		"draw_center" = false,
-		"content_margin" = { "left": 8, "top": 4, "right": 8, "bottom": 4 },
+		"content_margin" = { "left": 22, "top": 4, "right": 8, "bottom": 4 },
 	})
 	#endregion
 
@@ -839,8 +839,19 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 		"bg_color" = primary_3,
 		"corner_radius" = 6,
 		"anti_aliasing_size" = 0.33,
-		"content_margin" = { "left": 8, "top": 4, "right": 8, "bottom": 4 },
+		"content_margin" = { "left": 22, "top": 4, "right": 8, "bottom": 4 },
 	})
+	#endregion
+
+	#region SearchResultGroup_ItemCount
+	var search_result_group_item_count := theme.create_theme_type("SearchResultGroup_ItemCount", "Label")
+
+	search_result_group_item_count.font_size = 12
+	search_result_group_item_count.font_color = primary_3
+
+	search_result_group_item_count.normal = {
+		"content_margin" = { "right": 9 }
+	}
 	#endregion
 
 	# ----------------------------------------
