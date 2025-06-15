@@ -1,13 +1,19 @@
 extends PanelContainer
 
+const MINIMUM_GLOBAL_SEARCH_QUERY_SIZE := 3
 
 var _contains_mouse_cursor := false
 
 
 func _ready() -> void:
+	_set_initial_state()
 	_connect_signals()
 
 	%ShortcutHint.text = InputMap.action_get_events("search_screen")[0].as_text().to_upper().replace("+", " + ")
+
+
+func _set_initial_state() -> void:
+	%GlobalSearchHint.hide()
 
 
 func _connect_signals() -> void:
@@ -56,8 +62,12 @@ func _on_search_query_focus_exited() -> void:
 func _on_search_query_text_changed() -> void:
 	Settings.search_query = %SearchQuery.text
 
+	%GlobalSearchHint.visible = (
+		%SearchQuery.text.length() >= MINIMUM_GLOBAL_SEARCH_QUERY_SIZE
+	)
+
 	if Settings.main_panel == Settings.MainPanelState.GLOBAL_SEARCH:
-		if %SearchQuery.text.length() >= 3:
+		if %SearchQuery.text.length() >= MINIMUM_GLOBAL_SEARCH_QUERY_SIZE:
 			EventBus.global_search_requested.emit()
 		elif not %SearchQuery.text:
 			Settings.main_panel = Settings.MainPanelState.LIST_VIEW
@@ -74,8 +84,10 @@ func _on_search_query_gui_input(event: InputEvent) -> void:
 			return
 		# ... or ENTER (a.k.a. ui_accept)
 		elif event.keycode in [KEY_ENTER, KEY_KP_ENTER]:
-			if event.shift_pressed and %SearchQuery.text.length() >= 3:
-				EventBus.global_search_requested.emit()
+			if event.shift_pressed and \
+				%SearchQuery.text.length() >= MINIMUM_GLOBAL_SEARCH_QUERY_SIZE:
+					EventBus.global_search_requested.emit()
+					%GlobalSearchHint.hide()
 			else:
 				%SearchQuery.release_focus()
 

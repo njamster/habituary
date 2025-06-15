@@ -58,3 +58,27 @@ mouse_filter = 1
 mouse_default_cursor_shape = 1
 theme_type_variation = &"SearchBar_ShortcutHint"
 text = "CTRL + F"
+
+[node name="GlobalSearchHint" type="HBoxContainer" parent="HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="ShortcutHint" type="Button" parent="HBox/GlobalSearchHint"]
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+mouse_filter = 1
+mouse_default_cursor_shape = 1
+theme_type_variation = &"SearchBar_ShortcutHint"
+text = "SHIFT + ENTER"
+
+[node name="Label" type="RichTextLabel" parent="HBox/GlobalSearchHint"]
+layout_mode = 2
+theme_override_font_sizes/bold_italics_font_size = 11
+theme_override_font_sizes/italics_font_size = 11
+bbcode_enabled = true
+text = "[i]to search [b]all[/b] to-dos[/i]"
+fit_content = true
+autowrap_mode = 0
+vertical_alignment = 1
