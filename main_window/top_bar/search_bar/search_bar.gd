@@ -14,6 +14,7 @@ func _ready() -> void:
 
 func _set_initial_state() -> void:
 	%GlobalSearchHint.hide()
+	%CloseButton.hide()
 
 
 func _connect_signals() -> void:
@@ -29,7 +30,7 @@ func _connect_signals() -> void:
 	%SearchQuery.focus_exited.connect(_on_search_query_focus_exited)
 	%SearchQuery.gui_input.connect(_on_search_query_gui_input)
 
-	%ShortcutHint.pressed.connect(_on_shortcut_hint_pressed)
+	%CloseButton.pressed.connect(clear_search_query)
 	#endregion
 
 
@@ -47,6 +48,11 @@ func _on_gui_input(event: InputEvent) -> void:
 
 func _on_search_query_focus_entered() -> void:
 	theme_type_variation = "SearchBar_Focused"
+	if Settings.main_panel != Settings.MainPanelState.GLOBAL_SEARCH:
+		%GlobalSearchHint.visible = (
+			%SearchQuery.text.length() >= MINIMUM_GLOBAL_SEARCH_QUERY_SIZE
+		)
+	%CloseButton.visible = ($%SearchQuery.text != "")
 	%SearchQuery.select_all()
 	%ShortcutHint.hide()
 
@@ -56,21 +62,25 @@ func _on_search_query_focus_exited() -> void:
 		theme_type_variation = "SearchBar_Hover"
 	else:
 		theme_type_variation = "SearchBar"
+	%GlobalSearchHint.hide()
+	%CloseButton.hide()
 	%ShortcutHint.show()
 
 
 func _on_search_query_text_changed() -> void:
 	Settings.search_query = %SearchQuery.text
 
-	%GlobalSearchHint.visible = (
-		%SearchQuery.text.length() >= MINIMUM_GLOBAL_SEARCH_QUERY_SIZE
-	)
+	%CloseButton.visible = ($%SearchQuery.text != "")
 
 	if Settings.main_panel == Settings.MainPanelState.GLOBAL_SEARCH:
 		if %SearchQuery.text.length() >= MINIMUM_GLOBAL_SEARCH_QUERY_SIZE:
 			EventBus.global_search_requested.emit()
 		elif not %SearchQuery.text:
 			Settings.main_panel = Settings.MainPanelState.LIST_VIEW
+	else:
+		%GlobalSearchHint.visible = (
+			%SearchQuery.text.length() >= MINIMUM_GLOBAL_SEARCH_QUERY_SIZE
+		)
 
 	# Do *not* draw spaces while the placeholder text is shown
 	%SearchQuery.draw_spaces = (%SearchQuery.text != "")
@@ -95,13 +105,7 @@ func _on_search_query_gui_input(event: InputEvent) -> void:
 			return
 
 	if event.is_action_pressed("ui_cancel"):
-		%SearchQuery.text = ""
-		%SearchQuery.text_changed.emit()
-		%SearchQuery.release_focus()
-
-
-func _on_shortcut_hint_pressed() -> void:
-	%SearchQuery.grab_focus()
+		clear_search_query()
 
 
 func _on_mouse_entered() -> void:
@@ -119,4 +123,13 @@ func _on_mouse_exited() -> void:
 
 
 func _on_icon_pressed() -> void:
-	%SearchQuery.grab_focus()
+	if %SearchQuery.has_focus():
+		%SearchQuery.select_all()
+	else:
+		%SearchQuery.grab_focus()
+
+
+func clear_search_query() -> void:
+	%SearchQuery.text = ""
+	%SearchQuery.text_changed.emit()
+	%SearchQuery.release_focus()
