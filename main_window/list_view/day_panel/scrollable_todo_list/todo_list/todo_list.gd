@@ -33,6 +33,8 @@ func _set_initial_state() -> void:
 
 func _connect_signals() -> void:
 	#region Global Signals
+	EventBus.global_search_requested.connect(save_to_disk)
+
 	Cache.content_updated.connect(func(key):
 		if key == cache_key:
 			for to_do in %Items.get_children():

@@ -14,7 +14,8 @@ func _connect_signals() -> void:
 		visible = (Settings.main_panel == Settings.MainPanelState.GLOBAL_SEARCH)
 	)
 
-	EventBus.global_search_requested.connect(search)
+	# Deferred to give to-do lists with pending saves time to update their cache
+	EventBus.global_search_requested.connect(search, CONNECT_DEFERRED)
 	#endregion
 
 
