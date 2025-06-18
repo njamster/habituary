@@ -105,6 +105,8 @@ var date_format_save := "YYYY-MM-DD"
 @export_group("AppState")
 @export var today_position := TodayPosition.CENTERED:
 	set(value):
+		Settings.main_panel = Settings.MainPanelState.LIST_VIEW
+
 		if today_position == value:
 			return
 
