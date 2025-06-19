@@ -32,65 +32,20 @@ func _connect_signals() -> void:
 
 
 func _search_for_bookmarks() -> void:
-	var directory := DirAccess.open(Settings.store_path)
-	if directory:
-		for file_name in directory.get_files():
-			var file_name_reg_ex := RegEx.new()
-			file_name_reg_ex.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}.txt")
-			var file_name_reg_ex_match := file_name_reg_ex.search(file_name)
-			if not file_name_reg_ex_match:
-				continue # with next file
+	for key in Cache.data:
+		var line_number = 0
+		for line in Cache.data[key].content:
+			line = line.strip_edges()
 
-			var file = FileAccess.open(Settings.store_path.path_join(file_name), FileAccess.READ)
-			if file:
-				var line_number := -1
-				while file.get_position() < file.get_length():
-					var line := file.get_line()
+			if line.ends_with("[BOOKMARK]"):
+				_add_bookmark(
+					Date.from_string(key),
+					line_number,
+					Utils.strip_tags(line),
+					line.begins_with("[x] ") or line.begins_with("[-] ")
+				)
 
-					# ignore indentation levels
-					while line.begins_with("    "):
-						line = line.right(-4)
-
-					if line.begins_with("[ ] ") or line.begins_with("[x] ") or line.begins_with("[-] "):
-							line_number += 1
-
-					var color_tag_reg_ex := RegEx.new()
-					color_tag_reg_ex.compile(" \\[COLOR[1-5]\\]$")
-					var color_tag_reg_ex_match := color_tag_reg_ex.search(line)
-					if color_tag_reg_ex_match:
-						line = line.substr(0, line.length() - 9)
-
-					if line.ends_with( " [BOOKMARK]"):
-						# remove the "[BOOKMARK]" tag
-						line = line.substr(0, line.length() - 11)
-
-						# FIXME: avoid replicating the entire line parsing from todo_item.gd here
-						var is_done := false
-						if line.begins_with("[x] ") or line.begins_with("[-] "):
-							line = line.right(-4)
-							is_done = true
-						elif line.begins_with("[ ] "):
-							line = line.right(-4)
-
-						if line.begins_with("> "):
-							line = line.right(-2)
-
-						if line.begins_with("**") and  line.ends_with("**"):
-							line = line.substr(2, line.length() - 4)
-
-						if line.begins_with("*") and  line.ends_with("*"):
-							line = line.substr(1, line.length() - 2)
-
-						_add_bookmark(
-							Date.from_string(file_name.left(-4)),
-							line_number,
-							line,
-							is_done
-						)
-			else:
-				pass  # FIXME: print error?
-	else:
-		pass  # FIXME: print error?
+			line_number += 1
 
 
 func _add_bookmark(date : Date, line_number : int, todo_text : String, is_done := false) -> void:
