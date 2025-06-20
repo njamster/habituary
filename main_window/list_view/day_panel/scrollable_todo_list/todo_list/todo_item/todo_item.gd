@@ -694,6 +694,7 @@ func _check_for_search_query_match() -> void:
 	var parent_todo := get_parent_todo()
 
 	if not Settings.search_query:
+		# restore the to-do's text color
 		text_color_id = text_color_id
 		%Edit.theme_type_variation = "LineEdit_Minimal"
 		if Settings.fade_ticked_off_todos and state != States.TO_DO:
@@ -706,6 +707,9 @@ func _check_for_search_query_match() -> void:
 			# contained a matching item (see elif-case below), hide it again.
 			parent_todo.get_node("%SubItems").hide()
 	elif %Edit.text.contains(Settings.search_query):
+		# remove the to-do's text color, if there's any (or it would overrule
+		# the highlighting color of the search match)
+		%Edit.remove_theme_color_override("font_color")
 		%Edit.theme_type_variation = "LineEdit_SearchMatch"
 		%Edit.modulate.a = 1.0
 
@@ -720,6 +724,8 @@ func _check_for_search_query_match() -> void:
 					parent_todo.get_node("%SubItems").show.call_deferred()
 				parent_todo = parent_todo.get_parent_todo()
 	else:
+		# restore the to-do's text color
+		text_color_id = text_color_id
 		%Edit.theme_type_variation = "LineEdit_Minimal"
 		%Edit.modulate.a = 0.1
 
