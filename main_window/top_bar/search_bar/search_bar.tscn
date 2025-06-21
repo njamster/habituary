@@ -50,6 +50,10 @@ context_menu_enabled = false
 caret_blink = true
 caret_blink_interval = 0.45
 
+[node name="DebounceTimer" type="Timer" parent="HBox/SearchQuery"]
+wait_time = 0.2
+one_shot = true
+
 [node name="ShortcutHint" type="Button" parent="HBox"]
 unique_name_in_owner = true
 layout_mode = 2

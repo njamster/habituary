@@ -30,6 +30,10 @@ func _connect_signals() -> void:
 	%SearchQuery.focus_exited.connect(_on_search_query_focus_exited)
 	%SearchQuery.gui_input.connect(_on_search_query_gui_input)
 
+	%SearchQuery/DebounceTimer.timeout.connect(
+		EventBus.global_search_requested.emit
+	)
+
 	%CloseButton.pressed.connect(clear_search_query)
 	#endregion
 
@@ -74,7 +78,7 @@ func _on_search_query_text_changed() -> void:
 
 	if Settings.main_panel == Settings.MainPanelState.GLOBAL_SEARCH:
 		if %SearchQuery.text.length() >= MINIMUM_GLOBAL_SEARCH_QUERY_SIZE:
-			EventBus.global_search_requested.emit()
+			%SearchQuery/DebounceTimer.start()
 		elif not %SearchQuery.text:
 			Settings.main_panel = Settings.MainPanelState.LIST_VIEW
 	else:
@@ -87,7 +91,7 @@ func _on_search_query_text_changed() -> void:
 
 
 func _on_search_query_gui_input(event: InputEvent) -> void:
-	if event is InputEventKey:
+	if event is InputEventKey and event.is_released():
 		# prevent the built-in TextEdit-behavior when pressing TAB...
 		if event.keycode == KEY_TAB:
 			accept_event()
