@@ -16,6 +16,12 @@ func _set_initial_state() -> void:
 	%GlobalSearchHint.hide()
 	%CloseButton.hide()
 
+	# Hacky, but the only way I found to "disable" the scroll bars:
+	%SearchQuery.get_h_scroll_bar().mouse_filter = MOUSE_FILTER_IGNORE
+	%SearchQuery.get_h_scroll_bar().modulate.a = 0.0
+	%SearchQuery.get_v_scroll_bar().mouse_filter = MOUSE_FILTER_IGNORE
+	%SearchQuery.get_v_scroll_bar().modulate.a = 0.0
+
 
 func _connect_signals() -> void:
 	#region Local Signals
@@ -85,12 +91,26 @@ func _on_search_query_text_changed() -> void:
 		%GlobalSearchHint.visible = (
 			%SearchQuery.text.length() >= MINIMUM_GLOBAL_SEARCH_QUERY_SIZE
 		)
+		# Re-set the caret column one frame later (to make sure it remains
+		# visible, even after the GlobalSearchHint took up some space that
+		# before that point still belonged to the SearchQuery).
+		%SearchQuery.set_caret_column.call_deferred(
+			%SearchQuery.get_caret_column()
+		)
 
 	# Do *not* draw spaces while the placeholder text is shown
 	%SearchQuery.draw_spaces = (%SearchQuery.text != "")
 
 
 func _on_search_query_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index in [
+		MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_RIGHT,
+		MOUSE_BUTTON_WHEEL_DOWN, MOUSE_BUTTON_WHEEL_LEFT
+	]:
+		# ignore scroll wheel inputs
+		accept_event()
+		return  # early
+
 	if event is InputEventKey and event.is_released():
 		# prevent the built-in TextEdit-behavior when pressing TAB...
 		if event.keycode == KEY_TAB:
