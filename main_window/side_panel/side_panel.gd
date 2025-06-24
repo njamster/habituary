@@ -22,10 +22,17 @@ func _set_initial_state() -> void:
 
 
 func _connect_signals() -> void:
+	#region Global Signals
+	Settings.main_panel_changed.connect(_update_side_panel)
 	Settings.side_panel_changed.connect(_update_side_panel)
+	#endregion
 
 
 func _update_side_panel() -> void:
+	if Settings.main_panel == Settings.MainPanelState.CAPTURE_REVIEW:
+		hide()
+		return  # early
+
 	visible = (Settings.side_panel != Settings.SidePanelState.HIDDEN)
 
 	if get_child_count():

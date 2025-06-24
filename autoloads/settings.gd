@@ -48,7 +48,8 @@ enum SidePanelState {
 
 enum MainPanelState {
 	LIST_VIEW,
-	GLOBAL_SEARCH
+	GLOBAL_SEARCH,
+	CAPTURE_REVIEW
 }
 
 const MIN_UI_SCALE_FACTOR := 1.00
@@ -141,7 +142,7 @@ var previous_day
 
 var current_day := DayTimer.today:
 	set(value):
-		Settings.main_panel = Settings.MainPanelState.LIST_VIEW
+		main_panel = MainPanelState.LIST_VIEW
 
 		if current_day.day_difference_to(value) == 0:
 			return
@@ -430,6 +431,8 @@ func save_to_disk() -> void:
 		for property in exported_properties[group]:
 			config.set_value(group, property, get(property))
 
+	config.set_value("MetaInfo", "last_used", Date.new().as_string())
+
 	config.save(settings_path)
 
 	if OS.is_debug_build():
@@ -444,6 +447,13 @@ func load_from_disk() -> void:
 		for group in exported_properties:
 			for property in exported_properties[group]:
 				set(property, config.get_value(group, property, get(property)))
+
+	var last_used := Date.from_string(
+		config.get_value("MetaInfo", "last_used", Date.new().as_string())
+	)
+
+	if last_used.day_difference_to(DayTimer.today) < 0:
+		main_panel = MainPanelState.CAPTURE_REVIEW
 
 	if OS.is_debug_build():
 		print("[DEBUG] Settings Restored From Disk!")

@@ -174,3 +174,22 @@ func delete_key(key: String) -> void:
 	data.erase(key)
 
 	DirAccess.remove_absolute(get_store_path(key))
+
+
+func move_item(line_id: int, from: String, to: String) -> void:
+	# Since content is a PackedStingArray, there's no pop_at() method.
+	var item = data[from].content[line_id]
+	data[from].content.remove_at(line_id)
+
+	if to not in data:
+		data[to] = {
+			"content": [],
+			"last_modified": Time.get_unix_time_from_system()
+		}
+	data[to].content.append(item)
+
+	save_to_disk(to)
+	content_updated.emit(to)
+
+	save_to_disk(from)
+	content_updated.emit(from)

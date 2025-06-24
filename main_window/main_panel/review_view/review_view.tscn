@@ -1,0 +1,145 @@
+[gd_scene load_steps=3 format=3 uid="uid://cm3rn435gqjql"]
+
+[ext_resource type="Script" uid="uid://7x3u3loi8oyn" path="res://main_window/main_panel/review_view/review_view.gd" id="1_gmb44"]
+[ext_resource type="FontFile" uid="uid://bv1lbje08ni7s" path="res://theme/fonts/OpenSans-MediumItalic.ttf" id="2_pimef"]
+
+[node name="ReviewView" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"MediumSeparation"
+script = ExtResource("1_gmb44")
+
+[node name="Header" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -213.5
+offset_right = 213.5
+offset_bottom = 77.0
+grow_horizontal = 2
+theme_type_variation = &"MediumSeparation"
+
+[node name="FirstRow" type="HBoxContainer" parent="Header"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"SmallSeparation"
+
+[node name="Label" type="Label" parent="Header/FirstRow"]
+layout_mode = 2
+theme_type_variation = &"HeaderLarge"
+text = "Review Your Capture List"
+horizontal_alignment = 1
+
+[node name="SkipButton" type="Button" parent="Header/FirstRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 10
+text = "Skip"
+
+[node name="Explanation" type="Label" parent="Header"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("2_pimef")
+text = "Some items in your capture list have been collecting dust lately.
+Maybe now would be a good time to decide what to do about them?"
+horizontal_alignment = 1
+
+[node name="ToDo" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -36.5
+offset_top = -10.0
+offset_right = 36.5
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+text = "To-Do Text"
+
+[node name="Postpone" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -100.0
+offset_right = 82.0
+grow_vertical = 0
+size_flags_horizontal = 8
+size_flags_vertical = 6
+theme_type_variation = &"MediumSeparation"
+
+[node name="Label" type="Label" parent="Postpone"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Ask again..."
+
+[node name="Buttons" type="VBoxContainer" parent="Postpone"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_type_variation = &"SmallSeparation"
+
+[node name="Tomorrow" type="Button" parent="Postpone/Buttons"]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "Tomorrow"
+
+[node name="NextWeek" type="Button" parent="Postpone/Buttons"]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "Next Week"
+
+[node name="Schedule" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -96.0
+offset_top = -100.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 0
+size_flags_vertical = 6
+theme_type_variation = &"MediumSeparation"
+
+[node name="Label" type="Label" parent="Schedule"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Schedule for..."
+
+[node name="Buttons" type="VBoxContainer" parent="Schedule"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_type_variation = &"SmallSeparation"
+
+[node name="Today" type="Button" parent="Schedule/Buttons"]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "Today"
+
+[node name="Tomorrow" type="Button" parent="Schedule/Buttons"]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "Tomorrow"
