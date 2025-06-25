@@ -111,7 +111,7 @@ func _on_search_query_gui_input(event: InputEvent) -> void:
 		accept_event()
 		return  # early
 
-	if event is InputEventKey and event.is_released():
+	if event is InputEventKey and event.is_pressed():
 		# prevent the built-in TextEdit-behavior when pressing TAB...
 		if event.keycode == KEY_TAB:
 			accept_event()
