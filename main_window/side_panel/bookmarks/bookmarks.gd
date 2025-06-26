@@ -37,7 +37,7 @@ func _search_for_bookmarks() -> void:
 		for line in Cache.data[key].content:
 			line = line.strip_edges()
 
-			if line.ends_with("[BOOKMARK]"):
+			if line.contains("[BOOKMARK]"):
 				_add_bookmark(
 					Date.from_string(key),
 					line_number,
