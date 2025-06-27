@@ -38,12 +38,14 @@ func _search_for_bookmarks() -> void:
 			line = line.strip_edges()
 
 			if line.contains("[BOOKMARK]"):
-				_add_bookmark(
-					Date.from_string(key),
-					line_number,
-					Utils.strip_tags(line),
-					line.begins_with("[x] ") or line.begins_with("[-] ")
-				)
+				var stripped_line = Utils.strip_tags(line)
+				if "[BOOKMARK]" not in stripped_line:
+					_add_bookmark(
+						Date.from_string(key),
+						line_number,
+						stripped_line,
+						line.begins_with("[x] ") or line.begins_with("[-] ")
+					)
 
 			line_number += 1
 
