@@ -53,8 +53,7 @@ text = "Some items in your capture list have been collecting dust lately.
 Maybe now would be a good time to decide what to do about them?"
 horizontal_alignment = 1
 
-[node name="ToDo" type="Label" parent="."]
-unique_name_in_owner = true
+[node name="ReviewPanel" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -62,11 +61,23 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -36.5
-offset_top = -10.0
+offset_top = -20.0
 offset_right = 36.5
-offset_bottom = 10.0
+offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_type_variation = &"SmallSeparation"
+
+[node name="Progress" type="Label" parent="ReviewPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_type_variation = &"SubtleLabel"
+
+[node name="ToDo" type="Label" parent="ReviewPanel"]
+unique_name_in_owner = true
+layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 6
 text = "To-Do Text"

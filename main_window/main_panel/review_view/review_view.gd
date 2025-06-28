@@ -3,6 +3,7 @@ extends Control
 
 var review_queue := []
 var current_review_id := -1
+var total_reviews_due := 0
 
 
 func _ready() -> void:
@@ -51,6 +52,8 @@ func _start_review() -> void:
 		# TODO: only if a review is due
 		review_queue.append({ "to_do": to_do, "line_id": line_id })
 
+	total_reviews_due = line_id + 1
+
 	if review_queue.is_empty():
 		Settings.set_deferred("main_panel", Settings.MainPanelState.LIST_VIEW)
 		return  # early
@@ -61,6 +64,10 @@ func _start_review() -> void:
 func _review_next_item() -> void:
 	current_review_id += 1
 	if current_review_id < review_queue.size():
+		%Progress.text = "Review %d of %d:" % [
+			current_review_id + 1,
+			total_reviews_due
+		]
 		%ToDo.text = Utils.strip_tags(review_queue[current_review_id].to_do)
 	else:
 		switch_to_list_view()
