@@ -193,3 +193,20 @@ func move_item(line_id: int, from: String, to: String) -> void:
 
 	save_to_disk(from)
 	content_updated.emit(from)
+
+
+func postpone_item(line_id: int, from: String, to: String) -> void:
+	var item = data[from].content[line_id]
+
+	var review_date_reg_ex := RegEx.new()
+	review_date_reg_ex.compile("\\[REVIEW:(?<date>[0-9]{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01]))\\]")
+	var review_date_reg_ex_match := review_date_reg_ex.search(item)
+	if review_date_reg_ex_match:
+		item = review_date_reg_ex.sub(item, "[REVIEW:%s]" % to)
+	else:
+		item += " [REVIEW:%s]" % to
+
+	data[from].content[line_id] = item
+
+	save_to_disk(from)
+	content_updated.emit(from)

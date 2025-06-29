@@ -46,13 +46,24 @@ func _start_review() -> void:
 	review_queue = []
 	current_review_id = -1
 
+	var review_date_reg_ex := RegEx.new()
+	review_date_reg_ex.compile("\\[REVIEW:(?<date>[0-9]{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01]))\\]")
+
 	var line_id := -1
 	for to_do in Cache.data["capture"].content:
 		line_id += 1
+
+		var review_date_reg_ex_match := review_date_reg_ex.search(to_do)
+		if review_date_reg_ex_match:
+			if Date.from_string(
+				review_date_reg_ex_match.get_string("date")
+			).day_difference_to(DayTimer.today) >= 0:
+				continue  # with next item
+
 		# TODO: only if a review is due
 		review_queue.append({ "to_do": to_do, "line_id": line_id })
 
-	total_reviews_due = line_id + 1
+	total_reviews_due = review_queue.size()
 
 	if review_queue.is_empty():
 		Settings.set_deferred("main_panel", Settings.MainPanelState.LIST_VIEW)
@@ -83,7 +94,11 @@ func _schedule_current_item(day_offset: int) -> void:
 
 
 func _postpone_current_item(day_offset: int) -> void:
-	pass  # TODO
+	Cache.postpone_item(
+		review_queue[current_review_id].line_id,
+		"capture",
+		DayTimer.today.add_days(day_offset).as_string(),
+	)
 	_review_next_item()
 
 

@@ -32,7 +32,7 @@ theme_type_variation = &"SmallSeparation"
 [node name="Label" type="Label" parent="Header/FirstRow"]
 layout_mode = 2
 theme_type_variation = &"HeaderLarge"
-text = "Review Your Capture List"
+text = "Review Capture List"
 horizontal_alignment = 1
 
 [node name="SkipButton" type="Button" parent="Header/FirstRow"]

@@ -165,6 +165,8 @@ var hide_tween: Tween
 
 var has_requested_bookmark_update := false
 
+var review_date : String
+
 
 func _ready() -> void:
 	_set_initial_state()
@@ -393,6 +395,14 @@ func _strip_text(raw_text: String) -> String:
 			text_color_id = int(color_tag_reg_ex_match.get_string("digit"))
 			continue  # from the start of the while loop again
 
+		var review_date_reg_ex := RegEx.new()
+		review_date_reg_ex.compile("\\[REVIEW:(?<date>[0-9]{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01]))\\]$")
+		var review_date_reg_ex_match := review_date_reg_ex.search(raw_text)
+		if review_date_reg_ex_match:
+			raw_text = raw_text.substr(0, raw_text.length() - 20).strip_edges()
+			review_date = review_date_reg_ex_match.get_string("date")
+			continue  # from the start of the while loop again
+
 		# NOTE: The following two if-conditions do *not* check if the matching
 		# parts in the beginning and end of the raw text are distinct. This is
 		# intended! It will also strip *any* number of asterisks or underscores
@@ -498,6 +508,9 @@ func as_string(depth := 0) -> String:
 
 	if text_color_id:
 		string += " [COLOR%d]" % text_color_id
+
+	if review_date:
+		string += " [REVIEW:%s]" % review_date
 
 	for sub_item in %SubItems.get_children():
 		string += "\n" + sub_item.as_string(depth + 1)

@@ -452,8 +452,7 @@ func load_from_disk() -> void:
 		config.get_value("MetaInfo", "last_used", Date.new().as_string())
 	)
 
-	if last_used.day_difference_to(DayTimer.today) < 0:
-		main_panel = MainPanelState.CAPTURE_REVIEW
+	main_panel = MainPanelState.CAPTURE_REVIEW
 
 	if OS.is_debug_build():
 		print("[DEBUG] Settings Restored From Disk!")

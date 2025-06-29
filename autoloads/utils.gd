@@ -48,6 +48,12 @@ func strip_tags(line: String) -> String:
 			line = line.substr(0, line.length() - 9).strip_edges()
 			continue  # from the start of the while loop again
 
+		var review_date_reg_ex := RegEx.new()
+		review_date_reg_ex.compile("\\[REVIEW:(?<date>[0-9]{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01]))\\]$")
+		var review_date_reg_ex_match := review_date_reg_ex.search(line)
+		if review_date_reg_ex_match:
+			line = line.substr(0, line.length() - 20).strip_edges()
+
 		# NOTE: The following two if-conditions do *not* check if the matching
 		# parts in the beginning and end of the raw text are distinct. This is
 		# intended! It will also strip *any* number of asterisks or underscores
