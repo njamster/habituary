@@ -28,12 +28,6 @@ func _set_initial_state() -> void:
 
 	_on_editing_options_resized()
 
-	# FIXME: temporary band-aid fix, until it's possible to bookmark to-dos in
-	# the capture panel as well
-	if not to_do.date:
-		%Bookmark.hide()
-		%Delete.size_flags_horizontal += SIZE_EXPAND
-
 
 func _connect_signals() -> void:
 	$PanelContainer.resized.connect(_on_editing_options_resized)
@@ -88,6 +82,15 @@ func update_bookmark() -> void:
 	else:
 		%Bookmark.text = %Bookmark.text.replace("Remove", "Add")
 	%Bookmark/Tooltip.text = %Bookmark.text
+
+	# FIXME: temporary band-aid fix, until it's possible to bookmark to-dos in
+	# the capture panel as well (or it's decided that's not required at all)
+	if not to_do.date:
+		%Bookmark.hide()
+		%Delete.size_flags_horizontal = SIZE_SHRINK_END + SIZE_EXPAND
+	else:
+		%Bookmark.show()
+		%Delete.size_flags_horizontal = SIZE_SHRINK_END
 
 
 func _on_editing_options_resized() -> void:

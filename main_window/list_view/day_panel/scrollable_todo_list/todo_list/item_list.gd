@@ -141,6 +141,9 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 		for sub_item in data.get_node("%SubItems").get_all_items():
 			sub_item.is_bookmarked = false
 
+	if data.has_node("EditingOptions"):
+		data.get_node("EditingOptions").update_bookmark.call_deferred()
+
 	if dragged_from != self:
 		data.reparent(self)
 	move_child(data, at_index)
