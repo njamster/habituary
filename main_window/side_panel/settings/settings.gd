@@ -24,6 +24,11 @@ func _set_initial_state() -> void:
 	%UIScale/Setting/ScaleFactor.max_value = Settings.MAX_UI_SCALE_FACTOR
 	%UIScale/Setting/ScaleFactor.value = Settings.ui_scale_factor
 
+	%EnableCaptureReviews/Setting/Options.set_pressed_no_signal(
+		Settings.enable_capture_reviews
+	)
+	_on_enable_capture_reviews_options_toggled(Settings.enable_capture_reviews)
+
 	%FirstWeekday/Setting/Options.set_pressed_no_signal(
 		Settings.start_week_on_monday
 	)
@@ -78,6 +83,8 @@ func _connect_signals() -> void:
 
 	%DayStart/Setting/Hours.value_changed.connect(_on_day_start_hours_value_changed)
 	%DayStart/Setting/Minutes.value_changed.connect(_on_day_start_minutes_value_changed)
+
+	%EnableCaptureReviews/Setting/Options.toggled.connect(_on_enable_capture_reviews_options_toggled)
 
 	%FirstWeekday/Setting/Options.toggled.connect(_on_first_weekday_toggled)
 
@@ -158,6 +165,10 @@ func _on_day_start_hours_value_changed(value: float) -> void:
 
 func _on_day_start_minutes_value_changed(value: float) -> void:
 	Settings.day_start_minute_offset = int(value)
+
+
+func _on_enable_capture_reviews_options_toggled(toggled_on: bool) -> void:
+	Settings.enable_capture_reviews = toggled_on
 
 
 func _on_hide_ticked_off_todos_options_toggled(toggled_on: bool) -> void:

@@ -374,6 +374,14 @@ var bookmarks_due_today := 0:
 
 		show_sub_item_count_changed.emit()
 
+@export var enable_capture_reviews := true:
+	set(value):
+		if enable_capture_reviews == value:
+			return
+
+		enable_capture_reviews = value
+		_start_debounce_timer()
+
 var side_panel_width := 360  # pixels
 
 
@@ -452,7 +460,8 @@ func load_from_disk() -> void:
 		config.get_value("MetaInfo", "last_used", Date.new().as_string())
 	)
 
-	main_panel = MainPanelState.CAPTURE_REVIEW
+	if enable_capture_reviews:
+		main_panel = MainPanelState.CAPTURE_REVIEW
 
 	if OS.is_debug_build():
 		print("[DEBUG] Settings Restored From Disk!")
