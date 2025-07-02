@@ -210,3 +210,10 @@ func postpone_item(line_id: int, from: String, to: String) -> void:
 
 	save_to_disk(from)
 	content_updated.emit(from)
+
+
+func delete_item(line_id: int, from: String) -> void:
+	data[from].content.remove_at(line_id)
+
+	save_to_disk(from)
+	content_updated.emit(from)

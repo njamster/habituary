@@ -27,6 +27,8 @@ func _connect_signals() -> void:
 	%Postpone/Buttons/Tomorrow.pressed.connect(_postpone_current_item.bind(1))
 	%Postpone/Buttons/NextWeek.pressed.connect(_postpone_current_item.bind(7))
 
+	$DeleteButton.pressed.connect(_delete_current_item)
+
 	%SkipButton.pressed.connect(switch_to_list_view)
 	#endregion
 
@@ -98,6 +100,14 @@ func _postpone_current_item(day_offset: int) -> void:
 		review_queue[current_review_id].line_id,
 		"capture",
 		DayTimer.today.add_days(day_offset).as_string(),
+	)
+	_review_next_item()
+
+
+func _delete_current_item() -> void:
+	Cache.delete_item(
+		review_queue[current_review_id].line_id,
+		"capture"
 	)
 	_review_next_item()
 
