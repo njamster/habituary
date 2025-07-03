@@ -87,10 +87,15 @@ func _review_next_item() -> void:
 
 
 func _schedule_current_item(day_offset: int) -> void:
-	Cache.move_item(
+	Cache.copy_item(
 		review_queue[current_review_id].line_id,
 		"capture",
 		DayTimer.today.add_days(day_offset).as_string(),
+	)
+	Cache.postpone_item(
+		review_queue[current_review_id].line_id,
+		"capture",
+		DayTimer.today.add_days(day_offset + 1).as_string(),
 	)
 	_review_next_item()
 
