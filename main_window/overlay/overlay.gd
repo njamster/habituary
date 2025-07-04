@@ -27,7 +27,10 @@ func _connect_signals() -> void:
 	#region Local Signals
 	$Background.gui_input.connect(_on_background_gui_input)
 
-	%CalendarWidget.closed.connect(close_overlay)
+	%CalendarWidget.day_button_pressed.connect(func(date):
+		Settings.current_day = date
+		close_overlay()
+	)
 	#endregion
 
 

@@ -21,15 +21,23 @@ func _connect_signals() -> void:
 	#endregion
 
 	#region Local Signals
-	%Schedule/Buttons/Today.pressed.connect(_schedule_current_item.bind(0))
-	%Schedule/Buttons/Tomorrow.pressed.connect(_schedule_current_item.bind(1))
+	%SkipButton.pressed.connect(switch_to_list_view)
 
-	%Postpone/Buttons/Tomorrow.pressed.connect(_postpone_current_item.bind(1))
-	%Postpone/Buttons/NextWeek.pressed.connect(_postpone_current_item.bind(7))
+	%Schedule/CalendarWidget.day_button_pressed.connect(func(date):
+		var day_difference : int = date.day_difference_to(DayTimer.today)
+		if day_difference > 0:
+			_schedule_current_item(day_difference)
+		%Schedule/CalendarWidget.reset_view_to_today()
+	)
 
 	$DeleteButton.pressed.connect(_delete_current_item)
 
-	%SkipButton.pressed.connect(switch_to_list_view)
+	%Postpone/CalendarWidget.day_button_pressed.connect(func(date):
+		var day_difference : int = date.day_difference_to(DayTimer.today)
+		if day_difference > 0:
+			_postpone_current_item(day_difference)
+		%Postpone/CalendarWidget.reset_view_to_today()
+	)
 	#endregion
 
 
@@ -59,7 +67,7 @@ func _start_review() -> void:
 		if review_date_reg_ex_match:
 			if Date.from_string(
 				review_date_reg_ex_match.get_string("date")
-			).day_difference_to(DayTimer.today) >= 0:
+			).day_difference_to(DayTimer.today) > 0:
 				continue  # with next item
 
 		# TODO: only if a review is due

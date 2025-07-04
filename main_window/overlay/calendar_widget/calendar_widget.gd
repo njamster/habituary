@@ -1,7 +1,7 @@
 extends PanelContainer
 
 
-signal closed
+signal day_button_pressed(date)
 
 
 var anchor_date: Date
@@ -23,6 +23,8 @@ func _set_initial_state() -> void:
 	%MonthButton.show()
 	%YearLabel.show()
 	%YearSpinBox.hide()
+
+	_on_visibility_changed()
 
 
 func _connect_signals() -> void:
@@ -48,7 +50,7 @@ func _connect_signals() -> void:
 
 	%PreviousMonth.pressed.connect(_on_previous_month_pressed)
 
-	%Today.pressed.connect(_on_today_pressed)
+	%Today.pressed.connect(reset_view_to_today)
 
 	%NextMonth.pressed.connect(_on_next_month_pressed)
 	#endregion
@@ -57,7 +59,8 @@ func _connect_signals() -> void:
 func _on_visibility_changed() -> void:
 	if visible:
 		anchor_date = Date.new(Settings.current_day.as_dict())
-		Settings.current_day_changed.connect(_on_current_day_changed)
+		if not Settings.current_day_changed.is_connected(_on_current_day_changed):
+			Settings.current_day_changed.connect(_on_current_day_changed)
 		update_month()
 	else:
 		if Settings.current_day_changed.is_connected(_on_current_day_changed):
@@ -161,7 +164,9 @@ func update_month() -> void:
 			else:
 				button.modulate.a = 0.3
 
-			button.pressed.connect(closed.emit)
+			button.pressed.connect(
+				day_button_pressed.emit.bind(button.associated_day)
+			)
 			$VBox/GridContainer.add_child(button)
 		date = date.add_days(1)
 
@@ -180,7 +185,9 @@ func update_month() -> void:
 				date.format(Settings.date_format_save)
 			) + ".txt"):
 				button.modulate.a = 0.55
-		button.pressed.connect(closed.emit)
+		button.pressed.connect(
+				day_button_pressed.emit.bind(button.associated_day)
+			)
 		$VBox/GridContainer.add_child(button)
 		date = date.add_days(1)
 
@@ -201,7 +208,9 @@ func update_month() -> void:
 			else:
 				button.modulate.a = 0.3
 
-			button.pressed.connect(closed.emit)
+			button.pressed.connect(
+				day_button_pressed.emit.bind(button.associated_day)
+			)
 			$VBox/GridContainer.add_child(button)
 			date = date.add_days(1)
 
@@ -222,7 +231,7 @@ func _on_previous_month_pressed() -> void:
 	update_month()
 
 
-func _on_today_pressed() -> void:
+func reset_view_to_today() -> void:
 	anchor_date = Date.new(DayTimer.today.as_dict())
 	update_month()
 

@@ -18,9 +18,3 @@ func _init(date : Date) -> void:
 	tooltip.text = "Click to jump to this date"
 	tooltip.popup_delay = 1.5
 	add_child(tooltip)
-
-	pressed.connect(_on_button_pressed)
-
-
-func _on_button_pressed() -> void:
-	Settings.current_day = associated_day
