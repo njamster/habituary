@@ -395,6 +395,9 @@ func _enter_tree() -> void:
 
 	load_from_disk()
 
+	if enable_capture_reviews:
+		main_panel = MainPanelState.CAPTURE_REVIEW
+
 
 func _ready() -> void:
 	_set_initial_state()
@@ -439,8 +442,6 @@ func save_to_disk() -> void:
 		for property in exported_properties[group]:
 			config.set_value(group, property, get(property))
 
-	config.set_value("MetaInfo", "last_used", Date.new().as_string())
-
 	config.save(settings_path)
 
 	if OS.is_debug_build():
@@ -455,13 +456,6 @@ func load_from_disk() -> void:
 		for group in exported_properties:
 			for property in exported_properties[group]:
 				set(property, config.get_value(group, property, get(property)))
-
-	var last_used := Date.from_string(
-		config.get_value("MetaInfo", "last_used", Date.new().as_string())
-	)
-
-	if enable_capture_reviews:
-		main_panel = MainPanelState.CAPTURE_REVIEW
 
 	if OS.is_debug_build():
 		print("[DEBUG] Settings Restored From Disk!")
