@@ -70,7 +70,6 @@ func _start_review() -> void:
 			).day_difference_to(DayTimer.today) > 0:
 				continue  # with next item
 
-		# TODO: only if a review is due
 		review_queue.append({ "to_do": to_do, "line_id": line_id })
 
 	total_reviews_due = review_queue.size()

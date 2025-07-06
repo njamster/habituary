@@ -6,7 +6,6 @@ extends VBoxContainer
 @onready var last_index := get_list_index()
 @onready var last_date := date
 
-
 # used to avoid emitting `list_save_requested` too early
 var _initialization_finished := false
 
@@ -23,7 +22,7 @@ var text := "":
 		if text != value:
 			text = value
 			if is_inside_tree():
-				%Edit.text = text
+				%Edit.text = _strip_text(text)
 
 				if _initialization_finished:
 					get_to_do_list()._start_debounce_timer("text changed")
@@ -167,6 +166,8 @@ var has_requested_bookmark_update := false
 
 var review_date : String
 
+@onready var review_date_reg_ex := RegEx.new()
+
 
 func _ready() -> void:
 	_set_initial_state()
@@ -184,6 +185,8 @@ func _ready() -> void:
 
 
 func _set_initial_state() -> void:
+	review_date_reg_ex.compile("\\[REVIEW:(?<date>[0-9]{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01]))\\]$")
+
 	%CheckBox.show()
 	%FoldHeading.hide()
 	%ExtraInfo.hide()
@@ -395,8 +398,6 @@ func _strip_text(raw_text: String) -> String:
 			text_color_id = int(color_tag_reg_ex_match.get_string("digit"))
 			continue  # from the start of the while loop again
 
-		var review_date_reg_ex := RegEx.new()
-		review_date_reg_ex.compile("\\[REVIEW:(?<date>[0-9]{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01]))\\]$")
 		var review_date_reg_ex_match := review_date_reg_ex.search(raw_text)
 		if review_date_reg_ex_match:
 			raw_text = raw_text.substr(0, raw_text.length() - 20).strip_edges()
@@ -437,6 +438,14 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 	var new_item := (self.text == "")
 
 	if new_text:
+		if new_item and not get_day_panel():
+			# a new item has been added to the capture list
+			var review_date_reg_ex_match := review_date_reg_ex.search(new_text)
+			if not review_date_reg_ex_match:
+				new_text += " [REVIEW:%s]" % (
+					DayTimer.today.add_days(1).as_string()
+				)
+
 		self.text = new_text
 		%Edit.release_focus()
 
