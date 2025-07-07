@@ -136,9 +136,23 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 	var dragged_from = data.get_item_list()
 	var old_list = data.get_to_do_list()
 
-	if not self.get_day_panel():
-		data.is_bookmarked = false
+	if self.get_day_panel() and not data.get_day_panel():
+		# data was part of the capture list before, but won't be anymore:
+		# (a) remove review date
+		data.review_date = ""
+		# (b) repeat this for all of its sub items
 		for sub_item in data.get_node("%SubItems").get_all_items():
+			sub_item.review_date = ""
+	elif not self.get_day_panel() and data.get_day_panel():
+		# data will become part of the capture list now, but wasn't before:
+		# (a) add review date
+		var tomorrow = DayTimer.today.add_days(1).as_string()
+		data.review_date = tomorrow
+		# (b) remove bookmark
+		data.is_bookmarked = false
+		# (c) repeat this for all of its sub items
+		for sub_item in data.get_node("%SubItems").get_all_items():
+			sub_item.review_date = tomorrow
 			sub_item.is_bookmarked = false
 
 	if data.has_node("EditingOptions"):

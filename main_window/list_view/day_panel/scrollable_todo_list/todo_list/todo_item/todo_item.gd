@@ -440,11 +440,7 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 	if new_text:
 		if new_item and not get_day_panel():
 			# a new item has been added to the capture list
-			var review_date_reg_ex_match := review_date_reg_ex.search(new_text)
-			if not review_date_reg_ex_match:
-				new_text += " [REVIEW:%s]" % (
-					DayTimer.today.add_days(1).as_string()
-				)
+			review_date = DayTimer.today.add_days(1).as_string()
 
 		self.text = new_text
 		%Edit.release_focus()
@@ -1002,19 +998,8 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 		# end of the item list of its parent to-do (if it isn't already).
 		%SubItems.move_child(data, -1)
 	else:
-		var old_list = data.get_to_do_list()
-
-		if not self.get_day_panel():
-			data.is_bookmarked = false
-
-		data.reparent(%SubItems)
-		if old_list != self.get_to_do_list():
-			old_list._start_debounce_timer("to-do dragged to another list")
-
-		if data.is_in_edit_mode():
-			data.edit()
-
-		data.get_to_do_list()._start_debounce_timer("to-do dropped")
+		# Otherwise, add it to (the end of) this item's sub item list.
+		%SubItems._drop_data(Vector2(0, %SubItems.size.y), data)
 
 
 func contains_search_query_match() -> bool:
