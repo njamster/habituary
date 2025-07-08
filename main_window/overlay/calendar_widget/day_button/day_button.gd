@@ -2,6 +2,7 @@ extends Button
 class_name DayButton
 
 var associated_day : Date
+var tooltip : Tooltip
 
 
 func _init(date : Date) -> void:
@@ -14,7 +15,6 @@ func _init(date : Date) -> void:
 	self.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	self.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 
-	var tooltip := Tooltip.new()
-	tooltip.text = "Click to jump to this date"
+	tooltip = Tooltip.new()
 	tooltip.popup_delay = 1.5
 	add_child(tooltip)

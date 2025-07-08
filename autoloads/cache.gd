@@ -147,6 +147,8 @@ func save_to_disk(key: String) -> void:
 		file.close()
 
 		data[key].last_modified = FileAccess.get_modified_time(store_path)
+	else:
+		delete_key(key)
 
 
 func update_content(key: String, content: String) -> void:

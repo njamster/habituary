@@ -25,7 +25,7 @@ func _connect_signals() -> void:
 
 	%Schedule/CalendarWidget.day_button_pressed.connect(func(date):
 		var day_difference : int = date.day_difference_to(DayTimer.today)
-		if day_difference > 0:
+		if day_difference >= 0:
 			_schedule_current_item(day_difference)
 		%Schedule/CalendarWidget.reset_view_to_today()
 	)
@@ -94,15 +94,10 @@ func _review_next_item() -> void:
 
 
 func _schedule_current_item(day_offset: int) -> void:
-	Cache.copy_item(
+	Cache.move_item(
 		review_queue[current_review_id].line_id,
 		"capture",
 		DayTimer.today.add_days(day_offset).as_string(),
-	)
-	Cache.postpone_item(
-		review_queue[current_review_id].line_id,
-		"capture",
-		DayTimer.today.add_days(day_offset + 1).as_string(),
 	)
 	_review_next_item()
 

@@ -4,6 +4,9 @@ extends PanelContainer
 signal day_button_pressed(date)
 
 
+@export var day_button_tooltip := "Click to jump to this date"
+
+
 var anchor_date: Date
 
 
@@ -154,6 +157,7 @@ func update_month() -> void:
 			$VBox/GridContainer.add_child(Control.new())
 		else:
 			var button := DayButton.new(date)
+			button.tooltip.text = day_button_tooltip
 			if date.weekday == 0:
 				button.theme_type_variation = "CalendarWidget_DayButton_WeekendDay"
 
@@ -173,6 +177,7 @@ func update_month() -> void:
 	# add the days from the current month
 	for i in range(Date._days_in_month(anchor_date.month, anchor_date.year)):
 		var button := DayButton.new(date)
+		button.tooltip.text = day_button_tooltip
 		if date.as_dict() == Settings.current_day.as_dict():
 			button.theme_type_variation = "CalendarWidget_DayButton_Selected"
 		elif date.as_dict() == DayTimer.today.as_dict():
@@ -198,6 +203,7 @@ func update_month() -> void:
 			$VBox/GridContainer.add_child(Control.new())
 		else:
 			var button := DayButton.new(date)
+			button.tooltip.text = day_button_tooltip
 			if date.weekday == 0 or date.weekday == 6:
 				button.theme_type_variation = "CalendarWidget_DayButton_WeekendDay"
 

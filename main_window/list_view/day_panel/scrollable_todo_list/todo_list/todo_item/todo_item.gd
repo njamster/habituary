@@ -20,12 +20,16 @@ var date : Date:
 var text := "":
 	set(value):
 		if text != value:
-			text = value
-			if is_inside_tree():
-				%Edit.text = _strip_text(text)
+			if text == "" and not get_day_panel():
+				# a new item has been added to the capture list
+				review_date = DayTimer.today.add_days(1).as_string()
 
-				if _initialization_finished:
-					get_to_do_list()._start_debounce_timer("text changed")
+			text = value
+
+			%Edit.text = _strip_text(text)
+
+			if _initialization_finished:
+				get_to_do_list()._start_debounce_timer("text changed")
 
 enum States { TO_DO, DONE, FAILED }
 var state := States.TO_DO:
@@ -438,10 +442,6 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 	var new_item := (self.text == "")
 
 	if new_text:
-		if new_item and not get_day_panel():
-			# a new item has been added to the capture list
-			review_date = DayTimer.today.add_days(1).as_string()
-
 		self.text = new_text
 		%Edit.release_focus()
 
@@ -766,11 +766,7 @@ func _on_bookmark_indicator_gui_input(event: InputEvent) -> void:
 # when an item is deleted (which is why we check if it's queded for deletion first).
 func _on_tree_exiting() -> void:
 	if not is_queued_for_deletion():
-		%MainRow.theme_type_variation = "ToDoItem_NoHeading"
-
-		# submit any yet unsubmitted changes
-		if %Edit.text != self.text:
-			self.text = %Edit.text
+		self.text = %Edit.text  # submit any yet unsubmitted changes
 
 
 func _apply_state_relative_formatting(immediate := false) -> void:
