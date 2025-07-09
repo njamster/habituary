@@ -24,18 +24,14 @@ func _connect_signals() -> void:
 	%SkipButton.pressed.connect(switch_to_list_view)
 
 	%Schedule/CalendarWidget.day_button_pressed.connect(func(date):
-		var day_difference : int = date.day_difference_to(DayTimer.today)
-		if day_difference >= 0:
-			_schedule_current_item(day_difference)
+		_schedule_current_item(date.day_difference_to(DayTimer.today))
 		%Schedule/CalendarWidget.reset_view_to_today()
 	)
 
 	$DeleteButton.pressed.connect(_delete_current_item)
 
 	%Postpone/CalendarWidget.day_button_pressed.connect(func(date):
-		var day_difference : int = date.day_difference_to(DayTimer.today)
-		if day_difference > 0:
-			_postpone_current_item(day_difference)
+		_postpone_current_item(date.day_difference_to(DayTimer.today))
 		%Postpone/CalendarWidget.reset_view_to_today()
 	)
 	#endregion
