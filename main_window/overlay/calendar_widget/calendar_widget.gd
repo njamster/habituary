@@ -85,35 +85,28 @@ func _on_current_day_changed() -> void:
 
 
 func update_day() -> void:
-	var first_button_id = 0
 	for child in $VBox/GridContainer.get_children():
-		if child is Button:
-			break
-		else:
-			first_button_id += 1
+		if child is not DayButton:
+			continue
 
-	for i in range(Date._days_in_month(anchor_date.month, anchor_date.year)):
-		var child_id = first_button_id + i
-		var button := $VBox/GridContainer.get_child(child_id)
-		if i+1 == Settings.current_day.day:
+		var button := child as DayButton
+
+		if button.associated_day.equals(Settings.current_day):
 			button.theme_type_variation = "CalendarWidget_DayButton_Selected"
 			button.modulate.a = 1.0
-		elif i+1 == DayTimer.today.day and anchor_date.month == DayTimer.today.month and \
-			anchor_date.year == DayTimer.today.year:
-				button.theme_type_variation = "CalendarWidget_DayButton_Today"
-				button.modulate.a = 1.0
+		elif button.associated_day.equals(DayTimer.today):
+			button.theme_type_variation = "CalendarWidget_DayButton_Today"
+			button.modulate.a = 1.0
 		elif button.theme_type_variation == "CalendarWidget_DayButton_Selected":
-			if child_id % 7 == 5 or child_id % 7 == 6:
+			if button.associated_day.is_weekend_day():
 				button.theme_type_variation = "CalendarWidget_DayButton_WeekendDay"
 			else:
 				button.theme_type_variation = "CalendarWidget_DayButton"
 
-			var date = anchor_date.duplicate()
-			date.day = i+1
 			if not FileAccess.file_exists(Settings.store_path.path_join(
-				date.format(Settings.date_format_save)
+				button.associated_day.format(Settings.date_format_save)
 			) + ".txt"):
-				button.modulate.a = 0.65
+				button.modulate.a = 0.55
 
 
 func update_month() -> void:

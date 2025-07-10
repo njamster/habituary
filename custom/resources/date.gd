@@ -192,6 +192,14 @@ func day_difference_to(date : Date) -> int:
 	return floor(t1-t2) / 60 / 60 / 24
 
 
+func equals(date: Date) -> bool:
+	return (self.day_difference_to(date) == 0)
+
+
+func is_weekend_day() -> bool:
+	return self.weekday == 0 or self.weekday == 6
+
+
 func format(format_string: String) -> String:
 	var output := ""
 
