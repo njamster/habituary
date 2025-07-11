@@ -149,7 +149,7 @@ func update_month() -> void:
 
 	var start_offset := 0
 	if Settings.start_week_on_monday:
-		start_offset = wrapi(date.weekday - 1, 0, 6)
+		start_offset = wrapi(date.weekday - 1, 0, 7)
 	else:
 		start_offset = date.weekday
 
@@ -163,7 +163,7 @@ func update_month() -> void:
 		else:
 			var button := DayButton.new(date)
 			button.tooltip.text = day_button_tooltip
-			if date.weekday == 0:
+			if date.is_weekend_day():
 				button.theme_type_variation = "CalendarWidget_DayButton_WeekendDay"
 
 			if not FileAccess.file_exists(Settings.store_path.path_join(
@@ -181,27 +181,20 @@ func update_month() -> void:
 
 	# add the days from the current month
 	for i in range(Date._days_in_month(anchor_date.month, anchor_date.year)):
-		if not include_past_dates and \
-			DayTimer.today.month == anchor_date.month and \
-				i < DayTimer.today.day - 1:
-					var placeholder = Control.new()
-					placeholder.custom_minimum_size = Vector2(28, 28)
-					$VBox/GridContainer.add_child(placeholder)
-		elif not include_today and \
-			DayTimer.today.month == anchor_date.month and \
-				i == DayTimer.today.day - 1:
-					var placeholder = Control.new()
-					placeholder.custom_minimum_size = Vector2(28, 28)
-					$VBox/GridContainer.add_child(placeholder)
+		if (not include_past_dates and date.day_difference_to(DayTimer.today) < 0) or \
+			(not include_today and date.equals(DayTimer.today)):
+				var placeholder = Control.new()
+				placeholder.custom_minimum_size = Vector2(28, 28)
+				$VBox/GridContainer.add_child(placeholder)
 		else:
 			var button := DayButton.new(date)
 			button.tooltip.text = day_button_tooltip
-			if date.as_dict() == Settings.current_day.as_dict():
+			if date.equals(Settings.current_day):
 				button.theme_type_variation = "CalendarWidget_DayButton_Selected"
-			elif date.as_dict() == DayTimer.today.as_dict():
+			elif date.equals(DayTimer.today):
 				button.theme_type_variation = "CalendarWidget_DayButton_Today"
 			else:
-				if date.weekday == 0 or date.weekday == 6:
+				if date.is_weekend_day():
 					button.theme_type_variation = "CalendarWidget_DayButton_WeekendDay"
 
 				if not FileAccess.file_exists(Settings.store_path.path_join(
@@ -222,7 +215,7 @@ func update_month() -> void:
 		else:
 			var button := DayButton.new(date)
 			button.tooltip.text = day_button_tooltip
-			if date.weekday == 0 or date.weekday == 6:
+			if date.is_weekend_day():
 				button.theme_type_variation = "CalendarWidget_DayButton_WeekendDay"
 
 			if not FileAccess.file_exists(Settings.store_path.path_join(
