@@ -20,7 +20,7 @@ offset_top = 87.0
 offset_right = -40.0
 offset_bottom = 151.0
 grow_horizontal = 0
-theme_type_variation = &"PanelContainer_Popup"
+theme_type_variation = &"CalendarWidget"
 script = ExtResource("1_6ouga")
 
 [node name="VBox" type="VBoxContainer" parent="."]

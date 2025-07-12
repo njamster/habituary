@@ -93,6 +93,7 @@ text = "Ask Again:"
 
 [node name="CalendarWidget" parent="Postpone" instance=ExtResource("4_kvqur")]
 layout_mode = 2
+theme_type_variation = &"CalendarWidget_DockedLeft"
 day_button_tooltip = "Click to delay decision until this date"
 include_past_dates = false
 include_today = false
@@ -138,5 +139,6 @@ text = "Schedule For:"
 
 [node name="CalendarWidget" parent="Schedule" instance=ExtResource("4_kvqur")]
 layout_mode = 2
+theme_type_variation = &"CalendarWidget_DockedRight"
 day_button_tooltip = "Click to move the to-do to this date"
 include_past_dates = false
