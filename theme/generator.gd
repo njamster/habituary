@@ -176,12 +176,14 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	#region CalendarWidget_DayButton
 	var calendar_widget_day_button := theme.create_theme_type("CalendarWidget_DayButton", "Button")
 
+	calendar_widget_day_button.font_hover_color = neutral_6
+
 	calendar_widget_day_button.set_main_style({
 		"corner_radius" = 45,
 		"anti_aliasing_size" = 0.33,
 	})
 	calendar_widget_day_button.hover = {
-		"bg_color" = neutral_3,
+		"bg_color" = neutral_4,
 	}
 	calendar_widget_day_button.normal = {
 		"draw_center" = false,

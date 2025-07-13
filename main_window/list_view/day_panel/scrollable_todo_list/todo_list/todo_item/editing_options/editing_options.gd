@@ -27,9 +27,12 @@ func _set_initial_state() -> void:
 	update()
 
 	_on_editing_options_resized()
+	_on_dark_mode_changed()
 
 
 func _connect_signals() -> void:
+	Settings.dark_mode_changed.connect(_on_dark_mode_changed)
+
 	$PanelContainer.resized.connect(_on_editing_options_resized)
 
 	%Bold.toggled.connect(_on_bold_toggled)
@@ -169,3 +172,10 @@ func _input(event: InputEvent) -> void:
 		return # early, i.e. ignore the input
 
 	accept_event()
+
+
+func _on_dark_mode_changed() -> void:
+	if Settings.dark_mode:
+		%TextColor.get("theme_override_styles/panel").border_color = Color("#D8DEE9")
+	else:
+		%TextColor.get("theme_override_styles/panel").border_color = Color("#4C566A")

@@ -199,7 +199,7 @@ corner_radius_bottom_left = 45
 anti_aliasing_size = 0.33
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b0hol"]
-bg_color = Color(0.898039, 0.913725, 0.941176, 1)
+bg_color = Color(0.847059, 0.870588, 0.913725, 1)
 corner_radius_top_left = 45
 corner_radius_top_right = 45
 corner_radius_bottom_right = 45
@@ -949,6 +949,7 @@ CalendarWidget_Button/styles/hover = SubResource("StyleBoxFlat_etkot")
 CalendarWidget_Button/styles/normal = SubResource("StyleBoxFlat_d18nf")
 CalendarWidget_Button/styles/pressed = SubResource("StyleBoxFlat_lrdb5")
 CalendarWidget_DayButton/base_type = &"Button"
+CalendarWidget_DayButton/colors/font_hover_color = Color(0.262745, 0.298039, 0.368627, 1)
 CalendarWidget_DayButton/styles/disabled = SubResource("StyleBoxFlat_uamni")
 CalendarWidget_DayButton/styles/focus = SubResource("StyleBoxFlat_n7b4g")
 CalendarWidget_DayButton/styles/hover = SubResource("StyleBoxFlat_b0hol")
