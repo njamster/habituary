@@ -31,16 +31,22 @@ func _set_initial_state() -> void:
 
 
 func _connect_signals() -> void:
+	#region Global Signals
 	Settings.dark_mode_changed.connect(_on_dark_mode_changed)
+	#endregion
 
+	#region Local Signals
 	$PanelContainer.resized.connect(_on_editing_options_resized)
 
 	%Bold.toggled.connect(_on_bold_toggled)
 	%Italic.toggled.connect(_on_italic_toggled)
+	%TextColor.mouse_entered.connect(_on_dark_mode_changed.bind(true))
 	%TextColor.gui_input.connect(_on_text_color_gui_input)
+	%TextColor.mouse_exited.connect(_on_dark_mode_changed.bind(false))
 
 	%Bookmark.toggled.connect(_on_bookmark_toggled)
 	%Delete.pressed.connect(_on_delete_pressed)
+	#endregion
 
 
 func update() -> void:
@@ -174,8 +180,10 @@ func _input(event: InputEvent) -> void:
 	accept_event()
 
 
-func _on_dark_mode_changed() -> void:
+func _on_dark_mode_changed(inverted := false) -> void:
 	if Settings.dark_mode:
-		%TextColor.get("theme_override_styles/panel").border_color = Color("#D8DEE9")
+		%TextColor.get("theme_override_styles/panel").border_color = \
+			Color("#D8DEE9") if not inverted else Color("#4C566A")
 	else:
-		%TextColor.get("theme_override_styles/panel").border_color = Color("#4C566A")
+		%TextColor.get("theme_override_styles/panel").border_color = \
+			Color("#4C566A") if not inverted else Color("#D8DEE9")

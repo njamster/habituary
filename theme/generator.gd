@@ -148,7 +148,6 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	button.pressed = {
 		"bg_color" = primary_4,
 	}
-
 	#endregion
 
 	#region CalendarWidget_Button
@@ -722,6 +721,13 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 
 	to_do_item_bookmark_button.font_size = 12
 
+	to_do_item_bookmark_button.font_hover_color = neutral_2
+	to_do_item_bookmark_button.icon_hover_color = neutral_2
+	to_do_item_bookmark_button.font_pressed_color = neutral_7
+	to_do_item_bookmark_button.icon_pressed_color = neutral_7
+	to_do_item_bookmark_button.font_hover_pressed_color = neutral_2
+	to_do_item_bookmark_button.icon_hover_pressed_color = neutral_2
+
 	to_do_item_bookmark_button.set_main_style({
 		# StyleBoxEmpty
 	})
@@ -745,7 +751,10 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	#region ToDoItem_EditingOption
 	var to_do_item_editing_option := theme.create_theme_type("ToDoItem_EditingOption", "Button")
 
+	to_do_item_editing_option.icon_hover_color = neutral_2
+	to_do_item_editing_option.icon_pressed_color = neutral_7
 	to_do_item_editing_option.icon_pressed_color = secondary_3
+	to_do_item_editing_option.icon_hover_pressed_color = neutral_2
 
 	to_do_item_editing_option.set_main_style({
 		# StyleBoxEmpty
@@ -892,6 +901,37 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 
 	search_result_group_item_count.normal = {
 		"content_margin" = { "right": 9 }
+	}
+	#endregion
+
+	#region CollapsibleCategory_Heading
+	var collapsible_category_heading := theme.create_theme_type("CollapsibleCategory_Heading", "Button")
+
+	collapsible_category_heading.font_color = NEUTRAL_7
+	collapsible_category_heading.icon_normal_color = NEUTRAL_7
+	collapsible_category_heading.icon_hover_color = secondary_3
+	collapsible_category_heading.font_hover_color = secondary_3
+	collapsible_category_heading.font_pressed_color = NEUTRAL_2
+	collapsible_category_heading.icon_pressed_color = NEUTRAL_2
+	collapsible_category_heading.icon_hover_pressed_color = secondary_3
+	collapsible_category_heading.font_hover_pressed_color = secondary_3
+
+	collapsible_category_heading.set_main_style({
+		"corner_radius" = 4,
+		"content_margin" = 4,
+		"anti_aliasing_size" = 0.33,
+	})
+	collapsible_category_heading.disabled = {
+		"bg_color" = Color(neutral_4, 0.3),
+	}
+	collapsible_category_heading.hover = {
+		"bg_color" = primary_3,
+	}
+	collapsible_category_heading.normal = {
+		"bg_color" = primary_3,
+	}
+	collapsible_category_heading.pressed = {
+		"bg_color" = primary_3,
 	}
 	#endregion
 

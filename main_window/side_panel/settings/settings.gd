@@ -61,7 +61,6 @@ func _set_initial_state() -> void:
 	_set_text_colors()
 
 
-
 func _set_text_colors() -> void:
 	for i in range(5):
 		var current_color = Settings.to_do_text_colors[i]
