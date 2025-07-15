@@ -100,7 +100,10 @@ func _spawn_panel() -> void:
 	var container = BoxContainer.new()
 	_tooltip_panel.add_child(container)
 
-	container.vertical = not is_dense
+	if is_dense:
+		container.theme_type_variation = "TinySeparation"
+	else:
+		container.vertical = true
 
 	# step 3: add tooltip label
 	if not hide_text:
@@ -128,7 +131,6 @@ func _spawn_panel() -> void:
 							container.add_child(_shortcut_hint)
 
 							_shortcut_hint.theme_type_variation = "TooltipLabel"
-							_shortcut_hint.add_theme_font_size_override("font_size", 11)
 							_shortcut_hint.modulate.a = 0.5
 
 							_shortcut_hint.text = events[0].as_text().to_upper().replace("+", " + ")
