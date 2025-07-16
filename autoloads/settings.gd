@@ -396,6 +396,10 @@ func _enter_tree() -> void:
 	load_from_disk()
 
 	if enable_capture_reviews:
+		# NOTE: I don't know why, but changing the main panel before this await
+		# statement somehow messes with the vertical scroll value of long to-do
+		# lists. Using `set_deferred` does *not* achieve the same result!
+		await get_tree().process_frame
 		main_panel = MainPanelState.CAPTURE_REVIEW
 
 
