@@ -4,6 +4,7 @@ extends Control
 var review_queue := []
 var current_review_id := -1
 var total_reviews_due := 0
+var scheduled_items := 0
 
 
 func _ready() -> void:
@@ -91,10 +92,11 @@ func _review_next_item() -> void:
 
 func _schedule_current_item(day_offset: int) -> void:
 	Cache.move_item(
-		review_queue[current_review_id].line_id,
+		review_queue[current_review_id].line_id - scheduled_items,
 		"capture",
 		DayTimer.today.add_days(day_offset).as_string(),
 	)
+	scheduled_items += 1
 	_review_next_item()
 
 
