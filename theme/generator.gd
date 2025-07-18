@@ -360,30 +360,6 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	}
 	#endregion
 
-	#region CalendarWidget_DockedLeft
-	var calendar_widget_docked_left := theme.create_theme_type("CalendarWidget_DockedLeft", "PanelContainer")
-
-	calendar_widget_docked_left.panel = {
-		"bg_color" = neutral_2,
-		"corner_radius" = { "top_right": 6, "bottom_right": 6 },
-		"content_margin" = 12,
-		"border_width" = { "top": 2, "right": 2, "bottom": 2 },
-		"border_color" = Color(primary_3, 0.75),
-	}
-	#endregion
-
-	#region CalendarWidget_DockedRight
-	var calendar_widget_docked_right := theme.create_theme_type("CalendarWidget_DockedRight", "PanelContainer")
-
-	calendar_widget_docked_right.panel = {
-		"bg_color" = neutral_2,
-		"corner_radius" = { "top_left": 6, "bottom_left": 6 },
-		"content_margin" = 12,
-		"border_width" = { "top": 2, "left": 2, "bottom": 2 },
-		"border_color" = Color(primary_3, 0.75),
-	}
-	#endregion
-
 	#region CalendarWidget_Popup
 	var calendar_widget_popup := theme.create_theme_type("CalendarWidget_Popup", "PanelContainer")
 

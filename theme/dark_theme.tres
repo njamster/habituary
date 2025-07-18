@@ -1,4 +1,4 @@
-[gd_resource type="Theme" script_class="ConciseTheme" load_steps=137 format=3 uid="uid://b6uigmasjumt4"]
+[gd_resource type="Theme" script_class="ConciseTheme" load_steps=135 format=3 uid="uid://b6uigmasjumt4"]
 
 [ext_resource type="FontFile" uid="uid://clgk36lj6qey" path="res://theme/fonts/OpenSans-ExtraBold.ttf" id="1_dk6dp"]
 [ext_resource type="Script" uid="uid://s44v1x47rqnh" path="res://custom/concise_theme.gd" id="1_jlir6"]
@@ -335,34 +335,6 @@ corner_radius_top_right = 45
 corner_radius_bottom_right = 45
 corner_radius_bottom_left = 45
 anti_aliasing_size = 0.33
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_12uot"]
-content_margin_left = 12.0
-content_margin_top = 12.0
-content_margin_right = 12.0
-content_margin_bottom = 12.0
-bg_color = Color(0.231373, 0.258824, 0.321569, 1)
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.505882, 0.631373, 0.756863, 0.75)
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_detail = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qkh8c"]
-content_margin_left = 12.0
-content_margin_top = 12.0
-content_margin_right = 12.0
-content_margin_bottom = 12.0
-bg_color = Color(0.231373, 0.258824, 0.321569, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_bottom = 2
-border_color = Color(0.505882, 0.631373, 0.756863, 0.75)
-corner_radius_top_left = 6
-corner_radius_bottom_left = 6
-corner_detail = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qcor7"]
 content_margin_left = 12.0
@@ -1040,10 +1012,6 @@ CalendarWidget_DayButton_WeekendDay/styles/focus = SubResource("StyleBoxFlat_ho4
 CalendarWidget_DayButton_WeekendDay/styles/hover = SubResource("StyleBoxFlat_wrujo")
 CalendarWidget_DayButton_WeekendDay/styles/normal = SubResource("StyleBoxFlat_cdbfh")
 CalendarWidget_DayButton_WeekendDay/styles/pressed = SubResource("StyleBoxFlat_nmkag")
-CalendarWidget_DockedLeft/base_type = &"PanelContainer"
-CalendarWidget_DockedLeft/styles/panel = SubResource("StyleBoxFlat_12uot")
-CalendarWidget_DockedRight/base_type = &"PanelContainer"
-CalendarWidget_DockedRight/styles/panel = SubResource("StyleBoxFlat_qkh8c")
 CalendarWidget_Popup/base_type = &"PanelContainer"
 CalendarWidget_Popup/styles/panel = SubResource("StyleBoxFlat_qcor7")
 Calendar_ExtraPadding/base_type = &"MarginContainer"

@@ -1,9 +1,23 @@
-[gd_scene load_steps=5 format=3 uid="uid://cm3rn435gqjql"]
+[gd_scene load_steps=11 format=3 uid="uid://cm3rn435gqjql"]
 
 [ext_resource type="Script" uid="uid://7x3u3loi8oyn" path="res://main_window/main_panel/review_view/review_view.gd" id="1_gmb44"]
 [ext_resource type="FontFile" uid="uid://bv1lbje08ni7s" path="res://theme/fonts/OpenSans-MediumItalic.ttf" id="2_pimef"]
-[ext_resource type="Texture2D" uid="uid://4eakbxkw2dmx" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/delete.svg" id="3_purte"]
+[ext_resource type="Texture2D" uid="uid://lqaqpht4rju6" path="res://main_window/top_bar/images/mode_dark.svg" id="2_tjdhi"]
+[ext_resource type="Script" uid="uid://bqai4pv020yjf" path="res://custom/tooltip.gd" id="3_lqmea"]
+[ext_resource type="Texture2D" uid="uid://3hdtixbh74in" path="res://main_window/main_panel/review_view/images/close.svg" id="3_tjdhi"]
 [ext_resource type="PackedScene" uid="uid://l4kyh6xqycoy" path="res://main_window/overlay/calendar_widget/calendar_widget.tscn" id="4_kvqur"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_kvqur"]
+action = &"ui_cancel"
+
+[sub_resource type="Shortcut" id="Shortcut_vj7h1"]
+events = [SubResource("InputEventAction_kvqur")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_lv7wu"]
+action = &"toggle_dark_mode"
+
+[sub_resource type="Shortcut" id="Shortcut_dtc41"]
+events = [SubResource("InputEventAction_lv7wu")]
 
 [node name="ReviewView" type="Control"]
 layout_mode = 3
@@ -15,29 +29,31 @@ grow_vertical = 2
 theme_type_variation = &"MediumSeparation"
 script = ExtResource("1_gmb44")
 
-[node name="Header" type="VBoxContainer" parent="."]
+[node name="VBox" type="VBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -213.5
-offset_right = 213.5
-offset_bottom = 77.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
+grow_vertical = 2
 theme_type_variation = &"MediumSeparation"
 
-[node name="FirstRow" type="HBoxContainer" parent="Header"]
+[node name="Header" type="VBoxContainer" parent="VBox"]
+layout_mode = 2
+theme_type_variation = &"MediumSeparation"
+
+[node name="FirstRow" type="HBoxContainer" parent="VBox/Header"]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_type_variation = &"SmallSeparation"
+theme_type_variation = &"MediumSeparation"
 
-[node name="Label" type="Label" parent="Header/FirstRow"]
+[node name="Label" type="Label" parent="VBox/Header/FirstRow"]
 layout_mode = 2
 theme_type_variation = &"HeaderLarge"
-text = "Review Capture List"
+text = "Capture Review"
 horizontal_alignment = 1
 
-[node name="SkipButton" type="Button" parent="Header/FirstRow"]
+[node name="SkipButton" type="Button" parent="VBox/Header/FirstRow"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
@@ -47,7 +63,7 @@ mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 10
 text = "Skip"
 
-[node name="Explanation" type="Label" parent="Header"]
+[node name="Explanation" type="Label" parent="VBox/Header"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("2_pimef")
@@ -55,90 +71,114 @@ text = "Some items in your capture list have been collecting dust lately.
 Maybe now would be a good time to decide what to do about them?"
 horizontal_alignment = 1
 
-[node name="ReviewPanel" type="VBoxContainer" parent="Header"]
+[node name="ReviewPanel" type="VBoxContainer" parent="VBox"]
 layout_mode = 2
+size_flags_vertical = 2
 theme_type_variation = &"SmallSeparation"
 
-[node name="Progress" type="Label" parent="Header/ReviewPanel"]
+[node name="Progress" type="Label" parent="VBox/ReviewPanel"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 6
 theme_type_variation = &"SubtleLabel"
+theme_override_colors/font_color = Color(0.560784, 0.737255, 0.733333, 1)
 
-[node name="ToDo" type="Label" parent="Header/ReviewPanel"]
+[node name="ToDo" type="Label" parent="VBox/ReviewPanel"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 6
 text = "To-Do Text"
 
-[node name="Postpone" type="VBoxContainer" parent="."]
+[node name="Options" type="VBoxContainer" parent="VBox"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -100.0
-offset_right = 82.0
-grow_vertical = 0
-size_flags_horizontal = 8
-size_flags_vertical = 6
-theme_type_variation = &"MediumSeparation"
-
-[node name="Label" type="Label" parent="Postpone"]
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Ask Again:"
+theme_type_variation = &"MediumSeparation"
 
-[node name="CalendarWidget" parent="Postpone" instance=ExtResource("4_kvqur")]
+[node name="Schedule" type="Button" parent="VBox/Options"]
+custom_minimum_size = Vector2(300, 80)
 layout_mode = 2
-theme_type_variation = &"CalendarWidget_DockedLeft"
-day_button_tooltip = "Click to delay decision until this date"
-include_past_dates = false
-include_today = false
-
-[node name="DeleteButton" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -60.0
-offset_top = -28.0
-offset_right = 60.0
-grow_horizontal = 2
-grow_vertical = 0
+size_flags_vertical = 0
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_override_constants/icon_max_width = 20
-text = "Delete To-Do"
-icon = ExtResource("3_purte")
+text = "Schedule"
 
-[node name="Schedule" type="VBoxContainer" parent="."]
+[node name="Postpone" type="Button" parent="VBox/Options"]
+custom_minimum_size = Vector2(300, 60)
+layout_mode = 2
+size_flags_vertical = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "Postpone"
+
+[node name="Delete" type="Button" parent="VBox/Options"]
+custom_minimum_size = Vector2(300, 40)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "Delete"
+
+[node name="Calendar" type="VBoxContainer" parent="VBox"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -96.0
-offset_top = -100.0
-grow_horizontal = 0
-grow_vertical = 0
-size_flags_horizontal = 0
-size_flags_vertical = 6
-theme_type_variation = &"MediumSeparation"
-
-[node name="Label" type="Label" parent="Schedule"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Schedule For:"
+theme_type_variation = &"TinySeparation"
 
-[node name="CalendarWidget" parent="Schedule" instance=ExtResource("4_kvqur")]
+[node name="FirstRow" type="HBoxContainer" parent="VBox/Calendar"]
 layout_mode = 2
-theme_type_variation = &"CalendarWidget_DockedRight"
-day_button_tooltip = "Click to move the to-do to this date"
+
+[node name="Heading" type="Label" parent="VBox/Calendar/FirstRow"]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_type_variation = &"SubtleLabel"
+theme_override_colors/font_color = Color(0.560784, 0.737255, 0.733333, 1)
+
+[node name="CloseButton" type="Button" parent="VBox/Calendar/FirstRow"]
+layout_mode = 2
+size_flags_horizontal = 8
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/icon_hover_color = Color(0.505882, 0.631373, 0.756863, 1)
+theme_override_constants/icon_max_width = 16
+shortcut = SubResource("Shortcut_vj7h1")
+shortcut_in_tooltip = false
+icon = ExtResource("3_tjdhi")
+flat = true
+
+[node name="Tooltip" type="Node" parent="VBox/Calendar/FirstRow/CloseButton"]
+script = ExtResource("3_lqmea")
+text = "Go Back"
+input_action = "ui_cancel"
+is_dense = true
+popup_delay = 1.5
+metadata/_custom_type_script = "uid://bqai4pv020yjf"
+
+[node name="Widget" parent="VBox/Calendar" instance=ExtResource("4_kvqur")]
+layout_mode = 2
+size_flags_horizontal = 4
 include_past_dates = false
+
+[node name="Mode" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -28.0
+offset_bottom = 28.0
+grow_horizontal = 0
+size_flags_horizontal = 8
+size_flags_vertical = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"RightSidebarButton"
+theme_override_constants/icon_max_width = 20
+shortcut = SubResource("Shortcut_dtc41")
+shortcut_in_tooltip = false
+icon = ExtResource("2_tjdhi")
+
+[node name="Tooltip" type="Node" parent="Mode"]
+script = ExtResource("3_lqmea")
+text = "Switch To Light Mode"
