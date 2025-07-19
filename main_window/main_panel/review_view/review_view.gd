@@ -85,6 +85,10 @@ func _review_next_item() -> void:
 			total_reviews_due
 		]
 		%ToDo.text = Utils.strip_tags(review_queue[current_review_id].to_do)
+
+		%Options.hide()
+		await get_tree().create_timer(0.5).timeout
+		%Options.show()
 	else:
 		switch_to_list_view()
 
@@ -96,7 +100,7 @@ func _schedule_current_item(date: Date) -> void:
 		date.as_string()
 	)
 	scheduled_items += 1
-	_hide_calendar(true)
+	_hide_calendar()
 	_review_next_item()
 
 
@@ -106,7 +110,7 @@ func _postpone_current_item(date: Date) -> void:
 		"capture",
 		date.as_string()
 	)
-	_hide_calendar(true)
+	_hide_calendar()
 	_review_next_item()
 
 
@@ -164,10 +168,8 @@ func _show_postpone_calendar() -> void:
 	%Calendar/Widget.reset_view_to_today()
 
 
-func _hide_calendar(pause := false) -> void:
+func _hide_calendar() -> void:
 	%Calendar.hide()
-	if pause:
-		await get_tree().create_timer(0.5).timeout
 	%Options.show()
 
 

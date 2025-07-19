@@ -53,6 +53,7 @@ func strip_tags(line: String) -> String:
 		var review_date_reg_ex_match := review_date_reg_ex.search(line)
 		if review_date_reg_ex_match:
 			line = line.substr(0, line.length() - 20).strip_edges()
+			continue  # from the start of the while loop again
 
 		# NOTE: The following two if-conditions do *not* check if the matching
 		# parts in the beginning and end of the raw text are distinct. This is
