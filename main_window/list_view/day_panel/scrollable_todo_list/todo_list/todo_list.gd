@@ -33,6 +33,7 @@ func _set_initial_state() -> void:
 
 func _connect_signals() -> void:
 	#region Global Signals
+	EventBus.instant_save_requested.connect(save_to_disk)
 	EventBus.global_search_requested.connect(save_to_disk)
 
 	Cache.content_updated.connect(func(key):

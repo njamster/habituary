@@ -178,12 +178,15 @@ func _ready() -> void:
 	_connect_signals()
 
 	%BookmarkIndicator.hide()
+	%CopyToToday.modulate.a = 0.1
 	%DragHandle.modulate.a = 0.1
 
 	# deferred for two frames, in case this item is loaded from disk
 	await get_tree().process_frame
 	await get_tree().process_frame
 	_initialization_finished = true
+
+	%CopyToToday.visible = (date.day_difference_to(DayTimer.today) < 0) and (%Edit.text != "")
 
 	Settings.fade_ticked_off_todos_changed.connect(_apply_state_relative_formatting)
 
@@ -250,6 +253,18 @@ func _connect_signals() -> void:
 	%Edit.focus_exited.connect(_on_edit_focus_exited)
 	%Edit.gui_input.connect(_on_edit_gui_input)
 	%Edit.resized.connect(_on_edit_resized)
+
+	%CopyToToday.pressed.connect(func():
+		self.text = %Edit.text
+
+		EventBus.instant_save_requested.emit()
+
+		Cache.copy_item(
+			get_list_index(),
+			date.as_string(),
+			DayTimer.today.as_string()
+		)
+	)
 
 	%BookmarkIndicator.gui_input.connect(_on_bookmark_indicator_gui_input)
 
@@ -364,6 +379,8 @@ func _on_edit_resized() -> void:
 func _on_edit_text_changed(new_text: String) -> void:
 	# hide the mouse cursor once the user starts typing
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+
+	$%CopyToToday.visible = (new_text != "")
 
 	if new_text.begins_with("- "):
 		get_item_list().indent_todo(self)
@@ -567,6 +584,7 @@ func _on_mouse_entered() -> void:
 
 			$UnfoldTimer.start()
 	else:
+		#%CopyToToday.modulate.a = 1.0
 		%DragHandle.theme_type_variation = "ToDoItem_Focused"
 		%DragHandle.modulate.a = 1.0
 
@@ -576,6 +594,7 @@ func _on_mouse_exited() -> void:
 		%DragHandle.theme_type_variation = "FlatButton"
 
 		if not is_in_edit_mode():
+			%CopyToToday.modulate.a = 0.1
 			%DragHandle.modulate.a = 0.1
 
 	if get_viewport().gui_is_dragging():
