@@ -198,12 +198,15 @@ func move_item(line_id: int, from: String, to: String) -> void:
 
 
 func copy_item(line_id: int, from: String, to: String) -> void:
+	EventBus.instant_save_requested.emit(from)
+	EventBus.instant_save_requested.emit(to)
+
 	if to not in data:
 		data[to] = {
 			"content": [],
 			"last_modified": Time.get_unix_time_from_system()
 		}
-	data[to].content.append(data[from].content[line_id])
+	data[to].content.append(data[from].content[line_id].strip_edges())
 
 	save_to_disk(to)
 	content_updated.emit(to)

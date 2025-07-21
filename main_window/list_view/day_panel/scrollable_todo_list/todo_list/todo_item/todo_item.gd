@@ -254,16 +254,22 @@ func _connect_signals() -> void:
 	%Edit.gui_input.connect(_on_edit_gui_input)
 	%Edit.resized.connect(_on_edit_resized)
 
+	%CopyToToday.mouse_entered.connect(func():
+		%CopyToToday.theme_type_variation = "ToDoItem_Focused"
+		%CopyToToday.modulate.a = 1.0
+	)
 	%CopyToToday.pressed.connect(func():
 		self.text = %Edit.text
-
-		EventBus.instant_save_requested.emit()
 
 		Cache.copy_item(
 			get_list_index(),
 			date.as_string(),
 			DayTimer.today.as_string()
 		)
+	)
+	%CopyToToday.mouse_exited.connect(func():
+		%CopyToToday.theme_type_variation = "FlatButton"
+		%CopyToToday.modulate.a = 0.1
 	)
 
 	%BookmarkIndicator.gui_input.connect(_on_bookmark_indicator_gui_input)
@@ -380,7 +386,8 @@ func _on_edit_text_changed(new_text: String) -> void:
 	# hide the mouse cursor once the user starts typing
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 
-	$%CopyToToday.visible = (new_text != "")
+	if date.day_difference_to(DayTimer.today) < 0:
+		$%CopyToToday.visible = (new_text != "")
 
 	if new_text.begins_with("- "):
 		get_item_list().indent_todo(self)
