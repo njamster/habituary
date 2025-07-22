@@ -2,6 +2,7 @@ extends PanelContainer
 
 
 var SETTINGS := preload("settings/settings.tscn").instantiate()
+var SAVED_SEARCHES := preload("saved_searches/saved_searches.tscn").instantiate()
 var CAPTURE := preload("capture/capture.tscn").instantiate()
 var BOOKMARKS := preload("bookmarks/bookmarks.tscn").instantiate()
 var HELP := preload("help/help.tscn").instantiate()
@@ -42,6 +43,8 @@ func _update_side_panel() -> void:
 		match Settings.side_panel:
 			Settings.SidePanelState.SETTINGS:
 				add_child(SETTINGS)
+			Settings.SidePanelState.SAVED_SEARCHES:
+				add_child(SAVED_SEARCHES)
 			Settings.SidePanelState.CAPTURE:
 				add_child(CAPTURE)
 			Settings.SidePanelState.BOOKMARKS:

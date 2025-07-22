@@ -1,5 +1,8 @@
 extends Node
 
+# Godot uses signed 64-bit integers
+const MIN_INT := -2**63
+const MAX_INT :=  2**63 - 1
 
 func get_exported_properties(node: Node) -> Dictionary:
 	var exported_properties := {}

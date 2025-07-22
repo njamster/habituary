@@ -43,7 +43,8 @@ enum SidePanelState {
 	HELP,
 	BOOKMARKS,
 	CAPTURE,
-	SETTINGS
+	SETTINGS,
+	SAVED_SEARCHES
 }
 
 enum MainPanelState {

@@ -24,6 +24,19 @@ func _set_initial_state() -> void:
 
 
 func _connect_signals() -> void:
+	#region Global Signals
+	EventBus.global_search_requested.connect(func():
+		if Settings.search_query:
+			if %SearchQuery.text != Settings.search_query:
+				%SearchQuery.grab_focus()
+				%SearchQuery.text = Settings.search_query
+				%SearchQuery.set_caret_column(%SearchQuery.text.length())
+			%SearchQuery.draw_spaces = false
+			%ShortcutHint.hide()
+			%GlobalSearchHint.hide()
+			%CloseButton.show()
+	)
+	#endregion
 	#region Local Signals
 	gui_input.connect(_on_gui_input)
 	mouse_entered.connect(_on_mouse_entered)
@@ -121,7 +134,6 @@ func _on_search_query_gui_input(event: InputEvent) -> void:
 			if event.shift_pressed and \
 				%SearchQuery.text.length() >= MINIMUM_GLOBAL_SEARCH_QUERY_SIZE:
 					EventBus.global_search_requested.emit()
-					%GlobalSearchHint.hide()
 			else:
 				%SearchQuery.release_focus()
 
