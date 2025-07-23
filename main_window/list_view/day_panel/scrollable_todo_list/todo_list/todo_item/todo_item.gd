@@ -186,7 +186,7 @@ func _ready() -> void:
 	await get_tree().process_frame
 	_initialization_finished = true
 
-	%CopyToToday.visible = (date.day_difference_to(DayTimer.today) < 0) and (%Edit.text != "")
+	_update_copy_to_today_visibility()
 
 	Settings.fade_ticked_off_todos_changed.connect(_apply_state_relative_formatting)
 
@@ -214,6 +214,8 @@ func _set_initial_state() -> void:
 
 func _connect_signals() -> void:
 	#region Global Signals
+	EventBus.today_changed.connect(_update_copy_to_today_visibility)
+
 	Settings.search_query_changed.connect(_check_for_search_query_match)
 
 	Settings.hide_ticked_off_todos_changed.connect(
@@ -386,8 +388,7 @@ func _on_edit_text_changed(new_text: String) -> void:
 	# hide the mouse cursor once the user starts typing
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 
-	if date.day_difference_to(DayTimer.today) < 0:
-		$%CopyToToday.visible = (new_text != "")
+	_update_copy_to_today_visibility()
 
 	if new_text.begins_with("- "):
 		get_item_list().indent_todo(self)
@@ -591,7 +592,6 @@ func _on_mouse_entered() -> void:
 
 			$UnfoldTimer.start()
 	else:
-		#%CopyToToday.modulate.a = 1.0
 		%DragHandle.theme_type_variation = "ToDoItem_Focused"
 		%DragHandle.modulate.a = 1.0
 
@@ -1065,3 +1065,8 @@ func _on_fold_heading_mouse_entered() -> void:
 
 func _on_fold_heading_mouse_exited() -> void:
 	%FoldHeading.theme_type_variation = "FlatButton"
+
+
+func _update_copy_to_today_visibility():
+	%CopyToToday.visible = %Edit.text != "" and \
+			date.day_difference_to(DayTimer.today) < 0
