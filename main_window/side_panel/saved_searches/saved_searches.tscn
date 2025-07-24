@@ -20,10 +20,12 @@ text = "Saved Searches"
 horizontal_alignment = 1
 
 [node name="NoneSaved" type="Label" parent="."]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_2mawm")
-text = "none"
+text = "To add a search term to this panel, first do a global search, then click on \"Save This Search\"."
 horizontal_alignment = 1
+autowrap_mode = 3
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 2

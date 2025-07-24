@@ -5,21 +5,39 @@ const SAVED_ITEM := preload("saved_item/saved_item.tscn")
 
 
 func _ready() -> void:
+	_set_initial_state()
+	_connect_signals()
+
+
+func _set_initial_state() -> void:
 	_load_from_disk()
-	$NoneSaved.visible = (%Items.get_child_count() == 0)
-	_resort_list()
+
+
+func _connect_signals() -> void:
+	#region Global Signals
+	Cache.content_updated.connect(func(key):
+		if key == "saved_searches":
+			_load_from_disk()
+	)
+	#endregion
 
 
 func _load_from_disk() -> void:
-	var filename := Settings.store_path.path_join("saved_searches.txt")
-	var file := FileAccess.open(filename, FileAccess.READ)
-	if file:
-		while file.get_position() < file.get_length():
-			var line := file.get_line()
+	# remove previous entries (if there are any)
+	for item in %Items.get_children():
+		item.queue_free()
 
+	# add new entries based on the cached lines
+	if "saved_searches" in Cache.data:
+		for line in Cache.data["saved_searches"].content:
 			var new_item := SAVED_ITEM.instantiate()
 			new_item.text = line
 			%Items.add_child(new_item)
+		_resort_list()
+
+		$NoneSaved.hide()
+	else:
+		$NoneSaved.show()
 
 
 func _resort_list() -> void:

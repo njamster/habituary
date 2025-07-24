@@ -18,6 +18,10 @@ func _connect_signals() -> void:
 	EventBus.global_search_requested.connect(search, CONNECT_DEFERRED)
 	#endregion
 
+	#region Local Signals
+	$SaveSearch.pressed.connect(_on_save_search_pressed)
+	#endregion
+
 
 func search() -> void:
 	# Remove previous results (if there are any).
@@ -32,7 +36,7 @@ func search() -> void:
 	for key in cache_keys:
 		# FIXME: Temporary workaround, since the capture has no associated date,
 		# thus it's not possible to jump to a captured to-do item yet
-		if key == "capture":
+		if key == "capture" or key == "saved_searches":
 			continue  # with next key
 
 		var search_result_group := preload(
@@ -55,5 +59,41 @@ func search() -> void:
 	# If there were no matching items, show the NoHitMessage instead.
 	$NoHitMessage.visible = (%SearchResults.get_child_count() == 0)
 
+	# Update the SaveSearch button depending on the current query text.
+	if "saved_searches" in Cache.data:
+		if Settings.search_query in Cache.data["saved_searches"].content:
+			$SaveSearch.text = $SaveSearch.text.replace("Save", "Unsave")
+		else:
+			$SaveSearch.text = $SaveSearch.text.replace("Unsave", "Save")
+
 	# Now, make the global search results panel visible to the user.
 	Settings.main_panel = Settings.MainPanelState.GLOBAL_SEARCH
+
+
+func _on_save_search_pressed() -> void:
+	if not "saved_searches" in Cache.data:
+		Cache.data["saved_searches"] = {
+			"content": [],
+			"last_modified": Time.get_unix_time_from_system()
+		}
+
+	if Settings.search_query in Cache.data["saved_searches"].content:
+		var new_content := Cache.data["saved_searches"].content as Array
+		new_content.erase(Settings.search_query)
+
+		Cache.update_content(
+			"saved_searches",
+			"\n".join(new_content)
+		)
+
+		$SaveSearch.text = $SaveSearch.text.replace("Unsave", "Save")
+	else:
+		var new_content := Cache.data["saved_searches"].content as Array
+		new_content.append(Settings.search_query)
+
+		Cache.update_content(
+			"saved_searches",
+			"\n".join(new_content)
+		)
+
+		$SaveSearch.text = $SaveSearch.text.replace("Save", "Unsave")

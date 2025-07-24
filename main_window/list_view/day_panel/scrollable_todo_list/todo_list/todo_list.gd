@@ -95,7 +95,7 @@ func save_to_disk() -> void:
 	if scroll_offset != 0:
 		content += "SCROLL:%d" % scroll_offset
 
-	Cache.update_content(cache_key, content.strip_edges(false, true))
+	Cache.update_content(cache_key, content.strip_edges(false, true), false)
 
 	pending_save = false
 

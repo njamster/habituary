@@ -88,7 +88,6 @@ func _load_directory(directory_path: String, emit := false) -> void:
 			for key in data.keys():
 				if not key + ".txt" in file_list:
 					delete_key(key)
-					content_updated.emit(key)
 
 		for filename in file_list:
 			_load_file(directory_path, filename, emit)
@@ -124,7 +123,7 @@ func _load_file(directory_path: String, filename: String, emit: bool) -> void:
 
 
 func _is_valid_filename(filename: String) -> bool:
-	return filename == "capture.txt" or \
+	return filename == "capture.txt" or filename == "saved_searches.txt" or \
 		_valid_filename_reg_ex.search(filename) != null
 
 
@@ -137,7 +136,7 @@ func get_store_path(key: String) -> String:
 	return Settings.store_path.path_join(key + ".txt")
 
 
-func save_to_disk(key: String) -> void:
+func save_to_disk(key: String, emit := true) -> void:
 	var store_path := get_store_path(key)
 
 	if data[key].content:
@@ -147,11 +146,14 @@ func save_to_disk(key: String) -> void:
 		file.close()
 
 		data[key].last_modified = FileAccess.get_modified_time(store_path)
+
+		if emit:
+			content_updated.emit(key)
 	else:
 		delete_key(key)
 
 
-func update_content(key: String, content: String) -> void:
+func update_content(key: String, content: String, emit := true) -> void:
 	if not key:
 		return  # early
 
@@ -164,12 +166,12 @@ func update_content(key: String, content: String) -> void:
 		else:
 			data[key].content = content.split("\n", false)
 
-		save_to_disk(key)
+		save_to_disk(key, emit)
 	else:
 		delete_key(key)
 
 
-func delete_key(key: String) -> void:
+func delete_key(key: String, emit := true) -> void:
 	if not key or key not in data:
 		return  # early
 
@@ -177,9 +179,12 @@ func delete_key(key: String) -> void:
 
 	DirAccess.remove_absolute(get_store_path(key))
 
+	if emit:
+		content_updated.emit(key)
+
 
 func move_item(line_id: int, from: String, to: String) -> void:
-	# Since content is a PackedStingArray, there's no pop_at() method.
+	# Since content is a PackedStringArray, there's no pop_at() method.
 	var item = data[from].content[line_id]
 	data[from].content.remove_at(line_id)
 
@@ -191,10 +196,7 @@ func move_item(line_id: int, from: String, to: String) -> void:
 	data[to].content.append(item)
 
 	save_to_disk(to)
-	content_updated.emit(to)
-
 	save_to_disk(from)
-	content_updated.emit(from)
 
 
 func copy_item(line_id: int, from: String, to: String) -> void:
@@ -209,7 +211,6 @@ func copy_item(line_id: int, from: String, to: String) -> void:
 	data[to].content.append(data[from].content[line_id].strip_edges())
 
 	save_to_disk(to)
-	content_updated.emit(to)
 
 
 func postpone_item(line_id: int, from: String, to: String) -> void:
@@ -226,11 +227,9 @@ func postpone_item(line_id: int, from: String, to: String) -> void:
 	data[from].content[line_id] = item
 
 	save_to_disk(from)
-	content_updated.emit(from)
 
 
 func delete_item(line_id: int, from: String) -> void:
 	data[from].content.remove_at(line_id)
 
 	save_to_disk(from)
-	content_updated.emit(from)

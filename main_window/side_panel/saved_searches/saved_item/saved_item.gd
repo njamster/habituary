@@ -34,7 +34,7 @@ func _find_last_mention() -> Date:
 	for key in cache_keys:
 		# FIXME: Temporary workaround, since the capture has no associated date,
 		# thus it's not possible to jump to a captured to-do item yet
-		if key == "capture":
+		if key == "capture" or key == "saved_searches":
 			continue  # with next key
 
 		line_id = 0
