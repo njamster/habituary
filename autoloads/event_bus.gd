@@ -21,4 +21,5 @@ signal bookmark_jump_requested(date, line_number)
 
 signal global_search_requested()
 signal instant_save_requested(date)
+signal saved_search_update_requested(query)
 @warning_ignore_restore("unused_signal")

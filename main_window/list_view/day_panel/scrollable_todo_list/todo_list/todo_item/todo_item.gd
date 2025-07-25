@@ -19,7 +19,9 @@ var date : Date:
 
 var text := "":
 	set(value):
-		if text != value:
+		var old_text = text
+
+		if value != old_text:
 			if text == "" and not get_day_panel():
 				# a new item has been added to the capture list
 				review_date = DayTimer.today.add_days(1).as_string()
@@ -30,6 +32,8 @@ var text := "":
 
 			if _initialization_finished:
 				get_to_do_list()._start_debounce_timer("text changed")
+
+			_update_saved_search_results(self.date.as_string(), text, old_text)
 
 enum States { TO_DO, DONE, FAILED }
 var state := States.TO_DO:
@@ -348,11 +352,15 @@ func delete() -> void:
 	else:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
+	var cache_key := date.as_string()
+
 	queue_free()
 	if self.text:
 		var to_do_list := get_to_do_list()
 		await tree_exited
 		to_do_list._start_debounce_timer("to-do deleted")
+
+		_update_saved_search_results(cache_key, text)
 
 
 func _on_edit_resized() -> void:
@@ -1070,3 +1078,13 @@ func _on_fold_heading_mouse_exited() -> void:
 func _update_copy_to_today_visibility():
 	%CopyToToday.visible = %Edit.text != "" and \
 			date.day_difference_to(DayTimer.today) < 0
+
+
+func _update_saved_search_results(cache_key: String, new_text: String, old_text := "") -> void:
+	if "saved_searches" in Cache.data:
+		for query in Cache.data["saved_searches"].content:
+			if old_text.contains(query) or new_text.contains(query):
+				EventBus.instant_save_requested.emit(
+					cache_key
+				)
+				EventBus.saved_search_update_requested.emit(query)

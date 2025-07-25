@@ -30,7 +30,7 @@ func search() -> void:
 
 	# Reverse key order: future dates first, past dates last.
 	var cache_keys := Cache.data.keys()
-	cache_keys.reverse()
+	cache_keys.sort_custom(func(a, b): return a > b)
 
 	# Search all cached contents for items matching the search query.
 	for key in cache_keys:
