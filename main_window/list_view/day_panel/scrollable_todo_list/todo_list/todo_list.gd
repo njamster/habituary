@@ -35,6 +35,12 @@ func _connect_signals() -> void:
 	#region Global Signals
 	EventBus.instant_save_requested.connect(func(date):
 		if cache_key == date:
+			for child in %Items.get_children():
+				if child.is_in_edit_mode():
+					child._on_edit_text_submitted(
+						child.get_node("%Edit").text,
+						false
+					)
 			save_to_disk()
 	)
 	EventBus.global_search_requested.connect(save_to_disk)

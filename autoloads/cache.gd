@@ -208,7 +208,9 @@ func copy_item(line_id: int, from: String, to: String) -> void:
 			"content": [],
 			"last_modified": Time.get_unix_time_from_system()
 		}
-	data[to].content.append(data[from].content[line_id].strip_edges())
+
+	var content = data[from].content[line_id].strip_edges()
+	data[to].content.append("[ ] " + content.right(-4))
 
 	save_to_disk(to)
 
