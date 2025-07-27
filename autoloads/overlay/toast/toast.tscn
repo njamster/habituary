@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://b31sl24jyu8gt"]
+
+[ext_resource type="Script" uid="uid://cymnbfxhlprkh" path="res://autoloads/overlay/toast/toast.gd" id="1_0yjjw"]
+
+[node name="Toast" type="PanelContainer"]
+offset_right = 37.0
+offset_bottom = 28.0
+size_flags_horizontal = 4
+mouse_default_cursor_shape = 2
+theme_type_variation = &"TooltipPanel"
+script = ExtResource("1_0yjjw")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+theme_type_variation = &"TooltipLabel"
+text = "Test"

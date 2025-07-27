@@ -272,6 +272,8 @@ func _connect_signals() -> void:
 			date.as_string(),
 			DayTimer.today.as_string()
 		)
+
+		Overlay.spawn_toast("To-do copied to today")
 	)
 	%CopyToToday.mouse_exited.connect(func():
 		%CopyToToday.theme_type_variation = "FlatButton"
