@@ -61,7 +61,17 @@ func search() -> void:
 
 	# Update the SaveSearch button depending on the current query text.
 	if "saved_searches" in Cache.data:
-		if Settings.search_query in Cache.data["saved_searches"].content:
+		var matching_saved_search := false
+		for raw_line in Cache.data["saved_searches"].content:
+			var alarm_tag_reg_ex := RegEx.new()
+			alarm_tag_reg_ex.compile("\\[ALARM:(?<alarm>[\\+|-][1-9][0-9]*)\\]$")
+			var line := alarm_tag_reg_ex.sub(raw_line, "").strip_edges()
+
+			if line == Settings.search_query:
+				matching_saved_search = true
+				break  # for loop
+
+		if matching_saved_search:
 			$SaveSearch.text = $SaveSearch.text.replace("Save", "Unsave")
 		else:
 			$SaveSearch.text = $SaveSearch.text.replace("Unsave", "Save")
@@ -77,9 +87,19 @@ func _on_save_search_pressed() -> void:
 			"last_modified": Time.get_unix_time_from_system()
 		}
 
-	if Settings.search_query in Cache.data["saved_searches"].content:
+	var matching_saved_search := ""
+	for raw_line in Cache.data["saved_searches"].content:
+		var alarm_tag_reg_ex := RegEx.new()
+		alarm_tag_reg_ex.compile("\\[ALARM:(?<alarm>[\\+|-][1-9][0-9]*)\\]$")
+		var line := alarm_tag_reg_ex.sub(raw_line, "").strip_edges()
+
+		if line == Settings.search_query:
+			matching_saved_search = raw_line
+			break  # for loop
+
+	if matching_saved_search:
 		var new_content := Cache.data["saved_searches"].content as Array
-		new_content.erase(Settings.search_query)
+		new_content.erase(matching_saved_search)
 
 		Cache.update_content(
 			"saved_searches",

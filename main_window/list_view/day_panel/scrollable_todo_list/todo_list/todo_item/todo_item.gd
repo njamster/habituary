@@ -1084,7 +1084,11 @@ func _update_copy_to_today_visibility():
 
 func _update_saved_search_results(cache_key: String, new_text: String, old_text := "") -> void:
 	if "saved_searches" in Cache.data:
-		for query in Cache.data["saved_searches"].content:
+		for raw_query in Cache.data["saved_searches"].content:
+			var alarm_tag_reg_ex := RegEx.new()
+			alarm_tag_reg_ex.compile("\\[ALARM:(?<alarm>[\\+|-][1-9][0-9]*)\\]$")
+			var query := alarm_tag_reg_ex.sub(raw_query, "").strip_edges()
+
 			if old_text.contains(query) or new_text.contains(query):
 				EventBus.instant_save_requested.emit(
 					cache_key

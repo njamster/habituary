@@ -11,6 +11,8 @@ var text := "":
 		text = value
 		%SearchQuery.text = text
 
+var warning_threshold := Utils.MIN_INT
+
 # used for sorting
 var day_diff := Utils.MIN_INT
 var line_id : int
@@ -108,6 +110,11 @@ func _update_day_counter() -> void:
 			%DayCounter.text = "in " + remaining_time
 	else:
 		%DayCounter.text = "TODAY"
+
+	if day_diff <= warning_threshold:
+		%DayCounter.add_theme_color_override("font_color", Color.RED)
+	else:
+		%DayCounter.remove_theme_color_override("font_color")
 
 	%Tooltip.text = date.format("MMM DD, YYYY")
 

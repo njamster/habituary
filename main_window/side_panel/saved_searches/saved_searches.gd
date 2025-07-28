@@ -29,9 +29,21 @@ func _load_from_disk() -> void:
 
 	# add new entries based on the cached lines
 	if "saved_searches" in Cache.data:
-		for line in Cache.data["saved_searches"].content:
+		for raw_line in Cache.data["saved_searches"].content:
 			var new_item := SAVED_ITEM.instantiate()
-			new_item.text = line
+			var alarm_tag_reg_ex := RegEx.new()
+			alarm_tag_reg_ex.compile("\\[ALARM:(?<alarm>[\\+|-][1-9][0-9]*)\\]$")
+			var alarm_tag_reg_ex_match := alarm_tag_reg_ex.search(raw_line)
+			if alarm_tag_reg_ex_match:
+				new_item.text = raw_line.substr(
+					0,
+					alarm_tag_reg_ex_match.get_start()
+				).strip_edges()
+				new_item.warning_threshold = int(
+					alarm_tag_reg_ex_match.get_string("alarm")
+				)
+			else:
+				new_item.text = raw_line
 			%Items.add_child(new_item)
 		_resort_list()
 
