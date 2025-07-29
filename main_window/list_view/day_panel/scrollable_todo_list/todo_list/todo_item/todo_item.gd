@@ -482,6 +482,9 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 
 		%Edit.caret_column = 0   # scroll item text back to its beginning
 
+		%CopyToToday.modulate.a = 0.1
+		%DragHandle.modulate.a = 0.1
+
 		if key_input:
 			if Input.is_action_pressed("add_todo_above", true):
 				get_item_list().add_todo_above(self)
@@ -602,6 +605,8 @@ func _on_mouse_entered() -> void:
 
 			$UnfoldTimer.start()
 	else:
+		%CopyToToday.modulate.a = 1.0
+
 		%DragHandle.theme_type_variation = "ToDoItem_Focused"
 		%DragHandle.modulate.a = 1.0
 
