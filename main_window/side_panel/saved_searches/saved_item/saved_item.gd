@@ -24,6 +24,15 @@ func _ready() -> void:
 
 
 func _setup_initial_state() -> void:
+	if warning_threshold > Utils.MIN_INT:
+		%Alarm.set_pressed_no_signal(true)
+		%Alarm._on_toggled()
+		%Alarm/Tooltip.text = %Alarm/Tooltip.text.replace("Add", "Remove")
+
+		_update_third_row()
+	else:
+		$VBox/ThirdRow.hide()
+
 	date = _find_last_mention()
 
 
@@ -64,6 +73,21 @@ func _connect_signals() -> void:
 
 	#region Local Signals
 	%RepeatSearch.pressed.connect(_on_repeat_search_pressed)
+
+	%Alarm.toggled.connect(_on_alarm_toggled)
+
+	$VBox/ThirdRow/SpinBox.value_changed.connect(func(value):
+		warning_threshold = sign(warning_threshold) * value
+		_update_third_row()
+	)
+	$VBox/ThirdRow/OptionButton.item_selected.connect(func(index):
+		match index:
+			0:
+				warning_threshold = -1 * abs(warning_threshold)
+			1:
+				warning_threshold = +1 * abs(warning_threshold)
+		_update_third_row()
+	)
 	#endregion
 
 
@@ -111,14 +135,32 @@ func _update_day_counter() -> void:
 	else:
 		%DayCounter.text = "TODAY"
 
-	if day_diff <= warning_threshold:
-		%DayCounter.add_theme_color_override("font_color", Color.RED)
-	else:
-		%DayCounter.remove_theme_color_override("font_color")
-
 	%Tooltip.text = date.format("MMM DD, YYYY")
 
 
 func _on_repeat_search_pressed() -> void:
 	Settings.search_query = text
 	EventBus.global_search_requested.emit()
+
+
+func _update_third_row() -> void:
+	$VBox/ThirdRow/SpinBox.value = abs(warning_threshold)
+	$VBox/ThirdRow/OptionButton.selected = int(warning_threshold > 0)
+
+	if day_diff <= warning_threshold:
+		%DayCounter.add_theme_color_override("font_color", Color.RED)
+	else:
+		%DayCounter.remove_theme_color_override("font_color")
+
+
+func _on_alarm_toggled(toggled_on: bool) -> void:
+	$VBox/ThirdRow.visible = toggled_on
+
+	if toggled_on:
+		%Alarm/Tooltip.text = %Alarm/Tooltip.text.replace("Add", "Remove")
+		warning_threshold = -1
+	else:
+		%Alarm/Tooltip.text = %Alarm/Tooltip.text.replace("Remove", "Add")
+		warning_threshold = Utils.MIN_INT
+
+	_update_third_row()
