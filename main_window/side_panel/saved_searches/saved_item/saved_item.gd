@@ -1,5 +1,9 @@
 extends PanelContainer
 
+
+signal save_requested
+
+
 var date : Date:
 	set(value):
 		date = value
@@ -34,6 +38,7 @@ func _setup_initial_state() -> void:
 		$VBox/ThirdRow.hide()
 
 	date = _find_last_mention()
+	_update_third_row()
 
 
 func _find_last_mention() -> Date:
@@ -79,6 +84,7 @@ func _connect_signals() -> void:
 	$VBox/ThirdRow/SpinBox.value_changed.connect(func(value):
 		warning_threshold = sign(warning_threshold) * value
 		_update_third_row()
+		save_requested.emit()
 	)
 	$VBox/ThirdRow/OptionButton.item_selected.connect(func(index):
 		match index:
@@ -87,6 +93,7 @@ func _connect_signals() -> void:
 			1:
 				warning_threshold = +1 * abs(warning_threshold)
 		_update_third_row()
+		save_requested.emit()
 	)
 	#endregion
 
@@ -144,8 +151,9 @@ func _on_repeat_search_pressed() -> void:
 
 
 func _update_third_row() -> void:
-	$VBox/ThirdRow/SpinBox.value = abs(warning_threshold)
-	$VBox/ThirdRow/OptionButton.selected = int(warning_threshold > 0)
+	if warning_threshold > Utils.MIN_INT:
+		$VBox/ThirdRow/SpinBox.value = abs(warning_threshold)
+		$VBox/ThirdRow/OptionButton.selected = int(warning_threshold > 0)
 
 	if day_diff <= warning_threshold:
 		%DayCounter.add_theme_color_override("font_color", Color.RED)
@@ -164,3 +172,4 @@ func _on_alarm_toggled(toggled_on: bool) -> void:
 		warning_threshold = Utils.MIN_INT
 
 	_update_third_row()
+	save_requested.emit()

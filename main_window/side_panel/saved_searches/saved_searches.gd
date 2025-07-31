@@ -21,6 +21,10 @@ func _connect_signals() -> void:
 	)
 	#endregion
 
+	#region Local Signals
+	$DebounceTimer.timeout.connect(save_to_disk)
+	#endregion
+
 
 func _load_from_disk() -> void:
 	# remove previous entries (if there are any)
@@ -45,6 +49,11 @@ func _load_from_disk() -> void:
 			else:
 				new_item.text = raw_line
 			%Items.add_child(new_item)
+
+			new_item.save_requested.connect(func():
+				print("[DEBUG] Saved Search Save Requested: (Re)Starting DebounceTimer...")
+				$DebounceTimer.start()
+			)
 		_resort_list()
 
 		$NoneSaved.hide()
@@ -72,3 +81,33 @@ func _resort_list() -> void:
 		var item = items[j]
 		if item.get_index() != j:
 			%Items.move_child(item, j)
+
+
+func save_to_disk() -> void:
+	var content = ""
+
+	for item in %Items.get_children():
+		if item.warning_threshold > Utils.MIN_INT:
+			if item.warning_threshold > 0:
+				content += "%s [ALARM:+%d]\n" % [
+					item.text,
+					item.warning_threshold
+				]
+			else:
+				content += "%s [ALARM:%d]\n" % [
+					item.text,
+					item.warning_threshold
+				]
+		else:
+			content += "%s\n" % item.text
+
+	print("[DEBUG] Saved Searches Saved To Disk!")
+
+	Cache.update_content("saved_searches", content, false)
+
+
+func _notification(what: int) -> void:
+	if what in [NOTIFICATION_WM_CLOSE_REQUEST, NOTIFICATION_APPLICATION_FOCUS_OUT]:
+		if not $DebounceTimer.is_stopped():
+			$DebounceTimer.stop()
+			save_to_disk()

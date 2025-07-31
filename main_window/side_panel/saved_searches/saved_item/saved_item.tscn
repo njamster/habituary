@@ -89,6 +89,7 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
 theme_override_constants/icon_max_width = 20
 theme_override_styles/focus = SubResource("StyleBoxFlat_cc2va")
+toggle_mode = true
 icon = ExtResource("4_es7au")
 flat = true
 icon_alignment = 1
