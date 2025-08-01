@@ -141,7 +141,7 @@ var view_mode_cap := 7:
 
 var previous_day
 
-var current_day := DayTimer.today:
+var current_day := Date.new(DayTimer.today.as_dict()):
 	set(value):
 		main_panel = MainPanelState.LIST_VIEW
 

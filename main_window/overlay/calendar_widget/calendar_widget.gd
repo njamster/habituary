@@ -84,6 +84,7 @@ func _on_current_day_changed() -> void:
 		update_day()
 
 
+
 func update_day() -> void:
 	for child in $VBox/GridContainer.get_children():
 		if child is not DayButton:
@@ -112,7 +113,7 @@ func update_day() -> void:
 func update_month() -> void:
 	if not include_past_dates:
 		if anchor_date.day_difference_to(DayTimer.today) <= 0:
-			anchor_date = DayTimer.today
+			anchor_date = Date.new(DayTimer.today.as_dict())
 			%PreviousMonth.disabled = true
 			%PreviousMonth.mouse_default_cursor_shape = CURSOR_FORBIDDEN
 		else:

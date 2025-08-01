@@ -35,7 +35,7 @@ func _on_shift_view_backward_pressed() -> void:
 
 
 func _on_today_pressed() -> void:
-	Settings.current_day = DayTimer.today
+	Settings.current_day = Date.new(DayTimer.today.as_dict())
 
 
 func _on_current_day_changed() -> void:
