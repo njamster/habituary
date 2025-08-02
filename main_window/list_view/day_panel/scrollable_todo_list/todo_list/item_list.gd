@@ -105,6 +105,8 @@ func move_todo_up(item: ToDoItem) -> void:
 
 	if index > 0:
 		move_child(item,index - 1)
+		if item.text:
+			item.get_to_do_list()._start_debounce_timer("to-do moved")
 	else:
 		_reject_indentation_change(item, Vector2.UP)
 
@@ -114,6 +116,8 @@ func move_todo_down(item: ToDoItem) -> void:
 
 	if index < get_child_count() - 1:
 		move_child(item, index + 1)
+		if item.text:
+			item.get_to_do_list()._start_debounce_timer("to-do moved")
 	else:
 		_reject_indentation_change(item, Vector2.DOWN)
 
