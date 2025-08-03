@@ -209,8 +209,26 @@ func copy_item(line_id: int, from: String, to: String) -> void:
 			"last_modified": Time.get_unix_time_from_system()
 		}
 
-	var content = data[from].content[line_id].strip_edges()
-	data[to].content.append("[ ] " + content.right(-4))
+	var copied_content := []
+
+	var base_content = data[from].content[line_id]
+	var base_indentation = base_content.find("[")
+	copied_content.append("[ ] " + base_content.strip_edges().right(-4))
+
+	for successor_id in range(line_id + 1, data[from].content.size()):
+		var successor_content = data[from].content[successor_id]
+		var successor_indentation = successor_content.find("[")
+		if successor_indentation > base_indentation:
+			var copy = ("[ ] " + successor_content.strip_edges().right(-4))
+			copied_content.append(
+				copy.lpad(
+					copy.length() + (successor_indentation - base_indentation)
+				)
+			)
+		else:
+			break
+
+	data[to].content += copied_content
 
 	save_to_disk(to)
 
