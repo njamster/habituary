@@ -228,7 +228,7 @@ func copy_item(line_id: int, from: String, to: String) -> void:
 		else:
 			break
 
-	data[to].content += copied_content
+	data[to].content += PackedStringArray(copied_content)
 
 	save_to_disk(to)
 
