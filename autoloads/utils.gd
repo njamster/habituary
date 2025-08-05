@@ -76,3 +76,8 @@ func strip_tags(line: String) -> String:
 		break  # the while loop, nothing to replace was found anymore
 
 	return line
+
+
+func is_mouse_cursor_above(node: Node) -> bool:
+	var mousePos = get_viewport().get_mouse_position()
+	return node.get_global_rect().has_point(mousePos)

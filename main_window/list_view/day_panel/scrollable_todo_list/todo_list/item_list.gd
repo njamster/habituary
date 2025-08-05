@@ -78,7 +78,7 @@ func add_todo(at_index := -1, auto_edit := true) -> ToDoItem:
 	move_child(new_item, at_index)
 
 	if auto_edit:
-		new_item.edit()
+		new_item.edit.call_deferred()
 
 	return new_item
 

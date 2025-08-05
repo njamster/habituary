@@ -478,12 +478,12 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 
 	if new_text:
 		self.text = new_text
-		%Edit.release_focus()
 
 		%Edit.caret_column = 0   # scroll item text back to its beginning
 
-		%CopyToToday.modulate.a = 0.1
-		%DragHandle.modulate.a = 0.1
+		if not Utils.is_mouse_cursor_above(self):
+			%CopyToToday.modulate.a = 0.1
+			%DragHandle.modulate.a = 0.1
 
 		if key_input:
 			if Input.is_action_pressed("add_todo_above", true):
@@ -1088,6 +1088,9 @@ func _update_copy_to_today_visibility():
 
 
 func _update_saved_search_results(cache_key: String, new_text: String, old_text := "") -> void:
+	if not _initialization_finished:
+		return  # early
+
 	if "saved_searches" in Cache.data:
 		for raw_query in Cache.data["saved_searches"].content:
 			var alarm_tag_reg_ex := RegEx.new()

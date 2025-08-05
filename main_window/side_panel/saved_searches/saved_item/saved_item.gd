@@ -9,6 +9,7 @@ var date : Date:
 		date = value
 		if date:
 			_update_day_counter()
+			_update_third_row()
 
 var text := "":
 	set(value):
@@ -38,7 +39,6 @@ func _setup_initial_state() -> void:
 		$VBox/ThirdRow.hide()
 
 	date = _find_last_mention()
-	_update_third_row()
 
 
 func _find_last_mention() -> Date:
@@ -67,7 +67,7 @@ func _find_last_mention() -> Date:
 func _connect_signals() -> void:
 	#region Global Signals
 	EventBus.today_changed.connect(func():
-		self.date = self.date
+		self.date = self.date  # re-trigger setter function
 	)
 
 	EventBus.saved_search_update_requested.connect(func(query):
@@ -100,7 +100,7 @@ func _connect_signals() -> void:
 
 func _update_day_counter() -> void:
 	day_diff = date.day_difference_to(DayTimer.today)
-#
+
 	var years := int(abs(day_diff) / 365)
 	var weeks := int(abs(day_diff) % 365 / 7)
 	var days := int(abs(day_diff) % 365 % 7)

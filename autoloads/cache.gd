@@ -190,7 +190,7 @@ func move_item(line_id: int, from: String, to: String) -> void:
 
 	if to not in data:
 		data[to] = {
-			"content": [],
+			"content": PackedStringArray(),
 			"last_modified": Time.get_unix_time_from_system()
 		}
 	data[to].content.append(item)
@@ -205,7 +205,7 @@ func copy_item(line_id: int, from: String, to: String) -> void:
 
 	if to not in data:
 		data[to] = {
-			"content": [],
+			"content": PackedStringArray(),
 			"last_modified": Time.get_unix_time_from_system()
 		}
 

@@ -5,7 +5,7 @@ class_name Tooltip
 @export_multiline var text : String:
 	set(value):
 		text = value
-		if get_child_count():
+		if is_visible():
 			_tooltip_label.text = value
 			_tooltip_panel.size = Vector2.ZERO # shrink to content
 			_position_tooltip()
@@ -38,8 +38,6 @@ var _tooltip_panel : PanelContainer
 var _tooltip_label : Label
 var _hover_timer : Timer
 
-var _contains_mouse_cursor := false
-
 
 func _ready() -> void:
 	_hover_timer = Timer.new()
@@ -65,8 +63,6 @@ func _ready() -> void:
 
 
 func show_tooltip() -> void:
-	_contains_mouse_cursor = true
-
 	if disabled or (not text and not input_action):
 		return
 
@@ -76,12 +72,14 @@ func show_tooltip() -> void:
 	_hover_timer.start()
 
 
-func hide_tooltip() -> void:
-	_contains_mouse_cursor = false
+func is_visible() -> bool:
+	return get_child_count()
 
+
+func hide_tooltip() -> void:
 	_hover_timer.stop()
 
-	if get_child_count():
+	if is_visible():
 		_tooltip_panel.hide()
 		_tooltip_panel.queue_free()
 
@@ -204,15 +202,11 @@ func _center_vertically() -> void:
 
 
 func _on_press_or_toggle(_toggled_on := false) -> void:
-	if _hover_timer.is_stopped():
-		# If the _hover_timer has already finished (i.e. the tooltip is visible), hide it
-		# once the user clicks the button. It will only show again after moving the mouse
-		# off of the button and back on and waiting for the _hover_timer to finish.
-		hide_tooltip()
-	elif _contains_mouse_cursor:
-		# If the mouse remains on top of a button after being pressed and the _hover_timer
-		# has not yet finished (i.e. there's no tooltip visible), reset the _hover_timer.
-		# => While rapidly pressing a button, no tooltip will be shown!
+	if Utils.is_mouse_cursor_above(host):
+		# If the mouse remains on top of the host after being pressed (i.e. it's
+		# toggled manually by the user, and not from code) trigger show_tooltip.
+		# If there already was a tooltip visible, it will be hidden by the code
+		# in _input. For rapidly repeated presses, no tooltip will appear!
 		show_tooltip()
 
 

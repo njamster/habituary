@@ -2,8 +2,6 @@ extends PanelContainer
 
 const MINIMUM_GLOBAL_SEARCH_QUERY_SIZE := 3
 
-var _contains_mouse_cursor := false
-
 
 func _ready() -> void:
 	_set_initial_state()
@@ -81,7 +79,7 @@ func _on_search_query_focus_entered() -> void:
 
 
 func _on_search_query_focus_exited() -> void:
-	if _contains_mouse_cursor:
+	if Utils.is_mouse_cursor_above(self):
 		theme_type_variation = "SearchBar_Hover"
 	else:
 		theme_type_variation = "SearchBar"
@@ -145,15 +143,11 @@ func _on_search_query_gui_input(event: InputEvent) -> void:
 
 
 func _on_mouse_entered() -> void:
-	_contains_mouse_cursor = true
-
 	if get_viewport().gui_get_focus_owner() != %SearchQuery:
 		self.theme_type_variation = "SearchBar_Hover"
 
 
 func _on_mouse_exited() -> void:
-	_contains_mouse_cursor = false
-
 	if get_viewport().gui_get_focus_owner() != %SearchQuery:
 		self.theme_type_variation = "SearchBar"
 

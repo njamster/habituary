@@ -35,6 +35,7 @@ func _connect_signals() -> void:
 	#region Global Signals
 	EventBus.instant_save_requested.connect(func(date):
 		if cache_key == date:
+			print("[DEBUG] Instant save request for %s received." % cache_key)
 			for child in %Items.get_children():
 				if child.is_in_edit_mode():
 					child._on_edit_text_submitted(
