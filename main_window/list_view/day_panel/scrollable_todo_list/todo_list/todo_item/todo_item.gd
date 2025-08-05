@@ -493,6 +493,8 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 					get_item_list().add_sub_item(self)
 				else:
 					get_item_list().add_todo_below(self)
+			else:
+				%Edit.release_focus()
 	else:
 		delete()
 
