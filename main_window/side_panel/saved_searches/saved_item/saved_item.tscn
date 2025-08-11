@@ -64,14 +64,20 @@ gap_width = 2
 
 [node name="SecondRow" type="HBoxContainer" parent="VBox"]
 layout_mode = 2
+theme_type_variation = &"TinySeparation"
+
+[node name="LatestMatch" type="Label" parent="VBox/SecondRow"]
+layout_mode = 2
+text = "Latest Match:"
 
 [node name="DayCounter" type="Label" parent="VBox/SecondRow"]
 unique_name_in_owner = true
 self_modulate = Color(1, 1, 1, 0.75)
 layout_mode = 2
-size_flags_horizontal = 2
+size_flags_horizontal = 3
 mouse_filter = 1
 text = "1337 days left"
+text_overrun_behavior = 3
 
 [node name="Tooltip" type="Node" parent="VBox/SecondRow/DayCounter"]
 unique_name_in_owner = true

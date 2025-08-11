@@ -60,6 +60,13 @@ func _set_initial_state() -> void:
 
 	_set_text_colors()
 
+	%UseRelativeDates/Setting/Options.set_pressed_no_signal(
+		Settings.use_relative_saved_search_dates
+	)
+	_on_use_relative_dates_options_toggled(
+		Settings.use_relative_saved_search_dates
+	)
+
 
 func _set_text_colors() -> void:
 	for i in range(5):
@@ -105,6 +112,10 @@ func _connect_signals() -> void:
 
 	%UIScale/Setting/ScaleFactor.value_changed.connect(func(value):
 		Settings.ui_scale_factor = value
+	)
+
+	%UseRelativeDates/Setting/Options.toggled.connect(
+		_on_use_relative_dates_options_toggled
 	)
 	#endregion
 
@@ -271,3 +282,16 @@ func _on_todo_color_reset(id: int) -> void:
 	var new_colors = Settings.to_do_text_colors.duplicate()
 	new_colors[id] = Settings.DEFAULT_TO_DO_TEXT_COLORS[id]
 	Settings.to_do_text_colors = new_colors
+
+
+func _on_use_relative_dates_options_toggled(toggled_on: bool) -> void:
+	Settings.use_relative_saved_search_dates = toggled_on
+
+	if toggled_on:
+		%UseRelativeDates/Explanation.text = ("[fill]The \"Latest Match\" for "
+		+ "a saved search will be shown relative to today, e.g. \"6 days ago"
+		+ "\".[/fill]")
+	else:
+		%UseRelativeDates/Explanation.text = ("[fill]The \"Latest Match\" for "
+		+ "a saved search will be shown as an absolute date, e.g. \"%s\"."
+		+ "[/fill]") % DayTimer.today.add_days(-6).format("MMM DD, YYYY")

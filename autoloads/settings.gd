@@ -17,6 +17,7 @@ signal fade_ticked_off_todos_changed
 signal fade_non_today_dates_changed
 signal bookmarks_due_today_changed
 signal show_sub_item_count_changed
+signal use_relative_saved_search_dates_changed
 
 
 enum TodayPosition {
@@ -384,6 +385,16 @@ var bookmarks_due_today := 0:
 		_start_debounce_timer()
 
 var side_panel_width := 360  # pixels
+
+@export var use_relative_saved_search_dates := true:
+	set(value):
+		if use_relative_saved_search_dates == value:
+			return
+
+		use_relative_saved_search_dates = value
+		_start_debounce_timer()
+
+		use_relative_saved_search_dates_changed.emit()
 
 
 func _enter_tree() -> void:

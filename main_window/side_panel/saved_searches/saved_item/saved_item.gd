@@ -74,6 +74,10 @@ func _connect_signals() -> void:
 		if query == text:
 			date = _find_last_mention()
 	)
+
+	Settings.use_relative_saved_search_dates_changed.connect(
+		_update_day_counter
+	)
 	#endregion
 
 	#region Local Signals
@@ -101,48 +105,52 @@ func _connect_signals() -> void:
 func _update_day_counter() -> void:
 	day_diff = date.day_difference_to(DayTimer.today)
 
-	var years := int(abs(day_diff) / 365)
-	var weeks := int(abs(day_diff) % 365 / 7)
-	var days := int(abs(day_diff) % 365 % 7)
+	if Settings.use_relative_saved_search_dates:
+		var years := int(abs(day_diff) / 365)
+		var weeks := int(abs(day_diff) % 365 / 7)
+		var days := int(abs(day_diff) % 365 % 7)
 
-	var remaining_time = ""
-	if years:
-		if years > 1:
-			remaining_time += "%d years" % [years]
-		else:
-			remaining_time += "%d year" % [years]
-	if weeks:
-		if remaining_time:
-			if days:
-				remaining_time += ", "
+		var remaining_time = ""
+		if years:
+			if years > 1:
+				remaining_time += "%d years" % [years]
 			else:
+				remaining_time += "%d year" % [years]
+		if weeks:
+			if remaining_time:
+				if days:
+					remaining_time += ", "
+				else:
+					remaining_time += " and "
+			if weeks > 1:
+				remaining_time += "%d weeks" % [weeks]
+			else:
+				remaining_time += "%d week" % [weeks]
+		if days:
+			if remaining_time:
 				remaining_time += " and "
-		if weeks > 1:
-			remaining_time += "%d weeks" % [weeks]
-		else:
-			remaining_time += "%d week" % [weeks]
-	if days:
-		if remaining_time:
-			remaining_time += " and "
-		if days > 1:
-			remaining_time += "%d days" % [days]
-		else:
-			remaining_time += "%d day" % [days]
+			if days > 1:
+				remaining_time += "%d days" % [days]
+			else:
+				remaining_time += "%d day" % [days]
 
-	if day_diff < 0:
-		if day_diff == -1:
-			%DayCounter.text = "Yesterday"
+		if day_diff < 0:
+			if day_diff == -1:
+				%DayCounter.text = "Yesterday"
+			else:
+				%DayCounter.text = remaining_time + " ago"
+		elif day_diff > 0:
+			if day_diff == 1:
+				%DayCounter.text = "Tomorrow"
+			else:
+				%DayCounter.text = "in " + remaining_time
 		else:
-			%DayCounter.text = remaining_time + " ago"
-	elif day_diff > 0:
-		if day_diff == 1:
-			%DayCounter.text = "Tomorrow"
-		else:
-			%DayCounter.text = "in " + remaining_time
+			%DayCounter.text = "TODAY"
+
+		%Tooltip.text = date.format("MMM DD, YYYY")
 	else:
-		%DayCounter.text = "TODAY"
-
-	%Tooltip.text = date.format("MMM DD, YYYY")
+		%DayCounter.text = date.format("MMM DD, YYYY")
+		%Tooltip.text = ""
 
 
 func _on_repeat_search_pressed() -> void:
