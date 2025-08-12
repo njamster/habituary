@@ -63,11 +63,14 @@ func _ready() -> void:
 
 
 func show_tooltip() -> void:
+	if host is CanvasItem and not host.is_visible_in_tree():
+		return  # early
+
 	if disabled or (not text and not input_action):
-		return
+		return  # early
 
 	if host is BaseButton and host.disabled and not show_on_disabled_buttons:
-		return
+		return  # early
 
 	_hover_timer.start()
 
