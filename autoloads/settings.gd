@@ -146,7 +146,7 @@ var current_day := Date.new(DayTimer.today.as_dict()):
 	set(value):
 		main_panel = MainPanelState.LIST_VIEW
 
-		if current_day.day_difference_to(value) == 0:
+		if current_day.equals(value):
 			return
 
 		if previous_day != current_day:

@@ -39,7 +39,7 @@ func _on_today_pressed() -> void:
 
 
 func _on_current_day_changed() -> void:
-	if Settings.current_day.day_difference_to(DayTimer.today) == 0:
+	if Settings.current_day.equals(DayTimer.today):
 		$Today.mouse_default_cursor_shape = CURSOR_ARROW
 		$Today.hide()
 	else:

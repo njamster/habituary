@@ -4,10 +4,10 @@ var date : Date:
 	set(value):
 		var old_date
 		if date:
-			if date.day_difference_to(value) != 0:
-				old_date = date
-			else:
+			if date.equals(value):
 				return # early
+			else:
+				old_date = date
 		date = value
 		%Tooltip.text = date.format("MMM DD, YYYY")
 
@@ -19,11 +19,10 @@ var date : Date:
 		_apply_date_relative_formating()
 
 		if not is_done:
-			if old_date and old_date.day_difference_to(DayTimer.today) == 0:
+			if old_date and old_date.equals(DayTimer.today):
 				Settings.bookmarks_due_today -= 1
-			else:
-				if date.day_difference_to(DayTimer.today) == 0:
-					Settings.bookmarks_due_today += 1
+			elif date.equals(DayTimer.today):
+				Settings.bookmarks_due_today += 1
 
 var line_number := -1
 
@@ -145,6 +144,6 @@ func _on_jump_to_pressed() -> void:
 
 
 func remove() -> void:
-	if date.day_difference_to(DayTimer.today) == 0 and not is_done:
+	if date.equals(DayTimer.today) and not is_done:
 		Settings.bookmarks_due_today -= 1
 	queue_free()

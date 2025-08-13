@@ -63,7 +63,7 @@ func _add_bookmark(date : Date, line_number : int, todo_text : String, is_done :
 
 	for i in %Items.get_child_count():
 		var child = %Items.get_child(i)
-		if (child.date.day_difference_to(date) == 0 and child.line_number > line_number) \
+		if (child.date.equals(date) and child.line_number > line_number) \
 			or child.date.day_difference_to(date) > 0:
 				%Items.move_child(bookmark, i)
 				return
@@ -109,7 +109,7 @@ func _on_bookmark_changed(to_do : Control, old_date : Date, old_index : int) -> 
 		if bookmark.updated_this_frame:
 			continue
 
-		if bookmark.date.day_difference_to(old_date) == 0 and bookmark.line_number == old_index:
+		if bookmark.date.equals(old_date) and bookmark.line_number == old_index:
 			bookmark.date = to_do.date
 			bookmark.line_number = to_do.get_list_index()
 			bookmark.text = to_do.get_node("%Edit").text
@@ -126,7 +126,7 @@ func _on_bookmark_changed(to_do : Control, old_date : Date, old_index : int) -> 
 
 func _on_bookmark_indicator_clicked(date: Date, index: int) -> void:
 	for bookmark in %Items.get_children():
-		if bookmark.date.day_difference_to(date) == 0 and bookmark.line_number == index:
+		if bookmark.date.equals(date) and bookmark.line_number == index:
 			bookmark.get_node("%JumpTo").grab_focus()
 			return
 
@@ -136,7 +136,7 @@ func _on_bookmark_removed(to_do : Control) -> void:
 	var line_number = to_do.get_list_index()
 
 	for bookmark in %Items.get_children():
-		if bookmark.date.day_difference_to(date) == 0 and bookmark.line_number == line_number:
+		if bookmark.date.equals(date) and bookmark.line_number == line_number:
 			$NoneSet.visible = (%Items.get_child_count() == 1)
 			$IncludePast.visible = not $NoneSet.visible
 			bookmark.remove()
