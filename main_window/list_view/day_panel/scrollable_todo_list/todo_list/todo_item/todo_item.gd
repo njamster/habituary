@@ -112,7 +112,7 @@ var is_folded := false:
 
 		is_folded = value
 
-		%FoldHeading.button_pressed = value
+		%FoldHeading.set_pressed_no_signal(value)
 
 		_update_extra_info()
 
