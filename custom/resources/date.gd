@@ -67,7 +67,9 @@ var _regex := RegEx.new()
 
 func _init(dict := Time.get_date_dict_from_system()) -> void:
 	#region ensure dict is a valid date dict
-	assert(dict.keys() == ["year", "month", "day", "weekday"])
+	assert("year" in dict.keys())
+	assert("month" in dict.keys())
+	assert("day" in dict.keys())
 
 	assert(dict.year is int)
 
@@ -76,15 +78,11 @@ func _init(dict := Time.get_date_dict_from_system()) -> void:
 
 	assert(dict.day is int)
 	assert(dict.day in range(1, Date._days_in_month(dict.month, dict.year) + 1))
-
-	assert(dict.weekday is int)
-	assert(dict.weekday in range(0, 7))
 	#endregion
 
 	year = dict.year
 	month = dict.month
 	day = dict.day
-	weekday = dict.weekday
 
 	_regex.compile("(\\[[^\\[]*\\])|(\\\\)?(Mo|MM?M?M?|Do|DD|ddd?d?|do?|YYYY|YY|.)")
 
@@ -118,7 +116,6 @@ func add_days(shift: int) -> Date:
 		"year": new_year,
 		"month": new_month,
 		"day": new_day,
-		"weekday": wrapi(weekday + shift, 0, 7)
 	})
 
 
@@ -133,20 +130,10 @@ func add_months(shift: int) -> Date:
 		new_year += sign(shift)
 		new_month -= 12 * sign(shift)
 
-	var new_date_dict :={
-		"year": new_year,
-		"month": new_month,
-		"day": min(day, Date._days_in_month(new_month, new_year))
-	}
-
-	var unix_time := Time.get_unix_time_from_datetime_dict(new_date_dict)
-	var new_weekday = Time.get_datetime_dict_from_unix_time(unix_time).weekday
-
 	return Date.new({
 		"year": new_year,
 		"month": new_month,
-		"day": min(day, Date._days_in_month(new_month, new_year)),
-		"weekday": new_weekday
+		"day": min(day, Date._days_in_month(new_month, new_year))
 	})
 
 
@@ -169,20 +156,10 @@ static func from_string(date_string: String) -> Date:
 	var new_month = int(parts[1])
 	var new_day = int(parts[2])
 
-	var new_date_dict :={
-		"year": new_year,
-		"month": new_month,
-		"day": min(new_day, Date._days_in_month(new_month, new_year))
-	}
-
-	var unix_time := Time.get_unix_time_from_datetime_dict(new_date_dict)
-	var new_weekday = Time.get_datetime_dict_from_unix_time(unix_time).weekday
-
 	return Date.new({
 		"year": new_year,
 		"month": new_month,
-		"day": min(new_day, Date._days_in_month(new_month, new_year)),
-		"weekday": new_weekday
+		"day": min(new_day, Date._days_in_month(new_month, new_year))
 	})
 
 
