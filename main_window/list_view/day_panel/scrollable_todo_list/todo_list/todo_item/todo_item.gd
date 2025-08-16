@@ -354,15 +354,13 @@ func delete() -> void:
 	else:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
-	var cache_key := date.as_string()
-
 	queue_free()
 	if self.text:
 		var to_do_list := get_to_do_list()
 		await tree_exited
 		to_do_list._start_debounce_timer("to-do deleted")
 
-		_update_saved_search_results(cache_key, text)
+		_update_saved_search_results(get_to_do_list().cache_key, text)
 
 
 func _on_edit_resized() -> void:
