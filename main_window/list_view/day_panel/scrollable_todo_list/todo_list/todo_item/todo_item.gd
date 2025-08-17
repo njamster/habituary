@@ -355,12 +355,16 @@ func delete() -> void:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 	queue_free()
-	if self.text:
-		var to_do_list := get_to_do_list()
-		await tree_exited
-		to_do_list._start_debounce_timer("to-do deleted")
 
-		_update_saved_search_results(get_to_do_list().cache_key, text)
+	if self.text:
+		# NOTE: We *must* get this now, as the method would simply return `null`
+		# once this node got succesfully free'd and exited the tree!
+		var to_do_list := get_to_do_list()
+
+		await tree_exited
+
+		to_do_list._start_debounce_timer("to-do deleted")
+		_update_saved_search_results(to_do_list.cache_key, text)
 
 
 func _on_edit_resized() -> void:
