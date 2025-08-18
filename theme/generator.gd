@@ -830,21 +830,20 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	})
 	#endregion
 
-	#region ToDoItem_NoHeading
-	var to_do_item_no_heading := theme.create_theme_type("ToDoItem_NoHeading", "PanelContainer")
+	#region ToDoItem_MainRow
+	var to_do_item_main_row := theme.create_theme_type("ToDoItem_MainRow", "PanelContainer")
 
-	to_do_item_no_heading.set_main_style({
+	to_do_item_main_row.set_main_style({
 		"draw_center" = false,
 	})
 	#endregion
 
-	#region ToDoItem_Heading
-	var to_do_item_heading := theme.create_theme_type("ToDoItem_Heading", "PanelContainer")
+	#region ToDoItem_MainRow_Focused
+	var to_do_item_main_row_focused := theme.create_theme_type("ToDoItem_MainRow_Focused", "PanelContainer")
 
-	to_do_item_heading.set_main_style({
-		"bg_color" = neutral_4,
-		"corner_radius" = 6,
-		"resource_local_to_scene" = true,
+	to_do_item_main_row_focused.set_main_style({
+		"bg_color" = FROST_3,
+		"corner_radius" = 5,
 		"anti_aliasing_size" = 0.33,
 	})
 	#endregion

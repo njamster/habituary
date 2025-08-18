@@ -30,7 +30,7 @@ mouse_filter = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 27)
 layout_mode = 2
-theme_type_variation = &"ToDoItem_NoHeading"
+theme_type_variation = &"ToDoItem_MainRow"
 
 [node name="HBox" type="HBoxContainer" parent="MainRow"]
 layout_mode = 2

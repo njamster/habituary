@@ -72,11 +72,10 @@ var state := States.TO_DO:
 			if _initialization_finished:
 				_apply_state_relative_formatting()
 
-			if _initialization_finished:
 				if date and is_bookmarked:
 					EventBus.bookmark_changed.emit(self, date, get_list_index())
 
-				if self.text:
+				if self.text and not has_sub_items():
 					get_to_do_list()._start_debounce_timer("state changed")
 
 var is_bold := false:
@@ -406,12 +405,6 @@ func _on_edit_text_changed(new_text: String) -> void:
 		get_item_list().indent_todo(self)
 		%Edit.text = new_text.right(-2).strip_edges()
 
-	if not %SubItems.is_empty():
-		if %Edit.text.strip_edges().ends_with(":"):
-			%MainRow.theme_type_variation = "ToDoItem_Heading"
-		else:
-			%MainRow.theme_type_variation = "ToDoItem_NoHeading"
-
 	if date and is_bookmarked:
 		EventBus.bookmark_changed.emit(self, date, get_list_index())
 
@@ -602,11 +595,7 @@ func _on_mouse_entered() -> void:
 			get_global_mouse_position(),
 			get_viewport().gui_get_drag_data()
 		):
-			var style_box := StyleBoxFlat.new()
-			style_box.bg_color = Color("#81A1C1")
-			style_box.set_corner_radius_all(5)
-			%MainRow.add_theme_stylebox_override("panel", style_box)
-
+			%MainRow.theme_type_variation = "ToDoItem_MainRow_Focused"
 			$UnfoldTimer.start()
 	else:
 		%CopyToToday.modulate.a = 1.0
@@ -624,7 +613,7 @@ func _on_mouse_exited() -> void:
 			%DragHandle.modulate.a = 0.1
 
 	if get_viewport().gui_is_dragging():
-		%MainRow.remove_theme_stylebox_override("panel")
+		%MainRow.theme_type_variation = "ToDoItem_MainRow"
 		$UnfoldTimer.stop()
 
 
@@ -937,8 +926,6 @@ func get_day_panel() -> DayPanel:
 func _on_sub_item_added() -> void:
 	%CheckBox.hide()
 	%FoldHeading.show()
-	if indentation_level == 0 and %Edit.text.strip_edges().ends_with(":"):
-		%MainRow.theme_type_variation = "ToDoItem_Heading"
 
 	_adapt_sub_item_state()
 
@@ -962,8 +949,6 @@ func _on_sub_item_removed(sub_item: ToDoItem) -> void:
 	if %SubItems.is_empty():
 		%CheckBox.show()
 		%FoldHeading.hide()
-		if indentation_level == 0:
-			%MainRow.theme_type_variation = "ToDoItem_NoHeading"
 
 	_adapt_sub_item_state()
 
@@ -1032,7 +1017,7 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 
 
 func _drop_data(_at_position: Vector2, data: Variant) -> void:
-	%MainRow.remove_theme_stylebox_override("panel")
+	%MainRow.theme_type_variation = "ToDoItem_MainRow"
 
 	if data.get_parent_todo() == self:
 		# If a to-do is dropped on its parent to-do, move the to-do to the

@@ -926,19 +926,18 @@ content_margin_bottom = 0.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ql8sj"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ynad8"]
-resource_local_to_scene = true
-bg_color = Color(0.847059, 0.870588, 0.913725, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-corner_detail = 5
-anti_aliasing_size = 0.33
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rj7j1"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6anvn"]
 draw_center = false
 corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ocyot"]
+bg_color = Color(0.505882, 0.631373, 0.756863, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 5
+anti_aliasing_size = 0.33
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f40yi"]
 content_margin_left = 6.0
@@ -1314,10 +1313,10 @@ ToDoItem_Focused/styles/focus = SubResource("StyleBoxEmpty_7nuhb")
 ToDoItem_Focused/styles/hover = SubResource("StyleBoxEmpty_qdxsj")
 ToDoItem_Focused/styles/normal = SubResource("StyleBoxEmpty_fwbej")
 ToDoItem_Focused/styles/pressed = SubResource("StyleBoxEmpty_ql8sj")
-ToDoItem_Heading/base_type = &"PanelContainer"
-ToDoItem_Heading/styles/panel = SubResource("StyleBoxFlat_ynad8")
-ToDoItem_NoHeading/base_type = &"PanelContainer"
-ToDoItem_NoHeading/styles/panel = SubResource("StyleBoxFlat_rj7j1")
+ToDoItem_MainRow/base_type = &"PanelContainer"
+ToDoItem_MainRow/styles/panel = SubResource("StyleBoxFlat_6anvn")
+ToDoItem_MainRow_Focused/base_type = &"PanelContainer"
+ToDoItem_MainRow_Focused/styles/panel = SubResource("StyleBoxFlat_ocyot")
 ToDoItem_TogglePadding/base_type = &"MarginContainer"
 ToDoItem_TogglePadding/constants/margin_left = 6
 ToDoItem_TogglePadding/constants/margin_right = 6
