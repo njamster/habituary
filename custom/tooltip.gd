@@ -32,6 +32,8 @@ enum PopupPosition {AUTOMATIC_HORIZONTAL, AUTOMATIC_VERTICAL, ABOVE, RIGHT, BELO
 
 @export var show_on_disabled_buttons := false
 
+@export var show_during_dragging := false
+
 @onready var host := get_parent()
 
 var _tooltip_panel : PanelContainer
@@ -70,6 +72,9 @@ func show_tooltip() -> void:
 		return  # early
 
 	if host is BaseButton and host.disabled and not show_on_disabled_buttons:
+		return  # early
+
+	if get_viewport().gui_is_dragging() and not show_during_dragging:
 		return  # early
 
 	_hover_timer.start()

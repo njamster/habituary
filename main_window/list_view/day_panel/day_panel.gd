@@ -170,11 +170,3 @@ func _on_current_day_changed() -> void:
 		theme_type_variation = "DayPanel_CurrentDay"
 	else:
 		theme_type_variation = "DayPanel"
-
-
-func _notification(what: int) -> void:
-	match what:
-		NOTIFICATION_DRAG_BEGIN:
-			%Header/Tooltip.disabled = true
-		NOTIFICATION_DRAG_END:
-			%Header/Tooltip.disabled = (Settings.view_mode == 1)

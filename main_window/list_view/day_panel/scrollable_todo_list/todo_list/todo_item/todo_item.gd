@@ -106,8 +106,11 @@ var _is_mouse_over_checkbox := false
 
 var is_folded := false:
 	set(value):
+		if is_folded == value:
+			return  # early
+
 		if %SubItems.is_empty():
-			return
+			return  # early
 
 		is_folded = value
 
