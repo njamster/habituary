@@ -36,12 +36,6 @@ func _connect_signals() -> void:
 	EventBus.instant_save_requested.connect(func(date):
 		if cache_key == date:
 			print("[DEBUG] Instant save request for %s received." % cache_key)
-			for child in %Items.get_children():
-				if child.is_in_edit_mode():
-					child._on_edit_text_submitted(
-						child.get_node("%Edit").text,
-						false
-					)
 			save_to_disk()
 	)
 	EventBus.global_search_requested.connect(save_to_disk)
@@ -92,6 +86,8 @@ func _start_debounce_timer(reason := "Unknown"):
 func save_to_disk() -> void:
 	if not pending_save:
 		return # early
+
+	$DebounceTimer.stop()  # in case it was an instant save request
 
 	var content = ""
 
@@ -187,4 +183,3 @@ func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_FOCUS_OUT:
 		if pending_save:
 			save_to_disk()
-			$DebounceTimer.stop()

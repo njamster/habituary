@@ -514,51 +514,53 @@ func _on_focus_exited() -> void:
 
 
 func as_string(depth := 0) -> String:
-	if not self.text:
+	var unformatted_text : String
+	if is_in_edit_mode():
+		unformatted_text = %Edit.text
+	else:
+		unformatted_text = self.text
+
+	if unformatted_text == "":
 		return ""
 
-	var stripped_text = _strip_text(self.text)
-	if not stripped_text:
-		return ""
-
-	var string := ""
+	var result := ""
 
 	for i in depth:
-		string += "    "
+		result += "    "
 
 	if self.state == States.DONE:
-		string += "[x] "
+		result += "[x] "
 	elif self.state == States.FAILED:
-		string += "[-] "
+		result += "[-] "
 	else:
-		string += "[ ] "
+		result += "[ ] "
 
 	if is_folded:
-		string += "> "
+		result += "> "
 
 	if is_italic:
-		string += "*"
+		result += "*"
 	if is_bold:
-		string += "**"
-	string += stripped_text
+		result += "**"
+	result += unformatted_text
 	if is_bold:
-		string += "**"
+		result += "**"
 	if is_italic:
-		string += "*"
+		result += "*"
 
 	if is_bookmarked:
-		string += " [BOOKMARK]"
+		result += " [BOOKMARK]"
 
 	if text_color_id:
-		string += " [COLOR%d]" % text_color_id
+		result += " [COLOR%d]" % text_color_id
 
 	if review_date:
-		string += " [REVIEW:%s]" % review_date
+		result += " [REVIEW:%s]" % review_date
 
 	for sub_item in %SubItems.get_children():
-		string += "\n" + sub_item.as_string(depth + 1)
+		result += "\n" + sub_item.as_string(depth + 1)
 
-	return string
+	return result
 
 
 func load_from_string(line: String) -> void:
