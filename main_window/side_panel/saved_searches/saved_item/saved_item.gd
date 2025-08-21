@@ -7,8 +7,8 @@ signal save_requested
 var date : Date:
 	set(value):
 		date = value
+		_update_day_counter()
 		if date:
-			_update_day_counter()
 			_update_third_row()
 
 var text := "":
@@ -60,7 +60,6 @@ func _find_last_mention() -> Date:
 				return Date.from_string(key)
 			line_id += 1
 
-	%DayCounter.hide()
 	return null
 
 
@@ -103,6 +102,19 @@ func _connect_signals() -> void:
 
 
 func _update_day_counter() -> void:
+	if not date:
+		%DayCounter.hide()
+		%LatestMatch.text = "No matching items"
+		%LatestMatch.add_theme_font_override(
+			"font",
+			preload("res://theme/fonts/OpenSans-MediumItalic.ttf")
+		)
+		return  # early
+	else:
+		%DayCounter.show()
+		%LatestMatch.text = "Latest Match:"
+		%LatestMatch.remove_theme_font_override("font")
+
 	day_diff = date.day_difference_to(DayTimer.today)
 
 	if Settings.use_relative_saved_search_dates:
