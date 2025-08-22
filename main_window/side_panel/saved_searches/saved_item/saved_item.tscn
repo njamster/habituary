@@ -83,13 +83,13 @@ text_overrun_behavior = 3
 [node name="Tooltip" type="Node" parent="VBox/SecondRow/DayCounter"]
 unique_name_in_owner = true
 script = ExtResource("2_5q2o3")
-text_alignment = 2
+popup_position = 2
 
 [node name="Alarm" type="Button" parent="VBox/SecondRow"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
-size_flags_horizontal = 10
+size_flags_horizontal = 8
 size_flags_vertical = 0
 focus_mode = 0
 mouse_default_cursor_shape = 2

@@ -29,7 +29,7 @@ func _connect_signals() -> void:
 func _load_from_disk() -> void:
 	# remove previous entries (if there are any)
 	for item in %Items.get_children():
-		item.queue_free()
+		item.free()
 
 	# add new entries based on the cached lines
 	if "saved_searches" in Cache.data:
@@ -48,13 +48,12 @@ func _load_from_disk() -> void:
 				)
 			else:
 				new_item.text = raw_line
-			%Items.add_child(new_item)
-
 			new_item.save_requested.connect(func():
 				print("[DEBUG] Saved Search Save Requested: (Re)Starting DebounceTimer...")
 				$DebounceTimer.start()
 			)
-		_resort_list()
+			new_item.resort_requested.connect(_resort_list)
+			%Items.add_child(new_item)
 
 		$NoneSaved.hide()
 	else:
@@ -63,6 +62,9 @@ func _load_from_disk() -> void:
 
 func _resort_list() -> void:
 	var items := %Items.get_children()
+
+	if items.size() < 2:
+		return  # early
 
 	# Sort bookmarks...
 	items.sort_custom(func(a, b):

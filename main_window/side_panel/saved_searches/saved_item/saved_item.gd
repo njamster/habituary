@@ -2,6 +2,7 @@ extends PanelContainer
 
 
 signal save_requested
+signal resort_requested
 
 
 var date : Date:
@@ -19,7 +20,11 @@ var text := "":
 var warning_threshold := Utils.MIN_INT
 
 # used for sorting
-var day_diff := Utils.MIN_INT
+var day_diff := Utils.MIN_INT:
+	set(value):
+		if day_diff != value:
+			day_diff = value
+			resort_requested.emit()
 var line_id : int
 
 
@@ -103,15 +108,16 @@ func _connect_signals() -> void:
 
 func _update_day_counter() -> void:
 	if not date:
-		%DayCounter.hide()
+		%DayCounter.text = ""
 		%LatestMatch.text = "No matching items"
 		%LatestMatch.add_theme_font_override(
 			"font",
 			preload("res://theme/fonts/OpenSans-MediumItalic.ttf")
 		)
+		day_diff = Utils.MIN_INT
 		return  # early
 	else:
-		%DayCounter.show()
+		%DayCounter.text = ""
 		%LatestMatch.text = "Latest Match:"
 		%LatestMatch.remove_theme_font_override("font")
 
