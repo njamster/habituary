@@ -861,10 +861,12 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	var search_result_focused := theme.create_theme_type("SearchResult_Focused", "PanelContainer")
 
 	search_result_focused.set_main_style({
-		"bg_color" = primary_3,
+		"draw_center" = false,
 		"corner_radius" = 6,
 		"anti_aliasing_size" = 0.33,
 		"content_margin" = { "left": 22, "top": 4, "right": 8, "bottom": 4 },
+		"border_width" = 3,
+		"border_color" = primary_3,
 	})
 	#endregion
 
