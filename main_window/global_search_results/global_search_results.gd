@@ -49,7 +49,8 @@ func search() -> void:
 			var stripped_line := Utils.strip_tags(line)
 			if stripped_line.contains(Settings.search_query):
 				var search_result := SEARCH_RESULT.instantiate()
-				search_result.fill_in(key, stripped_line, line_id)
+				var state : String = line.strip_edges().left(3)
+				search_result.fill_in(key, state, stripped_line, line_id)
 				search_result_group.add_result(search_result)
 			line_id += 1
 
