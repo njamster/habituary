@@ -16,6 +16,14 @@ func _connect_signals() -> void:
 
 	# Deferred to give to-do lists with pending saves time to update their cache
 	EventBus.global_search_requested.connect(search, CONNECT_DEFERRED)
+
+	Cache.content_updated.connect(func(key):
+		if Settings.main_panel == Settings.MainPanelState.GLOBAL_SEARCH:
+			for search_result_group in %SearchResults.get_children():
+				if key == search_result_group.date.as_string():
+					search()
+					break  # for loop early
+	)
 	#endregion
 
 	#region Local Signals
