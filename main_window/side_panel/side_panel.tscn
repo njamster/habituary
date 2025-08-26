@@ -1,6 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://bbv588umdv0q4"]
+[gd_scene load_steps=7 format=3 uid="uid://bbv588umdv0q4"]
 
 [ext_resource type="Script" uid="uid://bw6diye2uke6q" path="res://main_window/side_panel/side_panel.gd" id="1_mcu5f"]
+[ext_resource type="PackedScene" uid="uid://cid0gwgt0yh1p" path="res://main_window/side_panel/settings/settings.tscn" id="2_qyjwk"]
+[ext_resource type="PackedScene" uid="uid://ds0qsq0et5u0i" path="res://main_window/side_panel/saved_searches/saved_searches.tscn" id="3_bnd52"]
+[ext_resource type="PackedScene" uid="uid://c62hgueeuxxi7" path="res://main_window/side_panel/capture/capture.tscn" id="4_e5ag2"]
+[ext_resource type="PackedScene" uid="uid://ba4ne2kctshba" path="res://main_window/side_panel/bookmarks/bookmarks.tscn" id="5_87cp1"]
+[ext_resource type="PackedScene" uid="uid://d15dr447oxpgn" path="res://main_window/side_panel/help/help.tscn" id="6_uiwhf"]
 
 [node name="SidePanel" type="PanelContainer"]
 anchors_preset = 9
@@ -10,3 +15,18 @@ grow_vertical = 2
 size_flags_vertical = 3
 theme_type_variation = &"SidePanel"
 script = ExtResource("1_mcu5f")
+
+[node name="Settings" parent="." instance=ExtResource("2_qyjwk")]
+layout_mode = 2
+
+[node name="SavedSearches" parent="." instance=ExtResource("3_bnd52")]
+layout_mode = 2
+
+[node name="Capture" parent="." instance=ExtResource("4_e5ag2")]
+layout_mode = 2
+
+[node name="Bookmarks" parent="." instance=ExtResource("5_87cp1")]
+layout_mode = 2
+
+[node name="Help" parent="." instance=ExtResource("6_uiwhf")]
+layout_mode = 2

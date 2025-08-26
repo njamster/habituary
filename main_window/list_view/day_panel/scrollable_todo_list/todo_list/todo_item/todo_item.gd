@@ -33,7 +33,7 @@ var text := "":
 			if _initialization_finished:
 				get_to_do_list()._start_debounce_timer("text changed")
 
-			_update_saved_search_results(self.date.as_string(), text, old_text)
+			_update_saved_search_results(get_to_do_list().cache_key, text, old_text)
 
 enum States { TO_DO, DONE, FAILED }
 var state := States.TO_DO:
@@ -271,7 +271,7 @@ func _connect_signals() -> void:
 
 		Cache.copy_item(
 			get_list_index(),
-			date.as_string(),
+			get_to_do_list().cache_key,
 			DayTimer.today.as_string()
 		)
 
@@ -1077,8 +1077,11 @@ func _on_fold_heading_mouse_exited() -> void:
 
 
 func _update_copy_to_today_visibility():
-	%CopyToToday.visible = %Edit.text != "" and \
-			date.day_difference_to(DayTimer.today) < 0
+	if date:
+		%CopyToToday.visible = %Edit.text != "" and \
+				date.day_difference_to(DayTimer.today) < 0
+	else:
+		%CopyToToday.visible = %Edit.text != ""
 
 
 func _update_saved_search_results(cache_key: String, new_text: String, old_text := "") -> void:

@@ -1,13 +1,6 @@
 extends PanelContainer
 
 
-var SETTINGS := preload("settings/settings.tscn").instantiate()
-var SAVED_SEARCHES := preload("saved_searches/saved_searches.tscn").instantiate()
-var CAPTURE := preload("capture/capture.tscn").instantiate()
-var BOOKMARKS := preload("bookmarks/bookmarks.tscn").instantiate()
-var HELP := preload("help/help.tscn").instantiate()
-
-
 func _ready() -> void:
 	_set_initial_state()
 	_connect_signals()
@@ -15,9 +8,6 @@ func _ready() -> void:
 
 func _set_initial_state() -> void:
 	custom_minimum_size.x = Settings.side_panel_width
-
-	# FIXME: Slightly hacky way to make sure _search_for_bookmarks is run...
-	add_child(BOOKMARKS)
 
 	_update_side_panel()
 
@@ -34,20 +24,20 @@ func _update_side_panel() -> void:
 		hide()
 		return  # early
 
+	$Settings.visible = (
+		Settings.side_panel == Settings.SidePanelState.SETTINGS
+	)
+	$SavedSearches.visible = (
+		Settings.side_panel == Settings.SidePanelState.SAVED_SEARCHES
+	)
+	$Capture.visible = (
+		Settings.side_panel == Settings.SidePanelState.CAPTURE
+	)
+	$Bookmarks.visible = (
+		Settings.side_panel == Settings.SidePanelState.BOOKMARKS
+	)
+	$Help.visible = (
+		Settings.side_panel == Settings.SidePanelState.HELP
+	)
+
 	visible = (Settings.side_panel != Settings.SidePanelState.HIDDEN)
-
-	if get_child_count():
-		remove_child(get_child(0))
-
-	if visible:
-		match Settings.side_panel:
-			Settings.SidePanelState.SETTINGS:
-				add_child(SETTINGS)
-			Settings.SidePanelState.SAVED_SEARCHES:
-				add_child(SAVED_SEARCHES)
-			Settings.SidePanelState.CAPTURE:
-				add_child(CAPTURE)
-			Settings.SidePanelState.BOOKMARKS:
-				add_child(BOOKMARKS)
-			Settings.SidePanelState.HELP:
-				add_child(HELP)

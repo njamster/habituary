@@ -174,7 +174,7 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 		data.edit()
 
 	data.get_to_do_list()._start_debounce_timer("to-do dropped")
-	data._update_saved_search_results(data.date.as_string(), data.text)
+	data._update_saved_search_results(data.get_to_do_list().cache_key, data.text)
 
 	data._update_copy_to_today_visibility()
 #endregion
