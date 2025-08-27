@@ -181,6 +181,9 @@ func _input(event: InputEvent) -> void:
 
 
 func _on_dark_mode_changed(inverted := false) -> void:
+	if is_queued_for_deletion():
+		return  # early
+
 	if Settings.dark_mode:
 		%TextColor.get("theme_override_styles/panel").border_color = \
 			Color("#D8DEE9") if not inverted else Color("#4C566A")

@@ -475,6 +475,7 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 	var new_item := (self.text == "")
 
 	if new_text:
+		var old_text = self.text
 		self.text = new_text
 
 		%Edit.caret_column = 0   # scroll item text back to its beginning
@@ -492,6 +493,9 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 				else:
 					get_item_list().add_todo_below(self)
 			else:
+				if not has_sub_items():
+					if new_text.ends_with(":") and not old_text.ends_with(":"):
+						get_item_list().add_sub_item(self)
 				%Edit.release_focus()
 	else:
 		delete()
