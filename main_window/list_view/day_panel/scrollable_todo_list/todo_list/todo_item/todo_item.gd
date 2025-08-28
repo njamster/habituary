@@ -58,8 +58,9 @@ var state := States.TO_DO:
 
 			%CheckBox.button_pressed = (state != States.TO_DO)
 
-			if indentation_level:
-				get_parent_todo()._adapt_sub_item_state()
+			var parent_todo := get_parent_todo()
+			if parent_todo:
+				parent_todo._adapt_sub_item_state()
 
 			if not _is_mouse_over_checkbox:
 				if self.state == States.DONE:
@@ -146,8 +147,6 @@ var is_bookmarked := false:
 
 			if _initialization_finished and self.text:
 				get_to_do_list()._start_debounce_timer("is_bookmarked changed")
-
-var indentation_level := 0
 
 
 var text_color_id := 0:

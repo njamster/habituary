@@ -3,10 +3,18 @@ extends VBoxContainer
 
 const MAX_INDENTATION_LEVEL := 3
 
+
+var indentation_level := 0
+
 var rejection_tween : Tween
 
 
 #region Setup
+func _enter_tree() -> void:
+	if name == "SubItems":
+		indentation_level = get_node("../../..").indentation_level + 1
+
+
 func _ready() -> void:
 	_connect_signals()
 
@@ -25,7 +33,7 @@ func _connect_signals() -> void:
 
 		var x_offset := 0
 		if name == "SubItems" and get_child_count():
-			x_offset = get_child(0).indentation_level * \
+			x_offset = indentation_level * \
 				get_parent().get_theme_constant("margin_left")
 		get_to_do_list().show_line_highlight(x_offset)
 	)
@@ -62,11 +70,6 @@ func _on_gui_input(event: InputEvent) -> void:
 func _on_item_added(item: Node) -> void:
 	if item is not ToDoItem:
 		return
-
-	if name == "Items":
-		item.indentation_level = 0
-	elif name == "SubItems":
-		item.indentation_level = get_node("../..").indentation_level + 1
 
 
 func add_todo(at_index := -1, auto_edit := true) -> ToDoItem:
@@ -292,7 +295,7 @@ func _on_items_child_order_changed() -> void:
 
 #region Indenting Items
 func indent_todo(item: ToDoItem, visual_feedback := true) -> void:
-	if item.get_index() == 0 or item.indentation_level == MAX_INDENTATION_LEVEL:
+	if item.get_index() == 0 or indentation_level == MAX_INDENTATION_LEVEL:
 		if visual_feedback:
 			_reject_indentation_change(item, Vector2.RIGHT)
 		return  # first item in a list cannot be indented
