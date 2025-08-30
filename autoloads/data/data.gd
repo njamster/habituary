@@ -1,7 +1,7 @@
 extends Node
 
 
-var lists := {}
+var files: Dictionary[String, FileData]
 
 var _valid_filename_reg_ex = RegEx.create_from_string(
 	"[0-9]{4}-[0-9]{2}-[0-9]{2}.txt"
@@ -13,7 +13,7 @@ func _enter_tree() -> void:
 
 
 func load_from_disk() -> void:
-	lists = {}  # delete old data (if any exists)
+	files = {}  # delete old data (if any exists)
 
 	var directory := DirAccess.open(Settings.store_path)
 	if directory:
@@ -21,12 +21,12 @@ func load_from_disk() -> void:
 			if not _is_valid_filename(filename):
 				continue  # with the next file
 
-			var list = preload("types/todo_list.gd").new(
+			var file = FileData.new(
 				Settings.store_path.path_join(filename)
 			)
 
-			if list.items.size() > 0:
-				lists[filename.trim_suffix(".txt")] = list
+			if not file.is_empty():
+				files[filename.trim_suffix(".txt")] = file
 
 
 func _is_valid_filename(filename: String) -> bool:
