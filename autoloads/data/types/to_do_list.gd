@@ -11,3 +11,7 @@ func add(to_do: ToDoData) -> void:
 
 func is_empty() -> bool:
 	return to_dos.is_empty()
+
+
+func clear() -> void:
+	to_dos.clear()

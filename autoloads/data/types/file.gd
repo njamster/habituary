@@ -3,6 +3,7 @@ class_name FileData
 
 
 var path: String
+var last_modified := Utils.MIN_INT
 
 var to_do_list := ToDoListData.new()
 
@@ -11,12 +12,14 @@ func _init(p_file_path: String) -> void:
 	path = p_file_path
 	_load_from_disk()
 
-	print(as_string())
-
 
 func _load_from_disk() -> void:
+	to_do_list.clear()  # delete old data (if there's any)
+
 	var file := FileAccess.open(path, FileAccess.READ)
 	if file:
+		last_modified = FileAccess.get_modified_time(path)
+
 		while file.get_position() < file.get_length():
 			var next_line := file.get_line()
 			if not next_line.is_empty():
@@ -24,6 +27,11 @@ func _load_from_disk() -> void:
 
 				if not to_do.text.is_empty():
 					to_do_list.add(to_do)
+
+
+func reload() -> void:
+	if last_modified < FileAccess.get_modified_time(path):
+		_load_from_disk()
 
 
 func as_string() -> String:
