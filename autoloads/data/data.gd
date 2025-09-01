@@ -15,28 +15,22 @@ func _enter_tree() -> void:
 func _load_from_disk(replace_old_data := true) -> void:
 	if replace_old_data:
 		files.clear()
+	else:
+		for key in files.keys():
+			files[key].reload()
 
 	var directory := DirAccess.open(Settings.store_path)
 	if directory:
-		# erase no longer existing files
-		for key in files.keys():
-			if not key in directory.get_files():
-				files.erase(key)
-
-		# cache all valid existing files
 		for filename in directory.get_files():
-			if not _is_valid_filename(filename):
+			if not _is_valid_filename(filename) or filename in files:
 				continue  # with the next file
 
-			if filename in files:
-				files[filename].reload()
-			else:
-				var file = FileData.new(
-					Settings.store_path.path_join(filename)
-				)
+			var new_file = FileData.new(
+				Settings.store_path.path_join(filename)
+			)
 
-				if not file.is_empty():
-					files[filename] = file
+			if not new_file.is_empty():
+				files[filename] = new_file
 
 
 func _is_valid_filename(filename: String) -> bool:

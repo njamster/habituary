@@ -29,9 +29,21 @@ func _load_from_disk() -> void:
 					to_do_list.add(to_do)
 
 
+func _delete() -> void:
+	if path.get_file() in Data.files:
+		Data.files.erase(path.get_file())
+
+
 func reload() -> void:
+	if not FileAccess.file_exists(path):
+		_delete()
+		return  # early
+
 	if last_modified < FileAccess.get_modified_time(path):
 		_load_from_disk()
+
+		if is_empty():
+			_delete()
 
 
 func as_string() -> String:
