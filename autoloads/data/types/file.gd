@@ -23,10 +23,9 @@ func _load_from_disk() -> void:
 		while file.get_position() < file.get_length():
 			var next_line := file.get_line()
 			if not next_line.is_empty():
-				var to_do := ToDoData.new(next_line)
-
-				if not to_do.text.is_empty():
-					to_do_list.add(to_do)
+				var to_do := ToDoData.new()
+				to_do_list.add(to_do)
+				to_do.load_from_string(next_line)
 
 
 func _delete() -> void:

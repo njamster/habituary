@@ -17,12 +17,15 @@ var is_bookmarked := false
 var is_folded := false
 var text_color_id: int
 
+var parent_list: ToDoListData
+var sub_items: ToDoListData
 
-func _init(raw_string: String) -> void:
-	_parse(raw_string)
 
+func load_from_string(raw_string: String) -> void:
+	while raw_string.begins_with("    "):
+		raw_string = raw_string.right(-4)
+		parent_list.indent(self)
 
-func _parse(raw_string: String) -> void:
 	if raw_string.begins_with("[ ] "):
 		raw_string = raw_string.right(-4)
 	elif raw_string.begins_with("[x] "):
@@ -80,9 +83,17 @@ func _parse(raw_string: String) -> void:
 
 	text = raw_string
 
+	if text.is_empty():
+		parent_list.remove(self)
+	else:
+		sub_items = ToDoListData.new(parent_list.indentation_level + 1)
+
 
 func as_string() -> String:
 	var result := ""
+
+	for i in parent_list.indentation_level:
+		result += "    "
 
 	if self.state == States.DONE:
 		result += "[x] "
@@ -109,5 +120,8 @@ func as_string() -> String:
 
 	if text_color_id:
 		result += " [COLOR%d]" % text_color_id
+
+	for sub_item in sub_items.to_dos:
+		result += "\n" + sub_item.as_string()
 
 	return result
