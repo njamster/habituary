@@ -4,7 +4,7 @@ extends Node
 var files: Dictionary[String, FileData]
 
 var _valid_filename_reg_ex = RegEx.create_from_string(
-	"[0-9]{4}-[0-9]{2}-[0-9]{2}.txt"
+	"^(?<year>[0-9]{4})-(?<month>0[1-9]|1[012])-(?<day>0[1-9]|[1-9][0-9]).txt$"
 )
 
 
@@ -34,7 +34,17 @@ func _load_from_disk(replace_old_data := true) -> void:
 
 
 func _is_valid_filename(filename: String) -> bool:
-	return _valid_filename_reg_ex.search(filename) != null
+	var regex_match = _valid_filename_reg_ex.search(filename)
+	if not regex_match:
+		return false
+
+	var day := int(regex_match.get_string("day"))
+	var month := int(regex_match.get_string("month"))
+	var year := int(regex_match.get_string("year"))
+	if day > Date._days_in_month(month, year):
+		return false
+
+	return true
 
 
 func _notification(what: int) -> void:
