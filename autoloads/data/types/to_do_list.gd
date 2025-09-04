@@ -2,6 +2,9 @@ extends RefCounted
 class_name ToDoListData
 
 
+signal changed
+
+
 var to_dos: Array[ToDoData]
 
 var indentation_level: int
@@ -14,11 +17,15 @@ func _init(p_indentation_level := 0) -> void:
 func add(to_do: ToDoData) -> void:
 	to_dos.append(to_do)
 	to_do.parent_list = self
+	to_do.changed.connect(changed.emit)
+	changed.emit()
 
 
 func remove(to_do: ToDoData) -> void:
 	to_dos.erase(to_do)
 	to_do.parent_list = null
+	to_do.changed.disconnect(changed.emit)
+	changed.emit()
 
 
 func indent(to_do: ToDoData) -> void:

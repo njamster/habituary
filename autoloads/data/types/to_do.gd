@@ -2,6 +2,9 @@ extends RefCounted
 class_name ToDoData
 
 
+signal changed
+
+
 enum States {
 	TO_DO,
 	DONE,
@@ -9,13 +12,48 @@ enum States {
 }
 
 
-var state := States.TO_DO
-var text: String
-var is_bold := false
-var is_italic := false
-var is_bookmarked := false
-var is_folded := false
-var text_color_id: int
+var state := States.TO_DO:
+	set(value):
+		if state != value:
+			state = value
+			changed.emit()
+
+var text: String:
+	set(value):
+		if text != value:
+			text = value
+			changed.emit()
+
+var is_bold := false:
+	set(value):
+		if is_bold != value:
+			is_bold = value
+			changed.emit()
+
+var is_italic := false:
+	set(value):
+		if is_italic != value:
+			is_italic = value
+			changed.emit()
+
+var is_bookmarked := false:
+	set(value):
+		if is_bookmarked != value:
+			is_bookmarked = value
+			changed.emit()
+
+var is_folded := false:
+	set(value):
+		if is_folded != value:
+			is_folded = value
+			changed.emit()
+
+var text_color_id: int:
+	set(value):
+		if text_color_id != value:
+			text_color_id = value
+			changed.emit()
+
 
 var parent_list: ToDoListData
 var sub_items: ToDoListData

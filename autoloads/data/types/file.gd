@@ -1,6 +1,8 @@
-extends RefCounted
+extends Timer
 class_name FileData
 
+
+const DEBOUNCE_TIME := 10.0  # seconds
 
 var path: String
 var last_modified := Utils.MIN_INT
@@ -10,7 +12,27 @@ var to_do_list := ToDoListData.new()
 
 func _init(p_file_path: String) -> void:
 	path = p_file_path
+
+	name = p_file_path.get_file().get_basename()
+
 	_load_from_disk()
+
+
+func _ready() -> void:
+	one_shot = true
+	wait_time = DEBOUNCE_TIME
+	timeout.connect(_save_to_disk)
+
+	to_do_list.changed.connect(start)
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_FOCUS_OUT:
+		if not is_stopped():
+			_save_to_disk()
+	elif what == NOTIFICATION_APPLICATION_FOCUS_IN:
+		if is_inside_tree():
+			_reload()
 
 
 func _load_from_disk() -> void:
@@ -28,21 +50,22 @@ func _load_from_disk() -> void:
 				to_do.load_from_string(next_line)
 
 
-func _delete() -> void:
-	if path.get_file() in Data.files:
-		Data.files.erase(path.get_file())
+func _save_to_disk() -> void:
+	var file := FileAccess.open(path, FileAccess.WRITE)
+	if file:
+		file.store_string(as_string())
 
 
-func reload() -> void:
+func _reload() -> void:
 	if not FileAccess.file_exists(path):
-		_delete()
+		Data.unload(self)
 		return  # early
 
 	if last_modified < FileAccess.get_modified_time(path):
 		_load_from_disk()
 
 		if is_empty():
-			_delete()
+			Data.unload(self)
 
 
 func as_string() -> String:
