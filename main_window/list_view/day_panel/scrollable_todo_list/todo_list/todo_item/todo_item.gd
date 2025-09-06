@@ -493,8 +493,9 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 					get_item_list().add_todo_below(self)
 			else:
 				if not has_sub_items():
-					if new_text.ends_with(":") and not old_text.ends_with(":"):
-						get_item_list().add_sub_item(self)
+					if new_text.ends_with(":") and \
+						(not old_text.ends_with(":") or not has_sub_items()):
+							get_item_list().add_sub_item(self)
 				%Edit.release_focus()
 	else:
 		delete()
