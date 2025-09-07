@@ -300,14 +300,16 @@ var bookmarks_due_today := 0:
 
 @export var ui_scale_factor := 1.0:
 	set(value):
-		if ui_scale_factor == value:
-			return
-
-		ui_scale_factor = clampf(
+		value = clampf(
 			snappedf(value, 0.01),
 			MIN_UI_SCALE_FACTOR,
 			MAX_UI_SCALE_FACTOR
 		)
+
+		if ui_scale_factor == value:
+			return
+
+		ui_scale_factor = value
 		_start_debounce_timer()
 
 		if not is_node_ready():

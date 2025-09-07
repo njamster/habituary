@@ -17,6 +17,17 @@ func _set_initial_state() -> void:
 	%GlobalSearchResults.hide()
 
 
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("zoom_in"):
+		Settings.ui_scale_factor += 0.1
+	elif event.is_action_pressed("zoom_out"):
+		Settings.ui_scale_factor -= 0.1
+	elif event.is_action_pressed("reset_zoom"):
+		Settings.ui_scale_factor = 1.0
+	elif event.is_action_pressed("toggle_fullscreen"):
+		Settings.is_fullscreen = not Settings.is_fullscreen
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
 		var focus_owner = get_viewport().gui_get_focus_owner()
@@ -38,5 +49,3 @@ func _unhandled_input(event: InputEvent) -> void:
 			# clear the cached values
 			Settings.previous_day = null
 			Settings.previous_view_mode = null
-	elif event.is_action_pressed("toggle_fullscreen"):
-		Settings.is_fullscreen = not Settings.is_fullscreen
