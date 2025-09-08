@@ -35,6 +35,7 @@ theme_type_variation = &"TinySeparation"
 unique_name_in_owner = true
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
+size_flags_vertical = 0
 mouse_default_cursor_shape = 8
 texture = ExtResource("2_lials")
 expand_mode = 5
@@ -43,6 +44,8 @@ stretch_mode = 5
 [node name="Text" type="RichTextLabel" parent="HBox"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
 focus_mode = 2
 mouse_filter = 1
 mouse_default_cursor_shape = 1
@@ -50,16 +53,19 @@ theme_override_colors/selection_color = Color(0.505882, 0.631373, 0.756863, 1)
 theme_override_styles/focus = SubResource("StyleBoxEmpty_aiq75")
 text = "To-Do Text"
 fit_content = true
-autowrap_mode = 0
+horizontal_alignment = 3
 vertical_alignment = 1
+justification_flags = 35
 selection_enabled = true
 drag_and_drop_selection_enabled = false
 
 [node name="ExtraPadding" type="MarginContainer" parent="HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(15, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 4
-theme_override_constants/margin_top = 10
+size_flags_vertical = 0
+theme_override_constants/margin_top = 16
 
 [node name="ConnectorLine" type="TextureRect" parent="HBox/ExtraPadding"]
 self_modulate = Color(0.505882, 0.631373, 0.756863, 1)
@@ -71,10 +77,10 @@ stretch_mode = 1
 
 [node name="JumpTo" type="Button" parent="HBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(28, 28)
+custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 8
+size_flags_vertical = 0
 mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
