@@ -5,6 +5,22 @@ const MIN_INT := -2**63
 const MAX_INT :=  2**63 - 1
 
 
+func _notification(what):
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		check_for_orphan_nodes()
+
+
+func check_for_orphan_nodes() -> void:
+	var orphan_count := Performance.get_monitor(
+		Performance.OBJECT_ORPHAN_NODE_COUNT
+	)
+	if orphan_count:
+		print_rich(
+			"[color=red]%d orphan nodes at exit![/color]" % orphan_count
+		)
+		print_orphan_nodes()
+
+
 func get_exported_properties(node: Node) -> Dictionary:
 	var exported_properties := {}
 
@@ -82,14 +98,3 @@ func strip_tags(line: String) -> String:
 func is_mouse_cursor_above(node: Node) -> bool:
 	var mousePos = get_viewport().get_mouse_position()
 	return node.get_global_rect().has_point(mousePos)
-
-
-func _notification(what):
-	if what == NOTIFICATION_WM_CLOSE_REQUEST:
-		var orphan_count := Performance.get_monitor(
-			Performance.OBJECT_ORPHAN_NODE_COUNT
-		)
-		if orphan_count:
-			print_rich(
-				"[color=red]%d orphan nodes at exit![/color]" % orphan_count
-			)

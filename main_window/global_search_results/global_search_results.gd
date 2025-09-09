@@ -64,6 +64,8 @@ func search() -> void:
 
 		if search_result_group.contains_results():
 			$%SearchResults.add_child(search_result_group)
+		else:
+			search_result_group.queue_free()
 
 	# If there were no matching items, show the NoHitMessage instead.
 	$NoHitMessage.visible = (%SearchResults.get_child_count() == 0)
