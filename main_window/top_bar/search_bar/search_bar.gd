@@ -51,7 +51,10 @@ func _connect_signals() -> void:
 		EventBus.global_search_requested.emit
 	)
 
-	%CloseButton.pressed.connect(clear_search_query)
+	%CloseButton.pressed.connect(func():
+		clear_search_query()
+		accept_event()
+	)
 	#endregion
 
 
@@ -84,8 +87,7 @@ func _on_search_query_focus_exited() -> void:
 	else:
 		theme_type_variation = "SearchBar"
 	%GlobalSearchHint.hide()
-	%CloseButton.hide()
-	%ShortcutHint.show()
+	%ShortcutHint.visible = ($%SearchQuery.text == "")
 
 
 func _on_search_query_text_changed() -> void:
