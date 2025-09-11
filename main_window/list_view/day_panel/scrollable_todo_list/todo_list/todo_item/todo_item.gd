@@ -886,7 +886,16 @@ func _on_edit_gui_input(event: InputEvent) -> void:
 				accept_event()
 
 	if event.is_action_pressed("ui_text_backspace") and %Edit.text == "":
-		get_item_list().unindent_todo(self)
+		if get_item_list().indentation_level == 0:
+			var predecessor = get_item_list().get_predecessor_todo(self)
+			if predecessor:
+				predecessor.set_meta(
+					"caret_position",
+					predecessor.get_node("%Edit").text.length()
+				)
+				predecessor.edit()
+		else:
+			get_item_list().unindent_todo(self)
 
 	if event.is_action_pressed("ui_cancel"):
 		%Edit.release_focus()
