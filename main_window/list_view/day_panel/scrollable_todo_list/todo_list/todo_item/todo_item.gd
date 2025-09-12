@@ -287,6 +287,18 @@ func _connect_signals() -> void:
 	%SubItems.child_exiting_tree.connect(_on_sub_item_removed)
 
 	$UnfoldTimer.timeout.connect(func(): is_folded = false)
+
+	item_rect_changed.connect(func():
+		if Utils.is_mouse_cursor_above(%CheckBox):
+			_on_check_box_mouse_entered()
+		else:
+			_on_check_box_mouse_exited()
+
+		if Utils.is_mouse_cursor_above(self):
+			_on_mouse_entered()
+		else:
+			_on_mouse_exited()
+	)
 	#endregion
 
 
