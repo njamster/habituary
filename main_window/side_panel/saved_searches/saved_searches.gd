@@ -49,7 +49,9 @@ func _load_from_disk() -> void:
 			else:
 				new_item.text = raw_line
 			new_item.save_requested.connect(func():
-				print("[DEBUG] Saved Search Save Requested: (Re)Starting DebounceTimer...")
+				Log.debug(
+					"Saved Search Save Requested: (Re)Starting DebounceTimer..."
+				)
 				$DebounceTimer.start()
 			)
 			new_item.resort_requested.connect(_resort_list)
@@ -103,7 +105,7 @@ func save_to_disk() -> void:
 		else:
 			content += "%s\n" % item.text
 
-	print("[DEBUG] Saved Searches Saved To Disk!")
+	Log.debug("Saved Searches Saved To Disk!")
 
 	Cache.update_content("saved_searches", content, false)
 

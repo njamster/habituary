@@ -27,6 +27,7 @@ Settings="*res://autoloads/settings.gd"
 EventBus="*res://autoloads/event_bus.gd"
 Utils="*res://autoloads/utils.gd"
 Overlay="*res://autoloads/overlay/overlay.tscn"
+Log="*res://addons/log/log.gd"
 
 [display]
 
@@ -35,7 +36,7 @@ window/size/viewport_height=1080
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/automatic_versioning/plugin.cfg")
+enabled=PackedStringArray("res://addons/automatic_versioning/plugin.cfg", "res://addons/log/plugin.cfg")
 
 [filesystem]
 

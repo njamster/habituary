@@ -15,9 +15,7 @@ func check_for_orphan_nodes() -> void:
 		Performance.OBJECT_ORPHAN_NODE_COUNT
 	)
 	if orphan_count:
-		print_rich(
-			"[color=red]%d orphan nodes at exit![/color]" % orphan_count
-		)
+		Log.warning("%d orphan nodes at exit!" % orphan_count)
 		print_orphan_nodes()
 
 

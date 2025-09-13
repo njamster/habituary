@@ -35,7 +35,7 @@ func _connect_signals() -> void:
 	#region Global Signals
 	EventBus.instant_save_requested.connect(func(date):
 		if cache_key == date:
-			print("[DEBUG] Instant save request for %s received." % cache_key)
+			Log.debug("Instant save request for %s received." % cache_key)
 			save_to_disk()
 	)
 	EventBus.global_search_requested.connect(save_to_disk)
@@ -64,7 +64,7 @@ func _connect_signals() -> void:
 
 	$DebounceTimer.timeout.connect(func():
 		if OS.is_debug_build():
-			print("[DEBUG] DebounceTimer Timed Out: Saving List...")
+			Log.debug("DebounceTimer Timed Out: Saving List...")
 			save_to_disk()
 	)
 
@@ -74,7 +74,10 @@ func _connect_signals() -> void:
 
 func _start_debounce_timer(reason := "Unknown"):
 	if OS.is_debug_build():
-		print("[DEBUG] List Save Requested: (Re)Starting DebounceTimer... (Reason: %s)" % reason)
+		Log.debug(
+			"List Save Requested: (Re)Starting DebounceTimer... (Reason: %s)" %
+			reason
+		)
 	pending_save = true
 	# If the DebounceTimer at this point is not inside the tree anymore, then this list is about to
 	# exit the tree and starting this timer wouldn't work, as it's no longer part of the scene tree.
@@ -105,7 +108,7 @@ func save_to_disk() -> void:
 	if OS.is_debug_build():
 		# NOTE: This will *not* be printed when this function is called after `tree_exited` was
 		# emitted. See: https://github.com/godotengine/godot/issues/90667
-		print("[DEBUG] List Saved to Disk!")
+		Log.debug("List Saved to Disk!")
 
 
 func load_from_cache(key : String) -> void:

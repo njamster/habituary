@@ -433,7 +433,7 @@ func _set_initial_state() -> void:
 func _connect_signals() -> void:
 	$DebounceTimer.timeout.connect(func():
 		if OS.is_debug_build():
-			print("[DEBUG] DebounceTimer Timed Out: Saving Settings...")
+			Log.debug("DebounceTimer Timed Out: Saving Settings...")
 		save_to_disk()
 	)
 
@@ -441,7 +441,7 @@ func _connect_signals() -> void:
 func _start_debounce_timer() -> void:
 	if is_node_ready():
 		if OS.is_debug_build():
-			print("[DEBUG] Settings Save Requested: (Re)Starting DebounceTimer...")
+			Log.debug("Settings Save Requested: (Re)Starting DebounceTimer...")
 		$DebounceTimer.start()
 
 
@@ -463,7 +463,7 @@ func save_to_disk() -> void:
 	config.save(settings_path)
 
 	if OS.is_debug_build():
-		print("[DEBUG] Settings Saved to Disk!")
+		Log.debug("Settings Saved to Disk!")
 
 
 func load_from_disk() -> void:
@@ -476,4 +476,4 @@ func load_from_disk() -> void:
 				set(property, config.get_value(group, property, get(property)))
 
 	if OS.is_debug_build():
-		print("[DEBUG] Settings Restored From Disk!")
+		Log.debug("Settings Restored From Disk!")
