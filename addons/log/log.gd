@@ -9,6 +9,10 @@ enum Level {
 }
 
 
+const MICROSECONDS_PER_HOUR := 3_600_000_000
+const MICROSECONDS_PER_MINUTE := 60_000_000
+const MICROSECONDS_PER_SECOND := 1_000_000
+
 const _colors := {
 	Level.DEBUG: "",
 	Level.INFO: "",
@@ -35,12 +39,22 @@ func _log(level, message) -> void:
 
 
 func get_current_timestamp() -> String:
-	var microseconds_since_startup := Time.get_ticks_usec()
+	var microseconds_since_boot := Time.get_ticks_usec()
+
+	var hours = microseconds_since_boot / MICROSECONDS_PER_HOUR
+	var remaining_microseconds = microseconds_since_boot % MICROSECONDS_PER_HOUR
+
+	var minutes = remaining_microseconds / MICROSECONDS_PER_MINUTE
+	remaining_microseconds = remaining_microseconds % MICROSECONDS_PER_MINUTE
+
+	var seconds = remaining_microseconds / MICROSECONDS_PER_SECOND
+	remaining_microseconds = remaining_microseconds % MICROSECONDS_PER_SECOND
+
 	return "%02d:%02d:%02d.%-6d" % [
-		microseconds_since_startup / 3_600_000_000,  # hours
-		microseconds_since_startup / 60_000_000,  # minutes
-		microseconds_since_startup / 1_000_000,  # seconds
-		microseconds_since_startup % 1_000_000  # microseconds
+		hours,
+		minutes,
+		seconds,
+		remaining_microseconds
 	]
 
 
