@@ -129,17 +129,20 @@ func _on_today_position_item_selected(index: int) -> void:
 
 	match index:
 		Settings.TodayPosition.LEFTMOST:
-			%TodayPosition/Explanation.text = \
-				"[fill]After changing dates, the currently selected day will" \
-				+ " be displayed at the leftmost position.[/fill]"
+			%TodayPosition/Explanation.text = (
+				"After changing dates, the currently selected day will be"
+				+ " displayed at the leftmost position."
+			)
 		Settings.TodayPosition.SECOND_PLACE:
-			%TodayPosition/Explanation.text = \
-				"[fill]After changing dates, the currently selected day will" \
-				+ " be displayed at the second position.[/fill]"
+			%TodayPosition/Explanation.text = (
+				"After changing dates, the currently selected day will be"
+				+ " displayed at the second position."
+			)
 		Settings.TodayPosition.CENTERED:
-			%TodayPosition/Explanation.text = \
-				"[fill]After changing dates, the currently selected day will" \
-				+ " be displayed at the center position.[/fill]"
+			%TodayPosition/Explanation.text = (
+				"After changing dates, the currently selected day will be"
+				+ " displayed at the center position."
+			)
 		_:
 			%TodayPosition/Explanation.text = ""
 
@@ -148,25 +151,30 @@ func _on_first_weekday_toggled(toggled_on: bool) -> void:
 	Settings.start_week_on_monday = toggled_on
 
 	if toggled_on:
-		%FirstWeekday/Explanation.text = "[fill]New weeks in the calendar" \
-		+ " widget start on Mondays.[/fill]"
+		%FirstWeekday/Explanation.text = (
+			"New weeks in the calendar widget start on Mondays."
+		)
 	else:
-		%FirstWeekday/Explanation.text = "[fill]New weeks in the calendar" \
-		+ " widget start on Sundays.[/fill]"
+		%FirstWeekday/Explanation.text = (
+			"New weeks in the calendar widget start on Sundays."
+		)
 
 
 func _on_outside_month_dates_toggled(toggled_on: bool) -> void:
 	Settings.show_outside_month_dates = toggled_on
 
 	if toggled_on:
-		%OutsideMonthDates/Explanation.text = "[fill]If the current month" \
-		+ " doesn't start with the first or ends with the last day of the" \
-		+ " week, those gaps in the calendar widget will be filled up with" \
-		+ " dates from the previous or next month.[/fill]"
+		%OutsideMonthDates/Explanation.text = (
+			"If the current month doesn't start with the first or ends with the"
+			+ " last day of the week, those gaps in the calendar widget will be"
+			+ " filled up with dates from the previous or next month."
+		)
 	else:
-		%OutsideMonthDates/Explanation.text = "[fill]If the current month" \
-		+ " doesn't start with the first or ends with the last day of the" \
-		+ "week, those gaps in the calendar widget will be left empty.[/fill]"
+		%OutsideMonthDates/Explanation.text = (
+			"If the current month doesn't start with the first or ends with the"
+			+ " last day of the week, those gaps in the calendar widget will be"
+			+ " left empty."
+		)
 
 
 func _on_day_start_hours_value_changed(value: float) -> void:
@@ -185,23 +193,27 @@ func _on_hide_ticked_off_todos_options_toggled(toggled_on: bool) -> void:
 	Settings.hide_ticked_off_todos = toggled_on
 
 	if toggled_on:
-		%HideTickedOffTodos/Explanation.text = "[fill]After marking a to-do " \
-		+ "as done or failed, it will slowly fade out and eventually " \
-		+ "disappear (unless it has sub items that are still unticked). " \
-		+ "Toggling the item's checkbox back will stop the process.[/fill]"
+		%HideTickedOffTodos/Explanation.text = (
+			"After marking a to-do as done or failed, it will slowly fade out"
+			+ " and eventually disappear (unless it has sub items that are "
+			+ " still unticked). Toggling the item's checkbox back will stop"
+			+ " the process."
+		)
 		%FadeTickedOffTodos.hide()
 	else:
-		%HideTickedOffTodos/Explanation.text = "[fill]To-Dos marked as done " \
-		+ "or failed won't disappear.[/fill]"
+		%HideTickedOffTodos/Explanation.text = (
+			"To-Dos marked as done or failed won't disappear."
+		)
 		%FadeTickedOffTodos.show()
 
 
 func _on_fade_ticked_off_todos_options_toggled(toggled_on: bool) -> void:
 	Settings.fade_ticked_off_todos = toggled_on
 
-	var explanation_text := "[fill]To-Dos that have been marked as done or " \
-	+ "failed {0} appear dimmed. (Only available while \"Hide Ticked Off " \
-	+ "To-Dos\" is disabled)[/fill]"
+	var explanation_text := (
+		"To-Dos that have been marked as done or failed {0} appear dimmed."
+		+ " (Only available while \"Hide Ticked Off To-Dos\" is disabled)"
+	)
 	if toggled_on:
 		%FadeTickedOffTodos/Explanation.text = explanation_text.format([
 			"will",
@@ -217,8 +229,10 @@ func _on_fade_non_today_dates_options_item_selected(index: int) -> void:
 		Settings.FadeNonTodayDates.keys()[index]
 	]
 
-	var explanation_text := "[fill]List view columns that correspond to a " \
-	+ "date in the {0} {1} appear dimmed.[/fill]"
+	var explanation_text := (
+		"List view columns that correspond to a date in the {0} {1} appear"
+		+ " dimmed."
+	)
 	match index:
 		Settings.FadeNonTodayDates.NONE:
 			%FadeNonTodayDates/Explanation.text = explanation_text.format([
@@ -249,9 +263,10 @@ func _on_show_sub_item_count_options_item_selected(index: int) -> void:
 		Settings.ShowSubItemCount.keys()[index]
 	]
 
-	var explanation_text := "[fill]To-Dos with (indented) sub items will {0}" \
-	+ "display the amount of their completed and total sub items in brackets" \
-	+ " to the right{1}.[/fill]"
+	var explanation_text := (
+		"To-Dos with (indented) sub items will {0} display the amount of their"
+		+ " completed and total sub items in brackets to the right{1}."
+	)
 	match index:
 		Settings.ShowSubItemCount.ALWAYS:
 			%ShowSubItemCount/Explanation.text = explanation_text.format([
@@ -288,10 +303,12 @@ func _on_use_relative_dates_options_toggled(toggled_on: bool) -> void:
 	Settings.use_relative_saved_search_dates = toggled_on
 
 	if toggled_on:
-		%UseRelativeDates/Explanation.text = ("[fill]The \"Latest Match\" for "
-		+ "a saved search will be shown relative to today, e.g. \"6 days ago"
-		+ "\".[/fill]")
+		%UseRelativeDates/Explanation.text = (
+			"The \"Latest Match\" for a saved search will be shown relative to"
+			+ " today, e.g. \"6 days ago\"."
+		)
 	else:
-		%UseRelativeDates/Explanation.text = ("[fill]The \"Latest Match\" for "
-		+ "a saved search will be shown as an absolute date, e.g. \"%s\"."
-		+ "[/fill]") % DayTimer.today.add_days(-6).format("MMM DD, YYYY")
+		%UseRelativeDates/Explanation.text = (
+			"The \"Latest Match\" for a saved search will be shown as an"
+			+ " absolute date, e.g. \"%s\"."
+		) % DayTimer.today.add_days(-6).format("MMM DD, YYYY")

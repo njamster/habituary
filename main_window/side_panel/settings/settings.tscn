@@ -81,8 +81,9 @@ layout_mode = 2
 theme_type_variation = &"Explanation"
 theme_override_fonts/bold_font = ExtResource("7_phjvb")
 bbcode_enabled = true
-text = "[fill]The location on your device in which Habituary will store your to-dos. [b]It is highly recommended you keep regular backups of this directory to prevent data loss in case of errors![/b][/fill]"
+text = "The location on your device in which Habituary will store your to-dos. [b]It is highly recommended you keep regular backups of this directory to prevent data loss in case of errors![/b]"
 fit_content = true
+horizontal_alignment = 3
 
 [node name="UIScale" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content" index="1"]
 unique_name_in_owner = true
@@ -111,8 +112,9 @@ layout_mode = 2
 theme_type_variation = &"Explanation"
 theme_override_fonts/bold_italics_font = ExtResource("7_fjnu2")
 bbcode_enabled = true
-text = "[fill]All interface elements of this app will be scaled by this factor. If you use a HiDPI display, and Habituary appears too small, try a higher value.[/fill]"
+text = "All interface elements of this app will be scaled by this factor. If you use a HiDPI display, and Habituary appears too small, try a higher value."
 fit_content = true
+horizontal_alignment = 3
 
 [node name="DayStart" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content" index="2"]
 unique_name_in_owner = true
@@ -153,8 +155,9 @@ modulate = Color(1, 1, 1, 0.607843)
 layout_mode = 2
 theme_type_variation = &"Explanation"
 bbcode_enabled = true
-text = "[fill]After reaching this time of the day, Habituary will automatically move the list view one day forward.[/fill]"
+text = "After reaching this time of the day, Habituary will automatically move the list view one day forward."
 fit_content = true
+horizontal_alignment = 3
 
 [node name="EnableCaptureReviews" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content" index="3"]
 unique_name_in_owner = true
@@ -182,8 +185,9 @@ layout_mode = 2
 theme_type_variation = &"Explanation"
 theme_override_fonts/bold_italics_font = ExtResource("7_fjnu2")
 bbcode_enabled = true
-text = "[fill]If enabled, Habituary will prompt you on startup to review the to-dos from your capture list.[fill]"
+text = "If enabled, Habituary will prompt you on startup to review the to-dos from your capture list."
 fit_content = true
+horizontal_alignment = 3
 
 [node name="ListView" parent="ScrollContainer/PaddedScrollbar/VBox" instance=ExtResource("3_jtwi2")]
 layout_mode = 2
@@ -215,6 +219,7 @@ layout_mode = 2
 theme_type_variation = &"Explanation"
 bbcode_enabled = true
 fit_content = true
+horizontal_alignment = 3
 
 [node name="FadeNonTodayDates" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ListView/Content" index="1"]
 unique_name_in_owner = true
@@ -240,6 +245,7 @@ theme_type_variation = &"Explanation"
 theme_override_fonts/bold_italics_font = ExtResource("7_fjnu2")
 bbcode_enabled = true
 fit_content = true
+horizontal_alignment = 3
 
 [node name="ToDos" parent="ScrollContainer/PaddedScrollbar/VBox" instance=ExtResource("3_jtwi2")]
 layout_mode = 2
@@ -275,6 +281,7 @@ theme_type_variation = &"Explanation"
 theme_override_fonts/bold_italics_font = ExtResource("7_fjnu2")
 bbcode_enabled = true
 fit_content = true
+horizontal_alignment = 3
 
 [node name="FadeTickedOffTodos" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content" index="1"]
 unique_name_in_owner = true
@@ -302,6 +309,7 @@ layout_mode = 2
 theme_type_variation = &"Explanation"
 bbcode_enabled = true
 fit_content = true
+horizontal_alignment = 3
 
 [node name="ToDoColors" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content" index="2"]
 unique_name_in_owner = true
@@ -474,8 +482,9 @@ layout_mode = 2
 theme_type_variation = &"Explanation"
 theme_override_fonts/bold_italics_font = ExtResource("7_fjnu2")
 bbcode_enabled = true
-text = "[fill]The set of colors that can be assigned to a to-do's text in the formatting options while editing it. Changing this [u]will[/u] affect existing colored to-dos![/fill]"
+text = "The set of colors that can be assigned to a to-do's text in the formatting options while editing it. Changing this [u]will[/u] affect existing colored to-dos!"
 fit_content = true
+horizontal_alignment = 3
 
 [node name="ShowSubItemCount" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content" index="3"]
 unique_name_in_owner = true
@@ -500,6 +509,7 @@ layout_mode = 2
 theme_type_variation = &"Explanation"
 bbcode_enabled = true
 fit_content = true
+horizontal_alignment = 3
 
 [node name="Calendar" parent="ScrollContainer/PaddedScrollbar/VBox" instance=ExtResource("3_jtwi2")]
 layout_mode = 2
@@ -535,6 +545,7 @@ layout_mode = 2
 theme_type_variation = &"Explanation"
 bbcode_enabled = true
 fit_content = true
+horizontal_alignment = 3
 
 [node name="OutsideMonthDates" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/Calendar/Content" index="1"]
 unique_name_in_owner = true
@@ -562,6 +573,7 @@ layout_mode = 2
 theme_type_variation = &"Explanation"
 bbcode_enabled = true
 fit_content = true
+horizontal_alignment = 3
 
 [node name="SavedSearches" parent="ScrollContainer/PaddedScrollbar/VBox" instance=ExtResource("3_jtwi2")]
 layout_mode = 2
@@ -598,8 +610,9 @@ layout_mode = 2
 theme_type_variation = &"Explanation"
 theme_override_fonts/bold_italics_font = ExtResource("7_fjnu2")
 bbcode_enabled = true
-text = "[fill]If enabled, Habituary will prompt you on startup to review the to-dos from your capture list.[fill]"
+text = "If enabled, Habituary will prompt you on startup to review the to-dos from your capture list."
 fit_content = true
+horizontal_alignment = 3
 
 [editable path="ScrollContainer/PaddedScrollbar/VBox/General"]
 [editable path="ScrollContainer/PaddedScrollbar/VBox/ListView"]
