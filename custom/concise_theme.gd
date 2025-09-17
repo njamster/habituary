@@ -44,6 +44,10 @@ const DISTINCT_FLAT_PROPERTIES := [
 ]
 
 
+# NOTE: When running the project from the editor, this will produce 8 errors of
+# "@implicit_new(): Parameter "SceneTree::get_singleton()" is null". It doesn't
+# seem to affect the result and won't happen in exported builds, though.
+# See: https://github.com/godotengine/godot/issues/110548
 @export var background_color: Color:
 	set(value):
 		background_color = value
