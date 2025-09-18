@@ -16,14 +16,18 @@ func _init(p_indentation_level := 0) -> void:
 
 func add(to_do: ToDoData) -> void:
 	to_dos.append(to_do)
-	to_do.parent_list = self
+	to_do.indentation_level = indentation_level
+	to_do.indent_requested.connect(indent.bind(to_do))
+	to_do.delete_requested.connect(remove.bind(to_do))
 	to_do.changed.connect(changed.emit)
 	changed.emit()
 
 
 func remove(to_do: ToDoData) -> void:
 	to_dos.erase(to_do)
-	to_do.parent_list = null
+	to_do.indentation_level = -1
+	to_do.indent_requested.disconnect(indent)
+	to_do.delete_requested.disconnect(remove)
 	to_do.changed.disconnect(changed.emit)
 	changed.emit()
 

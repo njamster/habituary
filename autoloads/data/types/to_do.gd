@@ -2,6 +2,9 @@ extends RefCounted
 class_name ToDoData
 
 
+signal indent_requested
+signal delete_requested
+
 signal changed
 
 
@@ -54,15 +57,15 @@ var text_color_id: int:
 			text_color_id = value
 			changed.emit()
 
-
-var parent_list: ToDoListData
 var sub_items: ToDoListData
+
+var indentation_level := -1
 
 
 func load_from_string(raw_string: String) -> void:
 	while raw_string.begins_with("    "):
 		raw_string = raw_string.right(-4)
-		parent_list.indent(self)
+		indent_requested.emit()
 
 	if raw_string.begins_with("[ ] "):
 		raw_string = raw_string.right(-4)
@@ -122,15 +125,15 @@ func load_from_string(raw_string: String) -> void:
 	text = raw_string
 
 	if text.is_empty():
-		parent_list.remove(self)
+		delete_requested.emit()
 	else:
-		sub_items = ToDoListData.new(parent_list.indentation_level + 1)
+		sub_items = ToDoListData.new(indentation_level + 1)
 
 
 func as_string() -> String:
 	var result := ""
 
-	for i in parent_list.indentation_level:
+	for i in indentation_level:
 		result += "    "
 
 	if self.state == States.DONE:
