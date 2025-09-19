@@ -29,6 +29,10 @@ Utils="*res://autoloads/utils.gd"
 Overlay="*res://autoloads/overlay/overlay.tscn"
 Log="*res://addons/log/log.gd"
 
+[debug]
+
+settings/gdscript/always_track_call_stacks=true
+
 [display]
 
 window/size/viewport_width=1920
