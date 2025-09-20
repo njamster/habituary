@@ -42,14 +42,21 @@ func _log(level, message) -> void:
 		if source not in allowed_sources:
 			return  # early
 
-	print_rich(
-		"[color={color}]{time} [b][{level}][/b]: {message}[/color]".format({
-			"color": _colors[level],
-			"time": get_current_timestamp(),
-			"level": Level.keys()[level],
-			"message": message
-		})
-	)
+	var log_message := "{time} [b][{level}][/b]: {message}".format({
+		"time": get_current_timestamp(),
+		"level": Level.keys()[level],
+		"message": message
+	})
+
+	if _colors[level]:
+		print_rich(
+			"[color={color}]{message}[/color]".format({
+				"color": _colors[level],
+				"message": log_message
+			})
+		)
+	else:
+		print_rich(log_message)
 
 
 func get_current_timestamp() -> String:
