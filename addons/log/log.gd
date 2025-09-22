@@ -24,7 +24,9 @@ const _colors := {
 var mute_everything_below := Level.DEBUG
 
 var allowed_sources := [
-	# A source is described by a "<filepath>:<function_name>"-string, e.g.:
+	# A source is described by a file path and optionally, separated by a colon,
+	# the name of a function from that file to limit the scope even further:
+	# "res://autoloads/settings.gd"
 	# "res://autoloads/settings.gd:_ready"
 ]
 
@@ -35,11 +37,9 @@ func _log(level, message) -> void:
 
 	if allowed_sources:
 		var backtrace := Engine.capture_script_backtraces()[0]
-		var source := "%s:%s" % [
-			backtrace.get_frame_file(2),
-			backtrace.get_frame_function(2)
-		]
-		if source not in allowed_sources:
+		var file := backtrace.get_frame_file(2)
+		var function := "%s:%s" % [file, backtrace.get_frame_function(2)]
+		if not (file in allowed_sources or function in allowed_sources):
 			return  # early
 
 	var log_message := "{time} [b][{level}][/b]: {message}".format({
