@@ -1,11 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://cid0gwgt0yh1p"]
+[gd_scene load_steps=9 format=3 uid="uid://cid0gwgt0yh1p"]
 
 [ext_resource type="Script" uid="uid://0w8cro1mphn2" path="res://main_window/side_panel/settings/settings.gd" id="1_xu2b7"]
 [ext_resource type="Script" uid="uid://6f4n5n4dfbfm" path="res://custom/padded_scrollbar.gd" id="2_r5ote"]
-[ext_resource type="PackedScene" uid="uid://dyuqr0r0y8hub" path="res://main_window/side_panel/settings/collapsible_category/collapsible_category.tscn" id="3_jtwi2"]
 [ext_resource type="Script" uid="uid://bqai4pv020yjf" path="res://custom/tooltip.gd" id="4_70x8g"]
 [ext_resource type="Texture2D" uid="uid://c4185sydmovdc" path="res://main_window/side_panel/settings/images/open.svg" id="4_bf631"]
-[ext_resource type="Texture2D" uid="uid://bb0r26k1ynt7j" path="res://main_window/side_panel/settings/collapsible_category/images/folded.svg" id="4_p036x"]
 [ext_resource type="Script" uid="uid://dmval2atd2at7" path="res://custom/formatted_spin_box.gd" id="5_px7qq"]
 [ext_resource type="Texture2D" uid="uid://cgn2tyjgkapl2" path="res://main_window/side_panel/settings/images/reset.svg" id="7_amjql"]
 [ext_resource type="FontFile" uid="uid://c7b83cfl74of8" path="res://theme/fonts/OpenSans-ExtraBoldItalic.ttf" id="7_fjnu2"]
@@ -35,27 +33,30 @@ layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("2_r5ote")
 
-[node name="VBox" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar"]
+[node name="Categories" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MediumSeparation"
 
-[node name="General" parent="ScrollContainer/PaddedScrollbar/VBox" instance=ExtResource("3_jtwi2")]
+[node name="General" type="FoldableContainer" parent="ScrollContainer/PaddedScrollbar/Categories"]
 layout_mode = 2
-theme_type_variation = &"TinySeparation"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+title = "GENERAL"
 
-[node name="Heading" parent="ScrollContainer/PaddedScrollbar/VBox/General" index="0"]
-text = "GENERAL"
-icon = ExtResource("4_p036x")
+[node name="Content" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/General"]
+layout_mode = 2
+theme_type_variation = &"MediumSeparation"
 
-[node name="StorePath" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content" index="0"]
+[node name="StorePath" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/General/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content/StorePath"]
+[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/General/Content/StorePath"]
 layout_mode = 2
 theme_type_variation = &"SmallSeparation"
 
-[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content/StorePath/Setting"]
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/Categories/General/Content/StorePath/Setting"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
@@ -63,19 +64,19 @@ theme_type_variation = &"HeaderSmall"
 text = "Store Path"
 vertical_alignment = 2
 
-[node name="Change" type="Button" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content/StorePath/Setting"]
+[node name="Change" type="Button" parent="ScrollContainer/PaddedScrollbar/Categories/General/Content/StorePath/Setting"]
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_constants/icon_max_width = 20
 icon = ExtResource("4_bf631")
 
-[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content/StorePath/Setting/Change"]
+[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/Categories/General/Content/StorePath/Setting/Change"]
 script = ExtResource("4_70x8g")
 text = "Open Directory"
 popup_position = 5
 
-[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content/StorePath"]
+[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/Categories/General/Content/StorePath"]
 modulate = Color(1, 1, 1, 0.607843)
 layout_mode = 2
 theme_type_variation = &"Explanation"
@@ -85,28 +86,28 @@ text = "The location on your device in which Habituary will store your to-dos. [
 fit_content = true
 horizontal_alignment = 3
 
-[node name="UIScale" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content" index="1"]
+[node name="UIScale" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/General/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content/UIScale"]
+[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/General/Content/UIScale"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content/UIScale/Setting"]
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/Categories/General/Content/UIScale/Setting"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 theme_type_variation = &"HeaderSmall"
 text = "UI Scale Factor"
 
-[node name="ScaleFactor" type="SpinBox" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content/UIScale/Setting"]
+[node name="ScaleFactor" type="SpinBox" parent="ScrollContainer/PaddedScrollbar/Categories/General/Content/UIScale/Setting"]
 layout_mode = 2
 step = 0.01
 alignment = 1
 script = ExtResource("5_px7qq")
 format_string = "%0.2f"
 
-[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content/UIScale"]
+[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/Categories/General/Content/UIScale"]
 modulate = Color(1, 1, 1, 0.607843)
 layout_mode = 2
 theme_type_variation = &"Explanation"
@@ -116,22 +117,22 @@ text = "All interface elements of this app will be scaled by this factor. If you
 fit_content = true
 horizontal_alignment = 3
 
-[node name="DayStart" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content" index="2"]
+[node name="DayStart" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/General/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content/DayStart"]
+[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/General/Content/DayStart"]
 layout_mode = 2
 theme_type_variation = &"TinySeparation"
 
-[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content/DayStart/Setting"]
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/Categories/General/Content/DayStart/Setting"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 theme_type_variation = &"HeaderSmall"
 text = "Start Day At"
 
-[node name="Hours" type="SpinBox" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content/DayStart/Setting"]
+[node name="Hours" type="SpinBox" parent="ScrollContainer/PaddedScrollbar/Categories/General/Content/DayStart/Setting"]
 layout_mode = 2
 max_value = 23.0
 alignment = 1
@@ -139,18 +140,18 @@ select_all_on_focus = true
 script = ExtResource("5_px7qq")
 format_string = "%02d"
 
-[node name="Colon" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content/DayStart/Setting"]
+[node name="Colon" type="Label" parent="ScrollContainer/PaddedScrollbar/Categories/General/Content/DayStart/Setting"]
 layout_mode = 2
 text = " : "
 
-[node name="Minutes" type="SpinBox" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content/DayStart/Setting"]
+[node name="Minutes" type="SpinBox" parent="ScrollContainer/PaddedScrollbar/Categories/General/Content/DayStart/Setting"]
 layout_mode = 2
 max_value = 59.0
 alignment = 1
 script = ExtResource("5_px7qq")
 format_string = "%02d"
 
-[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content/DayStart"]
+[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/Categories/General/Content/DayStart"]
 modulate = Color(1, 1, 1, 0.607843)
 layout_mode = 2
 theme_type_variation = &"Explanation"
@@ -159,27 +160,27 @@ text = "After reaching this time of the day, Habituary will automatically move t
 fit_content = true
 horizontal_alignment = 3
 
-[node name="EnableCaptureReviews" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content" index="3"]
+[node name="EnableCaptureReviews" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/General/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content/EnableCaptureReviews"]
+[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/General/Content/EnableCaptureReviews"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content/EnableCaptureReviews/Setting"]
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/Categories/General/Content/EnableCaptureReviews/Setting"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 theme_type_variation = &"HeaderSmall"
 text = "Capture Reviews"
 
-[node name="Options" type="CheckButton" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content/EnableCaptureReviews/Setting"]
+[node name="Options" type="CheckButton" parent="ScrollContainer/PaddedScrollbar/Categories/General/Content/EnableCaptureReviews/Setting"]
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 button_pressed = true
 
-[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/VBox/General/Content/EnableCaptureReviews"]
+[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/Categories/General/Content/EnableCaptureReviews"]
 modulate = Color(1, 1, 1, 0.607843)
 layout_mode = 2
 theme_type_variation = &"Explanation"
@@ -189,31 +190,34 @@ text = "If enabled, Habituary will prompt you on startup to review the to-dos fr
 fit_content = true
 horizontal_alignment = 3
 
-[node name="ListView" parent="ScrollContainer/PaddedScrollbar/VBox" instance=ExtResource("3_jtwi2")]
+[node name="ListView" type="FoldableContainer" parent="ScrollContainer/PaddedScrollbar/Categories"]
 layout_mode = 2
-theme_type_variation = &"TinySeparation"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+title = "LIST VIEW"
 
-[node name="Heading" parent="ScrollContainer/PaddedScrollbar/VBox/ListView" index="0"]
-text = "LIST VIEW"
+[node name="Content" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/ListView"]
+layout_mode = 2
+theme_type_variation = &"MediumSeparation"
 
-[node name="TodayPosition" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ListView/Content" index="0"]
+[node name="TodayPosition" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/ListView/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ListView/Content/TodayPosition"]
+[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/ListView/Content/TodayPosition"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/ListView/Content/TodayPosition/Setting"]
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/Categories/ListView/Content/TodayPosition/Setting"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 theme_type_variation = &"HeaderSmall"
 text = "Current Day Position"
 
-[node name="Options" type="OptionButton" parent="ScrollContainer/PaddedScrollbar/VBox/ListView/Content/TodayPosition/Setting"]
+[node name="Options" type="OptionButton" parent="ScrollContainer/PaddedScrollbar/Categories/ListView/Content/TodayPosition/Setting"]
 layout_mode = 2
 
-[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/VBox/ListView/Content/TodayPosition"]
+[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/Categories/ListView/Content/TodayPosition"]
 modulate = Color(1, 1, 1, 0.607843)
 layout_mode = 2
 theme_type_variation = &"Explanation"
@@ -221,24 +225,24 @@ bbcode_enabled = true
 fit_content = true
 horizontal_alignment = 3
 
-[node name="FadeNonTodayDates" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ListView/Content" index="1"]
+[node name="FadeNonTodayDates" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/ListView/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ListView/Content/FadeNonTodayDates"]
+[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/ListView/Content/FadeNonTodayDates"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/ListView/Content/FadeNonTodayDates/Setting"]
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/Categories/ListView/Content/FadeNonTodayDates/Setting"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 theme_type_variation = &"HeaderSmall"
 text = "Fade Non-Today Dates"
 
-[node name="Options" type="OptionButton" parent="ScrollContainer/PaddedScrollbar/VBox/ListView/Content/FadeNonTodayDates/Setting"]
+[node name="Options" type="OptionButton" parent="ScrollContainer/PaddedScrollbar/Categories/ListView/Content/FadeNonTodayDates/Setting"]
 layout_mode = 2
 
-[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/VBox/ListView/Content/FadeNonTodayDates"]
+[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/Categories/ListView/Content/FadeNonTodayDates"]
 modulate = Color(1, 1, 1, 0.607843)
 layout_mode = 2
 theme_type_variation = &"Explanation"
@@ -247,34 +251,37 @@ bbcode_enabled = true
 fit_content = true
 horizontal_alignment = 3
 
-[node name="ToDos" parent="ScrollContainer/PaddedScrollbar/VBox" instance=ExtResource("3_jtwi2")]
+[node name="ToDos" type="FoldableContainer" parent="ScrollContainer/PaddedScrollbar/Categories"]
 layout_mode = 2
-theme_type_variation = &"TinySeparation"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+title = "TO-DOS"
 
-[node name="Heading" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos" index="0"]
-text = "TO-DOS"
+[node name="Content" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos"]
+layout_mode = 2
+theme_type_variation = &"MediumSeparation"
 
-[node name="HideTickedOffTodos" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content" index="0"]
+[node name="HideTickedOffTodos" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/HideTickedOffTodos"]
+[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/HideTickedOffTodos"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/HideTickedOffTodos/Setting"]
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/HideTickedOffTodos/Setting"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 theme_type_variation = &"HeaderSmall"
 text = "Hide Ticked Off To-Dos"
 
-[node name="Options" type="CheckButton" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/HideTickedOffTodos/Setting"]
+[node name="Options" type="CheckButton" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/HideTickedOffTodos/Setting"]
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 button_pressed = true
 
-[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/HideTickedOffTodos"]
+[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/HideTickedOffTodos"]
 modulate = Color(1, 1, 1, 0.607843)
 layout_mode = 2
 theme_type_variation = &"Explanation"
@@ -283,27 +290,27 @@ bbcode_enabled = true
 fit_content = true
 horizontal_alignment = 3
 
-[node name="FadeTickedOffTodos" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content" index="1"]
+[node name="FadeTickedOffTodos" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/FadeTickedOffTodos"]
+[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/FadeTickedOffTodos"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/FadeTickedOffTodos/Setting"]
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/FadeTickedOffTodos/Setting"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 theme_type_variation = &"HeaderSmall"
 text = "Fade Ticked Off To-Dos"
 
-[node name="Options" type="CheckButton" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/FadeTickedOffTodos/Setting"]
+[node name="Options" type="CheckButton" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/FadeTickedOffTodos/Setting"]
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 button_pressed = true
 
-[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/FadeTickedOffTodos"]
+[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/FadeTickedOffTodos"]
 modulate = Color(1, 1, 1, 0.607843)
 layout_mode = 2
 theme_type_variation = &"Explanation"
@@ -311,172 +318,172 @@ bbcode_enabled = true
 fit_content = true
 horizontal_alignment = 3
 
-[node name="ToDoColors" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content" index="2"]
+[node name="ToDoColors" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"TinySeparation"
 
-[node name="Color1" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors"]
+[node name="Color1" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors/Color1"]
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color1"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 theme_type_variation = &"HeaderSmall"
 text = "To-Do Color #1"
 
-[node name="Reset" type="Button" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors/Color1"]
+[node name="Reset" type="Button" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color1"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_constants/icon_max_width = 20
 icon = ExtResource("7_amjql")
 
-[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors/Color1/Reset"]
+[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color1/Reset"]
 script = ExtResource("4_70x8g")
 text = "Reset to Default"
 popup_position = 5
 
-[node name="ColorPicker" type="ColorPickerButton" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors/Color1"]
+[node name="ColorPicker" type="ColorPickerButton" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color1"]
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 edit_alpha = false
 
-[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors/Color1/ColorPicker"]
+[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color1/ColorPicker"]
 script = ExtResource("4_70x8g")
 text = "Click to Choose Color"
 popup_position = 5
 
-[node name="Color2" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors"]
+[node name="Color2" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors/Color2"]
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color2"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 theme_type_variation = &"HeaderSmall"
 text = "To-Do Color #2"
 
-[node name="Reset" type="Button" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors/Color2"]
+[node name="Reset" type="Button" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color2"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_constants/icon_max_width = 20
 icon = ExtResource("7_amjql")
 
-[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors/Color2/Reset"]
+[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color2/Reset"]
 script = ExtResource("4_70x8g")
 text = "Reset to Default"
 popup_position = 5
 
-[node name="ColorPicker" type="ColorPickerButton" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors/Color2"]
+[node name="ColorPicker" type="ColorPickerButton" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color2"]
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 edit_alpha = false
 
-[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors/Color2/ColorPicker"]
+[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color2/ColorPicker"]
 script = ExtResource("4_70x8g")
 text = "Click to Choose Color"
 popup_position = 5
 
-[node name="Color3" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors"]
+[node name="Color3" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors/Color3"]
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color3"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 theme_type_variation = &"HeaderSmall"
 text = "To-Do Color #3"
 
-[node name="Reset" type="Button" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors/Color3"]
+[node name="Reset" type="Button" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color3"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_constants/icon_max_width = 20
 icon = ExtResource("7_amjql")
 
-[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors/Color3/Reset"]
+[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color3/Reset"]
 script = ExtResource("4_70x8g")
 text = "Reset to Default"
 popup_position = 5
 
-[node name="ColorPicker" type="ColorPickerButton" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors/Color3"]
+[node name="ColorPicker" type="ColorPickerButton" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color3"]
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 edit_alpha = false
 
-[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors/Color3/ColorPicker"]
+[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color3/ColorPicker"]
 script = ExtResource("4_70x8g")
 text = "Click to Choose Color"
 popup_position = 5
 
-[node name="Color4" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors"]
+[node name="Color4" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors/Color4"]
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color4"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 theme_type_variation = &"HeaderSmall"
 text = "To-Do Color #4"
 
-[node name="Reset" type="Button" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors/Color4"]
+[node name="Reset" type="Button" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color4"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_constants/icon_max_width = 20
 icon = ExtResource("7_amjql")
 
-[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors/Color4/Reset"]
+[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color4/Reset"]
 script = ExtResource("4_70x8g")
 text = "Reset to Default"
 popup_position = 5
 
-[node name="ColorPicker" type="ColorPickerButton" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors/Color4"]
+[node name="ColorPicker" type="ColorPickerButton" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color4"]
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 edit_alpha = false
 
-[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors/Color4/ColorPicker"]
+[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color4/ColorPicker"]
 script = ExtResource("4_70x8g")
 text = "Click to Choose Color"
 popup_position = 5
 
-[node name="Color5" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors"]
+[node name="Color5" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors/Color5"]
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color5"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 theme_type_variation = &"HeaderSmall"
 text = "To-Do Color #5"
 
-[node name="Reset" type="Button" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors/Color5"]
+[node name="Reset" type="Button" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color5"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_constants/icon_max_width = 20
 icon = ExtResource("7_amjql")
 
-[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors/Color5/Reset"]
+[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color5/Reset"]
 script = ExtResource("4_70x8g")
 text = "Reset to Default"
 popup_position = 5
 
-[node name="ColorPicker" type="ColorPickerButton" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors/Color5"]
+[node name="ColorPicker" type="ColorPickerButton" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color5"]
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 edit_alpha = false
 
-[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors/Color5/ColorPicker"]
+[node name="Tooltip" type="Node" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color5/ColorPicker"]
 script = ExtResource("4_70x8g")
 text = "Click to Choose Color"
 popup_position = 5
 
-[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ToDoColors"]
+[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors"]
 modulate = Color(1, 1, 1, 0.607843)
 layout_mode = 2
 theme_type_variation = &"Explanation"
@@ -486,24 +493,24 @@ text = "The set of colors that can be assigned to a to-do's text in the formatti
 fit_content = true
 horizontal_alignment = 3
 
-[node name="ShowSubItemCount" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content" index="3"]
+[node name="ShowSubItemCount" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ShowSubItemCount"]
+[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ShowSubItemCount"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ShowSubItemCount/Setting"]
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ShowSubItemCount/Setting"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 theme_type_variation = &"HeaderSmall"
 text = "Show Sub Item Count"
 
-[node name="Options" type="OptionButton" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ShowSubItemCount/Setting"]
+[node name="Options" type="OptionButton" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ShowSubItemCount/Setting"]
 layout_mode = 2
 
-[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/VBox/ToDos/Content/ShowSubItemCount"]
+[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ShowSubItemCount"]
 modulate = Color(1, 1, 1, 0.607843)
 layout_mode = 2
 theme_type_variation = &"Explanation"
@@ -511,35 +518,37 @@ bbcode_enabled = true
 fit_content = true
 horizontal_alignment = 3
 
-[node name="Calendar" parent="ScrollContainer/PaddedScrollbar/VBox" instance=ExtResource("3_jtwi2")]
+[node name="Calendar" type="FoldableContainer" parent="ScrollContainer/PaddedScrollbar/Categories"]
 layout_mode = 2
-theme_type_variation = &"TinySeparation"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+title = "CALENDAR"
 
-[node name="Heading" parent="ScrollContainer/PaddedScrollbar/VBox/Calendar" index="0"]
-text = "CALENDAR"
-icon = ExtResource("4_p036x")
+[node name="Content" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/Calendar"]
+layout_mode = 2
+theme_type_variation = &"MediumSeparation"
 
-[node name="FirstWeekday" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/Calendar/Content" index="0"]
+[node name="FirstWeekday" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/Calendar/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/Calendar/Content/FirstWeekday"]
+[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/Calendar/Content/FirstWeekday"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/Calendar/Content/FirstWeekday/Setting"]
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/Categories/Calendar/Content/FirstWeekday/Setting"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 theme_type_variation = &"HeaderSmall"
 text = "Start Weeks on Monday"
 
-[node name="Options" type="CheckButton" parent="ScrollContainer/PaddedScrollbar/VBox/Calendar/Content/FirstWeekday/Setting"]
+[node name="Options" type="CheckButton" parent="ScrollContainer/PaddedScrollbar/Categories/Calendar/Content/FirstWeekday/Setting"]
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 button_pressed = true
 
-[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/VBox/Calendar/Content/FirstWeekday"]
+[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/Categories/Calendar/Content/FirstWeekday"]
 modulate = Color(1, 1, 1, 0.607843)
 layout_mode = 2
 theme_type_variation = &"Explanation"
@@ -547,27 +556,27 @@ bbcode_enabled = true
 fit_content = true
 horizontal_alignment = 3
 
-[node name="OutsideMonthDates" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/Calendar/Content" index="1"]
+[node name="OutsideMonthDates" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/Calendar/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/Calendar/Content/OutsideMonthDates"]
+[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/Calendar/Content/OutsideMonthDates"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/Calendar/Content/OutsideMonthDates/Setting"]
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/Categories/Calendar/Content/OutsideMonthDates/Setting"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 theme_type_variation = &"HeaderSmall"
 text = "Show Outside Month Days"
 
-[node name="Options" type="CheckButton" parent="ScrollContainer/PaddedScrollbar/VBox/Calendar/Content/OutsideMonthDates/Setting"]
+[node name="Options" type="CheckButton" parent="ScrollContainer/PaddedScrollbar/Categories/Calendar/Content/OutsideMonthDates/Setting"]
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 button_pressed = true
 
-[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/VBox/Calendar/Content/OutsideMonthDates"]
+[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/Categories/Calendar/Content/OutsideMonthDates"]
 modulate = Color(1, 1, 1, 0.607843)
 layout_mode = 2
 theme_type_variation = &"Explanation"
@@ -575,22 +584,25 @@ bbcode_enabled = true
 fit_content = true
 horizontal_alignment = 3
 
-[node name="SavedSearches" parent="ScrollContainer/PaddedScrollbar/VBox" instance=ExtResource("3_jtwi2")]
+[node name="SavedSearches" type="FoldableContainer" parent="ScrollContainer/PaddedScrollbar/Categories"]
 layout_mode = 2
-theme_type_variation = &"TinySeparation"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+title = "SAVED SEARCHES"
 
-[node name="Heading" parent="ScrollContainer/PaddedScrollbar/VBox/SavedSearches" index="0"]
-text = "SAVED SEARCHES"
+[node name="Content" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/SavedSearches"]
+layout_mode = 2
+theme_type_variation = &"MediumSeparation"
 
-[node name="UseRelativeDates" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/SavedSearches/Content" index="0"]
+[node name="UseRelativeDates" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/SavedSearches/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox/SavedSearches/Content/UseRelativeDates"]
+[node name="Setting" type="HBoxContainer" parent="ScrollContainer/PaddedScrollbar/Categories/SavedSearches/Content/UseRelativeDates"]
 layout_mode = 2
 theme_type_variation = &"SmallSeparation"
 
-[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/SavedSearches/Content/UseRelativeDates/Setting"]
+[node name="Label" type="Label" parent="ScrollContainer/PaddedScrollbar/Categories/SavedSearches/Content/UseRelativeDates/Setting"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
@@ -598,24 +610,17 @@ theme_type_variation = &"HeaderSmall"
 text = "Use Relative Dates"
 vertical_alignment = 2
 
-[node name="Options" type="CheckButton" parent="ScrollContainer/PaddedScrollbar/VBox/SavedSearches/Content/UseRelativeDates/Setting"]
+[node name="Options" type="CheckButton" parent="ScrollContainer/PaddedScrollbar/Categories/SavedSearches/Content/UseRelativeDates/Setting"]
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 button_pressed = true
 
-[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/VBox/SavedSearches/Content/UseRelativeDates"]
+[node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/Categories/SavedSearches/Content/UseRelativeDates"]
 modulate = Color(1, 1, 1, 0.607843)
 layout_mode = 2
 theme_type_variation = &"Explanation"
 theme_override_fonts/bold_italics_font = ExtResource("7_fjnu2")
 bbcode_enabled = true
-text = "If enabled, Habituary will prompt you on startup to review the to-dos from your capture list."
 fit_content = true
 horizontal_alignment = 3
-
-[editable path="ScrollContainer/PaddedScrollbar/VBox/General"]
-[editable path="ScrollContainer/PaddedScrollbar/VBox/ListView"]
-[editable path="ScrollContainer/PaddedScrollbar/VBox/ToDos"]
-[editable path="ScrollContainer/PaddedScrollbar/VBox/Calendar"]
-[editable path="ScrollContainer/PaddedScrollbar/VBox/SavedSearches"]

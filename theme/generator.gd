@@ -881,35 +881,27 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	}
 	#endregion
 
-	#region CollapsibleCategory_Heading
-	var collapsible_category_heading := theme.create_theme_type("CollapsibleCategory_Heading", "Button")
+	#region FoldableContainer
+	var foldable_container := theme.create_theme_type("FoldableContainer")
 
-	collapsible_category_heading.font_color = NEUTRAL_7
-	collapsible_category_heading.icon_normal_color = NEUTRAL_7
-	collapsible_category_heading.icon_hover_color = secondary_3
-	collapsible_category_heading.font_hover_color = secondary_3
-	collapsible_category_heading.font_pressed_color = NEUTRAL_2
-	collapsible_category_heading.icon_pressed_color = NEUTRAL_2
-	collapsible_category_heading.icon_hover_pressed_color = secondary_3
-	collapsible_category_heading.font_hover_pressed_color = secondary_3
+	foldable_container.font_color = NEUTRAL_7
+	foldable_container.collapsed_font_color = NEUTRAL_2
+	foldable_container.hover_font_color = secondary_3
 
-	collapsible_category_heading.set_main_style({
+	foldable_container.h_separation = 4
+
+	foldable_container.folded_arrow = load("res://theme/images/folded.svg")
+	foldable_container.expanded_arrow = load("res://theme/images/unfolded.svg")
+
+	foldable_container.set_main_style({
+		"bg_color" = primary_3,
 		"corner_radius" = 4,
 		"content_margin" = 4,
 		"anti_aliasing_size" = 0.33,
 	})
-	collapsible_category_heading.disabled = {
-		"bg_color" = Color(neutral_4, 0.3),
-	}
-	collapsible_category_heading.hover = {
-		"bg_color" = primary_3,
-	}
-	collapsible_category_heading.normal = {
-		"bg_color" = primary_3,
-	}
-	collapsible_category_heading.pressed = {
-		"bg_color" = primary_3,
-	}
+
+	foldable_container.focus = StyleBoxEmpty.new()
+	foldable_container.panel = StyleBoxEmpty.new()
 	#endregion
 
 	# ----------------------------------------

@@ -20,6 +20,9 @@ func _ready() -> void:
 
 
 func _set_initial_state() -> void:
+	for category in %Categories.get_children():
+		category.folded = true
+
 	%UIScale/Setting/ScaleFactor.min_value = Settings.MIN_UI_SCALE_FACTOR
 	%UIScale/Setting/ScaleFactor.max_value = Settings.MAX_UI_SCALE_FACTOR
 	%UIScale/Setting/ScaleFactor.value = Settings.ui_scale_factor
