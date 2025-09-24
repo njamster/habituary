@@ -9,7 +9,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_type_variation = &"MediumSeparation"
+theme_type_variation = &"SmallSeparation"
 script = ExtResource("1_1rhmu")
 
 [node name="Heading" type="Label" parent="."]
@@ -60,39 +60,105 @@ layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("2_howdl")
 
-[node name="VBox" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar"]
+[node name="Sections" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_type_variation = &"LargeSeparation"
+theme_type_variation = &"MediumSeparation"
 
-[node name="KeyBindingsBlock1" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"SmallSeparation"
-
-[node name="KeyBindingsBlock2" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"SmallSeparation"
-
-[node name="KeyBindingsBlock3" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"SmallSeparation"
-
-[node name="KeyBindingsBlock4" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"SmallSeparation"
-
-[node name="KeyBindingsBlock5" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"SmallSeparation"
-
-[node name="Heading" type="Label" parent="ScrollContainer/PaddedScrollbar/VBox/KeyBindingsBlock5"]
+[node name="Heading" type="Label" parent="ScrollContainer/PaddedScrollbar/Sections"]
 layout_mode = 2
 theme_type_variation = &"HeaderSmall"
-text = "While Editing A To-Do"
+text = "Keyboard Shortcuts"
 horizontal_alignment = 1
 uppercase = true
+
+[node name="Section1" type="FoldableContainer" parent="ScrollContainer/PaddedScrollbar/Sections"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+title = "WHILE EDITING A TO-DO"
+
+[node name="Content" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/Sections/Section1"]
+layout_mode = 2
+mouse_filter = 0
+theme_type_variation = &"SmallSeparation"
+
+[node name="Spacer" type="Control" parent="ScrollContainer/PaddedScrollbar/Sections/Section1/Content"]
+layout_mode = 2
+
+[node name="Section2" type="FoldableContainer" parent="ScrollContainer/PaddedScrollbar/Sections"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+title = "CHANGE LIST VIEW SIZE"
+
+[node name="Content" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/Sections/Section2"]
+layout_mode = 2
+mouse_filter = 0
+theme_type_variation = &"SmallSeparation"
+
+[node name="Spacer" type="Control" parent="ScrollContainer/PaddedScrollbar/Sections/Section2/Content"]
+layout_mode = 2
+
+[node name="Section3" type="FoldableContainer" parent="ScrollContainer/PaddedScrollbar/Sections"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+title = "MOVE LIST VIEW"
+
+[node name="Content" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/Sections/Section3"]
+layout_mode = 2
+mouse_filter = 0
+theme_type_variation = &"SmallSeparation"
+
+[node name="Spacer" type="Control" parent="ScrollContainer/PaddedScrollbar/Sections/Section3/Content"]
+layout_mode = 2
+
+[node name="Section4" type="FoldableContainer" parent="ScrollContainer/PaddedScrollbar/Sections"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+title = "SEARCH TO-DOS"
+
+[node name="Content" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/Sections/Section4"]
+layout_mode = 2
+mouse_filter = 0
+theme_type_variation = &"SmallSeparation"
+
+[node name="Spacer" type="Control" parent="ScrollContainer/PaddedScrollbar/Sections/Section4/Content"]
+layout_mode = 2
+
+[node name="Section5" type="FoldableContainer" parent="ScrollContainer/PaddedScrollbar/Sections"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+title = "TOGGLE PANELS"
+
+[node name="Content" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/Sections/Section5"]
+layout_mode = 2
+mouse_filter = 0
+theme_type_variation = &"SmallSeparation"
+
+[node name="Spacer" type="Control" parent="ScrollContainer/PaddedScrollbar/Sections/Section5/Content"]
+layout_mode = 2
+
+[node name="Section6" type="FoldableContainer" parent="ScrollContainer/PaddedScrollbar/Sections"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+title = "CHANGE LOOK"
+
+[node name="Content" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar/Sections/Section6"]
+layout_mode = 2
+mouse_filter = 0
+theme_type_variation = &"SmallSeparation"
+
+[node name="Spacer" type="Control" parent="ScrollContainer/PaddedScrollbar/Sections/Section6/Content"]
+layout_mode = 2
