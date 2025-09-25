@@ -34,13 +34,13 @@ func _connect_signals() -> void:
 func _update_state_icon(state : String) -> void:
 	match state:
 		"[x]":
-			%State.texture = preload("res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/done.svg")
+			%State.texture = preload("images/done.svg")
 			%State.modulate = Color("#A3BE8C")
 		"[-]":
-			%State.texture = preload("res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/failed.svg")
+			%State.texture = preload("images/failed.svg")
 			%State.modulate = Color("#D08770")
 		_:
-			%State.texture = preload("res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/to_do.svg")
+			%State.texture = preload("images/to_do.svg")
 			%State.modulate = Color("#FFFFFF")
 
 

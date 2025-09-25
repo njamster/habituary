@@ -23,7 +23,6 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
-theme_override_constants/icon_max_width = 20
 toggle_mode = true
 icon = ExtResource("2_bj5ei")
 flat = true

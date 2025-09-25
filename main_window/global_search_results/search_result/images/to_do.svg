@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   height="20"
+   viewBox="0 -960 960 960"
+   width="20"
+   fill="#ffffff"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="checkbox.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1" />
+  <path
+     d="M 480.28,-96 Q 401,-96 331,-126 261,-156 208.5,-208.5 156,-261 126,-330.96 96,-400.92 96,-480.46 96,-560 126,-629.5 q 30,-69.5 82.5,-122 52.5,-52.5 122.46,-82.5 69.96,-30 149.5,-30 79.54,0 149.04,30 69.5,30 122,82.5 52.5,52.5 82.5,122.22 30,69.73 30,149 0,79.28 -30,149.28 -30,70 -82.5,122.5 -52.5,52.5 -122.22,82.5 -69.73,30 -149,30 z M 480,-168 q 130,0 221,-91 91,-91 91,-221 0,-130 -91,-221 -91,-91 -221,-91 -130,0 -221,91 -91,91 -91,221 0,130 91,221 91,91 221,91 z m 0,-312 z"
+     id="path1" />
+</svg>

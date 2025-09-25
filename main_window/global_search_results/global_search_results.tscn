@@ -19,7 +19,6 @@ layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_override_constants/icon_max_width = 20
 text = "Save This Search"
 icon = ExtResource("2_oohpj")
 

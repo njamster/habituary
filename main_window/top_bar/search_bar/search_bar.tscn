@@ -27,7 +27,6 @@ focus_mode = 0
 mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
-theme_override_constants/icon_max_width = 20
 icon = ExtResource("1_1sgf3")
 flat = true
 

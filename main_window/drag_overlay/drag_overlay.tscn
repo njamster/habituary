@@ -40,7 +40,6 @@ layout_mode = 2
 texture = SubResource("GradientTexture1D_fknvn")
 
 [node name="Arrow" type="TextureRect" parent="LeftBorder/Gradient"]
-custom_minimum_size = Vector2(40, 40)
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -50,8 +49,6 @@ offset_right = 40.0
 offset_bottom = 20.0
 grow_vertical = 2
 texture = ExtResource("3_ndai4")
-expand_mode = 1
-stretch_mode = 5
 
 [node name="DragHoverTrigger" type="Timer" parent="LeftBorder"]
 script = ExtResource("4_hhxuo")
@@ -66,7 +63,6 @@ layout_mode = 2
 texture = SubResource("GradientTexture1D_6y3cx")
 
 [node name="Arrow" type="TextureRect" parent="RightBorder/Gradient"]
-custom_minimum_size = Vector2(40, 40)
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -79,8 +75,6 @@ offset_bottom = 20.0
 grow_horizontal = 0
 grow_vertical = 2
 texture = ExtResource("4_rppmn")
-expand_mode = 1
-stretch_mode = 5
 
 [node name="DragHoverTrigger" type="Timer" parent="RightBorder"]
 script = ExtResource("4_hhxuo")

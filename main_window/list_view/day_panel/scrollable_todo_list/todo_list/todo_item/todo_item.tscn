@@ -49,7 +49,6 @@ focus_mode = 0
 mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
-theme_override_constants/icon_max_width = 20
 icon = ExtResource("2_6dyr4")
 flat = true
 
@@ -68,7 +67,6 @@ focus_mode = 0
 mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
-theme_override_constants/icon_max_width = 20
 toggle_mode = true
 icon = ExtResource("2_2nsse")
 flat = true
@@ -110,8 +108,6 @@ layout_mode = 2
 size_flags_vertical = 0
 mouse_default_cursor_shape = 2
 texture = ExtResource("5_eqyfo")
-expand_mode = 1
-stretch_mode = 4
 
 [node name="Tooltip" type="Node" parent="MainRow/HBox/BookmarkIndicator"]
 script = ExtResource("3_oduck")
@@ -134,14 +130,15 @@ popup_position = 5
 
 [node name="DragHandle" type="Button" parent="MainRow/HBox"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(23, 23)
 layout_mode = 2
 size_flags_vertical = 4
 focus_mode = 0
 mouse_filter = 1
 mouse_default_cursor_shape = 6
 theme_type_variation = &"FlatButton"
-theme_override_constants/icon_max_width = 23
 icon = ExtResource("3_avsfu")
+expand_icon = true
 script = ExtResource("5_mx38m")
 
 [node name="Tooltip" type="Node" parent="MainRow/HBox/DragHandle"]

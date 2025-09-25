@@ -49,12 +49,10 @@ size_flags_vertical = 0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
-theme_override_constants/icon_max_width = 20
 theme_override_styles/focus = SubResource("StyleBoxFlat_cc2va")
 icon = ExtResource("3_xhyd6")
 flat = true
 icon_alignment = 1
-expand_icon = true
 
 [node name="Tooltip" type="Node" parent="VBox/FirstRow/RepeatSearch"]
 script = ExtResource("2_5q2o3")
@@ -94,13 +92,11 @@ size_flags_vertical = 0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
-theme_override_constants/icon_max_width = 20
 theme_override_styles/focus = SubResource("StyleBoxFlat_cc2va")
 toggle_mode = true
 icon = ExtResource("4_es7au")
 flat = true
 icon_alignment = 1
-expand_icon = true
 script = ExtResource("5_whuqe")
 icon_toggled_off = ExtResource("4_es7au")
 icon_toggled_on = ExtResource("6_whuqe")

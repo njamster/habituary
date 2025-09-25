@@ -51,12 +51,10 @@ size_flags_horizontal = 8
 size_flags_vertical = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
-theme_override_constants/icon_max_width = 20
 theme_override_styles/focus = SubResource("StyleBoxFlat_cc2va")
 icon = ExtResource("3_qdkvd")
 flat = true
 icon_alignment = 1
-expand_icon = true
 
 [node name="Tooltip" type="Node" parent="VBox/Row1/JumpTo"]
 script = ExtResource("2_ufj5y")
