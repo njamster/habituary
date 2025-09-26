@@ -3,12 +3,12 @@
 importer="svg"
 type="DPITexture"
 uid="uid://fwtvpes2rjdo"
-path="res://.godot/imported/arrow_left.svg-45a6b152f4a87fc4a4e9d94d091c0fce.dpitex"
+path="res://.godot/imported/arrow_left.svg-582932aeaadfa8ddcaf3154ed69deb2e.dpitex"
 
 [deps]
 
-source_file="res://main_window/navigation_bar_left/images/arrow_left.svg"
-dest_files=["res://.godot/imported/arrow_left.svg-45a6b152f4a87fc4a4e9d94d091c0fce.dpitex"]
+source_file="res://main_window/overlay/calendar_widget/images/arrow_left.svg"
+dest_files=["res://.godot/imported/arrow_left.svg-582932aeaadfa8ddcaf3154ed69deb2e.dpitex"]
 
 [params]
 

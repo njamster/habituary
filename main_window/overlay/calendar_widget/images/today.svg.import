@@ -3,12 +3,12 @@
 importer="svg"
 type="DPITexture"
 uid="uid://c83m62vdgr7uv"
-path="res://.godot/imported/today.svg-6b31b1fca54aaa710dd013e7f55d3964.dpitex"
+path="res://.godot/imported/today.svg-9ff48a58ad05ea4754a8410fa2a43f05.dpitex"
 
 [deps]
 
-source_file="res://main_window/navigation_bar_left/images/today.svg"
-dest_files=["res://.godot/imported/today.svg-6b31b1fca54aaa710dd013e7f55d3964.dpitex"]
+source_file="res://main_window/overlay/calendar_widget/images/today.svg"
+dest_files=["res://.godot/imported/today.svg-9ff48a58ad05ea4754a8410fa2a43f05.dpitex"]
 
 [params]
 

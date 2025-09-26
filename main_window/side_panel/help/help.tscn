@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://d15dr447oxpgn"]
+[gd_scene load_steps=4 format=3 uid="uid://d15dr447oxpgn"]
 
 [ext_resource type="Script" uid="uid://dgq8i8ced82gl" path="res://main_window/side_panel/help/help.gd" id="1_1rhmu"]
 [ext_resource type="Script" uid="uid://6f4n5n4dfbfm" path="res://custom/padded_scrollbar.gd" id="2_howdl"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t7b78"]
 
 [node name="Help" type="VBoxContainer"]
 anchors_preset = 15
@@ -33,6 +35,8 @@ text = "Version:"
 [node name="ID" type="LineEdit" parent="VBox/Version"]
 layout_mode = 2
 theme_type_variation = &"LineEdit_VersionNumber"
+theme_override_colors/selection_color = Color(0.505882, 0.631373, 0.756863, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_t7b78")
 text = "alpha"
 editable = false
 expand_to_text_length = true

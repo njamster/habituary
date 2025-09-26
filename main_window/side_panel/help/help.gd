@@ -134,6 +134,9 @@ func _setup_initial_state() -> void:
 
 func _connect_signals() -> void:
 	#region Local Signals
+	# FIXME: "Deselect on Focus Loss Enabled" seems to be ignored. Godot bug?
+	%Version/ID.focus_exited.connect(func(): %Version/ID.deselect())
+
 	%ReportIssue.meta_clicked.connect(_on_report_issue_meta_clicked)
 	#endregion
 
