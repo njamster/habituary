@@ -66,11 +66,11 @@ func _adjust_text_width() -> void:
 	).x
 	var max_width: int = (
 		$HBox.size.x
-		- %State.custom_minimum_size.x
-		- %JumpTo.custom_minimum_size.x
-		- get_theme_constant("separation", $HBox.theme_type_variation)
-		* ($HBox.get_child_count() - 1)
+		- %State.texture.get_width()
 		- 1  # minimum RichTextLabel width
+		- get_theme_constant("separation", $HBox.theme_type_variation)
+		  * ($HBox.get_child_count() - 1)
+		- %JumpTo.icon.get_width()
 	)
 	%Text.size_flags_stretch_ratio = text_width / max_width
 	%ExtraPadding.size_flags_stretch_ratio = 1.0 - text_width / max_width
