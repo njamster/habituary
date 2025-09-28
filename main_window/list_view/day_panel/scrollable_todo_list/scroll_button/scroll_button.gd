@@ -9,7 +9,7 @@ enum Modes {UP, DOWN}
 		if mode == Modes.UP:
 			texture = null
 		else:
-			texture = preload("../images/line.png")
+			texture = preload("images/line.svg")
 
 @onready var SCROLL_CONTAINER := get_parent().get_node("ScrollContainer")
 @onready var SCROLL_CONTAINER_CONTENT := SCROLL_CONTAINER.get_child(0)

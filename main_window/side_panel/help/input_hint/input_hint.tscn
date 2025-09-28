@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cata0rnrvpwj2"]
 
 [ext_resource type="Script" uid="uid://bdl2kdarwithh" path="res://main_window/side_panel/help/input_hint/input_hint.gd" id="1_w586x"]
-[ext_resource type="Texture2D" uid="uid://dvwky1k2js4hn" path="res://main_window/side_panel/help/input_hint/images/dotted_connector.png" id="2_noh0e"]
+[ext_resource type="Texture2D" uid="uid://v7sg4tdtrsp2" path="res://main_window/side_panel/help/input_hint/images/dotted_connector.svg" id="2_31dao"]
 
 [node name="InputHint" type="HBoxContainer"]
 anchors_preset = 10
@@ -21,7 +21,7 @@ self_modulate = Color(0.505882, 0.631373, 0.756863, 1)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
-texture = ExtResource("2_noh0e")
+texture = ExtResource("2_31dao")
 stretch_mode = 1
 
 [node name="KeyBinding" type="Label" parent="."]

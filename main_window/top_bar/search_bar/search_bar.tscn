@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://b8a1xfqe1gfp5" path="res://main_window/top_bar/search_bar/images/search.svg" id="1_1sgf3"]
 [ext_resource type="Script" uid="uid://c7d816d5w87db" path="res://main_window/top_bar/search_bar/search_bar.gd" id="1_6r0fp"]
 [ext_resource type="Script" uid="uid://bqai4pv020yjf" path="res://custom/tooltip.gd" id="3_s4ac0"]
-[ext_resource type="Texture2D" uid="uid://dei5r2t8aee11" path="res://main_window/top_bar/search_bar/images/space_icon.png" id="4_f4laa"]
+[ext_resource type="Texture2D" uid="uid://co5vijl2yrjym" path="res://main_window/top_bar/search_bar/images/space_icon.svg" id="4_4yfrf"]
 [ext_resource type="Script" uid="uid://cx61x85sknhik" path="res://main_window/top_bar/search_bar/search_query.gd" id="5_4yfrf"]
 [ext_resource type="Texture2D" uid="uid://3hdtixbh74in" path="res://main_window/top_bar/search_bar/images/close.svg" id="5_y3i4g"]
 
@@ -44,7 +44,7 @@ size_flags_horizontal = 3
 mouse_filter = 1
 theme_type_variation = &"LineEdit_Minimal"
 theme_override_constants/line_spacing = 0
-theme_override_icons/space = ExtResource("4_f4laa")
+theme_override_icons/space = ExtResource("4_4yfrf")
 placeholder_text = "Search To-Dos..."
 context_menu_enabled = false
 caret_blink = true
