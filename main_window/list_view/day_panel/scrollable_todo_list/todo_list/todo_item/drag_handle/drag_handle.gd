@@ -26,10 +26,6 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 
 	set_drag_preview(pivot)
 
-	# Special case! Normally, this would be emitted on mouse button release, which makes sense
-	# everywhere but here, where it should happen as soon as the user is starting to drag.
-	EventBus.todo_list_clicked.emit()
-
 	var day_panel := to_do.get_day_panel()
 	if day_panel:
 		day_panel.is_dragged = true

@@ -1,10 +1,10 @@
 [gd_scene load_steps=8 format=3 uid="uid://l4kyh6xqycoy"]
 
-[ext_resource type="Script" uid="uid://c4y85vkqxxebi" path="res://main_window/overlay/calendar_widget/calendar_widget.gd" id="1_6ouga"]
-[ext_resource type="Texture2D" uid="uid://fwtvpes2rjdo" path="res://main_window/overlay/calendar_widget/images/arrow_left.svg" id="2_lhre3"]
+[ext_resource type="Script" uid="uid://c4y85vkqxxebi" path="res://autoloads/overlay/calendar_widget/calendar_widget.gd" id="1_6ouga"]
+[ext_resource type="Texture2D" uid="uid://fwtvpes2rjdo" path="res://autoloads/overlay/calendar_widget/images/arrow_left.svg" id="2_lhre3"]
 [ext_resource type="Script" uid="uid://bqai4pv020yjf" path="res://custom/tooltip.gd" id="2_yxtut"]
-[ext_resource type="Texture2D" uid="uid://c83m62vdgr7uv" path="res://main_window/overlay/calendar_widget/images/today.svg" id="4_mdw0t"]
-[ext_resource type="Texture2D" uid="uid://b4fkmug0m3dvf" path="res://main_window/overlay/calendar_widget/images/arrow_right.svg" id="5_42q54"]
+[ext_resource type="Texture2D" uid="uid://c83m62vdgr7uv" path="res://autoloads/overlay/calendar_widget/images/today.svg" id="4_mdw0t"]
+[ext_resource type="Texture2D" uid="uid://b4fkmug0m3dvf" path="res://autoloads/overlay/calendar_widget/images/arrow_right.svg" id="5_42q54"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lhre3"]
 
@@ -15,10 +15,9 @@ content_margin_left = 14.0
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -239.0
-offset_top = 87.0
-offset_right = -40.0
-offset_bottom = 151.0
+offset_left = -1920.0
+offset_right = -1620.0
+offset_bottom = 68.0
 grow_horizontal = 0
 theme_type_variation = &"CalendarWidget"
 script = ExtResource("1_6ouga")

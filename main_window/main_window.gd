@@ -29,14 +29,7 @@ func _input(event: InputEvent) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
-		var focus_owner = get_viewport().gui_get_focus_owner()
-		if focus_owner:
-			focus_owner.release_focus()
-
-		if $Overlay.visible:
-			$Overlay.close_overlay()
-	elif event.is_action_pressed("ui_cancel"):
+	if event.is_action_pressed("ui_cancel"):
 		var focus_owner = get_viewport().gui_get_focus_owner()
 		if focus_owner:
 			focus_owner.release_focus()

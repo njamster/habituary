@@ -6,12 +6,7 @@ extends Node
 @warning_ignore_start("unused_signal")
 signal today_changed
 
-signal calendar_button_pressed
 signal search_screen_button_pressed
-
-signal overlay_closed
-
-signal todo_list_clicked
 
 signal bookmark_added(to_do)
 signal bookmark_changed(to_do, old_date, old_index)

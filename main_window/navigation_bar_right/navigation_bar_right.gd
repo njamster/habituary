@@ -9,7 +9,7 @@ func _connect_signals() -> void:
 	#region Global Signals
 	Settings.view_mode_changed.connect(_on_view_mode_changed)
 
-	EventBus.overlay_closed.connect(_on_overlay_closed)
+	Overlay.calendar_widget_closed.connect(_on_calendar_widget_closed)
 
 	Settings.main_panel_changed.connect(func():
 		$NextDay.visible = (
@@ -49,7 +49,7 @@ func _on_view_mode_changed() -> void:
 
 
 func _on_calendar_toggled(toggled_on: bool) -> void:
-	EventBus.calendar_button_pressed.emit()
+	Overlay.toggle_calendar_widget_visibility()
 
 	if toggled_on:
 		$Calendar/Tooltip.disabled = true
@@ -57,7 +57,7 @@ func _on_calendar_toggled(toggled_on: bool) -> void:
 		$Calendar/Tooltip.disabled = false
 
 
-func _on_overlay_closed() -> void:
+func _on_calendar_widget_closed() -> void:
 	if $Calendar.button_pressed:
 		$Calendar.set_pressed_no_signal(false)
 		$Calendar/Tooltip.disabled = false

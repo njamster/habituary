@@ -150,13 +150,6 @@ func hide_line_highlight() -> void:
 	%LineHighlight.modulate.a = 0.0
 
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
-		if Rect2(global_position, size).has_point(event.global_position):
-			if self.is_ancestor_of(get_viewport().gui_get_hovered_control()):
-				EventBus.todo_list_clicked.emit()
-
-
 func get_scroll_container() -> ScrollContainer:
 	var parent := get_parent()
 	while parent is not ScrollContainer and parent != null:

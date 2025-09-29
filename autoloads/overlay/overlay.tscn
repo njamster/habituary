@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://fsevqbggmhgb"]
+[gd_scene load_steps=3 format=3 uid="uid://fsevqbggmhgb"]
 
 [ext_resource type="Script" uid="uid://bd5demvlneu52" path="res://autoloads/overlay/overlay.gd" id="1_pgbkt"]
+[ext_resource type="PackedScene" uid="uid://l4kyh6xqycoy" path="res://autoloads/overlay/calendar_widget/calendar_widget.tscn" id="2_belah"]
 
 [node name="Overlay" type="CanvasLayer"]
 script = ExtResource("1_pgbkt")
@@ -24,3 +25,10 @@ size_flags_horizontal = 4
 size_flags_vertical = 8
 mouse_filter = 2
 theme_type_variation = &"SmallSeparation"
+
+[node name="CalendarWidget" parent="." instance=ExtResource("2_belah")]
+offset_left = -340.0
+offset_top = 87.0
+offset_right = -40.0
+offset_bottom = 155.0
+theme_type_variation = &"CalendarWidget_Popup"

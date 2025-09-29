@@ -96,3 +96,9 @@ func strip_tags(line: String) -> String:
 func is_mouse_cursor_above(node: Node) -> bool:
 	var mousePos = get_viewport().get_mouse_position()
 	return node.get_global_rect().has_point(mousePos)
+
+
+func release_focus() -> void:
+	var focus_owner = get_viewport().gui_get_focus_owner()
+	if focus_owner:
+		focus_owner.release_focus()

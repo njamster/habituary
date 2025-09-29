@@ -4,7 +4,7 @@
 [ext_resource type="FontFile" uid="uid://bv1lbje08ni7s" path="res://theme/fonts/OpenSans-MediumItalic.ttf" id="2_pimef"]
 [ext_resource type="Script" uid="uid://bqai4pv020yjf" path="res://custom/tooltip.gd" id="3_lqmea"]
 [ext_resource type="Texture2D" uid="uid://bhjj5de1ayx55" path="res://main_window/main_panel/review_view/images/close.svg" id="3_tjdhi"]
-[ext_resource type="PackedScene" uid="uid://l4kyh6xqycoy" path="res://main_window/overlay/calendar_widget/calendar_widget.tscn" id="4_kvqur"]
+[ext_resource type="PackedScene" uid="uid://l4kyh6xqycoy" path="res://autoloads/overlay/calendar_widget/calendar_widget.tscn" id="4_kvqur"]
 [ext_resource type="Texture2D" uid="uid://c6vdgjltcgrrg" path="res://main_window/main_panel/review_view/images/mode_dark.svg" id="6_tjdhi"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_kvqur"]
