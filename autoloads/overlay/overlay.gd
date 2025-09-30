@@ -7,6 +7,9 @@ signal calendar_widget_closed
 const TOAST := preload("toast/toast.tscn")
 
 
+var calendar_button  # set in navigation_bar_right.gd
+
+
 func _ready() -> void:
 	_setup_initial_state()
 	_connect_signals()
@@ -60,9 +63,12 @@ func toggle_calendar_widget_visibility():
 
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("left_mouse_button") and \
-			not Utils.is_mouse_cursor_above($CalendarWidget):
-				$CalendarWidget.hide()
+	if (
+		event.is_action_pressed("left_mouse_button")
+		and not Utils.is_mouse_cursor_above($CalendarWidget)
+		and not Utils.is_mouse_cursor_above(calendar_button)
+	):
+		$CalendarWidget.hide()
 
 
 func _shortcut_input(event: InputEvent) -> void:

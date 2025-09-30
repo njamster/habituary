@@ -2,7 +2,12 @@ extends VBoxContainer
 
 
 func _ready() -> void:
+	_setup_initial_state()
 	_connect_signals()
+
+
+func _setup_initial_state() -> void:
+	Overlay.calendar_button = $Calendar
 
 
 func _connect_signals() -> void:
