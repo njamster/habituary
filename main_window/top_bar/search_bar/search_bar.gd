@@ -35,6 +35,7 @@ func _connect_signals() -> void:
 			%CloseButton.show()
 	)
 	#endregion
+
 	#region Local Signals
 	gui_input.connect(_on_gui_input)
 	mouse_entered.connect(_on_mouse_entered)
@@ -58,14 +59,14 @@ func _connect_signals() -> void:
 	#endregion
 
 
-func _input(_event: InputEvent) -> void:
-	if Input.is_action_just_pressed("search_screen"):
+func _input(event: InputEvent) -> void:
+	if event.is_action_released("search_screen"):
 		%SearchQuery.grab_focus()
 		accept_event()
 
 
 func _on_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
+	if event.is_action_released("left_mouse_button"):
 		%SearchQuery.grab_focus()
 		accept_event()
 

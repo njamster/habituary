@@ -93,7 +93,7 @@ func _on_scroll_button_pressed() -> void:
 
 
 func _on_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
+	if event.is_action_released("left_mouse_button"):
 		_on_scroll_button_pressed()
 
 

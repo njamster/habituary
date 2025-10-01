@@ -694,17 +694,22 @@ func _input(event: InputEvent) -> void:
 
 
 func _on_check_box_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.is_released():
-		match event.button_index:
-			MOUSE_BUTTON_LEFT:
-				if event.ctrl_pressed:
-					_add_end_time()
-				self.state = States.DONE if self.state != States.DONE else States.TO_DO
-			MOUSE_BUTTON_RIGHT:
-				if event.ctrl_pressed:
-					_add_start_time()
-				else:
-					self.state = States.FAILED if self.state != States.FAILED else States.TO_DO
+	if event.is_action_released("left_mouse_button"):
+		if event.ctrl_pressed:
+			_add_end_time()
+
+		if state == States.DONE:
+			state = States.TO_DO
+		else:
+			state = States.DONE
+	elif event.is_action_released("right_mouse_button"):
+		if event.ctrl_pressed:
+			_add_start_time()
+		else:
+			if state == States.FAILED:
+				state = States.TO_DO
+			else:
+				state = States.FAILED
 
 
 func _add_start_time() -> void:
@@ -809,9 +814,7 @@ func _check_for_search_query_match() -> void:
 
 
 func _on_bookmark_indicator_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and \
-			event.button_index == MOUSE_BUTTON_LEFT and \
-					event.is_released():
+	if event.is_action_released("left_mouse_button"):
 		Settings.side_panel = Settings.SidePanelState.BOOKMARKS
 		EventBus.bookmark_indicator_clicked.emit(date, get_list_index())
 
@@ -888,14 +891,13 @@ func _apply_state_relative_formatting(immediate := false) -> void:
 func _on_edit_gui_input(event: InputEvent) -> void:
 	# Only allow focusing the edit field via left-clicks (by default, pressing
 	# the right or middle mouse button will work as well)
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_RIGHT:
+	if event.is_action("right_mouse_button"):
+		accept_event()
+	elif event.is_action("middle_mouse_button"):
+		# If the edit field is *already* focused, middle clicking on it should
+		# paste the clipboard content – we can't accept it then!
+		if not %Edit.has_focus():
 			accept_event()
-		if event.button_index == MOUSE_BUTTON_MIDDLE:
-			# If the edit field is already focused, middle clicking it should
-			# paste the clipboard content – so we can't accept it then!
-			if not %Edit.has_focus():
-				accept_event()
 
 	if event.is_action_pressed("ui_text_backspace") and %Edit.text == "":
 		if get_item_list().indentation_level == 0:

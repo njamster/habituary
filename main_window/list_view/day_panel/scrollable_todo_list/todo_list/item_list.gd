@@ -51,11 +51,10 @@ func _connect_signals() -> void:
 
 
 func _on_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and \
-			event.button_index == MOUSE_BUTTON_LEFT and \
-					event.pressed:
-		accept_event()
-
+	if (
+		event.is_action_released("left_mouse_button")
+		and Utils.is_mouse_cursor_above(self)
+	):
 		var at_index := 0
 		for child in get_children():
 			if child.position.y > event.position.y - 13:
