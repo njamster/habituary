@@ -19,7 +19,11 @@ class_name Tooltip
 ## When enabled, [member text] and [member input_action] are printed in one line, not two.
 @export var is_dense := false
 
-@export var disabled := false
+@export var disabled := false:
+	set(value):
+		disabled = value
+		if disabled:
+			hide_tooltip()
 
 @export var text_alignment := HORIZONTAL_ALIGNMENT_CENTER
 
