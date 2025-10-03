@@ -18,11 +18,14 @@ func _ready() -> void:
 func _setup_initial_state() -> void:
 	$CalendarWidget.hide()
 
+	_adopt_main_window_theme()
 	_on_side_panel_changed()
 
 
 func _connect_signals() -> void:
 	#region Global Signals
+	Settings.dark_mode_changed.connect(_adopt_main_window_theme)
+
 	Settings.side_panel_changed.connect(_on_side_panel_changed)
 	#endregion
 
@@ -38,6 +41,12 @@ func _connect_signals() -> void:
 		$CalendarWidget.hide()
 	)
 	#endregion
+
+
+func _adopt_main_window_theme() -> void:
+	# Since the Overlay isn't a Control node, it breaks the chain of automatic
+	# theme inheritance, and we need to set the current theme manually here.
+	$CalendarWidget.theme = get_window().theme
 
 
 func _on_side_panel_changed() -> void:
