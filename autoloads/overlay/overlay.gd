@@ -32,7 +32,7 @@ func _connect_signals() -> void:
 	#region Local Signals
 	$CalendarWidget.visibility_changed.connect(func():
 		if $CalendarWidget.visible:
-			Utils.release_focus()
+			get_viewport().gui_release_focus()
 		else:
 			calendar_widget_closed.emit()
 	)

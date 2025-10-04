@@ -913,6 +913,7 @@ func _on_edit_gui_input(event: InputEvent) -> void:
 
 	if event.is_action_pressed("ui_cancel"):
 		%Edit.release_focus()
+		get_viewport().set_input_as_handled()
 
 
 func _has_unticked_sub_todos() -> bool:
