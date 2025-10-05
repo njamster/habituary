@@ -23,10 +23,3 @@ size_flags_horizontal = 3
 size_flags_vertical = 8
 texture = ExtResource("2_31dao")
 stretch_mode = 1
-
-[node name="KeyBinding" type="Label" parent="."]
-custom_minimum_size = Vector2(28, 0)
-layout_mode = 2
-theme_type_variation = &"KeyBindingLabel"
-text = "CTRL+A"
-horizontal_alignment = 1

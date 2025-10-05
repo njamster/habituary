@@ -39,6 +39,9 @@ var descriptions := {
 
 	"toggle_fullscreen": "Toggle Fullscreen On/Off",
 	"toggle_dark_mode": "Toggle Dark Mode On/Off",
+	"zoom_in": "Zoom In",
+	"zoom_out": "Zoom Out",
+	"reset_zoom": "Reset Zoom",
 }
 
 
@@ -125,6 +128,9 @@ func _setup_initial_state() -> void:
 	for action in [
 		"toggle_fullscreen",
 		"toggle_dark_mode",
+		"zoom_in",
+		"zoom_out",
+		"reset_zoom",
 	]:
 		var hint = INPUT_HINT_SCENE.instantiate()
 		hint.description = descriptions[action]
