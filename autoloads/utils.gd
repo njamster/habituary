@@ -93,6 +93,12 @@ func strip_tags(line: String) -> String:
 	return line
 
 
-func is_mouse_cursor_above(node: Node) -> bool:
-	var mousePos = get_viewport().get_mouse_position()
-	return node.get_global_rect().has_point(mousePos)
+func is_mouse_cursor_above(node: Control, include_ancestors := true) -> bool:
+	var hovered_control := get_viewport().gui_get_hovered_control()
+	if not hovered_control:
+		return false
+	if hovered_control == node:
+		return true
+	if include_ancestors:
+		return node.is_ancestor_of(hovered_control)
+	return false

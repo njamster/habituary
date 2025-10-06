@@ -12,7 +12,7 @@ class_name Tooltip
 
 @export var hide_text := false
 
-@export var input_action : String
+@export var input_action: String
 
 @export var hide_input_action := false
 
@@ -38,11 +38,11 @@ enum PopupPosition {AUTOMATIC_HORIZONTAL, AUTOMATIC_VERTICAL, ABOVE, RIGHT, BELO
 
 @export var show_during_dragging := false
 
-@onready var host := get_parent()
+@onready var host: Control = get_parent()
 
-var _tooltip_panel : PanelContainer
-var _tooltip_label : Label
-var _hover_timer : Timer
+var _tooltip_panel: PanelContainer
+var _tooltip_label: Label
+var _hover_timer: Timer
 
 
 func _ready() -> void:
