@@ -60,7 +60,7 @@ func _connect_signals() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_released("search_screen"):
+	if event.is_action_pressed("search_screen"):
 		%SearchQuery.grab_focus()
 		accept_event()
 
