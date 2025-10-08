@@ -102,3 +102,18 @@ func is_mouse_cursor_above(node: Control, include_ancestors := true) -> bool:
 	if include_ancestors:
 		return node.is_ancestor_of(hovered_control)
 	return false
+
+
+func is_action(event: InputEvent, exclude_built_in_actions := true) -> bool:
+	var actions := InputMap.get_actions()
+
+	if exclude_built_in_actions:
+		actions = actions.filter(func(action) -> bool:
+			return not action.begins_with("ui_")
+		) as Array[StringName]
+
+	for action in actions:
+		if event.is_action(action, true):
+			return true
+
+	return false

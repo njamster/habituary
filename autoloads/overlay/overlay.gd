@@ -82,5 +82,5 @@ func _input(event: InputEvent) -> void:
 
 
 func _shortcut_input(event: InputEvent) -> void:
-	if not event.is_action("toggle_calendar_widget"):
+	if Utils.is_action(event) and not event.is_action("toggle_calendar_widget"):
 		$CalendarWidget.hide()
