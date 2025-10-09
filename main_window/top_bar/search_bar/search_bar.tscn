@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://c7d816d5w87db" path="res://main_window/top_bar/search_bar/search_bar.gd" id="1_6r0fp"]
 [ext_resource type="Script" uid="uid://bqai4pv020yjf" path="res://custom/tooltip.gd" id="3_s4ac0"]
 [ext_resource type="Texture2D" uid="uid://co5vijl2yrjym" path="res://main_window/top_bar/search_bar/images/space_icon.svg" id="4_4yfrf"]
-[ext_resource type="Script" uid="uid://cx61x85sknhik" path="res://main_window/top_bar/search_bar/search_query.gd" id="5_4yfrf"]
+[ext_resource type="Script" uid="uid://83f0corx6jnk" path="res://custom/better_text_edit.gd" id="5_4yfrf"]
 [ext_resource type="Texture2D" uid="uid://3hdtixbh74in" path="res://main_window/top_bar/search_bar/images/close.svg" id="5_y3i4g"]
 
 [node name="SearchBar" type="PanelContainer"]
@@ -51,6 +51,7 @@ caret_blink = true
 caret_blink_interval = 0.45
 caret_multiple = false
 script = ExtResource("5_4yfrf")
+metadata/_custom_type_script = "uid://83f0corx6jnk"
 
 [node name="DebounceTimer" type="Timer" parent="HBox/SearchQuery"]
 wait_time = 0.2

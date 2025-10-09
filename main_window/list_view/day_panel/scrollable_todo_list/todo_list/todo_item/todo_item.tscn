@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://v8u8oswwmlf3"]
+[gd_scene load_steps=14 format=3 uid="uid://v8u8oswwmlf3"]
 
 [ext_resource type="Texture2D" uid="uid://ci7y27fysy52o" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/unfolded.svg" id="2_2nsse"]
 [ext_resource type="Texture2D" uid="uid://d00v4pleoufwq" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/to_do.svg" id="2_6dyr4"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://3ry73dkvfi1u" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/bookmark_indicator.svg" id="5_eqyfo"]
 [ext_resource type="Script" uid="uid://vmmkt3uxuea7" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/drag_handle/drag_handle.gd" id="5_mx38m"]
 [ext_resource type="Texture2D" uid="uid://cwihi2ij3jbsp" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/copy_to_today.svg" id="7_81xmb"]
+[ext_resource type="Script" uid="uid://h3vx2ejyaylb" path="res://custom/better_line_edit.gd" id="7_xpt47"]
 [ext_resource type="Script" uid="uid://dttt783sjv872" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/item_list.gd" id="10_sj4p5"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sj4p5"]
@@ -91,6 +92,8 @@ context_menu_enabled = false
 drag_and_drop_selection_enabled = false
 caret_blink = true
 caret_blink_interval = 0.45
+script = ExtResource("7_xpt47")
+metadata/_custom_type_script = "uid://h3vx2ejyaylb"
 
 [node name="ExtraInfo" type="Label" parent="MainRow/HBox"]
 unique_name_in_owner = true

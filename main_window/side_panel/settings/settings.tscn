@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://6f4n5n4dfbfm" path="res://custom/padded_scrollbar.gd" id="2_r5ote"]
 [ext_resource type="Script" uid="uid://bqai4pv020yjf" path="res://custom/tooltip.gd" id="4_70x8g"]
 [ext_resource type="Texture2D" uid="uid://c4185sydmovdc" path="res://main_window/side_panel/settings/images/open.svg" id="4_bf631"]
-[ext_resource type="Script" uid="uid://dmval2atd2at7" path="res://custom/formatted_spin_box.gd" id="5_px7qq"]
+[ext_resource type="Script" uid="uid://cwmmj6d7x6knw" path="res://custom/better_spin_box.gd" id="6_nwmvk"]
 [ext_resource type="Texture2D" uid="uid://cgn2tyjgkapl2" path="res://main_window/side_panel/settings/images/reset.svg" id="7_amjql"]
 [ext_resource type="FontFile" uid="uid://c7b83cfl74of8" path="res://theme/fonts/OpenSans-ExtraBoldItalic.ttf" id="7_fjnu2"]
 [ext_resource type="FontFile" uid="uid://clgk36lj6qey" path="res://theme/fonts/OpenSans-ExtraBold.ttf" id="7_phjvb"]
@@ -103,8 +103,9 @@ text = "UI Scale Factor"
 layout_mode = 2
 step = 0.01
 alignment = 1
-script = ExtResource("5_px7qq")
+script = ExtResource("6_nwmvk")
 format_string = "%0.2f"
+metadata/_custom_type_script = "uid://cwmmj6d7x6knw"
 
 [node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/Categories/General/Content/UIScale"]
 modulate = Color(1, 1, 1, 0.607843)
@@ -136,8 +137,9 @@ layout_mode = 2
 max_value = 23.0
 alignment = 1
 select_all_on_focus = true
-script = ExtResource("5_px7qq")
+script = ExtResource("6_nwmvk")
 format_string = "%02d"
+metadata/_custom_type_script = "uid://cwmmj6d7x6knw"
 
 [node name="Colon" type="Label" parent="ScrollContainer/PaddedScrollbar/Categories/General/Content/DayStart/Setting"]
 layout_mode = 2
@@ -147,8 +149,10 @@ text = " : "
 layout_mode = 2
 max_value = 59.0
 alignment = 1
-script = ExtResource("5_px7qq")
+select_all_on_focus = true
+script = ExtResource("6_nwmvk")
 format_string = "%02d"
+metadata/_custom_type_script = "uid://cwmmj6d7x6knw"
 
 [node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/Categories/General/Content/DayStart"]
 modulate = Color(1, 1, 1, 0.607843)

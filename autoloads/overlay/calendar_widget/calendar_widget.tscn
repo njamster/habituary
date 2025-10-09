@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://l4kyh6xqycoy"]
+[gd_scene load_steps=9 format=3 uid="uid://l4kyh6xqycoy"]
 
 [ext_resource type="Script" uid="uid://c4y85vkqxxebi" path="res://autoloads/overlay/calendar_widget/calendar_widget.gd" id="1_6ouga"]
+[ext_resource type="Script" uid="uid://cwmmj6d7x6knw" path="res://custom/better_spin_box.gd" id="2_83f7l"]
 [ext_resource type="Texture2D" uid="uid://fwtvpes2rjdo" path="res://autoloads/overlay/calendar_widget/images/arrow_left.svg" id="2_lhre3"]
 [ext_resource type="Script" uid="uid://bqai4pv020yjf" path="res://custom/tooltip.gd" id="2_yxtut"]
 [ext_resource type="Texture2D" uid="uid://c83m62vdgr7uv" path="res://autoloads/overlay/calendar_widget/images/today.svg" id="4_mdw0t"]
@@ -98,6 +99,9 @@ value = 2024.0
 allow_greater = true
 allow_lesser = true
 alignment = 1
+script = ExtResource("2_83f7l")
+format_string = "%d"
+metadata/_custom_type_script = "uid://cwmmj6d7x6knw"
 
 [node name="PreviousMonth" type="Button" parent="VBox/HBox"]
 unique_name_in_owner = true

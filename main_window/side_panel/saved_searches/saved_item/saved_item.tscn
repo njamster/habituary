@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://rtcim8ma6gwl"]
+[gd_scene load_steps=9 format=3 uid="uid://rtcim8ma6gwl"]
 
 [ext_resource type="Script" uid="uid://buk7xbnq0c6yi" path="res://main_window/side_panel/saved_searches/saved_item/saved_item.gd" id="1_xhyd6"]
 [ext_resource type="Script" uid="uid://bqai4pv020yjf" path="res://custom/tooltip.gd" id="2_5q2o3"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://gfyjdn5i2f16" path="res://main_window/side_panel/saved_searches/saved_item/images/add_alarm.svg" id="4_es7au"]
 [ext_resource type="Script" uid="uid://dnkjpbn8pmav1" path="res://custom/toggle_button.gd" id="5_whuqe"]
 [ext_resource type="Texture2D" uid="uid://q3gwrwjxsjtg" path="res://main_window/side_panel/saved_searches/saved_item/images/remove_alarm.svg" id="6_whuqe"]
+[ext_resource type="Script" uid="uid://cwmmj6d7x6knw" path="res://custom/better_spin_box.gd" id="7_vhqel"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cc2va"]
 bg_color = Color(0.505882, 0.631373, 0.756863, 1)
@@ -123,6 +124,9 @@ min_value = 1.0
 value = 1.0
 allow_greater = true
 alignment = 1
+script = ExtResource("7_vhqel")
+format_string = "%d"
+metadata/_custom_type_script = "uid://cwmmj6d7x6knw"
 
 [node name="Label2" type="Label" parent="VBox/ThirdRow"]
 layout_mode = 2

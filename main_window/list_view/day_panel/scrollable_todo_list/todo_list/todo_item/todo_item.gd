@@ -915,15 +915,6 @@ func _on_edit_gui_input(event: InputEvent) -> void:
 		%Edit.release_focus()
 		get_viewport().set_input_as_handled()
 
-	if event.ctrl_pressed and not event.keycode in [
-		KEY_A,
-		KEY_C,
-		KEY_X,
-		KEY_V,
-		KEY_Z,
-	] or event.alt_pressed or event.meta_pressed:
-		accept_event()
-
 
 func _has_unticked_sub_todos() -> bool:
 	for sub_item in %SubItems.get_children():
