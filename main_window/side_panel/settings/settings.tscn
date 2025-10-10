@@ -219,6 +219,7 @@ text = "Current Day Position"
 
 [node name="Options" type="OptionButton" parent="ScrollContainer/PaddedScrollbar/Categories/ListView/Content/TodayPosition/Setting"]
 layout_mode = 2
+focus_mode = 0
 
 [node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/Categories/ListView/Content/TodayPosition"]
 modulate = Color(1, 1, 1, 0.607843)
@@ -244,6 +245,7 @@ text = "Fade Non-Today Dates"
 
 [node name="Options" type="OptionButton" parent="ScrollContainer/PaddedScrollbar/Categories/ListView/Content/FadeNonTodayDates/Setting"]
 layout_mode = 2
+focus_mode = 0
 
 [node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/Categories/ListView/Content/FadeNonTodayDates"]
 modulate = Color(1, 1, 1, 0.607843)
@@ -349,6 +351,7 @@ popup_position = 5
 [node name="ColorPicker" type="ColorPickerButton" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color1"]
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
+focus_mode = 0
 mouse_default_cursor_shape = 2
 edit_alpha = false
 
@@ -380,6 +383,7 @@ popup_position = 5
 [node name="ColorPicker" type="ColorPickerButton" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color2"]
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
+focus_mode = 0
 mouse_default_cursor_shape = 2
 edit_alpha = false
 
@@ -411,6 +415,7 @@ popup_position = 5
 [node name="ColorPicker" type="ColorPickerButton" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color3"]
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
+focus_mode = 0
 mouse_default_cursor_shape = 2
 edit_alpha = false
 
@@ -442,6 +447,7 @@ popup_position = 5
 [node name="ColorPicker" type="ColorPickerButton" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color4"]
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
+focus_mode = 0
 mouse_default_cursor_shape = 2
 edit_alpha = false
 
@@ -473,6 +479,7 @@ popup_position = 5
 [node name="ColorPicker" type="ColorPickerButton" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ToDoColors/Color5"]
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
+focus_mode = 0
 mouse_default_cursor_shape = 2
 edit_alpha = false
 
@@ -507,6 +514,7 @@ text = "Show Sub Item Count"
 
 [node name="Options" type="OptionButton" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ShowSubItemCount/Setting"]
 layout_mode = 2
+focus_mode = 0
 
 [node name="Explanation" type="RichTextLabel" parent="ScrollContainer/PaddedScrollbar/Categories/ToDos/Content/ShowSubItemCount"]
 modulate = Color(1, 1, 1, 0.607843)

@@ -43,3 +43,7 @@ func _on_line_edit_gui_input(event: InputEvent) -> void:
 			KEY_Z,
 		] or event.alt_pressed or event.meta_pressed:
 			accept_event()
+
+	# Honestly, feels like this should be the built-in default behavior?!
+	if focus_mode == FOCUS_NONE and event.is_action_pressed("ui_cancel"):
+		line_edit.release_focus()
