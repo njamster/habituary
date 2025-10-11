@@ -51,6 +51,7 @@ caret_blink = true
 caret_blink_interval = 0.45
 caret_multiple = false
 script = ExtResource("5_4yfrf")
+all_in_one_line = true
 metadata/_custom_type_script = "uid://83f0corx6jnk"
 
 [node name="DebounceTimer" type="Timer" parent="HBox/SearchQuery"]

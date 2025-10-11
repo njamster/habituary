@@ -66,9 +66,12 @@ func _input(event: InputEvent) -> void:
 
 
 func _on_gui_input(event: InputEvent) -> void:
-	if event.is_action_released("left_mouse_button"):
+	if event.is_action_pressed("main_mouse_button"):
 		%SearchQuery.grab_focus()
 		accept_event()
+		if event.is_action_pressed("middle_mouse_button"):
+			if OS.get_name() == "Linux":
+				%SearchQuery._paste_primary_clipboard(0)
 
 
 func _on_search_query_focus_entered() -> void:
@@ -165,4 +168,7 @@ func _on_icon_pressed() -> void:
 func clear_search_query() -> void:
 	%SearchQuery.text = ""
 	%SearchQuery.text_changed.emit()
-	%SearchQuery.release_focus()
+	if %SearchQuery.has_focus():
+		%SearchQuery.release_focus()
+	else:
+		_on_search_query_focus_exited()

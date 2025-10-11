@@ -35,4 +35,7 @@ func _paste(_caret_index: int) -> void:
 
 
 func _paste_primary_clipboard(caret_index: int) -> void:
+	if not has_focus():
+		grab_focus()
+
 	_paste(caret_index)
