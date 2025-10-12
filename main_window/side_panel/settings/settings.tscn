@@ -103,6 +103,7 @@ text = "UI Scale Factor"
 layout_mode = 2
 step = 0.01
 alignment = 1
+select_all_on_focus = true
 script = ExtResource("6_nwmvk")
 format_string = "%0.2f"
 metadata/_custom_type_script = "uid://cwmmj6d7x6knw"

@@ -26,6 +26,12 @@ func _connect_signals() -> void:
 	line_edit.focus_exited.connect(_format_value, CONNECT_DEFERRED)
 
 	line_edit.gui_input.connect(_on_line_edit_gui_input)
+
+	# Honestly, feels like this should be the built-in default behavior?!
+	line_edit.text_submitted.connect(func(_new_text):
+		if focus_mode == FOCUS_NONE:
+			line_edit.release_focus()
+	)
 	#endregion
 
 
@@ -47,3 +53,9 @@ func _on_line_edit_gui_input(event: InputEvent) -> void:
 	# Honestly, feels like this should be the built-in default behavior?!
 	if focus_mode == FOCUS_NONE and event.is_action_pressed("ui_cancel"):
 		line_edit.release_focus()
+
+	if (
+		event.is_action_pressed("middle_mouse_button")
+		or event.is_action_pressed("right_mouse_button")
+	):
+		accept_event()
