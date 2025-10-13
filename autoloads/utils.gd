@@ -117,3 +117,15 @@ func is_action(event: InputEvent, exclude_built_in_actions := true) -> bool:
 			return true
 
 	return false
+
+
+func is_built_in_action(event: InputEvent, exact_match := true) -> bool:
+	var actions := InputMap.get_actions().filter(func(action) -> bool:
+		return action.begins_with("ui_")
+	) as Array[StringName]
+
+	for action in actions:
+		if event.is_action(action, exact_match):
+			return true
+
+	return false
