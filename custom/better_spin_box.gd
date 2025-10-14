@@ -15,6 +15,7 @@ func _ready() -> void:
 
 
 func _set_initial_state() -> void:
+	_update_max_length()
 	_format_value()
 
 
@@ -41,6 +42,10 @@ func _connect_signals() -> void:
 
 func _format_value() -> void:
 	line_edit.set_deferred("text", prefix + (format_string % value) + suffix)
+
+
+func _update_max_length() -> void:
+	line_edit.max_length = (format_string % max_value).length()
 
 
 func _on_line_edit_gui_input(event: InputEvent) -> void:
@@ -96,8 +101,25 @@ func _on_line_edit_text_changed(new_text: String) -> void:
 	var first_period_position := new_text.find(".")
 	new_text = new_text.replace(".", "")
 	new_text = new_text.insert(first_period_position, ".")
-	# 3) Apply those changes to the LineEdit node
-	line_edit.text = new_text
 
-	# Restore the original caret position
-	line_edit.caret_column = caret_column
+	if float(new_text) < min_value:
+		# New value would be too small -> autocorrect to min_value
+		line_edit.text = format_string % min_value
+		line_edit.select_all()
+	elif float(new_text) > max_value:
+		# New value would be too large -> autocorrect to max_value
+		line_edit.text = format_string % max_value
+		line_edit.select_all()
+	else:
+		# Apply new value & restore caret position
+		line_edit.text = new_text
+		line_edit.caret_column = caret_column
+
+
+func _set(property: StringName, property_value: Variant) -> bool:
+	if property == "max_value":
+		max_value = property_value
+		_update_max_length()
+		return true  # property got handled here
+
+	return false  # handle the property normally
