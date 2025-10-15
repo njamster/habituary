@@ -4,7 +4,9 @@ extends SpinBox
 
 @export var format_string : String = "%s"
 @export var numerical_input_only := true
+@export var ignore_modifier_inputs := true
 
+var allowed_keycodes := []
 
 @onready var line_edit := get_line_edit()
 
@@ -15,6 +17,17 @@ func _ready() -> void:
 
 
 func _set_initial_state() -> void:
+	if numerical_input_only:
+		allowed_keycodes = (
+			range(KEY_0, KEY_9 + 1) + range(KEY_KP_0, KEY_KP_9 + 1)
+		)
+		if not format_string.ends_with("d"):
+			allowed_keycodes.append_array([KEY_COMMA, KEY_PERIOD])
+
+	line_edit.set_script(preload("res://custom/better_line_edit.gd"))
+	line_edit.ignore_modifier_inputs = ignore_modifier_inputs
+	line_edit.allowed_keycodes = allowed_keycodes
+
 	_update_max_length()
 	_format_value()
 
@@ -49,32 +62,16 @@ func _update_max_length() -> void:
 
 
 func _on_line_edit_gui_input(event: InputEvent) -> void:
-	if event is InputEventKey:
-		if numerical_input_only:
-			var allowed_keys := (
-				range(KEY_0, KEY_9 + 1) + range(KEY_KP_0, KEY_KP_9 + 1)
-			)
-			if not format_string.ends_with("d"):
-				allowed_keys.append_array([KEY_COMMA, KEY_PERIOD])
-
-			if event.shift_pressed or (
-				not event.keycode in allowed_keys
-				and not event.ctrl_pressed
-			):
-				if (
-					event.is_action("ui_filedialog_show_hidden")
-					or not Utils.is_built_in_action(event, false)
-				):
-					accept_event()
-
-		if event.ctrl_pressed and not event.keycode in [
-			KEY_A,
-			KEY_C,
-			KEY_X,
-			KEY_V,
-			KEY_Z,
-		] or event.alt_pressed or event.meta_pressed:
-			accept_event()
+	if numerical_input_only:
+		if event is InputEventKey and event.is_pressed():
+			if OS.is_keycode_unicode(event.keycode):
+				if event.shift_pressed or event.keycode not in allowed_keycodes:
+					if not event.ctrl_pressed and not event.alt_pressed:
+						Log.debug(
+							"Ignored non-numerical input: %s"
+							% event.as_text_keycode()
+						)
+						accept_event()
 
 	# Honestly, feels like this should be the built-in default behavior?!
 	if focus_mode == FOCUS_NONE and event.is_action_pressed("ui_cancel"):

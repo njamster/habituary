@@ -3,17 +3,18 @@ extends TextEdit
 
 
 @export var all_in_one_line := false
+@export var ignore_modifier_inputs := true
 
 
-func _gui_input(event: InputEvent) -> void:
-	if event is InputEventKey:
-		if event.ctrl_pressed and not event.keycode in [
-			KEY_A,
-			KEY_C,
-			KEY_X,
-			KEY_V,
-			KEY_Z,
-		] or event.alt_pressed or event.meta_pressed:
+func _unhandled_key_input(event: InputEvent) -> void:
+	if ignore_modifier_inputs:
+		if (
+			event.is_pressed()
+			and has_focus()
+			and editable
+			and OS.is_keycode_unicode(event.keycode)
+		):
+			Log.debug("Ignored modifier input: %s" % event.as_text_keycode())
 			accept_event()
 
 
