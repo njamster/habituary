@@ -71,6 +71,7 @@ func _on_line_edit_gui_input(event: InputEvent) -> void:
 							"Ignored non-numerical input: %s"
 							% event.as_text_keycode()
 						)
+						line_edit.reject_input("Only numerical inputs allowed!")
 						accept_event()
 
 	# Honestly, feels like this should be the built-in default behavior?!
@@ -103,10 +104,12 @@ func _on_line_edit_text_changed(new_text: String) -> void:
 		# New value would be too small -> autocorrect to min_value
 		line_edit.text = format_string % min_value
 		line_edit.select_all()
+		line_edit.reject_input("Minimum required value: " + format_string % min_value)
 	elif float(new_text) > max_value:
 		# New value would be too large -> autocorrect to max_value
 		line_edit.text = format_string % max_value
 		line_edit.select_all()
+		line_edit.reject_input("Maximum allowed value: " + format_string % max_value)
 	else:
 		# Apply new value & restore caret position
 		line_edit.text = new_text
