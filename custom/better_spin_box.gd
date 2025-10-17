@@ -58,7 +58,15 @@ func _format_value() -> void:
 
 
 func _update_max_length() -> void:
-	line_edit.max_length = (format_string % max_value).length()
+	if min_value >= 0:
+		line_edit.max_length = (format_string % max_value).length()
+	else:
+		# One character for the (potential) minus sign, plus whatever value is
+		# longer when formatted with the format_string: max_value or min_value
+		line_edit.max_length = 1 + max(
+			(format_string % abs(min_value)).length(),
+			(format_string % abs(max_value)).length()
+		)
 
 
 func _on_line_edit_gui_input(event: InputEvent) -> void:
@@ -67,12 +75,24 @@ func _on_line_edit_gui_input(event: InputEvent) -> void:
 			if OS.is_keycode_unicode(event.keycode):
 				if event.shift_pressed or event.keycode not in allowed_keycodes:
 					if not event.ctrl_pressed and not event.alt_pressed:
-						Log.debug(
-							"Ignored non-numerical input: %s"
-							% event.as_text_keycode()
-						)
-						line_edit.reject_input("Only numerical inputs allowed!")
-						accept_event()
+						if event.keycode not in [KEY_MINUS, KEY_KP_SUBTRACT]:
+							Log.debug(
+								"Ignored non-numerical input: %s"
+								% event.as_text_keycode()
+							)
+							line_edit.reject_input(
+								"Only numerical inputs allowed!"
+							)
+							accept_event()
+						elif min_value >= 0:
+							if (
+								line_edit.caret_column == 0
+								or line_edit.is_all_text_selected()
+							):
+								line_edit.reject_input(
+									"No negative inputs allowed!"
+								)
+							accept_event()
 
 	# Honestly, feels like this should be the built-in default behavior?!
 	if focus_mode == FOCUS_NONE and event.is_action_pressed("ui_cancel"):
@@ -99,6 +119,11 @@ func _on_line_edit_text_changed(new_text: String) -> void:
 	var first_period_position := new_text.find(".")
 	new_text = new_text.replace(".", "")
 	new_text = new_text.insert(first_period_position, ".")
+	# 3) Remove any minus sign except it's in the front:
+	var first_minus_position := new_text.find("-")
+	new_text = new_text.replace("-", "")
+	if first_minus_position == 0:
+		new_text = new_text.insert(first_minus_position, "-")
 
 	if float(new_text) < min_value:
 		# New value would be too small -> autocorrect to min_value

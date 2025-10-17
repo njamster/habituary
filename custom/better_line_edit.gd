@@ -64,3 +64,11 @@ func reject_input(reason := "") -> void:
 
 	if reason:
 		Overlay.spawn_toast(reason)
+
+
+func is_all_text_selected() -> bool:
+	return (
+		has_selection()
+		and get_selection_from_column() == 0
+		and get_selection_to_column() == text.length()
+	)
