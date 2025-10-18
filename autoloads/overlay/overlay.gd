@@ -7,6 +7,12 @@ signal calendar_widget_closed
 const TOAST := preload("toast/toast.tscn")
 
 
+## Maximum number of toast notifications simultaneously visible on screen. If
+## [method spawn_toast] is called this many times fast enough, the oldest toast
+## will get free'd ahead of schedule to free up screen space.
+@export var MAX_TOAST_COUNT := 5
+
+
 var calendar_button  # set in navigation_bar_right.gd
 
 
@@ -62,6 +68,9 @@ func _on_side_panel_changed() -> void:
 func spawn_toast(text : String) -> void:
 	var toast := TOAST.instantiate()
 	%Toasts.add_child(toast)
+
+	if %Toasts.get_child_count() > MAX_TOAST_COUNT:
+		%Toasts.get_child(0).queue_free()
 
 	toast.text = text
 	toast.fade_out_and_close()
