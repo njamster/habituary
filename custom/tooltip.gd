@@ -46,6 +46,13 @@ var _hover_timer: Timer
 
 
 func _ready() -> void:
+	_set_initial_state()
+	_connect_signals()
+
+
+func _set_initial_state() -> void:
+	set_process_input(false)
+
 	_hover_timer = Timer.new()
 	add_child(_hover_timer, true, Node.INTERNAL_MODE_FRONT)
 
@@ -53,22 +60,35 @@ func _ready() -> void:
 	_hover_timer.wait_time = popup_delay
 	_hover_timer.timeout.connect(_spawn_panel)
 
-	host.mouse_entered.connect(show_tooltip)
-	host.mouse_exited.connect(hide_tooltip)
-
 	if host is BaseButton:
 		if not self.input_action:
 			# try to grab input action from first shortcut event
 			if host.shortcut and host.shortcut.events:
 				self.input_action = host.shortcut.events[0].action
 
-		host.pressed.connect(_on_press_or_toggle)
-		host.toggled.connect(_on_press_or_toggle)
 
+func _connect_signals() -> void:
+	#region Global Signals
 	get_tree().get_root().size_changed.connect(hide_tooltip)
+	#endregion
+
+	#region Local Signals
+	host.mouse_entered.connect(func():
+		if not disabled:
+			show_tooltip()
+			set_process_input(true)
+	)
+	host.mouse_exited.connect(func():
+		hide_tooltip()
+		set_process_input(false)
+	)
+	#endregion
 
 
 func show_tooltip() -> void:
+	if Input.is_anything_pressed():
+		return  # early
+
 	if host is CanvasItem and not host.is_visible_in_tree():
 		return  # early
 
@@ -213,16 +233,12 @@ func _center_vertically() -> void:
 	)
 
 
-func _on_press_or_toggle(_toggled_on := false) -> void:
-	if Utils.is_mouse_cursor_above(host):
-		# If the mouse remains on top of the host after being pressed (i.e. it's
-		# toggled manually by the user, and not from code) trigger show_tooltip.
-		# If there already was a tooltip visible, it will be hidden by the code
-		# in _input. For rapidly repeated presses, no tooltip will appear!
-		show_tooltip()
-
-
 func _input(event: InputEvent) -> void:
-	# Hide as soon as the user starts typing or clicks anywhere
 	if event is InputEventKey or event is InputEventMouseButton:
-		hide_tooltip()
+		if not event.is_echo():
+			if event.is_pressed():
+				# Hide as soon as the user starts typing or clicks anywhere.
+				hide_tooltip()
+			else:
+				# Reappear again once the user is done typing or clicking.
+				show_tooltip()
