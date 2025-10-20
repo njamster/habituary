@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://dw6xo448aao72"]
+[gd_scene load_steps=11 format=3 uid="uid://dw6xo448aao72"]
 
 [ext_resource type="Texture2D" uid="uid://vs7ua0yf1lr" path="res://main_window/top_bar/images/settings.svg" id="1_abaqs"]
 [ext_resource type="Script" uid="uid://d3tt4f006pyr7" path="res://main_window/top_bar/top_bar.gd" id="1_qvgdf"]
 [ext_resource type="PackedScene" uid="uid://c0f0h24u7wfrh" path="res://main_window/top_bar/search_bar/search_bar.tscn" id="2_4r6hc"]
+[ext_resource type="Script" uid="uid://cmqm6vj4gdrv4" path="res://custom/better_button.gd" id="3_0bht4"]
 [ext_resource type="Script" uid="uid://bqai4pv020yjf" path="res://custom/tooltip.gd" id="3_sm771"]
 [ext_resource type="Texture2D" uid="uid://lqaqpht4rju6" path="res://main_window/top_bar/images/mode_dark.svg" id="5_jyq3k"]
 
@@ -33,6 +34,8 @@ toggle_mode = true
 shortcut = SubResource("Shortcut_550rp")
 shortcut_in_tooltip = false
 icon = ExtResource("1_abaqs")
+script = ExtResource("3_0bht4")
+metadata/_custom_type_script = "uid://cmqm6vj4gdrv4"
 
 [node name="Tooltip" type="Node" parent="Settings"]
 script = ExtResource("3_sm771")

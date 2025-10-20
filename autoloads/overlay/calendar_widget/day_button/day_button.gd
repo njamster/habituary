@@ -1,5 +1,6 @@
-extends Button
 class_name DayButton
+extends BetterButton
+
 
 var associated_day : Date
 var tooltip : Tooltip
