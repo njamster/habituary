@@ -9,6 +9,28 @@ extends VBoxContainer
 # used to avoid emitting `list_save_requested` too early
 var _initialization_finished := false
 
+
+var data: ToDoData:
+	set(value):
+		if data != null:
+			Log.error("Cannot set 'data': Variable is immutable!")
+			return
+		data = value
+
+		state = data.state as States  # TODO: Get rid of the (required) cast
+		text = data.text
+		is_bold = data.is_bold
+		is_italic = data.is_italic
+		is_bookmarked = data.is_bookmarked
+		text_color_id = data.text_color_id
+
+		for sub_item in data.sub_items.to_dos:
+			var restored_item = %SubItems.add_todo(-1, false)
+			restored_item.data = sub_item
+
+		is_folded = data.is_folded
+
+
 var date : Date:
 	get():
 		var day_panel := get_day_panel()
@@ -1044,21 +1066,21 @@ func _adapt_sub_item_state() -> void:
 			self.state = States.DONE
 
 
-func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
+func _can_drop_data(_at_position: Vector2, p_data: Variant) -> bool:
 	# prevents the user from dropping a to-do on itself or its own sub items
-	return data is ToDoItem and data != self and not data.is_ancestor_of(self)
+	return p_data is ToDoItem and p_data != self and not p_data.is_ancestor_of(self)
 
 
-func _drop_data(_at_position: Vector2, data: Variant) -> void:
+func _drop_data(_at_position: Vector2, p_data: Variant) -> void:
 	%MainRow.theme_type_variation = "ToDoItem_MainRow"
 
-	if data.get_parent_todo() == self:
+	if p_data.get_parent_todo() == self:
 		# If a to-do is dropped on its parent to-do, move the to-do to the
 		# end of the item list of its parent to-do (if it isn't already).
-		%SubItems.move_child(data, -1)
+		%SubItems.move_child(p_data, -1)
 	else:
 		# Otherwise, add it to (the end of) this item's sub item list.
-		%SubItems._drop_data(Vector2(0, %SubItems.size.y), data)
+		%SubItems._drop_data(Vector2(0, %SubItems.size.y), p_data)
 
 
 func contains_search_query_match() -> bool:

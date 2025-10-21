@@ -4,14 +4,21 @@ extends MarginContainer
 
 const TODO_ITEM := preload("todo_item/todo_item.tscn")
 
-var cache_key : String:
+var cache_key: String:
 	set(value):
-		if cache_key:  # once set, cache_key becomes immutable
+		if cache_key:
+			Log.error("Cannot set 'cache_key': Variable is immutable!")
 			return
-
 		cache_key = value
 
-		load_from_cache(cache_key)
+var data: FileData:
+	set(value):
+		if data:
+			Log.error("Cannot set 'data': Variable is immutable!")
+			return
+		data = value
+
+		load_data()
 
 var pending_save := false
 
@@ -128,6 +135,17 @@ func load_from_cache(key : String) -> void:
 		else:
 			var restored_item = %Items.add_todo(-1, false)
 			restored_item.load_from_string(line)
+
+
+func load_data() -> void:
+	if not data:
+		return  # early
+
+	# TODO: Handle Scroll Offset!
+
+	for item in data.to_do_list.to_dos:
+		var restored_item = %Items.add_todo(-1, false)
+		restored_item.data = item
 
 
 func show_line_highlight(x_offset: int) -> void:

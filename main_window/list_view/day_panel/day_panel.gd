@@ -1,11 +1,12 @@
 class_name DayPanel
 extends PanelContainer
 
-var date : Date:
-	set(value):
-		if date != null:  # once set, date becomes immutable
-			return
 
+var date: Date:
+	set(value):
+		if date != null:
+			Log.error("Cannot set 'date': Variable is immutable!")
+			return
 		date = value
 
 var is_dragged := false
@@ -22,6 +23,11 @@ func _set_initial_state() -> void:
 	%ScrollableTodoList/%TodoList.cache_key = self.date.format(
 		Settings.date_format_save
 	)
+
+	# TODO: Change Settings.date_format_save to include the "txt"-extension
+	var filename := self.date.format(Settings.date_format_save) + ".txt"
+	if filename in Data.files:
+		%ScrollableTodoList/%TodoList.data = Data.files[filename]
 
 	_on_view_mode_changed()
 	_update_stretch_ratio()
