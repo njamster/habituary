@@ -17,7 +17,7 @@ var data: ToDoData:
 			return
 		data = value
 
-		state = data.state as States  # TODO: Get rid of the (required) cast
+		state = data.state
 		text = data.text
 		is_bold = data.is_bold
 		is_italic = data.is_italic
@@ -57,37 +57,36 @@ var text := "":
 
 			_update_saved_search_results(get_to_do_list().cache_key, text, old_text)
 
-enum States { TO_DO, DONE, FAILED }
-var state := States.TO_DO:
+var state := ToDoData.States.TO_DO:
 	set(value):
 		if state == value:
 			return
 
 		state = value
 		if is_inside_tree():
-			if state == States.TO_DO:
+			if state == ToDoData.States.TO_DO:
 				%CheckBox.icon = preload(
 					"images/to_do.svg"
 				)
-			elif state == States.DONE:
+			elif state == ToDoData.States.DONE:
 				%CheckBox.icon = preload(
 					"images/done.svg"
 				)
-			elif state == States.FAILED:
+			elif state == ToDoData.States.FAILED:
 				%CheckBox.icon = preload(
 					"images/failed.svg"
 				)
 
-			%CheckBox.button_pressed = (state != States.TO_DO)
+			%CheckBox.button_pressed = (state != ToDoData.States.TO_DO)
 
 			var parent_todo := get_parent_todo()
 			if parent_todo:
 				parent_todo._adapt_sub_item_state()
 
 			if not _is_mouse_over_checkbox:
-				if self.state == States.DONE:
+				if self.state == ToDoData.States.DONE:
 					%CheckBox.theme_type_variation = "ToDoItem_Done"
-				elif self.state == States.FAILED:
+				elif self.state == ToDoData.States.FAILED:
 					%CheckBox.theme_type_variation = "ToDoItem_Failed"
 				else:
 					%CheckBox.theme_type_variation = "ToDoItem"
@@ -566,9 +565,9 @@ func as_string(depth := 0) -> String:
 	for i in depth:
 		result += "    "
 
-	if self.state == States.DONE:
+	if self.state == ToDoData.States.DONE:
 		result += "[x] "
-	elif self.state == States.FAILED:
+	elif self.state == ToDoData.States.FAILED:
 		result += "[-] "
 	else:
 		result += "[ ] "
@@ -612,10 +611,10 @@ func load_from_string(line: String) -> void:
 	if line.begins_with("[ ] "):
 		line = line.right(-4)
 	elif line.begins_with("[x] "):
-		self.state = States.DONE
+		self.state = ToDoData.States.DONE
 		line = line.right(-4)
 	elif line.begins_with("[-] "):
-		self.state = States.FAILED
+		self.state = ToDoData.States.FAILED
 		line = line.right(-4)
 
 	if line.begins_with("> "):
@@ -673,14 +672,20 @@ func _input(event: InputEvent) -> void:
 	if is_in_edit_mode():
 		if event.is_action_pressed("toggle_todo", false, true):
 			if %SubItems.is_empty():
-				self.state = States.DONE if self.state != States.DONE else States.TO_DO
+				if self.state != ToDoData.States.DONE:
+					self.state = ToDoData.States.DONE
+				else:
+					self.state = ToDoData.States.TO_DO
 			else:
 				is_folded = not is_folded
 		elif event.is_action_pressed("toggle_todo", true, true):
 			pass  # consume echo events without doing anything
 		elif event.is_action_pressed("cancel_todo", false, true):
 			if %SubItems.is_empty():
-				self.state = States.FAILED if self.state != States.FAILED else States.TO_DO
+				if self.state != ToDoData.States.FAILED:
+					self.state = ToDoData.States.FAILED
+				else:
+					self.state = ToDoData.States.TO_DO
 			else:
 				is_folded = not is_folded
 		elif event.is_action_pressed("cancel_todo", true, true):
@@ -720,18 +725,18 @@ func _on_check_box_gui_input(event: InputEvent) -> void:
 		if event.ctrl_pressed:
 			_add_end_time()
 
-		if state == States.DONE:
-			state = States.TO_DO
+		if state == ToDoData.States.DONE:
+			state = ToDoData.States.TO_DO
 		else:
-			state = States.DONE
+			state = ToDoData.States.DONE
 	elif event.is_action_released("right_mouse_button"):
 		if event.ctrl_pressed:
 			_add_start_time()
 		else:
-			if state == States.FAILED:
-				state = States.TO_DO
+			if state == ToDoData.States.FAILED:
+				state = ToDoData.States.TO_DO
 			else:
-				state = States.FAILED
+				state = ToDoData.States.FAILED
 
 
 func _add_start_time() -> void:
@@ -797,7 +802,7 @@ func _check_for_search_query_match() -> void:
 		# restore the to-do's text color
 		text_color_id = text_color_id
 		%Edit.theme_type_variation = "LineEdit_Minimal"
-		if Settings.fade_ticked_off_todos and state != States.TO_DO:
+		if Settings.fade_ticked_off_todos and state != ToDoData.States.TO_DO:
 			%Edit.modulate.a = 0.5
 		else:
 			%Edit.modulate.a = 1.0
@@ -851,7 +856,7 @@ func _on_tree_exiting() -> void:
 
 func _apply_state_relative_formatting(immediate := false) -> void:
 	if Settings.hide_ticked_off_todos:
-		if state != States.TO_DO:
+		if state != ToDoData.States.TO_DO:
 			if not _has_unticked_sub_todos():
 				if immediate:
 					self.hide()
@@ -876,7 +881,10 @@ func _apply_state_relative_formatting(immediate := false) -> void:
 								predecessor.edit()
 
 					var parent_todo := get_parent_todo()
-					if parent_todo and parent_todo.state != States.TO_DO:
+					if (
+						parent_todo
+						and parent_todo.state != ToDoData.States.TO_DO
+					):
 						parent_todo._apply_state_relative_formatting()
 		else:
 			if hide_tween:
@@ -894,7 +902,7 @@ func _apply_state_relative_formatting(immediate := false) -> void:
 			self.show()
 
 		if Settings.fade_ticked_off_todos:
-			if state != States.TO_DO:
+			if state != ToDoData.States.TO_DO:
 				%Toggle.modulate.a = 0.5
 				if not Settings.search_query:
 					%Edit.modulate.a = 0.5
@@ -940,7 +948,7 @@ func _on_edit_gui_input(event: InputEvent) -> void:
 
 func _has_unticked_sub_todos() -> bool:
 	for sub_item in %SubItems.get_children():
-		if sub_item.state == States.TO_DO:
+		if sub_item.state == ToDoData.States.TO_DO:
 			return true
 		else:
 			if sub_item._has_unticked_sub_todos():
@@ -1021,7 +1029,7 @@ func get_done_items_count() -> int:
 	var done_items_count := 0
 
 	for sub_item in %SubItems.get_children():
-		if sub_item.state != States.TO_DO:
+		if sub_item.state != ToDoData.States.TO_DO:
 			done_items_count += 1
 
 		done_items_count += sub_item.get_done_items_count()
@@ -1058,12 +1066,12 @@ func get_sub_item(index: int) -> Variant:
 
 func _adapt_sub_item_state() -> void:
 	if %SubItems.is_empty():
-		self.state = States.TO_DO
+		self.state = ToDoData.States.TO_DO
 	else:
 		if _has_unticked_sub_todos():
-			self.state = States.TO_DO
+			self.state = ToDoData.States.TO_DO
 		else:
-			self.state = States.DONE
+			self.state = ToDoData.States.DONE
 
 
 func _can_drop_data(_at_position: Vector2, p_data: Variant) -> bool:
@@ -1110,9 +1118,9 @@ func _on_check_box_mouse_entered() -> void:
 func _on_check_box_mouse_exited() -> void:
 	_is_mouse_over_checkbox = false
 
-	if self.state == States.DONE:
+	if self.state == ToDoData.States.DONE:
 		%CheckBox.theme_type_variation = "ToDoItem_Done"
-	elif self.state == States.FAILED:
+	elif self.state == ToDoData.States.FAILED:
 		%CheckBox.theme_type_variation = "ToDoItem_Failed"
 	else:
 		%CheckBox.theme_type_variation = "ToDoItem"
