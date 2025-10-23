@@ -5,6 +5,7 @@ class_name FileData
 var path: String
 var name: String
 var last_modified := Utils.MIN_INT
+var scroll_offset := 0
 
 var to_do_list := ToDoListData.new()
 
@@ -28,9 +29,18 @@ func _load_from_disk() -> void:
 		while file.get_position() < file.get_length():
 			var next_line := file.get_line()
 			if not next_line.is_empty():
-				var to_do := ToDoData.new()
-				to_do_list.add(to_do)
-				to_do.load_from_string(next_line)
+				if next_line.begins_with("SCROLL:"):
+					scroll_offset = int(next_line.right(-7))
+					# Ensure that the scroll offset always equals a multiple of
+					# the height of a full row in the to-do list
+					const ROW_HEIGHT := 40.0  # FIXME: store this globally?
+					scroll_offset = int(
+						round(scroll_offset / ROW_HEIGHT) * ROW_HEIGHT
+					)
+				else:
+					var to_do := ToDoData.new()
+					to_do_list.add(to_do)
+					to_do.load_from_string(next_line)
 
 	to_do_list.changed.connect(Data.start_debounce_timer.bind(self))
 

@@ -113,7 +113,7 @@ func _on_bookmark_changed(to_do : Control, old_date : Date, old_index : int) -> 
 			bookmark.date = to_do.date
 			bookmark.line_number = to_do.get_list_index()
 			bookmark.text = to_do.get_node("%Edit").text
-			bookmark.is_done = (to_do.state != to_do.States.TO_DO)
+			bookmark.is_done = (to_do.state != ToDoData.States.TO_DO)
 			bookmark.updated_this_frame = true
 
 			_resort_list.call_deferred()

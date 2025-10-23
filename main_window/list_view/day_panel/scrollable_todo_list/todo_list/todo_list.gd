@@ -141,11 +141,13 @@ func load_data() -> void:
 	if not data:
 		return  # early
 
-	# TODO: Handle Scroll Offset!
-
 	for item in data.to_do_list.to_dos:
 		var restored_item = %Items.add_todo(-1, false)
 		restored_item.data = item
+
+	if data.scroll_offset:
+		await get_tree().process_frame  # wait for container size update
+		get_scroll_container().scroll_vertical = data.scroll_offset
 
 
 func show_line_highlight(x_offset: int) -> void:
