@@ -100,7 +100,7 @@ func _on_bookmark_added(to_do : Control) -> void:
 		to_do.date,
 		to_do.get_list_index(),
 		to_do.get_node("%Edit").text,
-		to_do.state != to_do.States.TO_DO
+		to_do.state != ToDoData.States.TO_DO
 	)
 
 

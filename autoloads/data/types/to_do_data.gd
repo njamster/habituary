@@ -128,6 +128,7 @@ func load_from_string(raw_string: String) -> void:
 		delete_requested.emit()
 	else:
 		sub_items = ToDoListData.new(indentation_level + 1)
+		sub_items.changed.connect(changed.emit)
 
 
 func as_string() -> String:

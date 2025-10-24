@@ -53,7 +53,7 @@ var text := "":
 			%Edit.text = _strip_text(text)
 
 			if _initialization_finished:
-				get_to_do_list()._start_debounce_timer("text changed")
+				data.text = value
 
 			_update_saved_search_results(get_to_do_list().cache_key, text, old_text)
 
@@ -98,7 +98,7 @@ var state := ToDoData.States.TO_DO:
 					EventBus.bookmark_changed.emit(self, date, get_list_index())
 
 				if self.text and not has_sub_items():
-					get_to_do_list()._start_debounce_timer("state changed")
+					data.state = value
 
 var is_bold := false:
 	set(value):
@@ -110,7 +110,7 @@ var is_bold := false:
 				$EditingOptions.update_bold()
 
 			if _initialization_finished and self.text:
-				get_to_do_list()._start_debounce_timer("is_bold changed")
+				data.is_bold = value
 
 var is_italic := false:
 	set(value):
@@ -122,7 +122,7 @@ var is_italic := false:
 				$EditingOptions.update_italic()
 
 			if _initialization_finished and self.text:
-				get_to_do_list()._start_debounce_timer("is_italic changed")
+				data.is_italic = value
 
 var _is_mouse_over_checkbox := false
 
@@ -150,7 +150,7 @@ var is_folded := false:
 				Settings.show_sub_item_count == Settings.ShowSubItemCount.ALWAYS
 
 		if _initialization_finished and self.text:
-			get_to_do_list()._start_debounce_timer("is_folded changed")
+			data.is_folded = value
 
 
 var is_bookmarked := false:
@@ -167,7 +167,7 @@ var is_bookmarked := false:
 				$EditingOptions.update_bookmark()
 
 			if _initialization_finished and self.text:
-				get_to_do_list()._start_debounce_timer("is_bookmarked changed")
+				data.is_bookmarked = value
 
 
 var text_color_id := 0:
@@ -188,7 +188,7 @@ var text_color_id := 0:
 
 		if old_value != value:
 			if _initialization_finished and self.text:
-				get_to_do_list()._start_debounce_timer("text_color_id changed")
+				data.text_color_id = value
 
 var hide_tween: Tween
 
