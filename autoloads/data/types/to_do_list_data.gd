@@ -2,7 +2,7 @@ extends RefCounted
 class_name ToDoListData
 
 
-signal changed
+signal changed(reason: String)
 
 
 var to_dos: Array[ToDoData]
@@ -20,7 +20,7 @@ func add(to_do: ToDoData) -> void:
 	to_do.indent_requested.connect(indent.bind(to_do))
 	to_do.delete_requested.connect(remove.bind(to_do))
 	to_do.changed.connect(changed.emit)
-	changed.emit()
+	changed.emit("to-do added")
 
 
 func remove(to_do: ToDoData) -> void:
@@ -29,7 +29,7 @@ func remove(to_do: ToDoData) -> void:
 	to_do.indent_requested.disconnect(indent)
 	to_do.delete_requested.disconnect(remove)
 	to_do.changed.disconnect(changed.emit)
-	changed.emit()
+	changed.emit("to-do removed")
 
 
 func indent(to_do: ToDoData) -> void:

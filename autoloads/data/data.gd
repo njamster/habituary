@@ -59,12 +59,15 @@ func _is_valid_filename(filename: String) -> bool:
 	return true
 
 
-func start_debounce_timer(file: FileData) -> void:
+func start_debounce_timer(reason: String, file: FileData) -> void:
 	var filename_without_extension := file.name.replace(".txt", "")
 	var debounce_timer: Timer = get_node_or_null(filename_without_extension)
 	if debounce_timer:
 		debounce_timer.start()
-		Log.debug("[%s] Debounce timer restarted" % file.name)
+		Log.debug("[%s] Debounce timer restarted, reason: %s" % [
+			file.name,
+			reason
+		])
 	else:
 		debounce_timer = Timer.new()
 		debounce_timer.name = filename_without_extension
@@ -76,7 +79,10 @@ func start_debounce_timer(file: FileData) -> void:
 			debounce_timer.queue_free()
 		)
 		add_child(debounce_timer)
-		Log.debug("[%s] Debounce timer started" % file.name)
+		Log.debug("[%s] Debounce timer started, reason: %s" % [
+			file.name,
+			reason
+		])
 
 
 func unload(file: FileData) -> void:

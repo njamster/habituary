@@ -5,7 +5,7 @@ class_name ToDoData
 signal indent_requested
 signal delete_requested
 
-signal changed
+signal changed(reason: String)
 
 
 enum States {
@@ -19,43 +19,46 @@ var state := States.TO_DO:
 	set(value):
 		if state != value:
 			state = value
-			changed.emit()
+			changed.emit("'state' changed to '%s'" % States.keys()[value])
 
 var text: String:
 	set(value):
 		if text != value:
 			text = value
-			changed.emit()
+			changed.emit("'text' changed to '%s'" % Utils.shorten_string(
+				value,
+				30
+			))
 
 var is_bold := false:
 	set(value):
 		if is_bold != value:
 			is_bold = value
-			changed.emit()
+			changed.emit("'is_bold' changed to '%s'" % value)
 
 var is_italic := false:
 	set(value):
 		if is_italic != value:
 			is_italic = value
-			changed.emit()
+			changed.emit("'is_italic' changed to '%s'" % value)
 
 var is_bookmarked := false:
 	set(value):
 		if is_bookmarked != value:
 			is_bookmarked = value
-			changed.emit()
+			changed.emit("'is_bookmarked' changed to '%s'" % value)
 
 var is_folded := false:
 	set(value):
 		if is_folded != value:
 			is_folded = value
-			changed.emit()
+			changed.emit("'is_folded' changed to '%s'" % value)
 
 var text_color_id: int:
 	set(value):
 		if text_color_id != value:
 			text_color_id = value
-			changed.emit()
+			changed.emit("'text_color_id' changed to '%s'" % value)
 
 var sub_items: ToDoListData
 

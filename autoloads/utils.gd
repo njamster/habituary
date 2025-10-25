@@ -129,3 +129,10 @@ func is_built_in_action(event: InputEvent, exact_match := true) -> bool:
 			return true
 
 	return false
+
+
+func shorten_string(input: String, width: int, placeholder := "...") -> String:
+	if input.length() <= width:
+		return input
+	else:
+		return input.left(width) + placeholder
