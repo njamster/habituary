@@ -141,9 +141,7 @@ func load_data() -> void:
 	if not data:
 		return  # early
 
-	for item in data.to_do_list.to_dos:
-		var restored_item = %Items.add_todo(-1, false)
-		restored_item.data = item
+	%Items.data = data.to_do_list
 
 	if data.scroll_offset:
 		await get_tree().process_frame  # wait for container size update

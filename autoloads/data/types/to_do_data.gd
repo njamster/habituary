@@ -60,7 +60,7 @@ var text_color_id: int:
 			text_color_id = value
 			changed.emit("'text_color_id' changed to '%s'" % value)
 
-var sub_items: ToDoListData
+var sub_items := ToDoListData.new()
 
 var indentation_level := -1
 
@@ -167,6 +167,7 @@ func as_string() -> String:
 		result += " [COLOR%d]" % text_color_id
 
 	for sub_item in sub_items.to_dos:
-		result += "\n" + sub_item.as_string()
+		if sub_item.text:
+			result += "\n" + sub_item.as_string()
 
 	return result

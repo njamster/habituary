@@ -68,7 +68,8 @@ func as_string() -> String:
 	var result := ""
 
 	for item in to_do_list.to_dos:
-		result += item.as_string() + "\n"
+		if item.text:
+			result += item.as_string() + "\n"
 
 	return result.trim_suffix("\n")
 

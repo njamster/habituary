@@ -14,8 +14,11 @@ func _init(p_indentation_level := 0) -> void:
 	indentation_level = p_indentation_level
 
 
-func add(to_do: ToDoData) -> void:
-	to_dos.append(to_do)
+func add(to_do: ToDoData, at_index := -1) -> void:
+	if at_index >= 0 and at_index <= to_dos.size():
+		to_dos.insert(at_index, to_do)
+	else:
+		to_dos.append(to_do)
 	to_do.indentation_level = indentation_level
 	to_do.indent_requested.connect(indent.bind(to_do))
 	to_do.delete_requested.connect(remove.bind(to_do))

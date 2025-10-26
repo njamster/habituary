@@ -8,6 +8,16 @@ var indentation_level := 0
 
 var rejection_tween : Tween
 
+var data: ToDoListData:
+	set(value):
+		if data != null:
+			Log.error("Cannot set 'data': Variable is immutable!")
+			return
+		data = value
+
+		for to_do_data in data.to_dos:
+			add_todo(-1, false, to_do_data)
+
 
 #region Setup
 func _enter_tree() -> void:
@@ -71,13 +81,18 @@ func _on_item_added(item: Node) -> void:
 		return
 
 
-func add_todo(at_index := -1, auto_edit := true) -> ToDoItem:
+func add_todo(at_index := -1, auto_edit := true, p_data: ToDoData = null) -> ToDoItem:
 	# Add a new to-do item to the end of this item list.
 	var new_item := preload("todo_item/todo_item.tscn").instantiate()
 	add_child(new_item)
 
 	# Then move it to the position indicated by [at_index].
 	move_child(new_item, at_index)
+
+	if not p_data:
+		p_data = ToDoData.new()
+		data.add(p_data, at_index)
+	new_item.data = p_data
 
 	if auto_edit:
 		new_item.edit.call_deferred()
@@ -124,61 +139,63 @@ func move_todo_down(item: ToDoItem) -> void:
 		_reject_indentation_change(item, Vector2.DOWN)
 
 
-func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
+func _can_drop_data(_at_position: Vector2, p_data: Variant) -> bool:
 	# prevents the user from dropping a to-do on its own sub items
-	return data is ToDoItem and not data.is_ancestor_of(self)
+	return p_data is ToDoItem and not p_data.is_ancestor_of(self)
 
 
-func _drop_data(at_position: Vector2, data: Variant) -> void:
+func _drop_data(at_position: Vector2, p_data: Variant) -> void:
 	var at_index := 0
 	for child in get_children():
-		if child == data:
+		if child == p_data:
 			continue
 		if child.position.y > at_position.y - 13:
 			break
 		else:
 			at_index += 1
 
-	var dragged_from = data.get_item_list()
-	var old_list = data.get_to_do_list()
+	var dragged_from = p_data.get_item_list()
+	var old_list = p_data.get_to_do_list()
 
-	if self.get_day_panel() and not data.get_day_panel():
-		# data was part of the capture list before, but won't be anymore:
+	if self.get_day_panel() and not p_data.get_day_panel():
+		# p_data was part of the capture list before, but won't be anymore:
 		# (a) remove review date
-		data.review_date = ""
+		p_data.review_date = ""
 		# (b) repeat this for all of its sub items
-		for sub_item in data.get_node("%SubItems").get_all_items():
+		for sub_item in p_data.get_node("%SubItems").get_all_items():
 			sub_item.review_date = ""
-	elif not self.get_day_panel() and data.get_day_panel():
-		# data will become part of the capture list now, but wasn't before:
+	elif not self.get_day_panel() and p_data.get_day_panel():
+		# p_data will become part of the capture list now, but wasn't before:
 		# (a) add review date
 		var tomorrow = DayTimer.today.add_days(1).as_string()
-		data.review_date = tomorrow
+		p_data.review_date = tomorrow
 		# (b) remove bookmark
-		data.is_bookmarked = false
+		p_data.is_bookmarked = false
 		# (c) repeat this for all of its sub items
-		for sub_item in data.get_node("%SubItems").get_all_items():
+		for sub_item in p_data.get_node("%SubItems").get_all_items():
 			sub_item.review_date = tomorrow
 			sub_item.is_bookmarked = false
 
-	if data.has_node("EditingOptions"):
-		data.get_node("EditingOptions").update_bookmark.call_deferred()
+	if p_data.has_node("EditingOptions"):
+		p_data.get_node("EditingOptions").update_bookmark.call_deferred()
 
 	if dragged_from != self:
-		data.reparent(self)
-	move_child(data, at_index)
+		p_data.reparent(self)
+	move_child(p_data, at_index)
 
 	if dragged_from != self:
 		old_list._start_debounce_timer("to-do dragged to another list")
-		data._update_saved_search_results(old_list.cache_key, data.text)
+		p_data._update_saved_search_results(old_list.cache_key, p_data.text)
 
-	if data.is_in_edit_mode():
-		data.edit()
+	if p_data.is_in_edit_mode():
+		p_data.edit()
 
-	data.get_to_do_list()._start_debounce_timer("to-do dropped")
-	data._update_saved_search_results(data.get_to_do_list().cache_key, data.text)
+	p_data.get_to_do_list()._start_debounce_timer("to-do dropped")
+	p_data._update_saved_search_results(
+		p_data.get_to_do_list().cache_key, p_data.text
+	)
 
-	data._update_copy_to_today_visibility()
+	p_data._update_copy_to_today_visibility()
 #endregion
 
 

@@ -24,9 +24,7 @@ var data: ToDoData:
 		is_bookmarked = data.is_bookmarked
 		text_color_id = data.text_color_id
 
-		for sub_item in data.sub_items.to_dos:
-			var restored_item = %SubItems.add_todo(-1, false)
-			restored_item.data = sub_item
+		%SubItems.data = data.sub_items
 
 		is_folded = data.is_folded
 

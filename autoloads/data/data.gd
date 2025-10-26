@@ -88,3 +88,11 @@ func start_debounce_timer(reason: String, file: FileData) -> void:
 func unload(file: FileData) -> void:
 	if file.name in Data.files:
 		files.erase(file.name)
+
+
+func get_file(filename: String) -> FileData:
+	if not filename in Data.files:
+		Data.files[filename] = FileData.new(
+			Settings.store_path.path_join(filename)
+		)
+	return Data.files[filename]

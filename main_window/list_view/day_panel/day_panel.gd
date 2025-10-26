@@ -26,8 +26,7 @@ func _set_initial_state() -> void:
 
 	# TODO: Change Settings.date_format_save to include the "txt"-extension
 	var filename := self.date.format(Settings.date_format_save) + ".txt"
-	if filename in Data.files:
-		%ScrollableTodoList/%TodoList.data = Data.files[filename]
+	%ScrollableTodoList/%TodoList.data = Data.get_file(filename)
 
 	_on_view_mode_changed()
 	_update_stretch_ratio()
