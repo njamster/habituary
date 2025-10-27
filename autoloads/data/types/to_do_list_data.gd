@@ -35,6 +35,18 @@ func remove(to_do: ToDoData) -> void:
 	changed.emit("to-do removed")
 
 
+func move(to_do: ToDoData, to_position: int) -> void:
+	var index := to_dos.find(to_do)
+
+	if index == -1:
+		return  # early
+
+	to_dos.remove_at(index)
+	to_dos.insert(to_position, to_do)
+
+	changed.emit("to-do moved")
+
+
 func indent(to_do: ToDoData) -> void:
 	var index := to_dos.find(to_do)
 

@@ -121,9 +121,9 @@ func move_todo_up(item: ToDoItem) -> void:
 	var index := item.get_index()
 
 	if index > 0:
-		move_child(item,index - 1)
+		move_child(item, index - 1)
 		if item.text:
-			item.get_to_do_list()._start_debounce_timer("to-do moved")
+			data.move(item.data, index - 1)
 	else:
 		_reject_indentation_change(item, Vector2.UP)
 
@@ -134,7 +134,7 @@ func move_todo_down(item: ToDoItem) -> void:
 	if index < get_child_count() - 1:
 		move_child(item, index + 1)
 		if item.text:
-			item.get_to_do_list()._start_debounce_timer("to-do moved")
+			data.move(item.data, index + 1)
 	else:
 		_reject_indentation_change(item, Vector2.DOWN)
 
@@ -183,14 +183,15 @@ func _drop_data(at_position: Vector2, p_data: Variant) -> void:
 		p_data.reparent(self)
 	move_child(p_data, at_index)
 
+	dragged_from.data.remove(p_data.data)
+	data.add(p_data.data, at_index)
+
 	if dragged_from != self:
-		old_list._start_debounce_timer("to-do dragged to another list")
 		p_data._update_saved_search_results(old_list.cache_key, p_data.text)
 
 	if p_data.is_in_edit_mode():
 		p_data.edit()
 
-	p_data.get_to_do_list()._start_debounce_timer("to-do dropped")
 	p_data._update_saved_search_results(
 		p_data.get_to_do_list().cache_key, p_data.text
 	)
@@ -325,9 +326,7 @@ func indent_todo(item: ToDoItem, visual_feedback := true) -> void:
 		item.edit()
 
 		if item.text:
-			item.get_to_do_list()._start_debounce_timer(
-				"indentation_level changed"
-			)
+			data.indent(item.data)
 
 
 func unindent_todo(item: ToDoItem, visual_feedback := true) -> void:

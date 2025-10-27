@@ -388,6 +388,8 @@ func delete() -> void:
 
 	queue_free()
 
+	get_item_list().data.remove(data)
+
 	if self.text:
 		# NOTE: We *must* get this now, as the method would simply return `null`
 		# once this node got succesfully free'd and exited the tree!
@@ -395,7 +397,6 @@ func delete() -> void:
 
 		await tree_exited
 
-		to_do_list._start_debounce_timer("to-do deleted")
 		_update_saved_search_results(to_do_list.cache_key, text)
 
 

@@ -61,8 +61,8 @@ func _connect_signals() -> void:
 	#endregion
 
 	#region Parent Signals
-	get_scroll_container().scrolled.connect(
-		_start_debounce_timer.bind("list scrolled")
+	get_scroll_container().scrolled.connect(func():
+		data.scroll_offset = get_scroll_container().scroll_vertical
 	)
 	#endregion
 
