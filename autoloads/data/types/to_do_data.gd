@@ -60,9 +60,10 @@ var text_color_id: int:
 			text_color_id = value
 			changed.emit("'text_color_id' changed to '%s'" % value)
 
-var sub_items := ToDoListData.new()
+var sub_items := ToDoListData.new(self)
 
 var indentation_level := -1
+var parent: ToDoListData
 
 
 func load_from_string(raw_string: String) -> void:
@@ -130,7 +131,7 @@ func load_from_string(raw_string: String) -> void:
 	if text.is_empty():
 		delete_requested.emit()
 	else:
-		sub_items = ToDoListData.new(indentation_level + 1)
+		sub_items.indentation_level = indentation_level + 1
 		sub_items.changed.connect(changed.emit)
 
 

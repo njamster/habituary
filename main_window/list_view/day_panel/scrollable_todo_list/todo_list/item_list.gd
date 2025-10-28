@@ -344,9 +344,7 @@ func unindent_todo(item: ToDoItem, visual_feedback := true) -> void:
 		item.edit()
 
 		if item.text:
-			item.get_to_do_list()._start_debounce_timer(
-				"indentation_level changed"
-			)
+			data.unindent(item.data)
 
 
 ## Plays a short animation to indicate a rejected indentation/move request.

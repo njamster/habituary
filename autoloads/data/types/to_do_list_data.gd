@@ -8,9 +8,11 @@ signal changed(reason: String)
 var to_dos: Array[ToDoData]
 
 var indentation_level: int
+var parent: ToDoData
 
 
-func _init(p_indentation_level := 0) -> void:
+func _init(p_parent: ToDoData = null, p_indentation_level := 0) -> void:
+	parent = p_parent
 	indentation_level = p_indentation_level
 
 
@@ -19,6 +21,7 @@ func add(to_do: ToDoData, at_index := -1) -> void:
 		to_dos.insert(at_index, to_do)
 	else:
 		to_dos.append(to_do)
+	to_do.parent = self
 	to_do.indentation_level = indentation_level
 	to_do.indent_requested.connect(indent.bind(to_do))
 	to_do.delete_requested.connect(remove.bind(to_do))
@@ -28,6 +31,7 @@ func add(to_do: ToDoData, at_index := -1) -> void:
 
 func remove(to_do: ToDoData) -> void:
 	to_dos.erase(to_do)
+	to_do.parent = null
 	to_do.indentation_level = -1
 	to_do.indent_requested.disconnect(indent)
 	to_do.delete_requested.disconnect(remove)
@@ -50,11 +54,24 @@ func move(to_do: ToDoData, to_position: int) -> void:
 func indent(to_do: ToDoData) -> void:
 	var index := to_dos.find(to_do)
 
-	if index == 0:
+	if index <= 0:
 		return  # early
 
 	remove(to_do)
 	to_dos[index - 1].sub_items.add(to_do)
+
+
+func unindent(to_do: ToDoData) -> void:
+	var index := to_dos.find(to_do)
+
+	if index == -1:
+		return  # early
+
+	var parent_list := parent.parent
+	if parent_list:
+		var at_position = parent_list.to_dos.find(parent)
+		remove(to_do)
+		parent_list.add(to_do, at_position + 1)
 
 
 func is_empty() -> bool:
