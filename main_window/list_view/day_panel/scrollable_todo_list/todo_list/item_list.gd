@@ -317,16 +317,16 @@ func indent_todo(item: ToDoItem, visual_feedback := true) -> void:
 			_reject_indentation_change(item, Vector2.RIGHT)
 		return  # first item in a list cannot be indented
 
+	item.remember_caret_position()
+
 	var predecessor_item := get_child(item.get_index() - 1)
 	if predecessor_item.is_folded:
 		predecessor_item.is_folded = false
 	item.reparent(predecessor_item.get_node("%SubItems"))
 
 	if item._initialization_finished:
+		data.indent(item.data)
 		item.edit()
-
-		if item.text:
-			data.indent(item.data)
 
 
 func unindent_todo(item: ToDoItem, visual_feedback := true) -> void:
@@ -337,14 +337,14 @@ func unindent_todo(item: ToDoItem, visual_feedback := true) -> void:
 			_reject_indentation_change(item, Vector2.LEFT)
 		return  # item cannot be unindented any further
 
+	item.remember_caret_position()
+
 	item.reparent(parent_todo.get_item_list())
 	item.get_parent().move_child(item, parent_todo.get_index() + 1)
 
 	if item._initialization_finished:
+		data.unindent(item.data)
 		item.edit()
-
-		if item.text:
-			data.unindent(item.data)
 
 
 ## Plays a short animation to indicate a rejected indentation/move request.

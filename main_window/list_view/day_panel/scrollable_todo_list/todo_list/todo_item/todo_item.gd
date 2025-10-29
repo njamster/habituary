@@ -495,8 +495,7 @@ func _strip_text(raw_text: String) -> String:
 
 
 func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
-	# save caret_column value, as it will be reset once %Edit.text is set
-	set_meta("caret_position", %Edit.caret_column)
+	remember_caret_position()
 
 	new_text = _strip_text(new_text)
 	if %Edit.text != new_text:
@@ -1156,3 +1155,9 @@ func _update_saved_search_results(cache_key: String, new_text: String, old_text 
 					cache_key
 				)
 				EventBus.saved_search_update_requested.emit(query)
+
+
+## Saves the current [param caret_column] value of the edit field to a meta
+## property, which is used to restore it later when [method edit] is called.
+func remember_caret_position() -> void:
+	set_meta("caret_position", %Edit.caret_column)

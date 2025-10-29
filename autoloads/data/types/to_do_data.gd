@@ -130,9 +130,6 @@ func load_from_string(raw_string: String) -> void:
 
 	if text.is_empty():
 		delete_requested.emit()
-	else:
-		sub_items.indentation_level = indentation_level + 1
-		sub_items.changed.connect(changed.emit)
 
 
 func as_string() -> String:
