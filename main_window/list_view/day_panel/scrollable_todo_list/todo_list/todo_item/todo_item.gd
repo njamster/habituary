@@ -439,6 +439,8 @@ func _on_edit_text_changed(new_text: String) -> void:
 		get_item_list().indent_todo(self)
 		%Edit.text = new_text.right(-2).strip_edges()
 
+	data.text = %Edit.text
+
 	if date and is_bookmarked:
 		EventBus.bookmark_changed.emit(self, date, get_list_index())
 
