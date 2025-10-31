@@ -104,9 +104,9 @@ func update_day() -> void:
 			else:
 				button.theme_type_variation = "CalendarWidget_DayButton"
 
-			if not FileAccess.file_exists(Settings.store_path.path_join(
+			if not Data.has_file(
 				button.associated_day.format(Settings.date_format_save)
-			) + ".txt"):
+			):
 				button.modulate.a = 0.55
 
 
@@ -167,9 +167,7 @@ func update_month() -> void:
 			if date.is_weekend_day():
 				button.theme_type_variation = "CalendarWidget_DayButton_WeekendDay"
 
-			if not FileAccess.file_exists(Settings.store_path.path_join(
-				date.format(Settings.date_format_save)
-			) + ".txt"):
+			if not Data.has_file(date.format(Settings.date_format_save)):
 				button.modulate.a = 0.2
 			else:
 				button.modulate.a = 0.3
@@ -198,9 +196,7 @@ func update_month() -> void:
 				if date.is_weekend_day():
 					button.theme_type_variation = "CalendarWidget_DayButton_WeekendDay"
 
-				if not FileAccess.file_exists(Settings.store_path.path_join(
-					date.format(Settings.date_format_save)
-				) + ".txt"):
+				if not Data.has_file(date.format(Settings.date_format_save)):
 					button.modulate.a = 0.55
 			button.pressed.connect(
 					day_button_pressed.emit.bind(button.associated_day)
@@ -219,9 +215,7 @@ func update_month() -> void:
 			if date.is_weekend_day():
 				button.theme_type_variation = "CalendarWidget_DayButton_WeekendDay"
 
-			if not FileAccess.file_exists(Settings.store_path.path_join(
-				date.format(Settings.date_format_save)
-			) + ".txt"):
+			if not Data.has_file(date.format(Settings.date_format_save)):
 				button.modulate.a = 0.2
 			else:
 				button.modulate.a = 0.3

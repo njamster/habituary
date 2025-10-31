@@ -103,7 +103,7 @@ var DEFAULT_STORE_PATH : String:
 
 var settings_path : String
 
-var date_format_save := "YYYY-MM-DD"
+var date_format_save := "YYYY-MM-DD.txt"
 
 @export_group("AppState")
 @export var today_position := TodayPosition.CENTERED:

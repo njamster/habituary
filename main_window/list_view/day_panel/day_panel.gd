@@ -21,11 +21,10 @@ func _ready() -> void:
 
 func _set_initial_state() -> void:
 	%ScrollableTodoList/%TodoList.cache_key = self.date.format(
-		Settings.date_format_save
+		Settings.date_format_save.trim_suffix(".txt")
 	)
 
-	# TODO: Change Settings.date_format_save to include the "txt"-extension
-	var filename := self.date.format(Settings.date_format_save) + ".txt"
+	var filename := self.date.format(Settings.date_format_save)
 	%ScrollableTodoList/%TodoList.data = Data.get_file(filename)
 
 	_on_view_mode_changed()

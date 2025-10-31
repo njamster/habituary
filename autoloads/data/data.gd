@@ -96,3 +96,10 @@ func get_file(filename: String) -> FileData:
 			Settings.store_path.path_join(filename)
 		)
 	return Data.files[filename]
+
+
+func has_file(filename: String) -> bool:
+	return (
+		filename in Data.files
+		and not Data.files[filename].is_empty()
+	)
