@@ -86,20 +86,21 @@ func start_debounce_timer(reason: String, file: FileData) -> void:
 
 
 func unload(file: FileData) -> void:
-	if file.name in Data.files:
+	if file.name in files:
 		files.erase(file.name)
 
 
 func get_file(filename: String) -> FileData:
-	if not filename in Data.files:
-		Data.files[filename] = FileData.new(
+	if not filename in files:
+		files[filename] = FileData.new(
 			Settings.store_path.path_join(filename)
 		)
-	return Data.files[filename]
+		files[filename].is_preliminary = true
+	return files[filename]
 
 
 func has_file(filename: String) -> bool:
 	return (
-		filename in Data.files
-		and not Data.files[filename].is_empty()
+		filename in files
+		and not files[filename].is_empty()
 	)

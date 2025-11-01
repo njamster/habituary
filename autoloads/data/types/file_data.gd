@@ -6,6 +6,8 @@ var path: String
 var name: String
 var last_modified := Utils.MIN_INT
 
+var is_preliminary := false
+
 var _is_initialized := false
 
 var to_do_list := ToDoListData.new()
@@ -53,15 +55,20 @@ func _load_from_disk() -> void:
 
 
 func save_to_disk() -> void:
-	var file := FileAccess.open(path, FileAccess.WRITE)
-	if file:
-		file.store_string(as_string())
-	Log.debug("[%s] Saved to disk" % name)
+	if not to_do_list.is_empty():
+		var file := FileAccess.open(path, FileAccess.WRITE)
+		if file:
+			file.store_string(as_string())
+		is_preliminary = false
+		Log.debug("[%s] Saved to disk" % name)
+	else:
+		DirAccess.remove_absolute(path)
 
 
 func reload() -> void:
 	if not FileAccess.file_exists(path):
-		Data.unload(self)
+		if not is_preliminary:
+			Data.unload(self)
 		return  # early
 
 	if last_modified < FileAccess.get_modified_time(path):

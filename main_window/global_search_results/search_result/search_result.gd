@@ -4,10 +4,10 @@ var date : Date
 var line_number : int
 
 
-func fill_in(key, state, value, id) -> void:
-	date = Date.from_string(key)
+func fill_in(p_date: String, state: ToDoData.States, text: String, id: int) -> void:
+	date = Date.from_string(p_date)
 	_update_state_icon(state)
-	%Text.text = value
+	%Text.text = text
 	line_number = id
 
 
@@ -31,12 +31,12 @@ func _connect_signals() -> void:
 	#endregion
 
 
-func _update_state_icon(state : String) -> void:
+func _update_state_icon(state: ToDoData.States) -> void:
 	match state:
-		"[x]":
+		ToDoData.States.DONE:
 			%State.texture = preload("images/done.svg")
 			%State.modulate = Color("#A3BE8C")
-		"[-]":
+		ToDoData.States.FAILED:
 			%State.texture = preload("images/failed.svg")
 			%State.modulate = Color("#D08770")
 		_:

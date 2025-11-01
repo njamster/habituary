@@ -14,8 +14,7 @@ func _connect_signals() -> void:
 		visible = (Settings.main_panel == Settings.MainPanelState.GLOBAL_SEARCH)
 	)
 
-	# Deferred to give to-do lists with pending saves time to update their cache
-	EventBus.global_search_requested.connect(search, CONNECT_DEFERRED)
+	EventBus.global_search_requested.connect(search)
 
 	Cache.content_updated.connect(func(key):
 		if Settings.main_panel == Settings.MainPanelState.GLOBAL_SEARCH:
@@ -36,29 +35,24 @@ func search() -> void:
 	for child in %SearchResults.get_children():
 		child.free()
 
-	# Reverse key order: future dates first, past dates last.
-	var cache_keys := Cache.data.keys()
-	cache_keys.sort_custom(func(a, b): return a > b)
+	# Reverse order: future dates first, past dates last.
+	var filenames := Data.files.keys()
+	filenames.sort_custom(func(a, b): return a > b)
 
-	# Search all cached contents for items matching the search query.
-	for key in cache_keys:
-		# FIXME: Temporary workaround, since the capture has no associated date,
-		# thus it's not possible to jump to a captured to-do item yet
-		if key == "capture" or key == "saved_searches":
-			continue  # with next key
+	# Search all files for to-dos that match the search query.
+	for filename in filenames:
+		var date = filename.trim_suffix(".txt")
 
 		var search_result_group := preload(
 			"search_result_group/seach_result_group.tscn"
 		).instantiate()
-		search_result_group.date = Date.from_string(key)
+		search_result_group.date = Date.from_string(date)
 
 		var line_id := 0
-		for line in Cache.data[key].content:
-			var stripped_line := Utils.strip_tags(line)
-			if stripped_line.contains(Settings.search_query):
+		for to_do in Data.files[filename].to_do_list.to_dos:
+			if to_do.text.contains(Settings.search_query):
 				var search_result := SEARCH_RESULT.instantiate()
-				var state : String = line.strip_edges().left(3)
-				search_result.fill_in(key, state, stripped_line, line_id)
+				search_result.fill_in(date, to_do.state, to_do.text, line_id)
 				search_result_group.add_result(search_result)
 			line_id += 1
 
