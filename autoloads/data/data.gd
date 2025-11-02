@@ -4,6 +4,7 @@ extends Node
 const DEBOUNCE_TIME := 10.0  # seconds
 
 var files: Dictionary[String, FileData]
+var saved_searches: SearchData
 
 var _valid_filename_reg_ex = RegEx.create_from_string(
 	"^(?<year>[0-9]{4})-(?<month>0[1-9]|1[012])-(?<day>0[1-9]|[1-9][0-9]).txt$"
@@ -26,8 +27,10 @@ func _notification(what: int) -> void:
 
 func _load_from_disk(replace_old_data := true) -> void:
 	if replace_old_data:
+		saved_searches = SearchData.new()
 		files.clear()
 	else:
+		saved_searches.reload()
 		for key in files.keys():
 			files[key].reload()
 
@@ -59,8 +62,8 @@ func _is_valid_filename(filename: String) -> bool:
 	return true
 
 
-func start_debounce_timer(reason: String, file: FileData) -> void:
-	var filename_without_extension := file.name.replace(".txt", "")
+func start_debounce_timer(reason: String, file: RefCounted) -> void:
+	var filename_without_extension: String = file.name.replace(".txt", "")
 	var debounce_timer: Timer = get_node_or_null(filename_without_extension)
 	if debounce_timer:
 		debounce_timer.start()
