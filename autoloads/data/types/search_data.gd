@@ -2,6 +2,8 @@ extends RefCounted
 class_name SearchData
 
 
+signal changed(reason: String)
+
 var name := "saved_searches.txt"
 var path := Settings.store_path.path_join(name)
 var last_modified := Utils.MIN_INT
@@ -15,6 +17,8 @@ var _queries := {}
 
 func _init() -> void:
 	_load_from_disk()
+
+	changed.connect(Data.start_debounce_timer.bind(self))
 
 
 func _load_from_disk() -> void:
@@ -59,7 +63,17 @@ func as_string() -> String:
 
 	for query in _queries.keys():
 		if _queries[query]:
-			result += "%s [ALARM:%s]\n" % [query, _queries[query]]
+			var warning_threshold = _queries[query]
+			if warning_threshold > 0:
+				result += "%s [ALARM:+%d]\n" % [
+					query,
+					warning_threshold
+				]
+			else:
+				result += "%s [ALARM:%d]\n" % [
+					query,
+					warning_threshold
+				]
 		else:
 			result += query + "\n"
 
@@ -73,16 +87,20 @@ func is_empty() -> bool:
 func add(query: String, warning_threshold = null) -> void:
 	if query not in _queries:
 		_queries[query] = warning_threshold
-		Data.start_debounce_timer("Query added", self)
+		changed.emit("Query added")
+
+
+func contains(query: String) -> bool:
+	return query in _queries
 
 
 func update(query: String, warning_threshold = null) -> void:
-	if query in _queries and _queries[query] != warning_threshold:
+	if contains(query) and _queries[query] != warning_threshold:
 		_queries[query] = warning_threshold
-		Data.start_debounce_timer("Warning threshold changed", self)
+		changed.emit("Warning threshold changed")
 
 
 func remove(query: String) -> void:
-	if query in _queries:
+	if contains(query):
 		_queries.erase(query)
-		Data.start_debounce_timer("Query removed", self)
+		changed.emit("Query removed")

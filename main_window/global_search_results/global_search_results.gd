@@ -65,60 +65,19 @@ func search() -> void:
 	$NoHitMessage.visible = (%SearchResults.get_child_count() == 0)
 
 	# Update the SaveSearch button depending on the current query text.
-	if "saved_searches" in Cache.data:
-		var matching_saved_search := false
-		for raw_line in Cache.data["saved_searches"].content:
-			var alarm_tag_reg_ex := RegEx.new()
-			alarm_tag_reg_ex.compile("\\[ALARM:(?<alarm>[\\+|-][1-9][0-9]*)\\]$")
-			var line := alarm_tag_reg_ex.sub(raw_line, "").strip_edges()
-
-			if line == Settings.search_query:
-				matching_saved_search = true
-				break  # for loop
-
-		if matching_saved_search:
-			$SaveSearch.text = $SaveSearch.text.replace("Save", "Unsave")
-		else:
-			$SaveSearch.text = $SaveSearch.text.replace("Unsave", "Save")
+	if Data.saved_searches.contains(Settings.search_query):
+		$SaveSearch.text = $SaveSearch.text.replace("Save", "Unsave")
+	else:
+		$SaveSearch.text = $SaveSearch.text.replace("Unsave", "Save")
 
 	# Now, make the global search results panel visible to the user.
 	Settings.main_panel = Settings.MainPanelState.GLOBAL_SEARCH
 
 
 func _on_save_search_pressed() -> void:
-	if not "saved_searches" in Cache.data:
-		Cache.data["saved_searches"] = {
-			"content": [],
-			"last_modified": Time.get_unix_time_from_system()
-		}
-
-	var matching_saved_search := ""
-	for raw_line in Cache.data["saved_searches"].content:
-		var alarm_tag_reg_ex := RegEx.new()
-		alarm_tag_reg_ex.compile("\\[ALARM:(?<alarm>[\\+|-][1-9][0-9]*)\\]$")
-		var line := alarm_tag_reg_ex.sub(raw_line, "").strip_edges()
-
-		if line == Settings.search_query:
-			matching_saved_search = raw_line
-			break  # for loop
-
-	if matching_saved_search:
-		var new_content := Cache.data["saved_searches"].content as Array
-		new_content.erase(matching_saved_search)
-
-		Cache.update_content(
-			"saved_searches",
-			"\n".join(new_content)
-		)
-
+	if Data.saved_searches.contains(Settings.search_query):
+		Data.saved_searches.remove(Settings.search_query)
 		$SaveSearch.text = $SaveSearch.text.replace("Unsave", "Save")
 	else:
-		var new_content := Cache.data["saved_searches"].content as Array
-		new_content.append(Settings.search_query)
-
-		Cache.update_content(
-			"saved_searches",
-			"\n".join(new_content)
-		)
-
+		Data.saved_searches.add(Settings.search_query)
 		$SaveSearch.text = $SaveSearch.text.replace("Save", "Unsave")

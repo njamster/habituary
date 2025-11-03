@@ -1,7 +1,6 @@
 extends PanelContainer
 
 
-signal save_requested
 signal resort_requested
 
 
@@ -17,7 +16,7 @@ var text := "":
 		text = value
 		%SearchQuery.text = text
 
-var warning_threshold := Utils.MIN_INT
+var warning_threshold
 
 # used for sorting
 var day_diff := Utils.MIN_INT:
@@ -34,7 +33,7 @@ func _ready() -> void:
 
 
 func _setup_initial_state() -> void:
-	if warning_threshold > Utils.MIN_INT:
+	if warning_threshold:
 		%Alarm.set_pressed_no_signal(true)
 		%Alarm._on_toggled()
 		%Alarm/Tooltip.text = %Alarm/Tooltip.text.replace("Add", "Remove")
@@ -92,7 +91,7 @@ func _connect_signals() -> void:
 	$VBox/ThirdRow/SpinBox.value_changed.connect(func(value):
 		warning_threshold = sign(warning_threshold) * value
 		_update_third_row()
-		save_requested.emit()
+		Data.saved_searches.update(text, warning_threshold)
 	)
 	$VBox/ThirdRow/OptionButton.item_selected.connect(func(index):
 		match index:
@@ -101,7 +100,7 @@ func _connect_signals() -> void:
 			1:
 				warning_threshold = +1 * abs(warning_threshold)
 		_update_third_row()
-		save_requested.emit()
+		Data.saved_searches.update(text, warning_threshold)
 	)
 	#endregion
 
@@ -177,14 +176,14 @@ func _on_repeat_search_pressed() -> void:
 
 
 func _update_third_row() -> void:
-	if warning_threshold > Utils.MIN_INT:
+	if warning_threshold:
 		$VBox/ThirdRow/SpinBox.value = abs(warning_threshold)
 		$VBox/ThirdRow/OptionButton.selected = int(warning_threshold > 0)
 
-	if day_diff <= warning_threshold:
-		%DayCounter.add_theme_color_override("font_color", Color.RED)
-	else:
-		%DayCounter.remove_theme_color_override("font_color")
+		if day_diff <= warning_threshold:
+			%DayCounter.add_theme_color_override("font_color", Color.RED)
+		else:
+			%DayCounter.remove_theme_color_override("font_color")
 
 
 func _on_alarm_toggled(toggled_on: bool) -> void:
@@ -195,7 +194,8 @@ func _on_alarm_toggled(toggled_on: bool) -> void:
 		warning_threshold = -1
 	else:
 		%Alarm/Tooltip.text = %Alarm/Tooltip.text.replace("Remove", "Add")
-		warning_threshold = Utils.MIN_INT
+		warning_threshold = null
 
 	_update_third_row()
-	save_requested.emit()
+
+	Data.saved_searches.update(text, warning_threshold)
