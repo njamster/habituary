@@ -46,22 +46,16 @@ func _setup_initial_state() -> void:
 
 
 func _find_last_mention() -> Date:
-	# Reverse key order: future dates first, past dates last.
-	var cache_keys := Cache.data.keys()
-	cache_keys.sort_custom(func(a, b): return a > b)
+	# Reverse order: future dates first, past dates last.
+	var filenames := Data.files.keys()
+	filenames.sort_custom(func(a, b): return a > b)
 
-	# Search all cached contents for items matching the search query.
-	for key in cache_keys:
-		# FIXME: Temporary workaround, since the capture has no associated date,
-		# thus it's not possible to jump to a captured to-do item yet
-		if key == "capture" or key == "saved_searches":
-			continue  # with next key
-
+	# Search all files for to-dos that match the search query.
+	for filename in filenames:
 		line_id = 0
-		for line in Cache.data[key].content:
-			var stripped_line := Utils.strip_tags(line)
-			if stripped_line.contains(text):
-				return Date.from_string(key)
+		for to_do in Data.files[filename].to_do_list.to_dos:
+			if to_do.text.contains(text):
+				return Date.from_string(filename.trim_suffix(".txt"))
 			line_id += 1
 
 	return null
