@@ -285,13 +285,9 @@ func _connect_signals() -> void:
 		%CopyToToday.modulate.a = 1.0
 	)
 	%CopyToToday.pressed.connect(func():
-		self.text = %Edit.text
-
-		Cache.copy_item(
-			get_list_index(),
-			get_to_do_list().cache_key,
-			DayTimer.today.as_string()
-		)
+		Data.get_file(
+			DayTimer.today.format(Settings.date_format_save)
+		).to_do_list.add(data)
 
 		Overlay.spawn_toast("To-do copied to today")
 	)

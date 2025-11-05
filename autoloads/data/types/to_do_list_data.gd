@@ -3,6 +3,7 @@ class_name ToDoListData
 
 
 signal changed(reason: String)
+signal to_do_added(to_do: ToDoData, at_index: int)
 
 
 var to_dos: Array[ToDoData]
@@ -20,6 +21,7 @@ func add(to_do: ToDoData, at_index := -1, emit := true) -> void:
 		to_dos.insert(at_index, to_do)
 	else:
 		to_dos.append(to_do)
+		at_index = -1
 	to_do.parent = self
 	to_do.indentation_level = indentation_level
 	to_do.sub_items.indentation_level = indentation_level + 1
@@ -29,6 +31,7 @@ func add(to_do: ToDoData, at_index := -1, emit := true) -> void:
 	to_do.changed.connect(changed.emit)
 	if emit:
 		changed.emit("to-do added")
+		to_do_added.emit(to_do, at_index)
 
 
 func remove(to_do: ToDoData, emit := true) -> void:

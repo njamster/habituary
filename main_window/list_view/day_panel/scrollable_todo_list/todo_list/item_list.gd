@@ -18,6 +18,10 @@ var data: ToDoListData:
 		for to_do_data in data.to_dos:
 			add_todo(-1, false, to_do_data)
 
+		data.to_do_added.connect(func(to_do_data, at_index):
+			add_todo(at_index, false, to_do_data)
+		)
+
 
 #region Setup
 func _enter_tree() -> void:
@@ -91,7 +95,7 @@ func add_todo(at_index := -1, auto_edit := true, p_data: ToDoData = null) -> ToD
 
 	if not p_data:
 		p_data = ToDoData.new()
-		data.add(p_data, at_index)
+		data.add(p_data, at_index, false)
 	new_item.data = p_data
 
 	if auto_edit:
