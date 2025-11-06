@@ -287,7 +287,7 @@ func _connect_signals() -> void:
 	%CopyToToday.pressed.connect(func():
 		Data.get_file(
 			DayTimer.today.format(Settings.date_format_save)
-		).to_do_list.add(data)
+		).to_do_list.add(data.duplicate())
 
 		Overlay.spawn_toast("To-do copied to today")
 	)

@@ -169,3 +169,23 @@ func as_string() -> String:
 			result += "\n" + sub_item.as_string()
 
 	return result
+
+
+func duplicate() -> ToDoData:
+	var copy := ToDoData.new()
+
+	copy.state = state
+	copy.text = text
+	copy.is_bold = is_bold
+	copy.is_italic = is_italic
+	copy.is_bookmarked = is_bookmarked
+	copy.is_folded = is_folded
+	copy.text_color_id = text_color_id
+	copy.indentation_level = indentation_level
+
+	copy.sub_items = ToDoListData.new()
+	copy.sub_items.indentation_level = indentation_level + 1
+	for to_do in sub_items.to_dos:
+		copy.sub_items.add(to_do.duplicate())
+
+	return copy

@@ -59,6 +59,7 @@ func save_to_disk() -> void:
 		var file := FileAccess.open(path, FileAccess.WRITE)
 		if file:
 			file.store_string(as_string())
+		last_modified = FileAccess.get_modified_time(path)
 		is_preliminary = false
 		Log.debug("[%s] Saved to disk" % name)
 	else:

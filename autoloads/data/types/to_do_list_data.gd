@@ -3,7 +3,9 @@ class_name ToDoListData
 
 
 signal changed(reason: String)
-signal to_do_added(to_do: ToDoData, at_index: int)
+
+signal to_do_added(to_do: ToDoData, at_index: int, auto_edit: bool)
+signal to_do_removed(at_index: int)
 
 
 var to_dos: Array[ToDoData]
@@ -16,7 +18,7 @@ func _init(p_parent: ToDoData = null) -> void:
 	parent = p_parent
 
 
-func add(to_do: ToDoData, at_index := -1, emit := true) -> void:
+func add(to_do: ToDoData, at_index := -1, auto_edit := false, emit := true) -> void:
 	if at_index >= 0 and at_index <= to_dos.size():
 		to_dos.insert(at_index, to_do)
 	else:
@@ -31,10 +33,11 @@ func add(to_do: ToDoData, at_index := -1, emit := true) -> void:
 	to_do.changed.connect(changed.emit)
 	if emit:
 		changed.emit("to-do added")
-		to_do_added.emit(to_do, at_index)
+		to_do_added.emit(to_do, at_index, auto_edit)
 
 
 func remove(to_do: ToDoData, emit := true) -> void:
+	var at_index = to_dos.find(to_do)
 	to_dos.erase(to_do)
 	to_do.parent = null
 	to_do.indentation_level = -1
@@ -45,6 +48,7 @@ func remove(to_do: ToDoData, emit := true) -> void:
 	to_do.changed.disconnect(changed.emit)
 	if emit:
 		changed.emit("to-do removed")
+		to_do_removed.emit(at_index)
 
 
 func move(to_do: ToDoData, to_position: int) -> void:
@@ -66,7 +70,7 @@ func indent(to_do: ToDoData) -> void:
 		return  # early
 
 	remove(to_do, false)
-	to_dos[index - 1].sub_items.add(to_do, -1, false)
+	to_dos[index - 1].sub_items.add(to_do, -1, false, false)
 
 	changed.emit("to-do indented")
 
@@ -81,7 +85,7 @@ func unindent(to_do: ToDoData) -> void:
 	if parent_list:
 		var at_position = parent_list.to_dos.find(parent)
 		remove(to_do, false)
-		parent_list.add(to_do, at_position + 1, false)
+		parent_list.add(to_do, at_position + 1, false, false)
 
 		changed.emit("to-do unindented")
 

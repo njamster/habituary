@@ -18,8 +18,11 @@ var data: ToDoListData:
 		for to_do_data in data.to_dos:
 			add_todo(-1, false, to_do_data)
 
-		data.to_do_added.connect(func(to_do_data, at_index):
-			add_todo(at_index, false, to_do_data)
+		data.to_do_added.connect(func(to_do_data, at_index, auto_edit):
+			add_todo(at_index, auto_edit, to_do_data)
+		)
+		data.to_do_removed.connect(func(at_index):
+			get_child(at_index).queue_free()
 		)
 
 
@@ -74,8 +77,7 @@ func _on_gui_input(event: InputEvent) -> void:
 			if child.position.y > event.position.y - 13:
 				break
 			at_index += 1
-
-		add_todo(at_index)
+		data.add(ToDoData.new(), at_index, true)
 #endregion
 
 
@@ -95,7 +97,7 @@ func add_todo(at_index := -1, auto_edit := true, p_data: ToDoData = null) -> ToD
 
 	if not p_data:
 		p_data = ToDoData.new()
-		data.add(p_data, at_index, false)
+		data.add(p_data, at_index)
 	new_item.data = p_data
 
 	if auto_edit:
@@ -104,16 +106,17 @@ func add_todo(at_index := -1, auto_edit := true, p_data: ToDoData = null) -> ToD
 	return new_item
 
 
-func add_todo_above(item: ToDoItem, auto_edit := true) -> ToDoItem:
-	return add_todo(item.get_index(), auto_edit)
+func add_todo_above(item: ToDoItem, auto_edit := true) -> void:
+	data.add(ToDoData.new(), item.get_index(), auto_edit)
 
 
-func add_todo_below(item: ToDoItem, auto_edit := true) -> ToDoItem:
-	return add_todo(item.get_index() + 1, auto_edit)
+func add_todo_below(item: ToDoItem, auto_edit := true) -> void:
+	data.add(ToDoData.new(), item.get_index() + 1, auto_edit)
 
 
 func add_sub_item(item: ToDoItem, auto_edit := true) -> ToDoItem:
-	return item.get_node("%SubItems").add_todo(
+	return item.get_node("%SubItems").data.add(
+		ToDoData.new(),
 		item.get_sub_item_count(),
 		auto_edit
 	)
@@ -183,18 +186,11 @@ func _drop_data(at_position: Vector2, p_data: Variant) -> void:
 	if p_data.has_node("EditingOptions"):
 		p_data.get_node("EditingOptions").update_bookmark.call_deferred()
 
-	if dragged_from != self:
-		p_data.reparent(self)
-	move_child(p_data, at_index)
-
 	dragged_from.data.remove(p_data.data)
-	data.add(p_data.data, at_index)
+	data.add(p_data.data, at_index, p_data.is_in_edit_mode())
 
 	if dragged_from != self:
 		p_data._update_saved_search_results(old_list.cache_key, p_data.text)
-
-	if p_data.is_in_edit_mode():
-		p_data.edit()
 
 	p_data._update_saved_search_results(
 		p_data.get_to_do_list().cache_key, p_data.text
