@@ -183,7 +183,7 @@ func duplicate() -> ToDoData:
 	copy.text_color_id = text_color_id
 	copy.indentation_level = indentation_level
 
-	copy.sub_items = ToDoListData.new()
+	copy.sub_items = ToDoListData.new(copy)
 	copy.sub_items.indentation_level = indentation_level + 1
 	for to_do in sub_items.to_dos:
 		copy.sub_items.add(to_do.duplicate())
