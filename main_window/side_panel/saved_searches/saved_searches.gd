@@ -15,9 +15,7 @@ func _set_initial_state() -> void:
 
 func _connect_signals() -> void:
 	#region Global Signals
-	Data.saved_searches.changed.connect(func(_x):
-		_load_from_disk()
-	)
+	Data.saved_searches.changed.connect(_load_from_disk.unbind(1))
 	#endregion
 
 

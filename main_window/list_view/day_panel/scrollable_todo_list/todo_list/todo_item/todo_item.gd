@@ -53,8 +53,6 @@ var text := "":
 			if _initialization_finished:
 				data.text = value
 
-			_update_saved_search_results(get_to_do_list().cache_key, text, old_text)
-
 var state := ToDoData.States.TO_DO:
 	set(value):
 		if state == value:
@@ -385,15 +383,6 @@ func delete() -> void:
 	queue_free()
 
 	get_item_list().data.remove(data)
-
-	if self.text:
-		# NOTE: We *must* get this now, as the method would simply return `null`
-		# once this node got succesfully free'd and exited the tree!
-		var to_do_list := get_to_do_list()
-
-		await tree_exited
-
-		_update_saved_search_results(to_do_list.cache_key, text)
 
 
 func _on_edit_resized() -> void:
@@ -1136,23 +1125,6 @@ func _update_copy_to_today_visibility():
 				date.day_difference_to(DayTimer.today) < 0
 	else:
 		%CopyToToday.visible = %Edit.text != ""
-
-
-func _update_saved_search_results(cache_key: String, new_text: String, old_text := "") -> void:
-	if not _initialization_finished:
-		return  # early
-
-	if "saved_searches" in Cache.data:
-		for raw_query in Cache.data["saved_searches"].content:
-			var alarm_tag_reg_ex := RegEx.new()
-			alarm_tag_reg_ex.compile("\\[ALARM:(?<alarm>[\\+|-][1-9][0-9]*)\\]$")
-			var query := alarm_tag_reg_ex.sub(raw_query, "").strip_edges()
-
-			if old_text.contains(query) or new_text.contains(query):
-				EventBus.instant_save_requested.emit(
-					cache_key
-				)
-				EventBus.saved_search_update_requested.emit(query)
 
 
 ## Saves the current [param caret_column] value of the edit field to a meta

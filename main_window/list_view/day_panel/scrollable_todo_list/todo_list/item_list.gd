@@ -162,7 +162,6 @@ func _drop_data(at_position: Vector2, p_data: Variant) -> void:
 			at_index += 1
 
 	var dragged_from = p_data.get_item_list()
-	var old_list = p_data.get_to_do_list()
 
 	if self.get_day_panel() and not p_data.get_day_panel():
 		# p_data was part of the capture list before, but won't be anymore:
@@ -188,13 +187,6 @@ func _drop_data(at_position: Vector2, p_data: Variant) -> void:
 
 	dragged_from.data.remove(p_data.data)
 	data.add(p_data.data, at_index, p_data.is_in_edit_mode())
-
-	if dragged_from != self:
-		p_data._update_saved_search_results(old_list.cache_key, p_data.text)
-
-	p_data._update_saved_search_results(
-		p_data.get_to_do_list().cache_key, p_data.text
-	)
 
 	p_data._update_copy_to_today_visibility()
 #endregion

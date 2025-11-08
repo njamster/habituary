@@ -67,13 +67,13 @@ func _connect_signals() -> void:
 		self.date = self.date  # re-trigger setter function
 	)
 
-	EventBus.saved_search_update_requested.connect(func(query):
-		if query == text:
-			date = _find_last_mention()
-	)
-
 	Settings.use_relative_saved_search_dates_changed.connect(
 		_update_day_counter
+	)
+
+	Data.changed.connect(func():
+		# TODO: Optimize this! (Only update on *relevant* changes)
+		date = _find_last_mention()
 	)
 	#endregion
 

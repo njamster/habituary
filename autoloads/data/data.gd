@@ -1,6 +1,8 @@
 extends Node
 
 
+signal changed()
+
 const DEBOUNCE_TIME := 10.0  # seconds
 
 var files: Dictionary[String, FileData]
@@ -63,6 +65,8 @@ func _is_valid_filename(filename: String) -> bool:
 
 
 func start_debounce_timer(reason: String, file: RefCounted) -> void:
+	changed.emit()
+
 	var filename_without_extension: String = file.name.replace(".txt", "")
 	var debounce_timer: Timer = get_node_or_null(filename_without_extension)
 	if debounce_timer:
