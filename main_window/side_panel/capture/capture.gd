@@ -7,7 +7,7 @@ func _ready() -> void:
 
 
 func _set_initial_state() -> void:
-	%ScrollableTodoList/%TodoList.cache_key = "capture"#
+	%ScrollableTodoList/%TodoList.data = Data.capture
 
 	_on_window_size_changed()
 

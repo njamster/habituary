@@ -20,10 +20,6 @@ func _ready() -> void:
 
 
 func _set_initial_state() -> void:
-	%ScrollableTodoList/%TodoList.cache_key = self.date.format(
-		Settings.date_format_save.trim_suffix(".txt")
-	)
-
 	var filename := self.date.format(Settings.date_format_save)
 	%ScrollableTodoList/%TodoList.data = Data.get_file(filename)
 

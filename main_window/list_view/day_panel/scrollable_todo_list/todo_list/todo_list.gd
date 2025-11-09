@@ -4,13 +4,6 @@ extends MarginContainer
 
 const TODO_ITEM := preload("todo_item/todo_item.tscn")
 
-var cache_key: String:
-	set(value):
-		if cache_key:
-			Log.error("Cannot set 'cache_key': Variable is immutable!")
-			return
-		cache_key = value
-
 var data: FileData:
 	set(value):
 		if data:
