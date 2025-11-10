@@ -60,6 +60,15 @@ var text_color_id: int:
 			text_color_id = value
 			changed.emit("'text_color_id' changed to '%s'" % value)
 
+var review_date: Date:
+	set(value):
+		if review_date != value:
+			review_date = value
+			if review_date == null:
+				changed.emit("'review_date' changed to 'null'")
+			else:
+				changed.emit("'review_date' changed to '%s'" % value.as_string())
+
 var sub_items := ToDoListData.new(self)
 
 var indentation_level := -1
@@ -105,6 +114,17 @@ func load_from_string(raw_string: String) -> void:
 		if color_tag_reg_ex_match:
 			raw_string = raw_string.left(-8).strip_edges()
 			text_color_id = int(color_tag_reg_ex_match.get_string("digit"))
+			continue  # from the start of the while loop again
+
+		var review_date_reg_ex := RegEx.create_from_string(
+			"\\[REVIEW:(?<date>[0-9]{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01]))\\]"
+		)
+		var review_date_reg_ex_match := review_date_reg_ex.search(raw_string)
+		if review_date_reg_ex_match:
+			raw_string = raw_string.left(-19).strip_edges()
+			review_date = Date.from_string(
+				review_date_reg_ex_match.get_string("date")
+			)
 			continue  # from the start of the while loop again
 
 		# NOTE: The following two if-conditions do *not* check if the matching
@@ -163,6 +183,9 @@ func as_string() -> String:
 
 	if text_color_id:
 		result += " [COLOR%d]" % text_color_id
+
+	if review_date:
+		result += " [REVIEW:%s]" % review_date.as_string()
 
 	for sub_item in sub_items.to_dos:
 		if sub_item.text:

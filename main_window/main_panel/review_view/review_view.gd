@@ -15,6 +15,7 @@ func _ready() -> void:
 func _setup_initial_state() -> void:
 	_on_main_panel_changed()
 	_on_dark_mode_changed()
+	_hide_calendar()
 
 
 func _connect_signals() -> void:
@@ -45,34 +46,25 @@ func _on_main_panel_changed() -> void:
 
 
 func _start_review() -> void:
-	if not "capture" in Cache.data:
+	if Data.capture.is_empty():
 		switch_to_list_view.call_deferred()
 		return  # early
 
 	review_queue = []
-	current_review_id = -1
 
-	var review_date_reg_ex := RegEx.new()
-	review_date_reg_ex.compile("\\[REVIEW:(?<date>[0-9]{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01]))\\]")
-
-	var line_id := -1
-	for to_do in Cache.data["capture"].content:
-		line_id += 1
-
-		var review_date_reg_ex_match := review_date_reg_ex.search(to_do)
-		if review_date_reg_ex_match:
-			if Date.from_string(
-				review_date_reg_ex_match.get_string("date")
-			).day_difference_to(DayTimer.today) > 0:
-				continue  # with next item
-
-		review_queue.append({ "to_do": to_do, "line_id": line_id })
-
-	total_reviews_due = review_queue.size()
+	for to_do in Data.capture.to_do_list.to_dos:
+		if (
+			to_do.review_date
+			and to_do.review_date.day_difference_to(DayTimer.today) <= 0
+		):
+			review_queue.append(to_do)
 
 	if review_queue.is_empty():
 		Settings.set_deferred("main_panel", Settings.MainPanelState.LIST_VIEW)
 		return  # early
+
+	current_review_id = -1
+	total_reviews_due = review_queue.size()
 
 	_review_next_item()
 
@@ -84,7 +76,7 @@ func _review_next_item() -> void:
 			current_review_id + 1,
 			total_reviews_due
 		]
-		%ToDo.text = Utils.strip_tags(review_queue[current_review_id].to_do)
+		%ToDo.text = review_queue[current_review_id].text
 
 		%Options.hide()
 		await get_tree().create_timer(0.5).timeout
@@ -94,22 +86,18 @@ func _review_next_item() -> void:
 
 
 func _schedule_current_item(date: Date) -> void:
-	Cache.move_item(
-		review_queue[current_review_id].line_id - scheduled_items,
-		"capture",
-		date.as_string()
-	)
+	var to_do: ToDoData = review_queue[current_review_id - scheduled_items]
+	to_do.delete_requested.emit()
+	to_do.review_date = null
+	Data.get_file(date.format(Settings.date_format_save)).to_do_list.add(to_do)
 	scheduled_items += 1
+
 	_hide_calendar()
 	_review_next_item()
 
 
 func _postpone_current_item(date: Date) -> void:
-	Cache.postpone_item(
-		review_queue[current_review_id].line_id,
-		"capture",
-		date.as_string()
-	)
+	review_queue[current_review_id].review_date = date
 	_hide_calendar()
 	_review_next_item()
 
@@ -121,10 +109,7 @@ func _delete_current_item() -> void:
 		style_box.bg_color = Color("#BF616A")
 		%Options/Delete.add_theme_stylebox_override("hover", style_box)
 	else:
-		Cache.delete_item(
-			review_queue[current_review_id].line_id,
-			"capture"
-		)
+		review_queue[current_review_id].delete_requested.emit()
 		_reset_delete_button()
 		_review_next_item()
 

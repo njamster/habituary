@@ -22,4 +22,5 @@ func _connect_signals() -> void:
 
 
 func _update_mouse_cursor_state() -> void:
-	get_viewport().update_mouse_cursor_state.call_deferred()
+	if is_inside_tree():
+		get_viewport().update_mouse_cursor_state.call_deferred()
