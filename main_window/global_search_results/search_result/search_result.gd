@@ -1,14 +1,21 @@
 extends PanelContainer
 
 var date : Date
-var line_number : int
+
+var data: ToDoData:
+	set(value):
+		if data != null:
+			Log.error("Cannot set 'data': Variable is immutable!")
+			return
+		data = value
+
+		_update_state_icon()
+		%Text.text = data.text
 
 
-func fill_in(p_date: String, state: ToDoData.States, text: String, id: int) -> void:
+func fill_in(p_date: String, p_data: ToDoData) -> void:
 	date = Date.from_string(p_date)
-	_update_state_icon(state)
-	%Text.text = text
-	line_number = id
+	data = p_data
 
 
 func _ready() -> void:
@@ -31,8 +38,8 @@ func _connect_signals() -> void:
 	#endregion
 
 
-func _update_state_icon(state: ToDoData.States) -> void:
-	match state:
+func _update_state_icon() -> void:
+	match data.state:
 		ToDoData.States.DONE:
 			%State.texture = preload("images/done.svg")
 			%State.modulate = Color("#A3BE8C")
@@ -45,8 +52,7 @@ func _update_state_icon(state: ToDoData.States) -> void:
 
 
 func _on_jump_to_pressed() -> void:
-	Settings.current_day = date
-	EventBus.bookmark_jump_requested.emit(date, line_number)
+	data.edit()
 
 
 func _on_mouse_entered() -> void:

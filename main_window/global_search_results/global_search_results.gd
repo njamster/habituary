@@ -48,13 +48,11 @@ func search() -> void:
 		).instantiate()
 		search_result_group.date = Date.from_string(date)
 
-		var line_id := 0
-		for to_do in Data.files[filename].to_do_list.to_dos:
-			if to_do.text.contains(Settings.search_query):
-				var search_result := SEARCH_RESULT.instantiate()
-				search_result.fill_in(date, to_do.state, to_do.text, line_id)
-				search_result_group.add_result(search_result)
-			line_id += 1
+		var to_do_list := Data.files[filename].to_do_list
+		for to_do in to_do_list.search(Settings.search_query):
+			var search_result := SEARCH_RESULT.instantiate()
+			search_result.fill_in(date, to_do)
+			search_result_group.add_result(search_result)
 
 		if search_result_group.contains_results():
 			$%SearchResults.add_child(search_result_group)

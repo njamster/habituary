@@ -28,6 +28,8 @@ var data: ToDoData:
 
 		is_folded = data.is_folded
 
+		data.edit_requested.connect(edit)
+
 
 var date : Date:
 	get():

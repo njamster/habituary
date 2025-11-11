@@ -11,10 +11,10 @@ signal to_do_removed(at_index: int)
 var to_dos: Array[ToDoData]
 
 var indentation_level := 0
-var parent: ToDoData
+var parent: RefCounted
 
 
-func _init(p_parent: ToDoData = null) -> void:
+func _init(p_parent: RefCounted = null) -> void:
 	parent = p_parent
 
 
@@ -81,13 +81,27 @@ func unindent(to_do: ToDoData) -> void:
 	if index == -1:
 		return  # early
 
-	var parent_list := parent.parent
+	if indentation_level < 1:
+		return  # early
+
+	var parent_list: ToDoListData = parent.parent
 	if parent_list:
 		var at_position = parent_list.to_dos.find(parent)
 		remove(to_do, false)
 		parent_list.add(to_do, at_position + 1, false, false)
 
 		changed.emit("to-do unindented")
+
+
+func search(query: String) -> Array[ToDoData]:
+	var results: Array[ToDoData] = []
+
+	for to_do in to_dos:
+		if to_do.text.contains(query):
+			results.append(to_do)
+			results += to_do.sub_items.search(query)
+
+	return results
 
 
 func is_empty() -> bool:

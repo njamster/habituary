@@ -10,7 +10,7 @@ var is_preliminary := false
 
 var _is_initialized := false
 
-var to_do_list := ToDoListData.new()
+var to_do_list := ToDoListData.new(self)
 
 var scroll_offset := 0:
 	set(value):

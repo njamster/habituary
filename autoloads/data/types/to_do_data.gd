@@ -4,6 +4,7 @@ class_name ToDoData
 
 signal indent_requested
 signal delete_requested
+signal edit_requested
 
 signal changed(reason: String)
 
@@ -212,3 +213,13 @@ func duplicate() -> ToDoData:
 		copy.sub_items.add(to_do.duplicate())
 
 	return copy
+
+
+func edit() -> void:
+	# auto-switch to the correct date
+	var temp = parent
+	while temp is not FileData:
+		temp = temp.parent
+	Settings.current_day = Date.from_string(temp.name.trim_suffix(".txt"))
+
+	edit_requested.emit()
