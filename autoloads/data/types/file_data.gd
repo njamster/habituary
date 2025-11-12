@@ -75,8 +75,13 @@ func reload() -> void:
 	if last_modified < FileAccess.get_modified_time(path):
 		_load_from_disk()
 
+		Log.debug("[%s] Reloaded from disk" % name)
+
 		if is_empty():
+			DirAccess.remove_absolute(path)
 			Data.unload(self)
+		else:
+			Data.changed.emit()
 
 
 func as_string() -> String:

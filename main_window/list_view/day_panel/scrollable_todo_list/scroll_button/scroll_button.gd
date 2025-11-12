@@ -45,6 +45,9 @@ func _connect_signals() -> void:
 
 
 func _update_button() -> void:
+	if not is_visible_in_tree():
+		return  # early
+
 	if SCROLL_CONTAINER_CONTENT.get_node("%Items").get_child_count() == 0:
 		self.hide()
 		_on_search_query_changed()

@@ -16,12 +16,9 @@ func _connect_signals() -> void:
 
 	EventBus.global_search_requested.connect(search)
 
-	Cache.content_updated.connect(func(key):
+	Data.changed.connect(func():
 		if Settings.main_panel == Settings.MainPanelState.GLOBAL_SEARCH:
-			for search_result_group in %SearchResults.get_children():
-				if key == search_result_group.date.as_string():
-					search()
-					break  # for loop early
+			search()
 	)
 	#endregion
 
