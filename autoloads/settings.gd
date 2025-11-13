@@ -11,7 +11,6 @@ signal dark_mode_changed
 signal search_query_changed
 signal side_panel_changed
 signal main_panel_changed
-signal show_bookmarks_from_the_past_changed
 signal hide_ticked_off_todos_changed
 signal fade_ticked_off_todos_changed
 signal fade_non_today_dates_changed
@@ -44,8 +43,7 @@ enum SidePanelState {
 	HELP,
 	BOOKMARKS,
 	CAPTURE,
-	SETTINGS,
-	SAVED_SEARCHES
+	SETTINGS
 }
 
 enum MainPanelState {
@@ -248,16 +246,6 @@ var main_panel := MainPanelState.LIST_VIEW:
 		main_panel = value
 
 		main_panel_changed.emit()
-
-@export var show_bookmarks_from_the_past := true:
-	set(value):
-		if show_bookmarks_from_the_past == value:
-			return
-
-		show_bookmarks_from_the_past = value
-		_start_debounce_timer()
-
-		show_bookmarks_from_the_past_changed.emit()
 
 @export var hide_ticked_off_todos := false:
 	set(value):

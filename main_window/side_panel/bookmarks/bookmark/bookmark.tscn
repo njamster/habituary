@@ -1,8 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://clk7mchfrgbnh"]
+[gd_scene load_steps=9 format=3 uid="uid://rtcim8ma6gwl"]
 
-[ext_resource type="Script" uid="uid://hkfqd5t3028v" path="res://main_window/side_panel/bookmarks/bookmark/bookmark.gd" id="1_cjbqa"]
-[ext_resource type="Script" uid="uid://bqai4pv020yjf" path="res://custom/tooltip.gd" id="2_ufj5y"]
-[ext_resource type="Texture2D" uid="uid://fwaqgbwuue6c" path="res://main_window/side_panel/bookmarks/bookmark/images/jump_to_todo.svg" id="3_qdkvd"]
+[ext_resource type="Script" uid="uid://buk7xbnq0c6yi" path="res://main_window/side_panel/bookmarks/bookmark/bookmark.gd" id="1_xhyd6"]
+[ext_resource type="Script" uid="uid://bqai4pv020yjf" path="res://custom/tooltip.gd" id="2_5q2o3"]
+[ext_resource type="Texture2D" uid="uid://b025qxfatvgs0" path="res://main_window/side_panel/bookmarks/bookmark/images/repeat_search.svg" id="3_xhyd6"]
+[ext_resource type="Texture2D" uid="uid://gfyjdn5i2f16" path="res://main_window/side_panel/bookmarks/bookmark/images/add_alarm.svg" id="4_es7au"]
+[ext_resource type="Script" uid="uid://dnkjpbn8pmav1" path="res://custom/toggle_button.gd" id="5_whuqe"]
+[ext_resource type="Texture2D" uid="uid://q3gwrwjxsjtg" path="res://main_window/side_panel/bookmarks/bookmark/images/remove_alarm.svg" id="6_whuqe"]
+[ext_resource type="Script" uid="uid://cwmmj6d7x6knw" path="res://custom/better_spin_box.gd" id="7_vhqel"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cc2va"]
 bg_color = Color(0.505882, 0.631373, 0.756863, 1)
@@ -20,54 +24,125 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 101.0
 grow_horizontal = 2
-script = ExtResource("1_cjbqa")
+script = ExtResource("1_xhyd6")
 
 [node name="VBox" type="VBoxContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Row1" type="HBoxContainer" parent="VBox"]
+[node name="FirstRow" type="HBoxContainer" parent="VBox"]
 layout_mode = 2
-theme_type_variation = &"TinySeparation"
 
-[node name="DayCounter" type="Label" parent="VBox/Row1"]
+[node name="SearchQuery" type="Label" parent="VBox/FirstRow"]
 unique_name_in_owner = true
-self_modulate = Color(1, 1, 1, 0.75)
 layout_mode = 2
-size_flags_horizontal = 2
-mouse_filter = 1
-text = "1337 days left"
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderSmall"
+text = "Search Query"
+text_overrun_behavior = 3
 
-[node name="Tooltip" type="Node" parent="VBox/Row1/DayCounter"]
-unique_name_in_owner = true
-script = ExtResource("2_ufj5y")
-text_alignment = 2
-
-[node name="JumpTo" type="Button" parent="VBox/Row1"]
+[node name="RepeatSearch" type="Button" parent="VBox/FirstRow"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
+focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
 theme_override_styles/focus = SubResource("StyleBoxFlat_cc2va")
-icon = ExtResource("3_qdkvd")
+icon = ExtResource("3_xhyd6")
 flat = true
 icon_alignment = 1
 
-[node name="Tooltip" type="Node" parent="VBox/Row1/JumpTo"]
-script = ExtResource("2_ufj5y")
-text = "Jump to To-Do"
+[node name="Tooltip" type="Node" parent="VBox/FirstRow/RepeatSearch"]
+script = ExtResource("2_5q2o3")
+text = "Repeat Search"
 popup_position = 5
+gap_width = 2
 
-[node name="Row2" type="HBoxContainer" parent="VBox"]
+[node name="SecondRow" type="HBoxContainer" parent="VBox"]
 layout_mode = 2
+theme_type_variation = &"TinySeparation"
 
-[node name="Heading" type="Label" parent="VBox/Row2"]
+[node name="LatestMatch" type="Label" parent="VBox/SecondRow"]
 unique_name_in_owner = true
 layout_mode = 2
+text = "Latest Match:"
+
+[node name="DayCounter" type="Label" parent="VBox/SecondRow"]
+unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0.75)
+layout_mode = 2
 size_flags_horizontal = 3
-theme_type_variation = &"HeaderSmall"
-text = "Super Important To-Do"
+mouse_filter = 1
+text = "1337 days left"
 text_overrun_behavior = 3
+
+[node name="Tooltip" type="Node" parent="VBox/SecondRow/DayCounter"]
+unique_name_in_owner = true
+script = ExtResource("2_5q2o3")
+popup_position = 2
+
+[node name="Alarm" type="Button" parent="VBox/SecondRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"FlatButton"
+theme_override_styles/focus = SubResource("StyleBoxFlat_cc2va")
+toggle_mode = true
+icon = ExtResource("4_es7au")
+flat = true
+icon_alignment = 1
+script = ExtResource("5_whuqe")
+icon_toggled_off = ExtResource("4_es7au")
+icon_toggled_on = ExtResource("6_whuqe")
+
+[node name="Tooltip" type="Node" parent="VBox/SecondRow/Alarm"]
+script = ExtResource("2_5q2o3")
+text = "Add Alarm"
+popup_position = 5
+gap_width = 2
+
+[node name="ThirdRow" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+theme_type_variation = &"SmallSeparation"
+
+[node name="Label1" type="Label" parent="VBox/ThirdRow"]
+layout_mode = 2
+text = "Alarm"
+
+[node name="SpinBox" type="SpinBox" parent="VBox/ThirdRow"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 1
+min_value = 1.0
+value = 1.0
+allow_greater = true
+alignment = 1
+script = ExtResource("7_vhqel")
+format_string = "%d"
+metadata/_custom_type_script = "uid://cwmmj6d7x6knw"
+
+[node name="Label2" type="Label" parent="VBox/ThirdRow"]
+layout_mode = 2
+text = "day(s)"
+
+[node name="OptionButton" type="OptionButton" parent="VBox/ThirdRow"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 1
+selected = 0
+item_count = 2
+popup/item_0/text = "after"
+popup/item_0/id = 0
+popup/item_1/text = "before"
+popup/item_1/id = 1
+
+[node name="Label3" type="Label" parent="VBox/ThirdRow"]
+layout_mode = 2
+text = "event"

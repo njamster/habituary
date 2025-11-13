@@ -2,10 +2,6 @@ class_name ToDoItem
 extends VBoxContainer
 
 
-# helper variables required by _on_items_child_order_changed, in item_list.gd
-@onready var last_index := get_list_index()
-@onready var last_date := date
-
 # used to avoid emitting `list_save_requested` too early
 var _initialization_finished := false
 
@@ -21,7 +17,6 @@ var data: ToDoData:
 		text = data.text
 		is_bold = data.is_bold
 		is_italic = data.is_italic
-		is_bookmarked = data.is_bookmarked
 		text_color_id = data.text_color_id
 
 		%SubItems.data = data.sub_items
@@ -92,9 +87,6 @@ var state := ToDoData.States.TO_DO:
 			if _initialization_finished:
 				_apply_state_relative_formatting()
 
-				if date and is_bookmarked:
-					EventBus.bookmark_changed.emit(self, date, get_list_index())
-
 				if self.text and not has_sub_items():
 					data.state = value
 
@@ -151,23 +143,6 @@ var is_folded := false:
 			data.is_folded = value
 
 
-var is_bookmarked := false:
-	set(value):
-		is_bookmarked = value
-
-		if is_inside_tree():
-			if is_bookmarked:
-				%BookmarkIndicator.show()
-			else:
-				%BookmarkIndicator.hide()
-
-			if has_node("EditingOptions"):
-				$EditingOptions.update_bookmark()
-
-			if _initialization_finished and self.text:
-				data.is_bookmarked = value
-
-
 var text_color_id := 0:
 	set(value):
 		var old_value = text_color_id
@@ -190,8 +165,6 @@ var text_color_id := 0:
 
 var hide_tween: Tween
 
-var has_requested_bookmark_update := false
-
 var review_date : String
 
 @onready var review_date_reg_ex := RegEx.new()
@@ -201,7 +174,6 @@ func _ready() -> void:
 	_set_initial_state()
 	_connect_signals()
 
-	%BookmarkIndicator.hide()
 	%CopyToToday.modulate.a = 0.1
 	%DragHandle.modulate.a = 0.1
 
@@ -296,10 +268,11 @@ func _connect_signals() -> void:
 		%CopyToToday.modulate.a = 0.1
 	)
 
-	%BookmarkIndicator.gui_input.connect(_on_bookmark_indicator_gui_input)
-
 	%SubItems.child_entered_tree.connect(_on_sub_item_added.unbind(1))
-	%SubItems.child_exiting_tree.connect(_on_sub_item_removed)
+	%SubItems.child_exiting_tree.connect(
+		_on_sub_item_removed.unbind(1),
+		CONNECT_DEFERRED
+	)
 
 	$UnfoldTimer.timeout.connect(func(): is_folded = false)
 
@@ -366,9 +339,6 @@ func delete() -> void:
 	for i in range(%SubItems.get_child_count() - 1, -1, -1):
 		%SubItems.unindent_todo(%SubItems.get_child(i))
 
-	if is_bookmarked:
-		EventBus.bookmark_removed.emit(self)
-
 	if %Edit.text:
 		var successor = get_item_list().get_successor_todo(self)
 		if successor:
@@ -428,9 +398,6 @@ func _on_edit_text_changed(new_text: String) -> void:
 
 	data.text = %Edit.text
 
-	if date and is_bookmarked:
-		EventBus.bookmark_changed.emit(self, date, get_list_index())
-
 	_check_for_search_query_match()
 
 
@@ -438,15 +405,10 @@ func _strip_text(raw_text: String) -> String:
 	# trim any leading & trailing whitespace
 	raw_text = raw_text.strip_edges()
 
-	# Check if the text contains any tags (like a bookmark or a color tag) or
+	# Check if the text contains any tags (like a color tag or review date) or
 	# markup (like asterisks or underscores), and if so, trigger their effect
 	# and then remove them from the text.
 	while true:
-		if raw_text.ends_with("[BOOKMARK]"):
-			raw_text = raw_text.left(-10).strip_edges()
-			is_bookmarked = true
-			continue  # from the start of the while loop again
-
 		var color_tag_reg_ex := RegEx.new()
 		color_tag_reg_ex.compile("\\[COLOR(?<digit>[1-5])\\]$")
 		var color_tag_reg_ex_match := color_tag_reg_ex.search(raw_text)
@@ -535,87 +497,6 @@ func _on_edit_focus_exited() -> void:
 
 func _on_focus_exited() -> void:
 	_on_edit_focus_exited()
-
-
-func as_string(depth := 0) -> String:
-	var unformatted_text : String
-	if is_in_edit_mode():
-		unformatted_text = %Edit.text
-	else:
-		unformatted_text = self.text
-
-	if unformatted_text == "":
-		return ""
-
-	var result := ""
-
-	for i in depth:
-		result += "    "
-
-	if self.state == ToDoData.States.DONE:
-		result += "[x] "
-	elif self.state == ToDoData.States.FAILED:
-		result += "[-] "
-	else:
-		result += "[ ] "
-
-	if is_folded:
-		result += "> "
-
-	if is_italic:
-		result += "*"
-	if is_bold:
-		result += "**"
-	result += unformatted_text
-	if is_bold:
-		result += "**"
-	if is_italic:
-		result += "*"
-
-	if is_bookmarked:
-		result += " [BOOKMARK]"
-
-	if text_color_id:
-		result += " [COLOR%d]" % text_color_id
-
-	if review_date:
-		result += " [REVIEW:%s]" % review_date
-
-	for sub_item in %SubItems.get_children():
-		result += "\n" + sub_item.as_string(depth + 1)
-
-	return result
-
-
-func load_from_string(line: String) -> void:
-	while line.begins_with("    "):
-		line = line.right(-4)
-		get_item_list().indent_todo(self, false)
-
-	# strip any remaining spaces on the left
-	line = line.strip_edges(true, false)
-
-	if line.begins_with("[ ] "):
-		line = line.right(-4)
-	elif line.begins_with("[x] "):
-		self.state = ToDoData.States.DONE
-		line = line.right(-4)
-	elif line.begins_with("[-] "):
-		self.state = ToDoData.States.FAILED
-		line = line.right(-4)
-
-	if line.begins_with("> "):
-		line = line.right(-2)
-		self.set_deferred("is_folded", true)
-	else:
-		self.set_deferred("is_folded", false)
-
-	line = _strip_text(line)
-
-	if line.is_empty():
-		queue_free()  # forbidden or no text
-
-	self.text = line
 
 
 func _on_mouse_entered() -> void:
@@ -827,12 +708,6 @@ func _check_for_search_query_match() -> void:
 			parent_todo.get_node("%SubItems").hide()
 
 
-func _on_bookmark_indicator_gui_input(event: InputEvent) -> void:
-	if event.is_action_released("left_mouse_button"):
-		Settings.side_panel = Settings.SidePanelState.BOOKMARKS
-		EventBus.bookmark_indicator_clicked.emit(date, get_list_index())
-
-
 # NOTE: `tree_exiting` will be emitted both when this panel is about to be removed from the tree
 # because the user scrolled the list' view, as well as on a NOTIFICATION_WM_CLOSE_REQUEST, but also
 # when an item is deleted (which is why we check if it's queded for deletion first).
@@ -980,21 +855,7 @@ func _on_sub_item_added() -> void:
 	_adapt_sub_item_state()
 
 
-func _on_sub_item_removed(sub_item: ToDoItem) -> void:
-	var day_panel := get_day_panel()
-
-	if day_panel and not day_panel.is_queued_for_deletion():
-		# at this point, the sub item is still part of the tree
-		if sub_item.is_bookmarked:
-			EventBus.bookmark_changed.emit.call_deferred(
-				sub_item,
-				sub_item.date,
-				sub_item.get_list_index()
-			)
-			sub_item.has_requested_bookmark_update = true
-
-	await get_tree().process_frame
-
+func _on_sub_item_removed() -> void:
 	# now, the sub item is no longer part of the tree
 	if %SubItems.is_empty():
 		%CheckBox.show()

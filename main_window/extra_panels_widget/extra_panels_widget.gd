@@ -15,8 +15,6 @@ func _connect_signals() -> void:
 	#endregion
 
 	#region Local Signals
-	$SavedSearches.toggled.connect(_on_saved_searches_toggled)
-
 	$Capture.toggled.connect(_on_capture_toggled)
 
 	$Bookmarks.toggled.connect(_on_bookmarks_toggled)
@@ -32,20 +30,18 @@ func _update_today_count() -> void:
 
 
 func _on_side_panel_changed() -> void:
-	for button in [$SavedSearches, $Capture, $Bookmarks, $Help]:
+	for button in [$Capture, $Bookmarks, $Help]:
 		button.set_pressed_no_signal(false)
 
 	match Settings.side_panel:
-		Settings.SidePanelState.SAVED_SEARCHES:
-			$SavedSearches.set_pressed_no_signal(true)
-		Settings.SidePanelState.CAPTURE:
-			$Capture.set_pressed_no_signal(true)
 		Settings.SidePanelState.BOOKMARKS:
 			$Bookmarks.set_pressed_no_signal(true)
+		Settings.SidePanelState.CAPTURE:
+			$Capture.set_pressed_no_signal(true)
 		Settings.SidePanelState.HELP:
 			$Help.set_pressed_no_signal(true)
 
-	for button in [$SavedSearches, $Capture, $Bookmarks, $Help]:
+	for button in [$Capture, $Bookmarks, $Help]:
 		_update_tooltip(button)
 
 
@@ -56,9 +52,9 @@ func _update_tooltip(node : Control) -> void:
 		node.get_node("Tooltip").text = node.get_node("Tooltip").text.replace("Hide", "Show")
 
 
-func _on_saved_searches_toggled(toggled_on: bool) -> void:
+func _on_bookmarks_toggled(toggled_on: bool) -> void:
 	if toggled_on:
-		Settings.side_panel = Settings.SidePanelState.SAVED_SEARCHES
+		Settings.side_panel = Settings.SidePanelState.BOOKMARKS
 	else:
 		Settings.side_panel = Settings.SidePanelState.HIDDEN
 
@@ -66,13 +62,6 @@ func _on_saved_searches_toggled(toggled_on: bool) -> void:
 func _on_capture_toggled(toggled_on: bool) -> void:
 	if toggled_on:
 		Settings.side_panel = Settings.SidePanelState.CAPTURE
-	else:
-		Settings.side_panel = Settings.SidePanelState.HIDDEN
-
-
-func _on_bookmarks_toggled(toggled_on: bool) -> void:
-	if toggled_on:
-		Settings.side_panel = Settings.SidePanelState.BOOKMARKS
 	else:
 		Settings.side_panel = Settings.SidePanelState.HIDDEN
 

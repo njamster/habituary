@@ -58,13 +58,6 @@ func _connect_signals() -> void:
 
 	Settings.view_mode_changed.connect(_on_current_day_changed)
 	Settings.view_mode_cap_changed.connect(_on_current_day_changed)
-
-	EventBus.bookmark_jump_requested.connect(func(bookmarked_date, bookmarked_line_number):
-		if date and date.equals(bookmarked_date):
-			%ScrollableTodoList.get_node("%TodoList").edit_line(
-				bookmarked_line_number
-			)
-	)
 	#endregion
 
 	#region Local Signals

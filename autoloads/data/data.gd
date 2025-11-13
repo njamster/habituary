@@ -6,7 +6,7 @@ signal changed()
 const DEBOUNCE_TIME := 10.0  # seconds
 
 var files: Dictionary[String, FileData]
-var saved_searches: SearchData
+var bookmarks: SearchData
 var capture: FileData
 
 var _valid_filename_reg_ex = RegEx.create_from_string(
@@ -32,12 +32,12 @@ func _load_from_disk(replace_old_data := true) -> void:
 	if replace_old_data:
 		capture = FileData.new(Settings.store_path.path_join("capture.txt"))
 		files.clear()
-		saved_searches = SearchData.new()
+		bookmarks = SearchData.new()
 	else:
 		capture.reload()
 		for key in files.keys():
 			files[key].reload()
-		saved_searches.reload()
+		bookmarks.reload()
 
 	var directory := DirAccess.open(Settings.store_path)
 	if directory:

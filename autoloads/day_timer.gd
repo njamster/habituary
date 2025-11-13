@@ -10,7 +10,6 @@ var today := Date.new():
 			if Settings.current_day.as_dict() == today.as_dict():
 				Settings.current_day = value
 			today = value
-			Settings.bookmarks_due_today = 0
 			EventBus.today_changed.emit()
 
 var _is_offset := false

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://v8u8oswwmlf3"]
+[gd_scene load_steps=13 format=3 uid="uid://v8u8oswwmlf3"]
 
 [ext_resource type="Texture2D" uid="uid://ci7y27fysy52o" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/unfolded.svg" id="2_2nsse"]
 [ext_resource type="Texture2D" uid="uid://d00v4pleoufwq" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/to_do.svg" id="2_6dyr4"]
@@ -7,7 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://b80hle2h5sj20" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/drag_indicator.svg" id="3_avsfu"]
 [ext_resource type="Script" uid="uid://bqai4pv020yjf" path="res://custom/tooltip.gd" id="3_oduck"]
 [ext_resource type="Texture2D" uid="uid://6im7rq1y7co6" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/folded.svg" id="4_fnk6y"]
-[ext_resource type="Texture2D" uid="uid://3ry73dkvfi1u" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/bookmark_indicator.svg" id="5_eqyfo"]
 [ext_resource type="Script" uid="uid://vmmkt3uxuea7" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/drag_handle/drag_handle.gd" id="5_mx38m"]
 [ext_resource type="Texture2D" uid="uid://cwihi2ij3jbsp" path="res://main_window/list_view/day_panel/scrollable_todo_list/todo_list/todo_item/images/copy_to_today.svg" id="7_81xmb"]
 [ext_resource type="Script" uid="uid://h3vx2ejyaylb" path="res://custom/better_line_edit.gd" id="7_xpt47"]
@@ -102,19 +101,6 @@ layout_mode = 2
 mouse_filter = 1
 theme_type_variation = &"ToDoItem_ExtraInfo"
 theme_override_styles/normal = SubResource("StyleBoxEmpty_sj4p5")
-
-[node name="BookmarkIndicator" type="TextureRect" parent="MainRow/HBox"]
-unique_name_in_owner = true
-modulate = Color(0.505882, 0.631373, 0.756863, 1)
-custom_minimum_size = Vector2(21, 23)
-layout_mode = 2
-size_flags_vertical = 0
-mouse_default_cursor_shape = 2
-texture = ExtResource("5_eqyfo")
-
-[node name="Tooltip" type="Node" parent="MainRow/HBox/BookmarkIndicator"]
-script = ExtResource("3_oduck")
-text = "Bookmarked To-Do"
 
 [node name="CopyToToday" type="Button" parent="MainRow/HBox"]
 unique_name_in_owner = true

@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://ba4ne2kctshba"]
+[gd_scene load_steps=4 format=3 uid="uid://ds0qsq0et5u0i"]
 
-[ext_resource type="Script" uid="uid://d06mi7ktuhh4f" path="res://main_window/side_panel/bookmarks/bookmarks.gd" id="1_60nsm"]
-[ext_resource type="Script" uid="uid://6f4n5n4dfbfm" path="res://custom/padded_scrollbar.gd" id="2_d7bib"]
+[ext_resource type="Script" uid="uid://bre4j1pxfb3fe" path="res://main_window/side_panel/bookmarks/bookmarks.gd" id="1_bmsgp"]
+[ext_resource type="FontFile" uid="uid://bv1lbje08ni7s" path="res://theme/fonts/OpenSans-MediumItalic.ttf" id="2_2mawm"]
+[ext_resource type="Script" uid="uid://6f4n5n4dfbfm" path="res://custom/padded_scrollbar.gd" id="2_wq51j"]
 
 [node name="Bookmarks" type="VBoxContainer"]
 anchors_preset = 15
@@ -10,7 +11,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"MediumSeparation"
-script = ExtResource("1_60nsm")
+script = ExtResource("1_bmsgp")
 
 [node name="Heading" type="Label" parent="."]
 layout_mode = 2
@@ -18,18 +19,13 @@ theme_type_variation = &"HeaderLarge"
 text = "Bookmarks"
 horizontal_alignment = 1
 
-[node name="NoneSet" type="Label" parent="."]
+[node name="NoneSaved" type="Label" parent="."]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
-text = "none set"
+theme_override_fonts/font = ExtResource("2_2mawm")
+text = "To bookmark a search query, first do a global search for it, then click on \"Bookmark This Search\"."
 horizontal_alignment = 1
-
-[node name="IncludePast" type="CheckButton" parent="."]
-layout_mode = 2
-size_flags_horizontal = 4
-focus_mode = 0
-mouse_default_cursor_shape = 2
-button_pressed = true
-text = "Include Past"
+autowrap_mode = 3
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 2
@@ -40,7 +36,7 @@ horizontal_scroll_mode = 0
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource("2_d7bib")
+script = ExtResource("2_wq51j")
 
 [node name="Items" type="VBoxContainer" parent="ScrollContainer/PaddedScrollbar"]
 unique_name_in_owner = true

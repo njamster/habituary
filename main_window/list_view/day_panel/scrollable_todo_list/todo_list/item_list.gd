@@ -59,11 +59,6 @@ func _connect_signals() -> void:
 	)
 
 	child_entered_tree.connect(_on_item_added)
-
-	# Deferred, so the callback isn't called while the list is first loaded
-	child_order_changed.connect.call_deferred(
-		_on_items_child_order_changed
-	)
 	#endregion
 
 
@@ -175,15 +170,9 @@ func _drop_data(at_position: Vector2, p_data: Variant) -> void:
 		# (a) add review date
 		var tomorrow = DayTimer.today.add_days(1).as_string()
 		p_data.review_date = tomorrow
-		# (b) remove bookmark
-		p_data.is_bookmarked = false
-		# (c) repeat this for all of its sub items
+		# (b) repeat this for all of its sub items
 		for sub_item in p_data.get_node("%SubItems").get_all_items():
 			sub_item.review_date = tomorrow
-			sub_item.is_bookmarked = false
-
-	if p_data.has_node("EditingOptions"):
-		p_data.get_node("EditingOptions").update_bookmark.call_deferred()
 
 	dragged_from.data.remove(p_data.data)
 	data.add(p_data.data, at_index, p_data.is_in_edit_mode())
@@ -281,24 +270,6 @@ func get_line_number_for_item(item: ToDoItem, start := 0) -> int:
 				i = abs(result)
 
 	return -i  # a negative return value means the item is not in this item list
-
-
-func _on_items_child_order_changed() -> void:
-	if is_inside_tree():
-		for item in get_all_items():
-			if not item.is_bookmarked:
-				continue
-
-			if not item.has_requested_bookmark_update:
-				EventBus.bookmark_changed.emit.call_deferred(
-					item,
-					item.last_date,
-					item.last_index
-				)
-				item.has_requested_bookmark_update = true
-
-			item.last_index = item.get_list_index()
-			item.last_date = item.date
 #endregion
 
 

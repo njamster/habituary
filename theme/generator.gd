@@ -98,20 +98,6 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 	}
 	#endregion
 
-	#region Bookmark_Today
-	var bookmark_today := theme.create_theme_type("Bookmark_Today", "PanelContainer")
-
-	bookmark_today.panel = {
-		"bg_color" = neutral_1,
-		"border_width" = 3,
-		"border_color" = Color(secondary_4, 0.75),
-		"border_blend" = true,
-		"corner_radius" = 6,
-		"content_margin" = 12,
-		"anti_aliasing_size" = 0.33,
-	}
-	#endregion
-
 	#region Button
 	var button := theme.create_theme_type("Button")
 
@@ -690,23 +676,6 @@ secondary_2 : Color, secondary_3 : Color, secondary_4 : Color, secondary_5 : Col
 
 	to_do_item_toggle_padding.margin_left = 6
 	to_do_item_toggle_padding.margin_right = 6
-	#endregion
-
-	#region ToDoItem_BookmarkButton
-	var to_do_item_bookmark_button := theme.create_theme_type("ToDoItem_BookmarkButton", "Button")
-
-	to_do_item_bookmark_button.font_size = 12
-
-	to_do_item_bookmark_button.font_hover_color = neutral_2
-	to_do_item_bookmark_button.icon_hover_color = neutral_2
-	to_do_item_bookmark_button.font_pressed_color = neutral_7
-	to_do_item_bookmark_button.icon_pressed_color = neutral_7
-	to_do_item_bookmark_button.font_hover_pressed_color = neutral_2
-	to_do_item_bookmark_button.icon_hover_pressed_color = neutral_2
-
-	to_do_item_bookmark_button.set_main_style({
-		# StyleBoxEmpty
-	})
 	#endregion
 
 	#region ToDoItem_DeleteButton

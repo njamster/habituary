@@ -1,8 +1,7 @@
-[gd_scene load_steps=15 format=3 uid="uid://bmrx40aplh6c1"]
+[gd_scene load_steps=14 format=3 uid="uid://bmrx40aplh6c1"]
 
 [ext_resource type="Script" uid="uid://bm6q1hbhp1n24" path="res://main_window/extra_panels_widget/extra_panels_widget.gd" id="1_5x0ik"]
 [ext_resource type="Texture2D" uid="uid://b6m2sbtuimpqj" path="res://main_window/extra_panels_widget/images/help.svg" id="1_ywxe7"]
-[ext_resource type="Texture2D" uid="uid://ccsrvob7b0yy1" path="res://main_window/extra_panels_widget/images/saved_searches.svg" id="2_glr2q"]
 [ext_resource type="Script" uid="uid://bqai4pv020yjf" path="res://custom/tooltip.gd" id="3_diiyk"]
 [ext_resource type="Script" uid="uid://cmqm6vj4gdrv4" path="res://custom/better_button.gd" id="3_lwq5w"]
 [ext_resource type="Texture2D" uid="uid://c634eemojquwr" path="res://main_window/extra_panels_widget/images/bookmarks.svg" id="4_45dt0"]
@@ -33,21 +32,6 @@ offset_bottom = 102.0
 size_flags_vertical = 10
 theme_type_variation = &"TinySeparation"
 script = ExtResource("1_5x0ik")
-
-[node name="SavedSearches" type="Button" parent="."]
-layout_mode = 2
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_type_variation = &"LeftSidebarButton"
-toggle_mode = true
-shortcut_in_tooltip = false
-icon = ExtResource("2_glr2q")
-script = ExtResource("3_lwq5w")
-metadata/_custom_type_script = "uid://cmqm6vj4gdrv4"
-
-[node name="Tooltip" type="Node" parent="SavedSearches"]
-script = ExtResource("3_diiyk")
-text = "Show Saved Searches"
 
 [node name="Capture" type="Button" parent="."]
 layout_mode = 2

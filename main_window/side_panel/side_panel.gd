@@ -27,14 +27,11 @@ func _update_side_panel() -> void:
 	$Settings.visible = (
 		Settings.side_panel == Settings.SidePanelState.SETTINGS
 	)
-	$SavedSearches.visible = (
-		Settings.side_panel == Settings.SidePanelState.SAVED_SEARCHES
+	$Bookmarks.visible = (
+		Settings.side_panel == Settings.SidePanelState.BOOKMARKS
 	)
 	$Capture.visible = (
 		Settings.side_panel == Settings.SidePanelState.CAPTURE
-	)
-	$Bookmarks.visible = (
-		Settings.side_panel == Settings.SidePanelState.BOOKMARKS
 	)
 	$Help.visible = (
 		Settings.side_panel == Settings.SidePanelState.HELP

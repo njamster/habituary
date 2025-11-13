@@ -17,8 +17,6 @@ func _ready() -> void:
 
 
 func _set_initial_state() -> void:
-	# Temporarily switch to the longest version of the respective button labels:
-	%Bookmark.text = "Remove Bookmark"
 	# Measure the minimum size of the editing options (i.e. *with* labels). This
 	# will act as the threshold at which all labels in the editing options will
 	# automatically be hidden to save horizontal space:
@@ -44,7 +42,6 @@ func _connect_signals() -> void:
 	%TextColor.gui_input.connect(_on_text_color_gui_input)
 	%TextColor.mouse_exited.connect(_on_dark_mode_changed.bind(false))
 
-	%Bookmark.toggled.connect(_on_bookmark_toggled)
 	%Delete.pressed.connect(_on_delete_pressed)
 	#endregion
 
@@ -53,7 +50,6 @@ func update() -> void:
 	update_bold()
 	update_italic()
 	update_text_color()
-	update_bookmark()
 
 
 func update_bold() -> void:
@@ -83,42 +79,17 @@ func update_text_color() -> void:
 		%TextColor.get("theme_override_styles/panel").draw_center = false
 
 
-func update_bookmark() -> void:
-	%Bookmark.button_pressed = to_do.is_bookmarked
-
-	if %Bookmark.button_pressed:
-		%Bookmark.text = %Bookmark.text.replace("Add", "Remove")
-	else:
-		%Bookmark.text = %Bookmark.text.replace("Remove", "Add")
-	%Bookmark/Tooltip.text = %Bookmark.text
-
-	# FIXME: temporary band-aid fix, until it's possible to bookmark to-dos in
-	# the capture panel as well (or it's decided that's not required at all)
-	if not to_do.date:
-		%Bookmark.hide()
-		%Delete.size_flags_horizontal = SIZE_SHRINK_END + SIZE_EXPAND
-	else:
-		%Bookmark.show()
-		%Delete.size_flags_horizontal = SIZE_SHRINK_END
-
-
 func _on_editing_options_resized() -> void:
 	if $PanelContainer.size.x <= _shrink_threshold:
 		%FormatLabel.hide()
 
 		%Delete.clip_text = true
 		%Delete/Tooltip.hide_text = false
-
-		%Bookmark.clip_text = true
-		%Bookmark/Tooltip.hide_text = false
 	else:
 		%FormatLabel.show()
 
 		%Delete.clip_text = false
 		%Delete/Tooltip.hide_text = true
-
-		%Bookmark.clip_text = false
-		%Bookmark/Tooltip.hide_text = true
 
 
 func _on_bold_toggled(toggled_on: bool) -> void:
@@ -144,15 +115,6 @@ func _on_text_color_gui_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 
-func _on_bookmark_toggled(toggled_on: bool) -> void:
-	to_do.is_bookmarked = toggled_on
-
-	if to_do.is_bookmarked:
-		EventBus.bookmark_added.emit(to_do)
-	else:
-		EventBus.bookmark_removed.emit(to_do)
-
-
 func _on_delete_pressed() -> void:
 	to_do.delete()
 
@@ -165,10 +127,6 @@ func _input(event: InputEvent) -> void:
 	elif event.is_action_pressed("toggle_italic", false, true):
 		%Italic.button_pressed = not %Italic.button_pressed
 	elif event.is_action_pressed("toggle_italic", true, true):
-		pass  # consume echo events without doing anything
-	elif event.is_action_pressed("toggle_bookmark", false, true):
-		%Bookmark.button_pressed = not %Bookmark.button_pressed
-	elif event.is_action_pressed("toggle_bookmark", true, true):
 		pass  # consume echo events without doing anything
 	elif event.is_action_pressed("delete_todo", false, true):
 		_on_delete_pressed()

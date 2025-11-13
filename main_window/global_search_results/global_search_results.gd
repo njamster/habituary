@@ -23,7 +23,7 @@ func _connect_signals() -> void:
 	#endregion
 
 	#region Local Signals
-	$SaveSearch.pressed.connect(_on_save_search_pressed)
+	$BookmarkSearch.pressed.connect(_on_save_search_pressed)
 	#endregion
 
 
@@ -59,20 +59,24 @@ func search() -> void:
 	# If there were no matching items, show the NoHitMessage instead.
 	$NoHitMessage.visible = (%SearchResults.get_child_count() == 0)
 
-	# Update the SaveSearch button depending on the current query text.
-	if Data.saved_searches.contains(Settings.search_query):
-		$SaveSearch.text = $SaveSearch.text.replace("Save", "Unsave")
+	# Update the BookmarkSearch button depending on the current query text.
+	if Data.bookmarks.contains(Settings.search_query):
+		$BookmarkSearch.text = "Remove Bookmark"
+		$BookmarkSearch.icon = preload("images/remove_bookmark.svg")
 	else:
-		$SaveSearch.text = $SaveSearch.text.replace("Unsave", "Save")
+		$BookmarkSearch.text = "Bookmark This Search"
+		$BookmarkSearch.icon = preload("images/add_bookmark.svg")
 
 	# Now, make the global search results panel visible to the user.
 	Settings.main_panel = Settings.MainPanelState.GLOBAL_SEARCH
 
 
 func _on_save_search_pressed() -> void:
-	if Data.saved_searches.contains(Settings.search_query):
-		Data.saved_searches.remove(Settings.search_query)
-		$SaveSearch.text = $SaveSearch.text.replace("Unsave", "Save")
+	if Data.bookmarks.contains(Settings.search_query):
+		Data.bookmarks.remove(Settings.search_query)
+		$BookmarkSearch.text = "Bookmark This Search"
+		$BookmarkSearch.icon = preload("images/add_bookmark.svg")
 	else:
-		Data.saved_searches.add(Settings.search_query)
-		$SaveSearch.text = $SaveSearch.text.replace("Save", "Unsave")
+		Data.bookmarks.add(Settings.search_query)
+		$BookmarkSearch.text = "Remove Bookmark"
+		$BookmarkSearch.icon = preload("images/remove_bookmark.svg")

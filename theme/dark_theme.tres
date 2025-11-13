@@ -1,4 +1,4 @@
-[gd_resource type="Theme" script_class="ConciseTheme" load_steps=138 format=3 uid="uid://b6uigmasjumt4"]
+[gd_resource type="Theme" script_class="ConciseTheme" load_steps=132 format=3 uid="uid://b6uigmasjumt4"]
 
 [ext_resource type="FontFile" uid="uid://clgk36lj6qey" path="res://theme/fonts/OpenSans-ExtraBold.ttf" id="1_dk6dp"]
 [ext_resource type="Texture2D" uid="uid://dw6xnhoq4knug" path="res://theme/images/unfolded.svg" id="1_edm8a"]
@@ -17,25 +17,6 @@ corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6apny"]
-content_margin_left = 12.0
-content_margin_top = 12.0
-content_margin_right = 12.0
-content_margin_bottom = 12.0
-bg_color = Color(0.18039216, 0.20392157, 0.2509804, 1)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.6392157, 0.74509805, 0.54901963, 0.75)
-border_blend = true
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-corner_detail = 5
-anti_aliasing_size = 0.33
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_edm8a"]
 content_margin_left = 4.0
@@ -846,16 +827,6 @@ corner_detail = 5
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5c0p3"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xc0r3"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3tudk"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_s8l6r"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_trrnf"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wehkg"]
-
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1gbq0"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y2c6e"]
@@ -953,8 +924,6 @@ corner_detail = 5
 [resource]
 default_font_size = 14
 AcceptDialog/styles/panel = SubResource("StyleBoxFlat_bc6ul")
-Bookmark_Today/base_type = &"PanelContainer"
-Bookmark_Today/styles/panel = SubResource("StyleBoxFlat_6apny")
 BoxContainer/constants/separation = 0
 Button/colors/font_color = Color(0.9254902, 0.9372549, 0.95686275, 1)
 Button/colors/font_disabled_color = Color(0.9254902, 0.9372549, 0.95686275, 0.5)
@@ -1216,19 +1185,6 @@ ToDoItem/styles/focus = SubResource("StyleBoxEmpty_0g7xl")
 ToDoItem/styles/hover = SubResource("StyleBoxEmpty_o6jm8")
 ToDoItem/styles/normal = SubResource("StyleBoxEmpty_ej80v")
 ToDoItem/styles/pressed = SubResource("StyleBoxEmpty_5c0p3")
-ToDoItem_BookmarkButton/base_type = &"Button"
-ToDoItem_BookmarkButton/colors/font_hover_color = Color(0.23137255, 0.25882354, 0.32156864, 1)
-ToDoItem_BookmarkButton/colors/font_hover_pressed_color = Color(0.23137255, 0.25882354, 0.32156864, 1)
-ToDoItem_BookmarkButton/colors/font_pressed_color = Color(0.9254902, 0.9372549, 0.95686275, 1)
-ToDoItem_BookmarkButton/colors/icon_hover_color = Color(0.23137255, 0.25882354, 0.32156864, 1)
-ToDoItem_BookmarkButton/colors/icon_hover_pressed_color = Color(0.23137255, 0.25882354, 0.32156864, 1)
-ToDoItem_BookmarkButton/colors/icon_pressed_color = Color(0.9254902, 0.9372549, 0.95686275, 1)
-ToDoItem_BookmarkButton/font_sizes/font_size = 12
-ToDoItem_BookmarkButton/styles/disabled = SubResource("StyleBoxEmpty_xc0r3")
-ToDoItem_BookmarkButton/styles/focus = SubResource("StyleBoxEmpty_3tudk")
-ToDoItem_BookmarkButton/styles/hover = SubResource("StyleBoxEmpty_s8l6r")
-ToDoItem_BookmarkButton/styles/normal = SubResource("StyleBoxEmpty_trrnf")
-ToDoItem_BookmarkButton/styles/pressed = SubResource("StyleBoxEmpty_wehkg")
 ToDoItem_DeleteButton/base_type = &"Button"
 ToDoItem_DeleteButton/colors/font_hover_color = Color(0.7490196, 0.38039216, 0.41568628, 1)
 ToDoItem_DeleteButton/colors/font_pressed_color = Color(0.8156863, 0.5294118, 0.4392157, 1)

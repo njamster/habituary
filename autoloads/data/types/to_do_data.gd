@@ -43,6 +43,10 @@ var is_italic := false:
 			is_italic = value
 			changed.emit("'is_italic' changed to '%s'" % value)
 
+# NOTE: This is only left in for backwards compatibility. If any users used the
+# old bookmark system, they can still grep their data to find the old bookmarks
+# even though they're no longer accessible through Habituary itself.
+# TODO: remove this later
 var is_bookmarked := false:
 	set(value):
 		if is_bookmarked != value:
