@@ -20,7 +20,6 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-Cache="*res://autoloads/cache.gd"
 Data="*res://autoloads/data/data.gd"
 DayTimer="*res://autoloads/day_timer.gd"
 Settings="*res://autoloads/settings.gd"

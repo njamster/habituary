@@ -1,10 +1,10 @@
 extends RefCounted
-class_name SearchData
+class_name BookmarkData
 
 
 signal changed(reason: String)
 
-var name := "saved_searches.txt"
+var name := "bookmarks.txt"
 var path := Settings.store_path.path_join(name)
 var last_modified := Utils.MIN_INT
 

@@ -16,7 +16,7 @@ signal fade_ticked_off_todos_changed
 signal fade_non_today_dates_changed
 signal bookmarks_due_today_changed
 signal show_sub_item_count_changed
-signal use_relative_saved_search_dates_changed
+signal use_relative_bookmark_dates_changed
 
 
 enum TodayPosition {
@@ -73,11 +73,6 @@ var DEFAULT_TO_DO_TEXT_COLORS := [
 		_start_debounce_timer()
 
 		to_do_text_colors_changed.emit()
-
-@export_group("Backwards Compatibility")
-# IMPORTANT: This variable must be loaded *before* the store_path variable!
-# (as the patch is applied in _on_store_path_changed of autoloads/cache.gd)
-@export var sub_items_refactor_patch_applied := false
 
 var DEFAULT_STORE_PATH : String:
 	get():
@@ -376,15 +371,15 @@ var bookmarks_due_today := 0:
 
 var side_panel_width := 360  # pixels
 
-@export var use_relative_saved_search_dates := true:
+@export var use_relative_bookmark_dates := true:
 	set(value):
-		if use_relative_saved_search_dates == value:
+		if use_relative_bookmark_dates == value:
 			return
 
-		use_relative_saved_search_dates = value
+		use_relative_bookmark_dates = value
 		_start_debounce_timer()
 
-		use_relative_saved_search_dates_changed.emit()
+		use_relative_bookmark_dates_changed.emit()
 
 
 func _enter_tree() -> void:

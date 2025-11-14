@@ -72,7 +72,7 @@ func _connect_signals() -> void:
 		self.date = self.date  # re-trigger setter function
 	)
 
-	Settings.use_relative_saved_search_dates_changed.connect(
+	Settings.use_relative_bookmark_dates_changed.connect(
 		_update_day_counter
 	)
 
@@ -121,7 +121,7 @@ func _update_day_counter() -> void:
 
 	day_diff = date.day_difference_to(DayTimer.today)
 
-	if Settings.use_relative_saved_search_dates:
+	if Settings.use_relative_bookmark_dates:
 		var years := int(abs(day_diff) / 365)
 		var weeks := int(abs(day_diff) % 365 / 7)
 		var days := int(abs(day_diff) % 365 % 7)

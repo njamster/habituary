@@ -64,10 +64,10 @@ func _set_initial_state() -> void:
 	_set_text_colors()
 
 	%UseRelativeDates/Setting/Options.set_pressed_no_signal(
-		Settings.use_relative_saved_search_dates
+		Settings.use_relative_bookmark_dates
 	)
 	_on_use_relative_dates_options_toggled(
-		Settings.use_relative_saved_search_dates
+		Settings.use_relative_bookmark_dates
 	)
 
 
@@ -303,15 +303,15 @@ func _on_todo_color_reset(id: int) -> void:
 
 
 func _on_use_relative_dates_options_toggled(toggled_on: bool) -> void:
-	Settings.use_relative_saved_search_dates = toggled_on
+	Settings.use_relative_bookmark_dates = toggled_on
 
 	if toggled_on:
 		%UseRelativeDates/Explanation.text = (
-			"The \"Latest Match\" for a saved search will be shown relative to"
-			+ " today, e.g. \"6 days ago\"."
+			"The \"Latest Match\" for a bookmarked search will be shown"
+			+ " relative to today, e.g. \"6 days ago\"."
 		)
 	else:
 		%UseRelativeDates/Explanation.text = (
-			"The \"Latest Match\" for a saved search will be shown as an"
+			"The \"Latest Match\" for a bookmarked search will be shown as an"
 			+ " absolute date, e.g. \"%s\"."
 		) % DayTimer.today.add_days(-6).format("MMM DD, YYYY")

@@ -9,5 +9,4 @@ signal today_changed
 signal search_screen_button_pressed
 
 signal global_search_requested()
-signal instant_save_requested(date)
 @warning_ignore_restore("unused_signal")
