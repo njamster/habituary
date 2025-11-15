@@ -26,17 +26,22 @@ func _load_from_disk() -> void:
 	for item in %Items.get_children():
 		item.queue_free()
 
-	Settings.bookmarks_due_today = 0
 	for query in Data.bookmarks._queries.keys():
 		var new_item := BOOKMARK.instantiate()
 		new_item.text = query
 		new_item.warning_threshold = Data.bookmarks._queries[query]
+		new_item.is_due_today_changed.connect(_update_today_counter)
 		new_item.resort_requested.connect(_resort_list)
 		%Items.add_child(new_item)
-		if new_item.is_due_today:
-			Settings.bookmarks_due_today += 1
 
 	$NoneSaved.visible = Data.bookmarks._queries.is_empty()
+
+
+func _update_today_counter() -> void:
+	Settings.bookmarks_due_today = 0
+	for item in %Items.get_children():
+		if item.is_due_today:
+			Settings.bookmarks_due_today += 1
 
 
 func _resort_list() -> void:

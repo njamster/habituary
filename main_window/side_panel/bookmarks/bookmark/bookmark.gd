@@ -1,6 +1,7 @@
 extends PanelContainer
 
 
+signal is_due_today_changed
 signal resort_requested
 
 
@@ -26,7 +27,17 @@ var day_diff := Utils.MIN_INT:
 			resort_requested.emit()
 var line_id : int
 
-var is_due_today := false
+var is_due_today := false:
+	set(value):
+		if is_due_today != value:
+			is_due_today = value
+
+			if is_due_today:
+				%DayCounter.add_theme_color_override("font_color", Color.RED)
+			else:
+				%DayCounter.remove_theme_color_override("font_color")
+
+			is_due_today_changed.emit()
 
 
 func _ready() -> void:
@@ -45,9 +56,6 @@ func _setup_initial_state() -> void:
 		$VBox/ThirdRow.hide()
 
 	date = _find_last_mention()
-
-	if warning_threshold:
-		is_due_today = day_diff <= warning_threshold
 
 
 func _find_last_mention() -> Date:
@@ -113,6 +121,7 @@ func _update_day_counter() -> void:
 			preload("res://theme/fonts/OpenSans-MediumItalic.ttf")
 		)
 		day_diff = Utils.MIN_INT
+		is_due_today = false
 		return  # early
 	else:
 		%DayCounter.text = ""
@@ -179,10 +188,7 @@ func _update_third_row() -> void:
 		$VBox/ThirdRow/SpinBox.value = abs(warning_threshold)
 		$VBox/ThirdRow/OptionButton.selected = int(warning_threshold > 0)
 
-		if day_diff <= warning_threshold:
-			%DayCounter.add_theme_color_override("font_color", Color.RED)
-		else:
-			%DayCounter.remove_theme_color_override("font_color")
+		is_due_today = day_diff <= warning_threshold
 
 
 func _on_alarm_toggled(toggled_on: bool) -> void:
