@@ -76,7 +76,11 @@ var review_date: Date:
 
 var sub_items := ToDoListData.new(self)
 
-var indentation_level := -1
+var indentation_level := 0:
+	set(value):
+		indentation_level = value
+		sub_items.indentation_level = value + 1
+
 var parent: ToDoListData
 
 

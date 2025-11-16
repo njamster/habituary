@@ -10,7 +10,12 @@ signal to_do_removed(at_index: int)
 
 var to_dos: Array[ToDoData]
 
-var indentation_level := 0
+var indentation_level := 0:
+	set(value):
+		indentation_level = value
+		for to_do in to_dos:
+			to_do.indentation_level = value
+
 var parent: RefCounted
 
 
@@ -26,7 +31,6 @@ func add(to_do: ToDoData, at_index := -1, auto_edit := false, emit := true) -> v
 		at_index = -1
 	to_do.parent = self
 	to_do.indentation_level = indentation_level
-	to_do.sub_items.indentation_level = indentation_level + 1
 	to_do.sub_items.changed.connect(to_do.changed.emit)
 	to_do.indent_requested.connect(indent.bind(to_do))
 	to_do.delete_requested.connect(remove.bind(to_do))
@@ -41,7 +45,6 @@ func remove(to_do: ToDoData, emit := true) -> void:
 	to_dos.erase(to_do)
 	to_do.parent = null
 	to_do.indentation_level = -1
-	to_do.sub_items.indentation_level = -1
 	to_do.sub_items.changed.disconnect(to_do.changed.emit)
 	to_do.indent_requested.disconnect(indent)
 	to_do.delete_requested.disconnect(remove)
