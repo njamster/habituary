@@ -9,7 +9,7 @@ var path := Settings.store_path.path_join(name)
 var last_modified := Utils.MIN_INT
 
 var _alarm_tag_reg_ex = RegEx.create_from_string(
-	"\\[ALARM:(?<alarm>[\\+|-][1-9][0-9]*)\\]$"
+	"\\[ALARM:(?<alarm>0|[\\+|-][1-9][0-9]*)\\]$"
 )
 
 var _queries := {}
@@ -62,7 +62,7 @@ func as_string() -> String:
 	var result := ""
 
 	for query in _queries.keys():
-		if _queries[query]:
+		if _queries[query] != null:
 			var warning_threshold = _queries[query]
 			if warning_threshold > 0:
 				result += "%s [ALARM:+%d]\n" % [

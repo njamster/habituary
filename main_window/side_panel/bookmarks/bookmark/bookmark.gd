@@ -17,7 +17,7 @@ var text := "":
 		text = value
 		%SearchQuery.text = text
 
-var warning_threshold
+var warning_threshold = null
 
 # used for sorting
 var day_diff := Utils.MIN_INT:
@@ -46,7 +46,7 @@ func _ready() -> void:
 
 
 func _setup_initial_state() -> void:
-	if warning_threshold:
+	if warning_threshold != null:
 		%Alarm.set_pressed_no_signal(true)
 		%Alarm._on_toggled()
 		%Alarm/Tooltip.text = %Alarm/Tooltip.text.replace("Add", "Remove")
@@ -96,7 +96,13 @@ func _connect_signals() -> void:
 	%Alarm.toggled.connect(_on_alarm_toggled)
 
 	$VBox/ThirdRow/SpinBox.value_changed.connect(func(value):
-		warning_threshold = sign(warning_threshold) * value
+		if warning_threshold == 0:
+			warning_threshold = value
+			#if $VBox/ThirdRow/OptionButton.selected == 1:
+				#warning_threshold *= -1
+		else:
+			warning_threshold = sign(warning_threshold) * value
+
 		_update_third_row()
 		Data.bookmarks.update(text, warning_threshold)
 	)
@@ -184,11 +190,11 @@ func _on_repeat_search_pressed() -> void:
 
 
 func _update_third_row() -> void:
-	if warning_threshold:
+	if warning_threshold != null:
 		$VBox/ThirdRow/SpinBox.value = abs(warning_threshold)
 		$VBox/ThirdRow/OptionButton.selected = int(warning_threshold > 0)
 
-		is_due_today = day_diff <= warning_threshold
+		is_due_today = (day_diff <= warning_threshold)
 
 
 func _on_alarm_toggled(toggled_on: bool) -> void:
