@@ -11,8 +11,8 @@ var rejection_tween : Tween
 var data: ToDoListData:
 	set(value):
 		if data != null:
-			Log.error("Cannot set 'data': Variable is immutable!")
-			return
+			for item in %Items.get_children():
+				item.queue_free()
 		data = value
 
 		for to_do_data in data.to_dos:

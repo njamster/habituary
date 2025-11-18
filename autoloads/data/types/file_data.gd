@@ -2,6 +2,8 @@ extends RefCounted
 class_name FileData
 
 
+signal reloaded()
+
 var path: String
 var name: String
 var last_modified := Utils.MIN_INT
@@ -80,8 +82,8 @@ func reload() -> void:
 		if is_empty():
 			DirAccess.remove_absolute(path)
 			Data.unload(self)
-		else:
-			Data.changed.emit()
+
+		reloaded.emit()
 
 
 func as_string() -> String:

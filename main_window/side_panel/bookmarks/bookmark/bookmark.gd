@@ -98,8 +98,6 @@ func _connect_signals() -> void:
 	$VBox/ThirdRow/SpinBox.value_changed.connect(func(value):
 		if warning_threshold == 0:
 			warning_threshold = value
-			#if $VBox/ThirdRow/OptionButton.selected == 1:
-				#warning_threshold *= -1
 		else:
 			warning_threshold = sign(warning_threshold) * value
 

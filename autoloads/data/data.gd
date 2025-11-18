@@ -31,6 +31,7 @@ func _notification(what: int) -> void:
 func _load_from_disk(replace_old_data := true) -> void:
 	if replace_old_data:
 		capture = FileData.new(Settings.store_path.path_join("capture.txt"))
+		capture.reloaded.connect(changed.emit)
 		files.clear()
 		bookmarks = BookmarkData.new()
 	else:
@@ -48,6 +49,7 @@ func _load_from_disk(replace_old_data := true) -> void:
 			var new_file = FileData.new(
 				Settings.store_path.path_join(filename)
 			)
+			new_file.reloaded.connect(changed.emit)
 
 			if not new_file.is_empty():
 				files[filename] = new_file

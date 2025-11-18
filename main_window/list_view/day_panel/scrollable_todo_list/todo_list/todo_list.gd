@@ -13,6 +13,8 @@ var data: FileData:
 
 		load_data()
 
+		data.reloaded.connect(load_data)
+
 
 func _ready() -> void:
 	_set_initial_state()
