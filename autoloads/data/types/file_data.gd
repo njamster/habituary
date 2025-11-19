@@ -57,7 +57,7 @@ func _load_from_disk() -> void:
 
 
 func save_to_disk() -> void:
-	if not to_do_list.is_empty():
+	if not is_empty():
 		var file := FileAccess.open(path, FileAccess.WRITE)
 		if file:
 			file.store_string(as_string())
@@ -65,7 +65,19 @@ func save_to_disk() -> void:
 		is_preliminary = false
 		Log.debug("[%s] Saved to disk" % name)
 	else:
+		delete_from_disk()
+
+
+func delete_from_disk() -> void:
+	if not is_empty():
+		Log.error("[%s] Cannot delete file, to-do list isn't empty!" % name)
+		return  # early
+
+	if FileAccess.file_exists(path):
 		DirAccess.remove_absolute(path)
+		Log.debug("[%s] Deleted from disk, reason: empty to-do list" % name)
+
+	Data.unload(self)
 
 
 func reload() -> void:
@@ -80,8 +92,7 @@ func reload() -> void:
 		Log.debug("[%s] Reloaded from disk" % name)
 
 		if is_empty():
-			DirAccess.remove_absolute(path)
-			Data.unload(self)
+			delete_from_disk()
 
 		reloaded.emit()
 

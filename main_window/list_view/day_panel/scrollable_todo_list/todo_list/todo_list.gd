@@ -40,6 +40,11 @@ func _connect_signals() -> void:
 
 	#region Local Signals
 	item_rect_changed.connect(hide_line_highlight)
+
+	tree_exited.connect(func():
+		if data.is_empty():
+			data._delete_from_disk()
+	)
 	#endregion
 
 
