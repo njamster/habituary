@@ -8,7 +8,7 @@ var path: String
 var name: String
 var last_modified := Utils.MIN_INT
 
-var is_preliminary := false
+var keep_loaded := false
 
 var _is_initialized := false
 
@@ -62,7 +62,6 @@ func save_to_disk() -> void:
 		if file:
 			file.store_string(as_string())
 		last_modified = FileAccess.get_modified_time(path)
-		is_preliminary = false
 		Log.debug("[%s] Saved to disk" % name)
 	else:
 		delete_from_disk()
@@ -82,8 +81,7 @@ func delete_from_disk() -> void:
 
 func reload() -> void:
 	if not FileAccess.file_exists(path):
-		if not is_preliminary:
-			Data.unload(self)
+		Data.unload(self)
 		return  # early
 
 	if last_modified < FileAccess.get_modified_time(path):

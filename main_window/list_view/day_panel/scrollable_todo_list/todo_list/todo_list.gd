@@ -42,8 +42,9 @@ func _connect_signals() -> void:
 	item_rect_changed.connect(hide_line_highlight)
 
 	tree_exited.connect(func():
+		data.keep_loaded = false
 		if data.is_empty():
-			data._delete_from_disk()
+			data.delete_from_disk()
 	)
 	#endregion
 
@@ -51,6 +52,8 @@ func _connect_signals() -> void:
 func load_data() -> void:
 	if not data:
 		return  # early
+
+	data.keep_loaded = true
 
 	%Items.data = data.to_do_list
 

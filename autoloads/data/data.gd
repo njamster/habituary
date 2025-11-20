@@ -99,7 +99,9 @@ func start_debounce_timer(reason: String, file: RefCounted) -> void:
 
 func unload(file: FileData) -> void:
 	if file.name in files:
-		files.erase(file.name)
+		if not file.keep_loaded:
+			Log.debug("[%s] Unloaded" % file.name)
+			files.erase(file.name)
 
 
 func get_file(filename: String) -> FileData:
@@ -107,7 +109,6 @@ func get_file(filename: String) -> FileData:
 		files[filename] = FileData.new(
 			Settings.store_path.path_join(filename)
 		)
-		files[filename].is_preliminary = true
 	return files[filename]
 
 
