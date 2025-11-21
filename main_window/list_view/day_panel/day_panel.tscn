@@ -22,18 +22,19 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_type_variation = &"DayPanel_Header"
 
-[node name="VBox" type="VBoxContainer" parent="VBox/Header"]
+[node name="Rows" type="VBoxContainer" parent="VBox/Header"]
 layout_mode = 2
 
-[node name="Date" type="Label" parent="VBox/Header/VBox"]
+[node name="Date" type="Label" parent="VBox/Header/Rows"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"SubtleLabel"
 text = "MMM DD, YYYY"
+horizontal_alignment = 1
 uppercase = true
 
-[node name="Weekday" type="Label" parent="VBox/Header/VBox"]
+[node name="Weekday" type="Label" parent="VBox/Header/Rows"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -41,11 +42,12 @@ theme_type_variation = &"HeaderLarge"
 text = "WEEKDAY"
 uppercase = true
 
-[node name="DayOffset" type="Label" parent="VBox/Header/VBox"]
+[node name="DayOffset" type="Label" parent="VBox/Header/Rows"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"Label_Italic"
+text = "Day Offset"
 
 [node name="Tooltip" type="Node" parent="VBox/Header"]
 script = ExtResource("2_wbwrx")
