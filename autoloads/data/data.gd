@@ -15,6 +15,9 @@ var _valid_filename_reg_ex = RegEx.create_from_string(
 
 
 func _enter_tree() -> void:
+	capture = FileData.new(Settings.store_path.path_join("capture.txt"))
+	bookmarks = BookmarkData.new()
+
 	Settings.store_path_changed.connect(_load_from_disk)
 
 

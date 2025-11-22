@@ -11,9 +11,10 @@ var data: FileData:
 			return
 		data = value
 
-		load_data()
+		if data:
+			load_data()
 
-		data.reloaded.connect(load_data)
+			data.reloaded.connect(load_data)
 
 
 func _ready() -> void:
