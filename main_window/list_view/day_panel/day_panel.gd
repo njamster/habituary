@@ -56,12 +56,10 @@ func _connect_signals() -> void:
 	Settings.fade_non_today_dates_changed.connect(_update_fade_out)
 
 	Settings.view_mode_changed.connect(_update_header_tooltip_visibility)
-	Settings.view_mode_cap_changed.connect(_update_header_tooltip_visibility)
 
 	Settings.current_day_changed.connect(_on_current_day_changed)
 
 	Settings.view_mode_changed.connect(_update_theme_type_variation)
-	Settings.view_mode_cap_changed.connect(_update_theme_type_variation)
 	#endregion
 
 	#region Local Signals
@@ -115,8 +113,7 @@ func _update_fade_out() -> void:
 
 
 func _update_header_tooltip_visibility() -> void:
-	var view_mode = min(Settings.view_mode, Settings.view_mode_cap)
-	%Header/Tooltip.disabled = (view_mode == 1)
+	%Header/Tooltip.disabled = (Settings.view_mode == 1)
 
 
 func _on_current_day_changed() -> void:
@@ -125,8 +122,7 @@ func _on_current_day_changed() -> void:
 
 
 func _update_theme_type_variation() -> void:
-	var view_mode = min(Settings.view_mode, Settings.view_mode_cap)
-	if view_mode != 1 and date.equals(Settings.current_day):
+	if Settings.view_mode != 1 and date.equals(Settings.current_day):
 		theme_type_variation = "DayPanel_CurrentDay"
 	else:
 		theme_type_variation = "DayPanel"
@@ -143,9 +139,9 @@ func _on_header_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_mouse_button") and event.double_click:
 		get_viewport().set_input_as_handled()
 
-		# save previous state
-		Settings.previous_day = Settings.current_day
-		Settings.previous_view_mode = Settings.view_mode
+		# memorize current state
+		Settings.memorized_day = Settings.current_day
+		Settings.memorized_view_mode = Settings.view_mode
 		# zoom in on the double clicked date
 		Settings.current_day = date
 		Settings.view_mode = 1
@@ -154,8 +150,7 @@ func _on_header_gui_input(event: InputEvent) -> void:
 
 
 func _focus_header() -> void:
-	var view_mode = min(Settings.view_mode, Settings.view_mode_cap)
-	if view_mode != 1:
+	if Settings.view_mode != 1:
 		%Header.theme_type_variation = "DayPanel_Header_Selected"
 		%Header.mouse_default_cursor_shape = CURSOR_POINTING_HAND
 

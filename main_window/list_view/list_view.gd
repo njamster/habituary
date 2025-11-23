@@ -22,8 +22,6 @@ func _connect_signals() -> void:
 	)
 	_update_list_view()
 
-	Settings.view_mode_cap_changed.connect(_update_list_view)
-
 	Settings.current_day_changed.connect(_shift_list_view)
 	#endregion
 
@@ -43,20 +41,18 @@ func _on_resized() -> void:
 
 
 func _update_list_view() -> void:
-	var view_mode = min(Settings.view_mode, Settings.view_mode_cap)
-
 	var child_count := get_child_count()
 
 	# remove superfluous panels (if there are any)
-	for i in range(view_mode, child_count):
+	for i in range(Settings.view_mode, child_count):
 		match Settings.today_position:
 			Settings.TodayPosition.LEFTMOST:
-				remove_day_panel(view_mode)
+				remove_day_panel(Settings.view_mode)
 			Settings.TodayPosition.SECOND_PLACE:
 				if i == 1:
 					remove_day_panel(0)
 				else:
-					remove_day_panel(view_mode)
+					remove_day_panel(Settings.view_mode)
 			Settings.TodayPosition.CENTERED:
 				if i % 2 == 0:
 					remove_day_panel(0)
@@ -64,7 +60,7 @@ func _update_list_view() -> void:
 					remove_day_panel(get_child_count() - 1)
 
 	# add additonal panels (if it's necessary)
-	for i in range(child_count, view_mode):
+	for i in range(child_count, Settings.view_mode):
 		match Settings.today_position:
 			Settings.TodayPosition.LEFTMOST:
 				add_day_panel(i)
@@ -81,18 +77,16 @@ func _update_list_view() -> void:
 
 
 func _shift_list_view() -> void:
-	var view_mode = min(Settings.view_mode, Settings.view_mode_cap)
-
 	var today_offset := 0
 	match Settings.today_position:
 		Settings.TodayPosition.SECOND_PLACE:
 			if get_child_count() > 1:
 				today_offset = 1
 		Settings.TodayPosition.CENTERED:
-			today_offset = floor(0.5 * view_mode)
+			today_offset = floor(0.5 * Settings.view_mode)
 
 	var offset = Settings.current_day.day_difference_to(get_child(today_offset).date)
-	offset = sign(offset) * min(abs(offset), view_mode)
+	offset = sign(offset) * min(abs(offset), Settings.view_mode)
 
 	for i in abs(offset):
 		if offset < 0:

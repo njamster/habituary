@@ -7,7 +7,7 @@ func _ready() -> void:
 
 func _connect_signals() -> void:
 	#region Global Signals
-	Settings.view_mode_changed.connect(_on_view_mode_changed)
+	Settings.view_mode_changed.connect(_update_button_tooltips)
 
 	Settings.current_day_changed.connect(_on_current_day_changed)
 	_on_current_day_changed()
@@ -47,8 +47,12 @@ func _on_current_day_changed() -> void:
 		$Today.show()
 
 
-func _on_view_mode_changed() -> void:
+func _update_button_tooltips() -> void:
 	if Settings.view_mode == 1:
-		$ShiftViewBackward/Tooltip.text = "Move %d Day Back" % Settings.view_mode
+		$ShiftViewBackward/Tooltip.text = (
+			"Move %d Day Back" % Settings.view_mode
+		)
 	else:
-		$ShiftViewBackward/Tooltip.text = "Move %d Days Back" % Settings.view_mode
+		$ShiftViewBackward/Tooltip.text = (
+			"Move %d Days Back" % Settings.view_mode
+		)

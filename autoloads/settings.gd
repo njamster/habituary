@@ -109,31 +109,41 @@ var date_format_save := "YYYY-MM-DD.txt"
 
 		current_day_changed.emit()
 
-var previous_view_mode
+var memorized_view_mode
 
 @export var view_mode := 3:
 	set(value):
 		if view_mode == value:
 			return
 
-		if previous_view_mode != view_mode:
-			previous_view_mode = null
+		if memorized_view_mode != view_mode:
+			memorized_view_mode = null
 
 		view_mode = value
 		_start_debounce_timer()
 
 		view_mode_changed.emit()
+	get():
+		if get_meta("is_saving_to_disk", false):
+			return view_mode
+		else:
+			return min(view_mode, view_mode_cap)
 
 var view_mode_cap := 7:
 	set(value):
+		var old_view_mode = view_mode
+
 		if view_mode_cap == value:
 			return
 
 		view_mode_cap = value
 
+		if view_mode != old_view_mode:
+			view_mode_changed.emit()
+
 		view_mode_cap_changed.emit()
 
-var previous_day
+var memorized_day
 
 var current_day := Date.new(DayTimer.today.as_dict()):
 	set(value):
@@ -142,8 +152,8 @@ var current_day := Date.new(DayTimer.today.as_dict()):
 		if current_day.equals(value):
 			return
 
-		if previous_day != current_day:
-			previous_day = null
+		if memorized_day != current_day:
+			memorized_day = null
 
 		current_day = value
 
@@ -438,12 +448,16 @@ func save_to_disk() -> void:
 
 	config.load(settings_path)  # keep existing settings (if there are any)
 
+	set_meta("is_saving_to_disk", true)
+
 	var exported_properties := Utils.get_exported_properties(self)
 	for group in exported_properties:
 		for property in exported_properties[group]:
 			config.set_value(group, property, get(property))
 
 	config.save(settings_path)
+
+	set_meta("is_saving_to_disk", false)
 
 	if OS.is_debug_build():
 		Log.debug("Settings Saved to Disk!")

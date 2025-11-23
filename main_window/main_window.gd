@@ -35,10 +35,10 @@ func _unhandled_input(event: InputEvent) -> void:
 			focus_owner.release_focus()
 			return
 
-		if Settings.previous_day and Settings.previous_view_mode:
+		if Settings.memorized_day and Settings.memorized_view_mode:
 			# restore previous values
-			Settings.current_day = Settings.previous_day
-			Settings.view_mode = Settings.previous_view_mode
+			Settings.current_day = Settings.memorized_day
+			Settings.view_mode = Settings.memorized_view_mode
 			# clear the cached values
-			Settings.previous_day = null
-			Settings.previous_view_mode = null
+			Settings.memorized_day = null
+			Settings.memorized_view_mode = null
