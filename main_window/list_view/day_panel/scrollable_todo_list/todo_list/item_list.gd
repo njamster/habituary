@@ -57,8 +57,6 @@ func _connect_signals() -> void:
 	mouse_exited.connect(func():
 		get_to_do_list().hide_line_highlight()
 	)
-
-	child_entered_tree.connect(_on_item_added)
 	#endregion
 
 
@@ -77,11 +75,6 @@ func _on_gui_input(event: InputEvent) -> void:
 
 
 #region Adding Items
-func _on_item_added(item: Node) -> void:
-	if item is not ToDoItem:
-		return
-
-
 func add_todo(at_index := -1, auto_edit := true, p_data: ToDoData = null) -> ToDoItem:
 	# Add a new to-do item to the end of this item list.
 	var new_item := preload("todo_item/todo_item.tscn").instantiate()
