@@ -88,15 +88,3 @@ func get_scroll_container() -> ScrollContainer:
 	while parent is not ScrollContainer and parent != null:
 		parent = parent.get_parent()
 	return parent
-
-
-func get_line_number_for_item(item: ToDoItem) -> int:
-	return %Items.get_line_number_for_item(item)
-
-
-func get_item_for_line_number(line_number: int) -> ToDoItem:
-	var result = %Items.get_item_for_line_number(line_number)
-	if result is ToDoItem:
-		return result
-	else:
-		return null

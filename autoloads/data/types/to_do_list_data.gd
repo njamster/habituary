@@ -111,5 +111,40 @@ func is_empty() -> bool:
 	return to_dos.is_empty()
 
 
+func get_item_above(to_do: ToDoData) -> ToDoData:
+	var index := to_dos.find(to_do)
+	if index != -1:
+			if index == 0:
+				if parent is not FileData:
+					# item is the first sub item of another item -> return that item
+					return parent
+			else:
+				# item has at least one item before it...
+				var item_above := to_dos[index - 1]
+				# ... if that item has any sub items -> return the last of them
+				while not item_above.sub_items.is_empty():
+					item_above = item_above.sub_items.to_dos[-1]
+				return item_above
+
+	return null
+
+
+func get_item_below(to_do: ToDoData) -> ToDoData:
+	var index := to_dos.find(to_do)
+	if index != -1:
+		if index < to_dos.size() - 1:
+			# item has at least one item after it -> return that
+			return to_dos[index + 1]
+
+		if parent is not FileData:
+			var parent_list: ToDoListData = parent.parent
+			if parent_list:
+				# item is the final sub item of another item
+				# -> return the item after that item (if there is any)
+				return parent_list.get_item_below(parent)
+
+	return null
+
+
 func clear() -> void:
 	to_dos.clear()

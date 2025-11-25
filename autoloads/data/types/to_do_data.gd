@@ -231,3 +231,15 @@ func edit() -> void:
 	Settings.current_day = Date.from_string(temp.name.trim_suffix(".txt"))
 
 	edit_requested.emit()
+
+
+func get_item_above() -> ToDoData:
+	return parent.get_item_above(self)
+
+
+func get_item_below() -> ToDoData:
+	if not sub_items.is_empty():
+		# item has at least one sub item -> return that
+		return sub_items.to_dos[0]
+	else:
+		return parent.get_item_below(self)

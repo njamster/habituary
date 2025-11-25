@@ -340,11 +340,11 @@ func delete() -> void:
 		%SubItems.unindent_todo(%SubItems.get_child(i))
 
 	if %Edit.text:
-		var successor = get_item_list().get_successor_todo(self)
+		var successor = data.get_item_below()
 		if successor:
 			successor.edit()
 		else:
-			var predecessor = get_item_list().get_predecessor_todo(self)
+			var predecessor = data.get_item_above()
 			if predecessor:
 				predecessor.edit()
 			else:
@@ -559,11 +559,11 @@ func _input(event: InputEvent) -> void:
 		elif event.is_action_pressed("cancel_todo", true, true):
 			pass  # consume echo events without doing anything
 		elif event.is_action_pressed("previous_todo", true, true):
-			var predecessor = get_item_list().get_predecessor_todo(self)
+			var predecessor = data.get_item_above()
 			if predecessor:
 				predecessor.edit()
 		elif event.is_action_pressed("next_todo", true, true):
-			var successor = get_item_list().get_successor_todo(self)
+			var successor = data.get_item_below()
 			if successor:
 				successor.edit()
 		elif event.is_action_pressed("move_todo_up", true, true):
@@ -734,11 +734,11 @@ func _apply_state_relative_formatting(immediate := false) -> void:
 					self.hide()
 
 					if is_in_edit_mode():
-						var successor = get_item_list().get_successor_todo(self)
+						var successor = data.get_item_below()
 						if successor:
 							successor.edit()
 						else:
-							var predecessor = get_item_list().get_predecessor_todo(self)
+							var predecessor = data.get_item_above()
 							if predecessor:
 								predecessor.edit()
 
@@ -793,12 +793,13 @@ func _on_edit_gui_input(event: InputEvent) -> void:
 
 	if event.is_action_pressed("ui_text_backspace") and %Edit.text == "":
 		if get_item_list().indentation_level == 0:
-			var predecessor = get_item_list().get_predecessor_todo(self)
+			var predecessor = data.get_item_above()
 			if predecessor:
-				predecessor.set_meta(
-					"caret_position",
-					predecessor.get_node("%Edit").text.length()
-				)
+				# TODO: Add caret_position to ToDoData?
+				#predecessor.set_meta(
+					#"caret_position",
+					#predecessor.get_node("%Edit").text.length()
+				#)
 				predecessor.edit()
 		else:
 			get_item_list().unindent_todo(self)
@@ -951,10 +952,6 @@ func contains_search_query_match() -> bool:
 			return true
 
 	return false
-
-
-func get_list_index() -> int:
-	return get_to_do_list().get_line_number_for_item(self)
 
 
 func _on_check_box_mouse_entered() -> void:
