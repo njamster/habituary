@@ -81,6 +81,8 @@ var indentation_level := 0:
 		indentation_level = value
 		sub_items.indentation_level = value + 1
 
+var caret_position := 0  # Note: Does NOT persist across restarts!
+
 var parent: ToDoListData
 
 
@@ -223,12 +225,20 @@ func duplicate() -> ToDoData:
 	return copy
 
 
-func edit() -> void:
-	# auto-switch to the correct date
-	var temp = parent
-	while temp is not FileData:
-		temp = temp.parent
-	Settings.current_day = Date.from_string(temp.name.trim_suffix(".txt"))
+func edit(at_caret_position = 0) -> void:
+	caret_position = at_caret_position
+
+	# find the file this to-do belongs to...
+	var parent_file = parent
+	while parent_file is not FileData:
+		parent_file = parent_file.parent
+
+	# ... and if it's not already visible...
+	if not parent_file.keep_loaded:
+		# ... auto-switch to the correct date
+		Settings.current_day = Date.from_string(
+			parent_file.name.trim_suffix(".txt")
+		)
 
 	edit_requested.emit()
 

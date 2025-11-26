@@ -305,8 +305,7 @@ func edit() -> void:
 	%Edit.grab_focus()
 	%Edit.edit()
 
-	if has_meta("caret_position"):
-		%Edit.caret_column = get_meta("caret_position")
+	%Edit.caret_column = data.caret_position
 
 
 func _on_edit_focus_entered() -> void:
@@ -446,7 +445,7 @@ func _strip_text(raw_text: String) -> String:
 
 
 func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
-	remember_caret_position()
+	data.caret_position = %Edit.caret_column
 
 	new_text = _strip_text(new_text)
 	if %Edit.text != new_text:
@@ -795,12 +794,7 @@ func _on_edit_gui_input(event: InputEvent) -> void:
 		if get_item_list().indentation_level == 0:
 			var predecessor = data.get_item_above()
 			if predecessor:
-				# TODO: Add caret_position to ToDoData?
-				#predecessor.set_meta(
-					#"caret_position",
-					#predecessor.get_node("%Edit").text.length()
-				#)
-				predecessor.edit()
+				predecessor.edit() #predecessor.text.length())
 		else:
 			get_item_list().unindent_todo(self)
 
@@ -985,9 +979,3 @@ func _update_copy_to_today_visibility():
 				date.day_difference_to(DayTimer.today) < 0
 	else:
 		%CopyToToday.visible = %Edit.text != ""
-
-
-## Saves the current [param caret_column] value of the edit field to a meta
-## property, which is used to restore it later when [method edit] is called.
-func remember_caret_position() -> void:
-	set_meta("caret_position", %Edit.caret_column)
