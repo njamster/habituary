@@ -445,8 +445,6 @@ func _strip_text(raw_text: String) -> String:
 
 
 func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
-	data.caret_position = %Edit.caret_column
-
 	new_text = _strip_text(new_text)
 	if %Edit.text != new_text:
 		%Edit.text = new_text
@@ -457,8 +455,6 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 	if new_text:
 		var old_text = self.text
 		self.text = new_text
-
-		%Edit.caret_column = 0   # scroll item text back to its beginning
 
 		if not Utils.is_mouse_cursor_above(self):
 			%CopyToToday.modulate.a = 0.1
@@ -483,6 +479,7 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 
 
 func _on_edit_focus_exited() -> void:
+	data.caret_position = %Edit.caret_column
 	await get_tree().process_frame
 	if is_inside_tree() and not is_queued_for_deletion() and is_in_edit_mode():
 		var focus_owner := get_viewport().gui_get_focus_owner()

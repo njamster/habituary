@@ -225,8 +225,9 @@ func duplicate() -> ToDoData:
 	return copy
 
 
-func edit(at_caret_position = 0) -> void:
-	caret_position = at_caret_position
+func edit(at_caret_position = null) -> void:
+	if at_caret_position != null:
+		caret_position = at_caret_position
 
 	# find the file this to-do belongs to...
 	var parent_file = parent
