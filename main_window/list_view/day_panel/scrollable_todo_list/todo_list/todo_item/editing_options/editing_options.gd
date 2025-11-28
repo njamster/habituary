@@ -1,7 +1,7 @@
 extends VBoxContainer
 
 
-@onready var to_do: ToDoItem
+@onready var data: ToDoData
 
 var _shrink_threshold: int
 
@@ -10,7 +10,11 @@ func _ready() -> void:
 	var parent := get_parent()
 	while parent is not ToDoItem and parent != null:
 		parent = parent.get_parent()
-	to_do = parent
+	data = parent.data
+
+	data.is_bold_changed.connect(update_bold)
+	data.is_italic_changed.connect(update_italic)
+	data.text_color_id_changed.connect(update_text_color)
 
 	_set_initial_state()
 	_connect_signals()
@@ -53,7 +57,7 @@ func update() -> void:
 
 
 func update_bold() -> void:
-	%Bold.button_pressed = to_do.is_bold
+	%Bold.button_pressed = data.is_bold
 
 	if %Bold.button_pressed:
 		%Bold/Tooltip.text = "Undo Bold"
@@ -62,7 +66,7 @@ func update_bold() -> void:
 
 
 func update_italic() -> void:
-	%Italic.button_pressed = to_do.is_italic
+	%Italic.button_pressed = data.is_italic
 
 	if %Italic.button_pressed:
 		%Italic/Tooltip.text = "Undo Italic"
@@ -71,8 +75,8 @@ func update_italic() -> void:
 
 
 func update_text_color() -> void:
-	if to_do.text_color_id:
-		var color = Settings.to_do_text_colors[to_do.text_color_id - 1]
+	if data.text_color_id:
+		var color = Settings.to_do_text_colors[data.text_color_id - 1]
 		%TextColor.get("theme_override_styles/panel").bg_color = color
 		%TextColor.get("theme_override_styles/panel").draw_center = true
 	else:
@@ -93,22 +97,22 @@ func _on_editing_options_resized() -> void:
 
 
 func _on_bold_toggled(toggled_on: bool) -> void:
-	to_do.is_bold = toggled_on
+	data.is_bold = toggled_on
 
 
 func _on_italic_toggled(toggled_on: bool) -> void:
-	to_do.is_italic = toggled_on
+	data.is_italic = toggled_on
 
 
 func _on_text_color_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed():
 		match event.button_index:
 			MOUSE_BUTTON_LEFT, MOUSE_BUTTON_WHEEL_UP:
-				to_do.text_color_id += 1
+				data.text_color_id += 1
 			MOUSE_BUTTON_MIDDLE:
-				to_do.text_color_id  = 0
+				data.text_color_id  = 0
 			MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_WHEEL_DOWN:
-				to_do.text_color_id -= 1
+				data.text_color_id -= 1
 			_:
 				return  # early, i.e. ignore the input
 
@@ -116,7 +120,7 @@ func _on_text_color_gui_input(event: InputEvent) -> void:
 
 
 func _on_delete_pressed() -> void:
-	to_do.delete()
+	data.delete()
 
 
 func _input(event: InputEvent) -> void:

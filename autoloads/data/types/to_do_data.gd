@@ -6,6 +6,10 @@ signal indent_requested
 signal delete_requested
 signal edit_requested
 
+signal is_bold_changed
+signal is_italic_changed
+signal text_color_id_changed
+
 signal changed(reason: String)
 
 
@@ -35,12 +39,14 @@ var is_bold := false:
 	set(value):
 		if is_bold != value:
 			is_bold = value
+			is_bold_changed.emit()
 			changed.emit("'is_bold' changed to '%s'" % value)
 
 var is_italic := false:
 	set(value):
 		if is_italic != value:
 			is_italic = value
+			is_italic_changed.emit()
 			changed.emit("'is_italic' changed to '%s'" % value)
 
 # NOTE: This is only left in for backwards compatibility. If any users used the
@@ -61,8 +67,10 @@ var is_folded := false:
 
 var text_color_id: int:
 	set(value):
+		value = wrapi(value, 0, Settings.to_do_text_colors.size() + 1)
 		if text_color_id != value:
 			text_color_id = value
+			text_color_id_changed.emit()
 			changed.emit("'text_color_id' changed to '%s'" % value)
 
 var review_date: Date:
@@ -242,6 +250,10 @@ func edit(at_caret_position = null) -> void:
 		)
 
 	edit_requested.emit()
+
+
+func delete() -> void:
+	delete_requested.emit()
 
 
 func get_item_above() -> ToDoData:

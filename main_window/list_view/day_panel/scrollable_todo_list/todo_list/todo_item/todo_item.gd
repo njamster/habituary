@@ -15,9 +15,13 @@ var data: ToDoData:
 
 		state = data.state
 		text = data.text
-		is_bold = data.is_bold
-		is_italic = data.is_italic
-		text_color_id = data.text_color_id
+
+		_apply_formatting()
+		data.is_bold_changed.connect(_apply_formatting)
+		data.is_italic_changed.connect(_apply_formatting)
+
+		_update_text_color()
+		data.text_color_id_changed.connect(_update_text_color)
 
 		%SubItems.data = data.sub_items
 
@@ -90,30 +94,6 @@ var state := ToDoData.States.TO_DO:
 				if self.text and not has_sub_items():
 					data.state = value
 
-var is_bold := false:
-	set(value):
-		is_bold = value
-		if is_inside_tree():
-			_apply_formatting()
-
-			if has_node("EditingOptions"):
-				$EditingOptions.update_bold()
-
-			if _initialization_finished and self.text:
-				data.is_bold = value
-
-var is_italic := false:
-	set(value):
-		is_italic = value
-		if is_inside_tree():
-			_apply_formatting()
-
-			if has_node("EditingOptions"):
-				$EditingOptions.update_italic()
-
-			if _initialization_finished and self.text:
-				data.is_italic = value
-
 var _is_mouse_over_checkbox := false
 
 var is_folded := false:
@@ -141,27 +121,6 @@ var is_folded := false:
 
 		if _initialization_finished and self.text:
 			data.is_folded = value
-
-
-var text_color_id := 0:
-	set(value):
-		var old_value = text_color_id
-		text_color_id = wrapi(value, 0, Settings.to_do_text_colors.size() + 1)
-
-		if text_color_id:
-			var color = Settings.to_do_text_colors[text_color_id - 1]
-			%Edit.add_theme_color_override("font_placeholder_color", Color(color, 0.7))
-			%Edit.add_theme_color_override("font_color", color)
-		else:
-			%Edit.remove_theme_color_override("font_placeholder_color")
-			%Edit.remove_theme_color_override("font_color")
-
-		if has_node("EditingOptions"):
-			$EditingOptions.update_text_color()
-
-		if old_value != value:
-			if _initialization_finished and self.text:
-				data.text_color_id = value
 
 var hide_tween: Tween
 
@@ -218,12 +177,7 @@ func _connect_signals() -> void:
 		_apply_state_relative_formatting.bind(true)
 	)
 
-	Settings.to_do_text_colors_changed.connect(func():
-		if text_color_id:
-			var color = Settings.to_do_text_colors[text_color_id - 1]
-			%Edit.add_theme_color_override("font_placeholder_color", Color(color, 0.7))
-			%Edit.add_theme_color_override("font_color", color)
-	)
+	Settings.to_do_text_colors_changed.connect(_update_text_color)
 
 	Settings.show_sub_item_count_changed.connect(func():
 		self.is_folded = self.is_folded
@@ -413,7 +367,7 @@ func _strip_text(raw_text: String) -> String:
 		var color_tag_reg_ex_match := color_tag_reg_ex.search(raw_text)
 		if color_tag_reg_ex_match:
 			raw_text = raw_text.substr(0, raw_text.length() - 9).strip_edges()
-			text_color_id = int(color_tag_reg_ex_match.get_string("digit"))
+			data.text_color_id = int(color_tag_reg_ex_match.get_string("digit"))
 			continue  # from the start of the while loop again
 
 		var review_date_reg_ex_match := review_date_reg_ex.search(raw_text)
@@ -430,13 +384,13 @@ func _strip_text(raw_text: String) -> String:
 		if raw_text.begins_with("**") and raw_text.ends_with("**") or \
 			raw_text.begins_with("__") and raw_text.ends_with("__"):
 				raw_text = raw_text.left(-2).right(-2).strip_edges()
-				is_bold = true
+				data.is_bold = true
 				continue  # from the start of the while loop again
 
 		if raw_text.begins_with("*") and raw_text.ends_with("*") or \
 			raw_text.begins_with("_") and raw_text.ends_with("_"):
 				raw_text = raw_text.left(-1).right(-1).strip_edges()
-				is_italic = true
+				data.is_italic = true
 				continue  # from the start of the while loop again
 
 		break  # the while loop, nothing to replace was found anymore
@@ -479,16 +433,17 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 
 
 func _on_edit_focus_exited() -> void:
-	data.caret_position = %Edit.caret_column
-	await get_tree().process_frame
-	if is_inside_tree() and not is_queued_for_deletion() and is_in_edit_mode():
-		var focus_owner := get_viewport().gui_get_focus_owner()
-		if not focus_owner or (not focus_owner == self and not focus_owner.owner == self):
-			_on_edit_text_submitted(%Edit.text, false)
-			if has_node("EditingOptions"):
-				$EditingOptions.queue_free()
-			if not get_viewport().gui_get_focus_owner():
-				Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	if not is_queued_for_deletion():
+		data.caret_position = %Edit.caret_column
+		await get_tree().process_frame
+		if is_inside_tree() and is_in_edit_mode():
+			var focus_owner := get_viewport().gui_get_focus_owner()
+			if not focus_owner or (not focus_owner == self and not focus_owner.owner == self):
+				_on_edit_text_submitted(%Edit.text, false)
+				if has_node("EditingOptions"):
+					$EditingOptions.queue_free()
+				if not get_viewport().gui_get_focus_owner():
+					Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 
 func _on_focus_exited() -> void:
@@ -575,9 +530,9 @@ func _input(event: InputEvent) -> void:
 		elif event.is_action_pressed("unindent_todo", true, true):
 			pass  # consume echo events without doing anything
 		elif event.is_action_pressed("next_text_color", false, true):
-			text_color_id += 1
+			data.text_color_id += 1
 		elif event.is_action_pressed("previous_text_color", false, true):
-			text_color_id -= 1
+			data.text_color_id -= 1
 		else:
 			return # early, i.e. ignore the input
 
@@ -643,15 +598,15 @@ func _add_end_time() -> void:
 
 
 func _apply_formatting() -> void:
-	var font : Font
+	var font: Font
 
-	if is_bold:
-		if is_italic:
+	if data.is_bold:
+		if data.is_italic:
 			font = preload("res://theme/fonts/OpenSans-ExtraBoldItalic.ttf")
 		else:
 			font = preload("res://theme/fonts/OpenSans-ExtraBold.ttf")
 	else:
-		if is_italic:
+		if data.is_italic:
 			font = preload("res://theme/fonts/OpenSans-MediumItalic.ttf")
 		else:
 			font = preload("res://theme/fonts/OpenSans-Medium.ttf")
@@ -659,12 +614,25 @@ func _apply_formatting() -> void:
 	%Edit.add_theme_font_override("font", font)
 
 
+func _update_text_color() -> void:
+	if data.text_color_id:
+		var color = Settings.to_do_text_colors[data.text_color_id - 1]
+		%Edit.add_theme_color_override("font_color", color)
+		%Edit.add_theme_color_override(
+			"font_placeholder_color",
+			Color(color, 0.7)
+		)
+	else:
+		%Edit.remove_theme_color_override("font_color")
+		%Edit.remove_theme_color_override("font_placeholder_color")
+
+
 func _check_for_search_query_match() -> void:
 	var parent_todo := get_parent_todo()
 
 	if not Settings.search_query:
 		# restore the to-do's text color
-		text_color_id = text_color_id
+		_update_text_color()
 		%Edit.theme_type_variation = "LineEdit_Minimal"
 		if Settings.fade_ticked_off_todos and state != ToDoData.States.TO_DO:
 			%Edit.modulate.a = 0.5
@@ -694,7 +662,7 @@ func _check_for_search_query_match() -> void:
 				parent_todo = parent_todo.get_parent_todo()
 	else:
 		# restore the to-do's text color
-		text_color_id = text_color_id
+		_update_text_color()
 		%Edit.theme_type_variation = "LineEdit_Minimal"
 		%Edit.modulate.a = 0.1
 
