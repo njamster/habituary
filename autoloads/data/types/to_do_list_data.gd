@@ -36,7 +36,8 @@ func add(to_do: ToDoData, at_index := -1, auto_edit := false, emit := true) -> v
 	to_do.delete_requested.connect(remove.bind(to_do))
 	to_do.changed.connect(changed.emit)
 	if emit:
-		changed.emit("to-do added")
+		if to_do.text:
+			changed.emit("to-do added")
 		to_do_added.emit(to_do, at_index, auto_edit)
 
 
@@ -50,7 +51,8 @@ func remove(to_do: ToDoData, emit := true) -> void:
 	to_do.delete_requested.disconnect(remove)
 	to_do.changed.disconnect(changed.emit)
 	if emit:
-		changed.emit("to-do removed")
+		if to_do.text:
+			changed.emit("to-do removed")
 		to_do_removed.emit(at_index)
 
 

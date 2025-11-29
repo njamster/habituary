@@ -24,7 +24,8 @@ var state := States.TO_DO:
 	set(value):
 		if state != value:
 			state = value
-			changed.emit("'state' changed to '%s'" % States.keys()[value])
+			if self.text and sub_items.is_empty():
+				changed.emit("'state' changed to '%s'" % States.keys()[value])
 
 var text: String:
 	set(value):
@@ -40,14 +41,16 @@ var is_bold := false:
 		if is_bold != value:
 			is_bold = value
 			is_bold_changed.emit()
-			changed.emit("'is_bold' changed to '%s'" % value)
+			if self.text:
+				changed.emit("'is_bold' changed to '%s'" % value)
 
 var is_italic := false:
 	set(value):
 		if is_italic != value:
 			is_italic = value
 			is_italic_changed.emit()
-			changed.emit("'is_italic' changed to '%s'" % value)
+			if self.text:
+				changed.emit("'is_italic' changed to '%s'" % value)
 
 # NOTE: This is only left in for backwards compatibility. If any users used the
 # old bookmark system, they can still grep their data to find the old bookmarks
@@ -63,7 +66,8 @@ var is_folded := false:
 	set(value):
 		if is_folded != value:
 			is_folded = value
-			changed.emit("'is_folded' changed to '%s'" % value)
+			if self.text:
+				changed.emit("'is_folded' changed to '%s'" % value)
 
 var text_color_id: int:
 	set(value):
@@ -71,7 +75,8 @@ var text_color_id: int:
 		if text_color_id != value:
 			text_color_id = value
 			text_color_id_changed.emit()
-			changed.emit("'text_color_id' changed to '%s'" % value)
+			if self.text:
+				changed.emit("'text_color_id' changed to '%s'" % value)
 
 var review_date: Date:
 	set(value):

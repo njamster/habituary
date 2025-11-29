@@ -175,14 +175,6 @@ func _drop_data(at_position: Vector2, p_data: Variant) -> void:
 
 
 #region Getting Items
-func is_empty() -> bool:
-	for child in get_children():
-		if child is ToDoItem:
-			return false
-
-	return true
-
-
 func get_all_items() -> Array[Node]:
 	var result: Array[Node] = []
 
@@ -206,9 +198,8 @@ func indent_todo(item: ToDoItem, visual_feedback := true) -> void:
 		predecessor_item.is_folded = false
 	item.reparent(predecessor_item.get_node("%SubItems"))
 
-	if item._initialization_finished:
-		data.indent(item.data)
-		item.edit()
+	data.indent(item.data)
+	item.edit()
 
 
 func unindent_todo(item: ToDoItem, visual_feedback := true) -> void:
@@ -222,9 +213,8 @@ func unindent_todo(item: ToDoItem, visual_feedback := true) -> void:
 	item.reparent(parent_todo.get_item_list())
 	item.get_parent().move_child(item, parent_todo.get_index() + 1)
 
-	if item._initialization_finished:
-		data.unindent(item.data)
-		item.edit()
+	data.unindent(item.data)
+	item.edit()
 
 
 ## Plays a short animation to indicate a rejected indentation/move request.

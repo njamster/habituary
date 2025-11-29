@@ -2,10 +2,6 @@ class_name ToDoItem
 extends VBoxContainer
 
 
-# used to avoid emitting `list_save_requested` too early
-var _initialization_finished := false
-
-
 var data: ToDoData:
 	set(value):
 		if data != null:
@@ -51,8 +47,7 @@ var text := "":
 
 			%Edit.text = _strip_text(text)
 
-			if _initialization_finished:
-				data.text = value
+			data.text = value
 
 var state := ToDoData.States.TO_DO:
 	set(value):
@@ -88,11 +83,9 @@ var state := ToDoData.States.TO_DO:
 				else:
 					%CheckBox.theme_type_variation = "ToDoItem"
 
-			if _initialization_finished:
-				_apply_state_relative_formatting()
+			_apply_state_relative_formatting()
 
-				if self.text and not has_sub_items():
-					data.state = value
+			data.state = value
 
 var _is_mouse_over_checkbox := false
 
@@ -101,7 +94,7 @@ var is_folded := false:
 		if is_folded == value:
 			return  # early
 
-		if %SubItems.is_empty():
+		if data.sub_items.is_empty():
 			return  # early
 
 		is_folded = value
@@ -119,8 +112,7 @@ var is_folded := false:
 			%ExtraInfo.visible = \
 				Settings.show_sub_item_count == Settings.ShowSubItemCount.ALWAYS
 
-		if _initialization_finished and self.text:
-			data.is_folded = value
+		data.is_folded = value
 
 var hide_tween: Tween
 
@@ -135,11 +127,6 @@ func _ready() -> void:
 
 	%CopyToToday.modulate.a = 0.1
 	%DragHandle.modulate.a = 0.1
-
-	# deferred for two frames, in case this item is loaded from disk
-	await get_tree().process_frame
-	await get_tree().process_frame
-	_initialization_finished = true
 
 	_update_copy_to_today_visibility()
 
@@ -423,10 +410,12 @@ func _on_edit_text_submitted(new_text: String, key_input := true) -> void:
 				else:
 					get_item_list().add_todo_below(self)
 			else:
-				if not has_sub_items():
-					if new_text.ends_with(":") and \
-						(not old_text.ends_with(":") or not has_sub_items()):
-							get_item_list().add_sub_item(self)
+				if data.sub_items.is_empty():
+					if new_text.ends_with(":") and (
+						not old_text.ends_with(":")
+						or data.sub_items.is_empty()
+					):
+						get_item_list().add_sub_item(self)
 				%Edit.release_focus()
 	else:
 		delete()
@@ -490,7 +479,7 @@ func _on_fold_heading_toggled(toggled_on: bool) -> void:
 func _input(event: InputEvent) -> void:
 	if is_in_edit_mode():
 		if event.is_action_pressed("toggle_todo", false, true):
-			if %SubItems.is_empty():
+			if data.sub_items.is_empty():
 				if self.state != ToDoData.States.DONE:
 					self.state = ToDoData.States.DONE
 				else:
@@ -500,7 +489,7 @@ func _input(event: InputEvent) -> void:
 		elif event.is_action_pressed("toggle_todo", true, true):
 			pass  # consume echo events without doing anything
 		elif event.is_action_pressed("cancel_todo", false, true):
-			if %SubItems.is_empty():
+			if data.sub_items.is_empty():
 				if self.state != ToDoData.States.FAILED:
 					self.state = ToDoData.States.FAILED
 				else:
@@ -817,7 +806,7 @@ func _on_sub_item_added() -> void:
 
 func _on_sub_item_removed() -> void:
 	# now, the sub item is no longer part of the tree
-	if %SubItems.is_empty():
+	if data.sub_items.is_empty():
 		%CheckBox.show()
 		%FoldHeading.hide()
 
@@ -852,10 +841,6 @@ func _update_extra_info() -> void:
 	%ExtraInfo.text = "(%d/%d)" % [done_items_count, sub_item_count]
 
 
-func has_sub_items() -> bool:
-	return get_node("%SubItems").get_child_count()
-
-
 func get_sub_item(index: int) -> Variant:
 	for sub_item in %SubItems.get_children():
 		if index == 0:
@@ -873,7 +858,7 @@ func get_sub_item(index: int) -> Variant:
 
 
 func _adapt_sub_item_state() -> void:
-	if %SubItems.is_empty():
+	if data.sub_items.is_empty():
 		self.state = ToDoData.States.TO_DO
 	else:
 		if _has_unticked_sub_todos():
