@@ -6,7 +6,7 @@ var data: ToDoData:
 	set(value):
 		if data != null:
 			Log.error("Cannot set 'data': Variable is immutable!")
-			return
+			return  # early
 		data = value
 
 		state = data.state
@@ -16,12 +16,13 @@ var data: ToDoData:
 		data.is_bold_changed.connect(_apply_formatting)
 		data.is_italic_changed.connect(_apply_formatting)
 
-		_update_text_color()
-		data.text_color_id_changed.connect(_update_text_color)
+		_apply_text_color()
+		data.text_color_id_changed.connect(_apply_text_color)
 
 		%SubItems.data = data.sub_items
 
-		is_folded = data.is_folded
+		_apply_fold_state()
+		data.is_folded_changed.connect(_apply_fold_state)
 
 		data.edit_requested.connect(edit)
 
@@ -89,31 +90,6 @@ var state := ToDoData.States.TO_DO:
 
 var _is_mouse_over_checkbox := false
 
-var is_folded := false:
-	set(value):
-		if is_folded == value:
-			return  # early
-
-		if data.sub_items.is_empty():
-			return  # early
-
-		is_folded = value
-
-		%FoldHeading.set_pressed_no_signal(value)
-
-		_update_extra_info()
-
-		if is_folded:
-			%SubItems.visible = contains_search_query_match()
-			%ExtraInfo.visible = \
-				Settings.show_sub_item_count != Settings.ShowSubItemCount.NEVER
-		else:
-			%SubItems.show()
-			%ExtraInfo.visible = \
-				Settings.show_sub_item_count == Settings.ShowSubItemCount.ALWAYS
-
-		data.is_folded = value
-
 var hide_tween: Tween
 
 var review_date : String
@@ -140,8 +116,6 @@ func _set_initial_state() -> void:
 	%FoldHeading.hide()
 	%ExtraInfo.hide()
 
-	_on_fold_heading_toggled(self.is_folded)
-
 	_apply_state_relative_formatting.call_deferred(true)
 
 	%MainRow.set_drag_forwarding(Callable(), _can_drop_data, _drop_data)
@@ -164,11 +138,9 @@ func _connect_signals() -> void:
 		_apply_state_relative_formatting.bind(true)
 	)
 
-	Settings.to_do_text_colors_changed.connect(_update_text_color)
+	Settings.to_do_text_colors_changed.connect(_apply_text_color)
 
-	Settings.show_sub_item_count_changed.connect(func():
-		self.is_folded = self.is_folded
-	)
+	Settings.show_sub_item_count_changed.connect(_apply_fold_state)
 	#endregion
 
 	#region Local Signals
@@ -215,7 +187,7 @@ func _connect_signals() -> void:
 		CONNECT_DEFERRED
 	)
 
-	$UnfoldTimer.timeout.connect(func(): is_folded = false)
+	$UnfoldTimer.timeout.connect(func(): data.is_folded = false)
 
 	item_rect_changed.connect(func():
 		if Utils.is_mouse_cursor_above(%CheckBox):
@@ -239,8 +211,8 @@ func edit() -> void:
 	if not is_visible_in_tree():
 		var parent_todo := get_parent_todo()
 		while parent_todo:
-			if parent_todo.is_folded:
-				parent_todo.is_folded = false
+			if parent_todo.data.is_folded:
+				parent_todo.data.is_folded = false
 			parent_todo = parent_todo.get_parent_todo()
 
 	%Edit.grab_focus()
@@ -468,9 +440,9 @@ func _on_mouse_exited() -> void:
 
 
 func _on_fold_heading_toggled(toggled_on: bool) -> void:
-	self.is_folded = toggled_on
+	data.is_folded = toggled_on
 
-	if self.is_folded:
+	if data.is_folded:
 		%FoldHeading/Tooltip.text = "Unfold Sub-Items"
 	else:
 		%FoldHeading/Tooltip.text = "Fold Sub-Items"
@@ -485,7 +457,7 @@ func _input(event: InputEvent) -> void:
 				else:
 					self.state = ToDoData.States.TO_DO
 			else:
-				is_folded = not is_folded
+				data.is_folded = not data.is_folded
 		elif event.is_action_pressed("toggle_todo", true, true):
 			pass  # consume echo events without doing anything
 		elif event.is_action_pressed("cancel_todo", false, true):
@@ -495,7 +467,7 @@ func _input(event: InputEvent) -> void:
 				else:
 					self.state = ToDoData.States.TO_DO
 			else:
-				is_folded = not is_folded
+				data.is_folded = not data.is_folded
 		elif event.is_action_pressed("cancel_todo", true, true):
 			pass  # consume echo events without doing anything
 		elif event.is_action_pressed("previous_todo", true, true):
@@ -603,7 +575,7 @@ func _apply_formatting() -> void:
 	%Edit.add_theme_font_override("font", font)
 
 
-func _update_text_color() -> void:
+func _apply_text_color() -> void:
 	if data.text_color_id:
 		var color = Settings.to_do_text_colors[data.text_color_id - 1]
 		%Edit.add_theme_color_override("font_color", color)
@@ -616,19 +588,39 @@ func _update_text_color() -> void:
 		%Edit.remove_theme_color_override("font_placeholder_color")
 
 
+func _apply_fold_state() -> void:
+	%FoldHeading.button_pressed = data.is_folded
+
+	if data.is_folded:
+		%SubItems.visible = contains_search_query_match()
+		%ExtraInfo.visible = (
+			Settings.show_sub_item_count != Settings.ShowSubItemCount.NEVER
+			and not data.sub_items.is_empty()
+		)
+	else:
+		%SubItems.show()
+		%ExtraInfo.visible = (
+			Settings.show_sub_item_count == Settings.ShowSubItemCount.ALWAYS
+			and not data.sub_items.is_empty()
+		)
+
+	if %ExtraInfo.visible:
+		_update_extra_info()
+
+
 func _check_for_search_query_match() -> void:
 	var parent_todo := get_parent_todo()
 
 	if not Settings.search_query:
 		# restore the to-do's text color
-		_update_text_color()
+		_apply_text_color()
 		%Edit.theme_type_variation = "LineEdit_Minimal"
 		if Settings.fade_ticked_off_todos and state != ToDoData.States.TO_DO:
 			%Edit.modulate.a = 0.5
 		else:
 			%Edit.modulate.a = 1.0
 
-		if parent_todo and parent_todo.is_folded:
+		if parent_todo and parent_todo.data.is_folded:
 			# If the sub items list was temporarily made visible again, as it
 			# contained a matching item (see elif-case below), hide it again.
 			parent_todo.get_node("%SubItems").hide()
@@ -646,16 +638,16 @@ func _check_for_search_query_match() -> void:
 			# other, non-matching sub items, which would otherwise immediately
 			# undo this change again (see the else-case below).
 			while parent_todo:
-				if parent_todo.is_folded:
+				if parent_todo.data.is_folded:
 					parent_todo.get_node("%SubItems").show.call_deferred()
 				parent_todo = parent_todo.get_parent_todo()
 	else:
 		# restore the to-do's text color
-		_update_text_color()
+		_apply_text_color()
 		%Edit.theme_type_variation = "LineEdit_Minimal"
 		%Edit.modulate.a = 0.1
 
-		if parent_todo and parent_todo.is_folded:
+		if parent_todo and parent_todo.data.is_folded:
 			# If the sub items list was temporarily made visible again, as it
 			# contained a matching item (see elif-case above), hide it again.
 			parent_todo.get_node("%SubItems").hide()
@@ -713,7 +705,7 @@ func _apply_state_relative_formatting(immediate := false) -> void:
 			%Toggle.modulate.a = 1.0
 			%Edit.modulate.a = 1.0
 			%ExtraInfo.modulate.a = 1.0
-		if not is_folded:
+		if not data.is_folded:
 			self.show()
 
 		if Settings.fade_ticked_off_todos:

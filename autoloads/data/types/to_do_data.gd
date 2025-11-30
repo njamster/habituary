@@ -8,6 +8,7 @@ signal edit_requested
 
 signal is_bold_changed
 signal is_italic_changed
+signal is_folded_changed
 signal text_color_id_changed
 
 signal changed(reason: String)
@@ -66,6 +67,7 @@ var is_folded := false:
 	set(value):
 		if is_folded != value:
 			is_folded = value
+			is_folded_changed.emit()
 			if self.text:
 				changed.emit("'is_folded' changed to '%s'" % value)
 

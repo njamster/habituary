@@ -65,7 +65,8 @@ func move(to_do: ToDoData, to_position: int) -> void:
 	to_dos.remove_at(index)
 	to_dos.insert(to_position, to_do)
 
-	changed.emit("to-do moved")
+	if to_do.text:
+		changed.emit("to-do moved")
 
 
 func indent(to_do: ToDoData) -> void:
@@ -77,7 +78,8 @@ func indent(to_do: ToDoData) -> void:
 	remove(to_do, false)
 	to_dos[index - 1].sub_items.add(to_do, -1, false, false)
 
-	changed.emit("to-do indented")
+	if to_do.text:
+		changed.emit("to-do indented")
 
 
 func unindent(to_do: ToDoData) -> void:
@@ -95,7 +97,8 @@ func unindent(to_do: ToDoData) -> void:
 		remove(to_do, false)
 		parent_list.add(to_do, at_position + 1, false, false)
 
-		changed.emit("to-do unindented")
+		if to_do.text:
+			changed.emit("to-do unindented")
 
 
 func search(query: String) -> Array[ToDoData]:
